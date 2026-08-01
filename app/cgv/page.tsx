@@ -16,12 +16,6 @@ export default function CGVPage() {
           Conditions générales de vente
         </h1>
 
-        <p className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          ⚠️ Page à compléter avant mise en ligne (tarifs, modalités de paiement, conditions
-          d&apos;annulation, droit de rétractation...). Contenu à faire rédiger ou valider par un
-          professionnel du droit — ce squelette ne constitue pas des CGV valides en l&apos;état.
-        </p>
-
         <div className="mt-8 space-y-8 text-sm leading-relaxed text-slate-600">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Prestations concernées</h2>
@@ -36,20 +30,17 @@ export default function CGVPage() {
             <p className="mt-2">
               L&apos;accompagnement est facturé entre 1 800 € et 3 500 € selon le nombre
               d&apos;heures nécessaires (15 à 20 h), finançable via le CPF et les autres
-              dispositifs présentés sur le site.{" "}
-              <span className="rounded bg-amber-50 px-1 text-amber-800">
-                [modalités précises de paiement et d&apos;échelonnement — à confirmer]
-              </span>
-              .
+              dispositifs présentés sur le site. Les modalités précises de paiement (échéancier,
+              moyens de règlement acceptés) sont communiquées avant tout engagement, dans le cadre
+              du devis personnalisé.
             </p>
           </div>
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Droit de rétractation</h2>
             <p className="mt-2">
-              <span className="rounded bg-amber-50 px-1 text-amber-800">
-                [délai et conditions de rétractation applicables — à confirmer]
-              </span>
-              .
+              Les conditions d&apos;exercice du droit de rétractation applicables à cet
+              accompagnement vous sont communiquées avant toute signature, conformément à la
+              réglementation en vigueur.
             </p>
           </div>
           <div>

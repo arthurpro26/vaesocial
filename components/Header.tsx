@@ -68,7 +68,7 @@ export default function Header() {
           aria-hidden={isFormActive}
           tabIndex={isFormActive ? -1 : undefined}
           className={clsx(
-            "shrink-0 whitespace-nowrap rounded-full bg-accent-600 px-4 py-3 text-sm font-bold text-white shadow-md shadow-accent-600/25 transition duration-300 hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-lg hover:shadow-accent-600/30 sm:px-5 sm:py-2.5",
+            "shrink-0 whitespace-nowrap rounded-full bg-accent-600 px-3.5 py-3 text-sm font-bold text-white shadow-md shadow-accent-600/25 transition duration-300 hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-lg hover:shadow-accent-600/30 sm:px-5 sm:py-2.5",
             isFormActive ? "invisible opacity-0" : "visible opacity-100"
           )}
         >

@@ -13,12 +13,6 @@ export default function MentionsLegalesPage() {
       <Container className="max-w-3xl">
         <h1 className="text-3xl font-bold tracking-tight text-slate-900">Mentions légales</h1>
 
-        <p className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          ⚠️ Cette page reprend vos informations officielles (registre des entreprises) et des
-          formulations standards — une relecture par un professionnel du droit reste recommandée
-          avant mise en ligne définitive.
-        </p>
-
         <div className="mt-8 space-y-8 text-sm leading-relaxed text-slate-600">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Éditeur du site</h2>

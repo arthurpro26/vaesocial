@@ -207,10 +207,10 @@ export default function PrediagnosticForm({
   return (
     <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-2xl shadow-brand-900/15">
       {/* En-tête dégradé avec titre constant + barre de progression */}
-      <div className="bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 px-5 pb-4 pt-5 text-white sm:px-7">
-        <p className="text-xs font-medium text-brand-50/90">{steps[step].eyebrow}</p>
-        <h2 className="mt-1 text-lg font-bold sm:text-xl">Testez votre éligibilité à la VAE</h2>
-        <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/25">
+      <div className="bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 px-4 pb-3 pt-4 text-white sm:px-7 sm:pb-4 sm:pt-5">
+        <p className="text-[11px] font-medium text-brand-50/90 sm:text-xs">{steps[step].eyebrow}</p>
+        <h2 className="mt-0.5 text-base font-bold sm:mt-1 sm:text-xl">Testez votre éligibilité à la VAE</h2>
+        <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-white/25 sm:mt-3">
           <div
             className="h-full rounded-full bg-white transition-all duration-500 ease-out"
             style={{ width: `${progressPercent}%` }}
@@ -218,7 +218,7 @@ export default function PrediagnosticForm({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="px-5 py-6 sm:px-7">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-4 py-4 sm:px-7 sm:py-6">
         <div key={step} className="step-transition">
           {steps[step].key === "diplomeVise" && (
             <ChoiceStep
@@ -264,10 +264,10 @@ export default function PrediagnosticForm({
           )}
 
           {steps[step].key === "coordonnees" && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div className="flex items-center gap-2 text-slate-900">
                 <span aria-hidden>📞</span>
-                <h3 className="text-base font-semibold">
+                <h3 className="text-sm font-semibold sm:text-base">
                   Un conseiller vous recontacte gratuitement pour faire le point
                 </h3>
               </div>
@@ -288,7 +288,7 @@ export default function PrediagnosticForm({
                 />
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                 <Field label="Prénom" error={errors.prenom?.message}>
                   <input {...register("prenom")} placeholder="Votre prénom" className="form-input" />
                 </Field>
@@ -357,7 +357,7 @@ export default function PrediagnosticForm({
         )}
       </form>
 
-      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 border-t border-brand-100 bg-brand-50/60 px-5 py-3 text-xs font-medium text-brand-800 sm:px-7">
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 border-t border-brand-100 bg-brand-50/60 px-4 py-2.5 text-[11px] font-medium text-brand-800 sm:gap-x-5 sm:gap-y-1.5 sm:px-7 sm:py-3 sm:text-xs">
         <span>✓ 100% gratuit</span>
         <span>✓ Sans engagement</span>
         <span>✓ Réponse sous 24h</span>
@@ -386,13 +386,13 @@ function ChoiceStep({
 }) {
   return (
     <div>
-      <h3 className="text-base font-semibold text-slate-900">{question}</h3>
+      <h3 className="text-sm font-semibold text-slate-900 sm:text-base">{question}</h3>
       {subtitle && <p className="mt-1 text-xs text-slate-500">{subtitle}</p>}
       <Controller
         name={name}
         control={control}
         render={({ field }) => (
-          <div className="mt-4 space-y-2.5">
+          <div className="mt-3 space-y-2 sm:mt-4 sm:space-y-2.5">
             {options.map((opt) => {
               const selected = field.value === opt.value;
               return (
@@ -401,7 +401,7 @@ function ChoiceStep({
                   type="button"
                   onClick={() => onSelect(name, opt.value, field.onChange)}
                   className={clsx(
-                    "flex w-full items-center justify-between rounded-2xl border-2 px-4 py-3 text-left transition",
+                    "flex min-h-11 w-full items-center justify-between rounded-2xl border-2 px-3.5 py-2.5 text-left transition sm:px-4 sm:py-3",
                     selected
                       ? "border-brand-600 bg-brand-50 shadow-sm"
                       : "border-slate-200 hover:border-brand-300 hover:bg-slate-50"
@@ -415,12 +415,12 @@ function ChoiceStep({
                   </span>
                   <span
                     className={clsx(
-                      "ml-4 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2",
+                      "ml-3 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 sm:ml-4 sm:h-5 sm:w-5",
                       selected ? "border-brand-600 bg-brand-600 text-white" : "border-slate-300"
                     )}
                   >
                     {selected && (
-                      <svg viewBox="0 0 20 20" fill="currentColor" className="h-3 w-3">
+                      <svg viewBox="0 0 20 20" fill="currentColor" className="h-2.5 w-2.5 sm:h-3 sm:w-3">
                         <path
                           fillRule="evenodd"
                           d="M16.704 5.29a1 1 0 010 1.415l-7.5 7.5a1 1 0 01-1.415 0l-3.5-3.5a1 1 0 111.415-1.414l2.792 2.792 6.793-6.793a1 1 0 011.415 0z"
@@ -456,7 +456,7 @@ function StructureStep({
 
   return (
     <div>
-      <h3 className="text-base font-semibold text-slate-900">
+      <h3 className="text-sm font-semibold text-slate-900 sm:text-base">
         Dans quelle structure exercez-vous principalement ?
       </h3>
       <p className="mt-1 text-xs text-slate-500">
@@ -479,7 +479,7 @@ function StructureStep({
           }
 
           return (
-            <div className="relative mt-4">
+            <div className="relative mt-3 sm:mt-4">
               <input
                 {...field}
                 type="text"

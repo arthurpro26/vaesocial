@@ -66,11 +66,11 @@ export default async function DiplomePage({
 
       {/* HERO — même structure grid que la home (accroche / formulaire / réassurance)
           pour conserver le trick de réordonnancement mobile (formulaire remonté). */}
-      <section className="bg-gradient-to-b from-brand-50 via-white to-white pb-10 pt-8 sm:pb-20 sm:pt-20">
+      <section className="bg-gradient-to-b from-brand-50 via-white to-white pb-8 pt-6 sm:pb-20 sm:pt-20">
         <Container>
-          <div className="grid gap-5 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-6">
+          <div className="grid gap-4 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-6">
             <div>
-              <div className="flex flex-wrap items-center justify-center gap-3 text-center">
+              <div className="flex flex-wrap items-center justify-center gap-2.5 text-center sm:gap-3">
                 <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
                   <span aria-hidden>✅</span>
                   VAE {d.sigle}
@@ -83,20 +83,20 @@ export default async function DiplomePage({
                   <span className="sm:hidden">({AVIS.nombre} avis)</span>
                 </span>
               </div>
-              <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:mt-6 sm:text-4xl lg:text-5xl">
+              <h1 className="mt-3 text-balance text-[1.65rem] font-bold leading-tight tracking-tight text-slate-900 sm:mt-6 sm:text-4xl lg:text-5xl">
                 On vous dit d&apos;abord si vous êtes{" "}
                 <span className="text-brand-600">éligible {d.heroSuffixe}</span>.
                 <br />
                 Pas l&apos;inverse.
               </h1>
-              <p className="mt-3 text-base font-semibold text-slate-800 sm:mt-4 sm:text-lg">
+              <p className="mt-2.5 text-pretty text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
                 {d.heroIntro}
               </p>
             </div>
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
               <PrediagnosticForm presetDiplome={d.sigle as "DEES" | "DEAES" | "DEEJE" | "DEME"} />
-              <p className="mt-4 text-center text-xs text-slate-500">
+              <p className="mt-3 text-center text-xs text-slate-500 sm:mt-4">
                 🔒 Vos informations restent confidentielles — jamais revendues à des tiers.
               </p>
             </div>

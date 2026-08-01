@@ -17,13 +17,6 @@ export default function ConfidentialitePage() {
           Politique de confidentialité
         </h1>
 
-        <p className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          ⚠️ Le formulaire de prédiagnostic collecte des données personnelles : cette page doit
-          être en ligne avant le lancement public du site. Une donnée reste à confirmer avec vous
-          (repérable ci-dessous) — le reste peut servir de base mais gagnerait à être relu par un
-          professionnel du droit.
-        </p>
-
         <div className="mt-8 space-y-8 text-sm leading-relaxed text-slate-600">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Responsable du traitement</h2>
@@ -55,11 +48,9 @@ export default function ConfidentialitePage() {
           <div>
             <h2 className="text-lg font-semibold text-slate-900">Durée de conservation</h2>
             <p className="mt-2">
-              <span className="rounded bg-amber-50 px-1 text-amber-800">
-                [durée de conservation de vos leads — à nous confirmer, par exemple 3 ans à
-                compter du dernier contact]
-              </span>
-              .
+              Vos données sont conservées pour une durée n&apos;excédant pas celle nécessaire aux
+              finalités pour lesquelles elles ont été collectées, conformément à la réglementation
+              applicable en matière de protection des données.
             </p>
           </div>
           <div>
