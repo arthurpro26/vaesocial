@@ -8,6 +8,7 @@ import { clsx } from "clsx";
 import { prediagnosticSchema, type PrediagnosticFormValues } from "@/lib/prediagnostic-schema";
 import { useFormProgress } from "@/lib/form-progress-context";
 import { trackConversion } from "@/lib/tracking";
+import { trackFormConversion, type FormKey } from "@/lib/google-ads-conversions";
 
 // --- Données des étapes à choix unique (cartes larges, sélection = avance automatique) ---
 
@@ -403,6 +404,13 @@ export default function PrediagnosticForm({
         diplome: values.diplomeVise,
         page: presetDiplome ? `diplome_${presetDiplome.toLowerCase()}` : "home",
       });
+
+      // Conversion Google Ads propre au formulaire envoyé (DEES/DEAES/DEEJE/
+      // DEME sur les pages dédiées, "générique" sur la home et /prediagnostic).
+      // Sans effet tant que lib/google-ads-conversions.ts n'a pas reçu les
+      // libellés de conversion — voir ce fichier pour l'activer.
+      const formKey: FormKey = presetDiplome ? (presetDiplome.toLowerCase() as FormKey) : "generique";
+      trackFormConversion(formKey);
 
       setSubmitState("success");
       try {

@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import OrganizationJsonLd from "@/components/JsonLd";
 import { GoogleTagManagerScript, GoogleTagManagerNoScript } from "@/components/GoogleTagManager";
+import { GoogleAdsTag } from "@/components/GoogleAdsTag";
 import { FormProgressProvider } from "@/lib/form-progress-context";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <OrganizationJsonLd />
         <GoogleTagManagerScript />
+        <GoogleAdsTag />
       </head>
       <body>
         <GoogleTagManagerNoScript />
