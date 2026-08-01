@@ -33,8 +33,14 @@ body {
 }
 
 @layer components {
+  /* text-base (16px) est non négociable : tout champ de formulaire sous 16px
+     déclenche le zoom automatique de Safari iOS au focus (bug bien connu,
+     rien à voir avec la connexion de l'utilisateur). On compense la légère
+     hausse visuelle par un padding vertical un peu plus resserré (py-2.5 au
+     lieu de py-3), pour une hauteur de champ quasi identique — voire plus
+     compacte — qu'avant, tout en restant au-dessus du minimum tactile 44px. */
   .form-input {
-    @apply w-full min-w-0 rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-800 shadow-sm transition focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100;
+    @apply w-full min-w-0 rounded-lg border border-slate-200 px-4 py-2.5 text-base text-slate-800 shadow-sm transition focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100;
   }
 }
 

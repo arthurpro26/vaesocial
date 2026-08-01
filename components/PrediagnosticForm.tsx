@@ -28,22 +28,26 @@ const SITUATION_OPTIONS = [
   {
     value: "Salarié(e) secteur social/médico-social",
     label: "Salarié(e) dans le secteur social ou médico-social",
-    helper: "💳 Financement via votre OPCO Santé souvent possible",
+    helper: "Financement via votre OPCO Santé souvent possible",
+    icon: "card" as const,
   },
   {
     value: "Salarié(e) autre secteur",
     label: "Salarié(e) dans un autre secteur (avec une expérience en lien avec le diplôme visé)",
-    helper: "ℹ️ Une expérience en rapport avec le diplôme est nécessaire pour être éligible à la VAE.",
+    helper: "Une expérience en rapport avec le diplôme est nécessaire pour être éligible à la VAE.",
+    icon: "info" as const,
   },
   {
     value: "Demandeur d'emploi",
     label: "Demandeur d'emploi",
-    helper: "🏛️ Un accompagnement finançable via France Travail",
+    helper: "Un accompagnement finançable via France Travail",
+    icon: "landmark" as const,
   },
   {
     value: "Indépendant(e) ou bénévole",
     label: "Indépendant(e) ou bénévole",
-    helper: "🤝 Votre expérience non-salariée compte aussi pour la VAE",
+    helper: "Votre expérience non-salariée compte aussi pour la VAE",
+    icon: "network" as const,
   },
   { value: "Autre", label: "Autre situation" },
 ];
@@ -78,6 +82,114 @@ const ALL_STEPS = [
 ] as const;
 
 type SubmitState = "idle" | "loading" | "success" | "error";
+
+// --- Petit set d'icônes maison (traits fins, cohérents avec l'identité de
+// marque) qui remplace les emojis utilisés jusqu'ici. Les emojis rendent de
+// façon incohérente selon l'appareil (styles Apple/Android/Windows tous
+// différents) et donnent un ton familier, presque enfantin, à l'opposé du
+// rendu sobre et maîtrisé attendu d'un site "officiel" — un point relevé
+// explicitement par le client. Un seul set vectoriel, une seule couleur
+// (currentColor), garantit un rendu identique partout et beaucoup plus premium.
+type IconName = "card" | "info" | "landmark" | "network" | "search" | "chat" | "phone" | "check";
+
+function StepIcon({ name, className }: { name: IconName; className?: string }) {
+  if (name === "check") {
+    return (
+      <svg viewBox="0 0 20 20" fill="currentColor" className={className} aria-hidden="true">
+        <path
+          fillRule="evenodd"
+          d="M16.704 5.29a1 1 0 010 1.415l-7.5 7.5a1 1 0 01-1.415 0l-3.5-3.5a1 1 0 111.415-1.414l2.792 2.792 6.793-6.793a1 1 0 011.415 0z"
+          clipRule="evenodd"
+        />
+      </svg>
+    );
+  }
+
+  const common = {
+    viewBox: "0 0 20 20",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.6,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    className,
+    "aria-hidden": true,
+  };
+
+  switch (name) {
+    case "card":
+      return (
+        <svg {...common}>
+          <rect x="2.5" y="5.5" width="15" height="10" rx="1.5" />
+          <line x1="2.5" y1="8.5" x2="17.5" y2="8.5" />
+          <line x1="5" y1="12.5" x2="8.5" y2="12.5" />
+        </svg>
+      );
+    case "info":
+      return (
+        <svg {...common}>
+          <circle cx="10" cy="10" r="7.25" />
+          <line x1="10" y1="9.25" x2="10" y2="13.5" />
+          <circle cx="10" cy="6.75" r="0.9" fill="currentColor" stroke="none" />
+        </svg>
+      );
+    case "landmark":
+      return (
+        <svg {...common}>
+          <polygon points="10,2.5 2.75,7.75 17.25,7.75" />
+          <line x1="4.25" y1="9" x2="4.25" y2="15.5" />
+          <line x1="8" y1="9" x2="8" y2="15.5" />
+          <line x1="12" y1="9" x2="12" y2="15.5" />
+          <line x1="15.75" y1="9" x2="15.75" y2="15.5" />
+          <line x1="2.75" y1="17" x2="17.25" y2="17" />
+        </svg>
+      );
+    case "network":
+      return (
+        <svg {...common}>
+          <circle cx="7.5" cy="10" r="4" />
+          <circle cx="12.5" cy="10" r="4" />
+        </svg>
+      );
+    case "search":
+      return (
+        <svg {...common}>
+          <circle cx="8.75" cy="8.75" r="5.5" />
+          <line x1="16.25" y1="16.25" x2="12.75" y2="12.75" />
+        </svg>
+      );
+    case "chat":
+      return (
+        <svg {...common}>
+          <path d="M3.5 9a5 5 0 015-5h3a5 5 0 015 5v1.5a5 5 0 01-5 5H9l-3.2 2.7v-2.9A5 5 0 013.5 10.5V9z" />
+        </svg>
+      );
+    case "phone":
+      return (
+        <svg {...common}>
+          <rect x="7.2" y="3.2" width="5.6" height="13.6" rx="2.8" transform="rotate(45 10 10)" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
+/** Badge circulaire brand-color qui encadre une StepIcon — traitement visuel
+ *  cohérent partout où une icône accompagne un texte (aide au choix, étapes
+ *  de l'écran de succès), au lieu d'emojis disparates. */
+function IconBadge({ name, size = "sm" }: { name: IconName; size?: "sm" | "lg" }) {
+  return (
+    <span
+      className={clsx(
+        "flex shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600",
+        size === "sm" ? "h-6 w-6" : "h-12 w-12"
+      )}
+    >
+      <StepIcon name={name} className={size === "sm" ? "h-3.5 w-3.5" : "h-6 w-6"} />
+    </span>
+  );
+}
 
 export default function PrediagnosticForm({
   presetDiplome,
@@ -173,8 +285,8 @@ export default function PrediagnosticForm({
     const prenom = getValues("prenom");
     return (
       <div className="mx-auto w-full max-w-md rounded-3xl border border-brand-100 bg-white p-6 text-center shadow-2xl shadow-brand-900/15 sm:p-8 step-transition">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-2xl">
-          🎉
+        <div className="mx-auto mb-4">
+          <IconBadge name="check" size="lg" />
         </div>
         <h3 className="text-2xl font-bold text-slate-900">
           {prenom ? `Merci ${prenom}, votre demande est bien enregistrée !` : "Votre demande est bien enregistrée !"}
@@ -185,21 +297,21 @@ export default function PrediagnosticForm({
         </p>
 
         <div className="mt-5 space-y-3 rounded-2xl bg-brand-50/60 p-4 text-left text-sm text-brand-900">
-          <div className="flex items-start gap-2.5">
-            <span aria-hidden>📞</span>
+          <div className="flex items-center gap-2.5">
+            <IconBadge name="phone" />
             <span>Vous serez recontacté·e très rapidement</span>
           </div>
-          <div className="flex items-start gap-2.5">
-            <span aria-hidden>🔍</span>
+          <div className="flex items-center gap-2.5">
+            <IconBadge name="search" />
             <span>Nous étudierons votre éligibilité ensemble, en toute transparence</span>
           </div>
-          <div className="flex items-start gap-2.5">
-            <span aria-hidden>💬</span>
+          <div className="flex items-center gap-2.5">
+            <IconBadge name="chat" />
             <span>Vous pourrez poser toutes les questions que vous avez en tête</span>
           </div>
         </div>
 
-        <p className="mt-4 text-sm text-slate-500">En toute simplicité, et sans engagement. 😊</p>
+        <p className="mt-4 text-sm text-slate-500">En toute simplicité, et sans engagement.</p>
       </div>
     );
   }
@@ -265,8 +377,8 @@ export default function PrediagnosticForm({
 
           {steps[step].key === "coordonnees" && (
             <div className="space-y-3 sm:space-y-4">
-              <div className="flex items-center gap-2 text-slate-900">
-                <span aria-hidden>📞</span>
+              <div className="flex items-center gap-2.5 text-slate-900">
+                <IconBadge name="phone" />
                 <h3 className="text-sm font-semibold sm:text-base">
                   Un conseiller vous recontacte gratuitement pour faire le point
                 </h3>
@@ -380,7 +492,7 @@ function ChoiceStep({
   subtitle?: string;
   name: "diplomeVise" | "situationActuelle" | "anneesExperience";
   control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
-  options: { value: string; label: string; helper?: string }[];
+  options: { value: string; label: string; helper?: string; icon?: IconName }[];
   onSelect: (field: typeof name, value: string, onChange: (v: string) => void) => void;
   error?: string;
 }) {
@@ -407,11 +519,18 @@ function ChoiceStep({
                       : "border-slate-200 hover:border-brand-300 hover:bg-slate-50"
                   )}
                 >
-                  <span>
-                    <span className="block text-sm font-medium text-slate-800">{opt.label}</span>
-                    {opt.helper && (
-                      <span className="mt-0.5 block text-xs text-slate-500">{opt.helper}</span>
+                  <span className="flex items-start gap-2.5">
+                    {opt.icon && (
+                      <span className="mt-0.5">
+                        <IconBadge name={opt.icon} />
+                      </span>
                     )}
+                    <span>
+                      <span className="block text-sm font-medium text-slate-800">{opt.label}</span>
+                      {opt.helper && (
+                        <span className="mt-0.5 block text-xs text-slate-500">{opt.helper}</span>
+                      )}
+                    </span>
                   </span>
                   <span
                     className={clsx(
