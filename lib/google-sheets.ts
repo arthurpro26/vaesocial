@@ -54,11 +54,12 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
   // dépendre d'un titre d'onglet précis ("Leads", "Feuille 1", etc.).
   const sheet = doc.sheetsByIndex[0];
 
-  // ⚠️ Refonte du formulaire du 2026-08-01 : colonnes "Nom", "Expérience" et
-  // "Message" supprimées, colonne "Activité quotidienne" ajoutée. La
-  // bibliothèque google-spreadsheet fait correspondre ces clés à la ligne
-  // d'en-tête existante du Sheet — pensez à mettre à jour manuellement
-  // l'en-tête de l'onglet en production avec ces mêmes intitulés, sinon les
+  // ⚠️ Refonte du formulaire du 2026-08-01, ajustée le même jour (retour
+  // utilisateur) : "Nom" est réintroduit (identité complète nécessaire pour
+  // le suivi de dossier VAE), "Expérience" et "Message" restent supprimées.
+  // La bibliothèque google-spreadsheet fait correspondre ces clés à la ligne
+  // d'en-tête existante du Sheet — l'en-tête de l'onglet en production doit
+  // être mis à jour avec ces mêmes intitulés, dans cet ordre, sinon les
   // nouvelles données ne seront pas enregistrées dans la bonne colonne (ou
   // l'ajout de ligne échouera selon la configuration du Sheet).
   await sheet.addRow({
@@ -68,6 +69,7 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
     "Activité quotidienne": lead.activiteQuotidienne,
     Structure: lead.structure,
     Prénom: lead.prenom,
+    Nom: lead.nom,
     Téléphone: lead.telephone,
     Email: lead.email,
   });

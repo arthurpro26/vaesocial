@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 
 export type PrediagnosticLead = {
   prenom: string;
+  nom: string;
   email: string;
   telephone: string;
   diplomeVise: string;
@@ -67,11 +68,12 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
   const recipient = process.env.LEADS_RECIPIENT_EMAIL;
   const from = process.env.LEADS_FROM_EMAIL || process.env.SMTP_USER;
 
-  const subject = `Nouveau prédiagnostic VAE — ${lead.diplomeVise} — ${lead.prenom}`;
+  const subject = `Nouveau prédiagnostic VAE — ${lead.diplomeVise} — ${lead.prenom} ${lead.nom}`;
   const text = [
     "Nouveau lead prédiagnostic VAE",
     "",
     `Prénom : ${lead.prenom}`,
+    `Nom : ${lead.nom}`,
     `Email : ${lead.email}`,
     `Téléphone : ${lead.telephone}`,
     `Diplôme visé : ${lead.diplomeVise}`,

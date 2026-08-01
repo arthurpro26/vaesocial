@@ -14,15 +14,17 @@ export const prediagnosticSchema = z.object({
   // Remplace l'ancienne question fermée "années d'expérience" : un texte
   // libre sur l'activité réelle du candidat est bien plus utile pour évaluer
   // l'éligibilité VAE (le référentiel du diplôme se juge sur la nature des
-  // missions, pas sur une durée) — refonte du formulaire du 2026-08-01.
-  activiteQuotidienne: z
-    .string()
-    .min(25, "Décrivez votre activité en quelques phrases (25 caractères minimum)."),
+  // missions, pas sur une durée) — refonte du formulaire du 2026-08-01. Pas
+  // de longueur minimale au-delà de "non vide" : une réponse courte mais
+  // pertinente ne doit jamais être bloquée — retour utilisateur du 2026-08-01,
+  // l'objectif est le taux de complétion, pas le filtrage.
+  activiteQuotidienne: z.string().min(1, "Décrivez brièvement votre activité."),
   // Champ texte libre (autocomplétion suggérée selon le diplôme visé, mais
   // saisie manuelle toujours possible) — remplace l'ancienne question à choix
   // radio "secteur", jugée trop rigide / peu engageante.
   structure: z.string().min(1, "Indiquez votre structure d'exercice."),
   prenom: z.string().min(2, "Prénom trop court."),
+  nom: z.string().min(2, "Nom trop court."),
   email: z.string().email("Adresse email invalide."),
   telephone: z
     .string()

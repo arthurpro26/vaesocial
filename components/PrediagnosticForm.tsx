@@ -48,9 +48,6 @@ const STRUCTURE_SUGGESTIONS: Record<string, string[]> = {
 // pas") : toutes les suggestions réunies, sans doublons.
 const ALL_STRUCTURES = Array.from(new Set(Object.values(STRUCTURE_SUGGESTIONS).flat()));
 
-// Longueur minimale alignée sur lib/prediagnostic-schema.ts (activiteQuotidienne).
-const ACTIVITE_MIN_LENGTH = 25;
-
 const ALL_STEPS = [
   { key: "diplomeVise", label: "Votre objectif" },
   { key: "situationActuelle", label: "Votre situation" },
@@ -641,10 +638,10 @@ function ChoiceStep({
 }
 
 /** Étape "Décrivez votre activité au quotidien" : grand champ texte libre à
- *  auto-hauteur (pas de barre de défilement interne pendant la saisie), avec
- *  compteur de caractères qui rassure sur la longueur attendue plutôt que de
- *  bloquer l'utilisateur avec une erreur — le bouton "Continuer" reste
- *  simplement désactivé tant que le minimum n'est pas atteint. */
+ *  auto-hauteur (pas de barre de défilement interne pendant la saisie). Pas
+ *  de longueur minimale ni de compteur de caractères — une réponse courte
+ *  mais pertinente ne doit jamais être bloquée ; l'objectif est le taux de
+ *  complétion, pas le filtrage (retour utilisateur du 2026-08-01). */
 function ActiviteStep({
   control,
   onAdvance,
@@ -682,67 +679,49 @@ function ActiviteStep({
       <Controller
         name="activiteQuotidienne"
         control={control}
-        render={({ field }) => {
-          const length = field.value?.length ?? 0;
-          const valid = length >= ACTIVITE_MIN_LENGTH;
-          return (
-            <>
-              <div className="mt-2.5 sm:mt-4">
-                <textarea
-                  {...field}
-                  ref={(el) => {
-                    field.ref(el);
-                    textareaRef.current = el;
-                    autoResize(el);
-                  }}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    autoResize(e.target);
-                  }}
-                  rows={5}
-                  placeholder="Ex : J'accompagne au quotidien 8 résidents en situation de handicap, j'organise des activités adaptées, je participe aux réunions d'équipe pluridisciplinaire..."
-                  className="form-input min-h-[140px] resize-none leading-relaxed"
-                />
-                <div className="mt-1.5 flex items-center justify-between">
-                  <span
-                    className={clsx(
-                      "text-xs transition-colors",
-                      valid ? "text-brand-600" : "text-slate-400"
-                    )}
-                  >
-                    {valid
-                      ? "Merci, c'est une bonne base pour vous évaluer."
-                      : `${length}/${ACTIVITE_MIN_LENGTH} caractères minimum`}
-                  </span>
-                </div>
-              </div>
-              {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-
-              {/* Note de réassurance : explique pourquoi on pose une question
-                  aussi ouverte plutôt qu'un simple menu déroulant — réduit la
-                  friction en rendant la longueur demandée légitime aux yeux
-                  du candidat. */}
-              <div className="mt-3 flex items-start gap-2 rounded-xl bg-brand-50/60 p-3 text-xs leading-relaxed text-brand-900">
-                <IconBadge name="info" />
-                <span>
-                  Cette question est essentielle pour nous permettre d&apos;évaluer rapidement si
-                  vous êtes réellement éligible à une VAE.
-                </span>
-              </div>
-
-              <button
-                type="button"
-                onClick={onAdvance}
-                disabled={!valid}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-accent-600/30 transition duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-xl active:translate-y-0 active:scale-[0.98] disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-40 disabled:shadow-none"
-              >
-                Continuer
-                <ArrowIcon className="h-4 w-4" />
-              </button>
-            </>
-          );
-        }}
+        render={({ field }) => (
+          <div className="mt-2.5 sm:mt-4">
+            <textarea
+              {...field}
+              ref={(el) => {
+                field.ref(el);
+                textareaRef.current = el;
+                autoResize(el);
+              }}
+              onChange={(e) => {
+                field.onChange(e);
+                autoResize(e.target);
+              }}
+              rows={5}
+              placeholder="Ex : J'accompagne au quotidien 8 résidents en situation de handicap, j'organise des activités adaptées, je participe aux réunions d'équipe pluridisciplinaire..."
+              className="form-input min-h-[140px] resize-none leading-relaxed"
+            />
+            {/* Texte d'aide statique — pas de compteur ni de seuil : une
+                réponse courte mais sincère est tout aussi recevable. */}
+            <p className="mt-1.5 text-xs text-slate-400">
+              Pas besoin d&apos;un roman : quelques mots sincères suffisent.
+            </p>
+          </div>
+        )}
       />
+      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+
+      <div className="mt-3 flex items-start gap-2 rounded-xl bg-brand-50/60 p-3 text-xs leading-relaxed text-brand-900">
+        <IconBadge name="info" />
+        <span>
+          Cette question nous permet de mieux comprendre votre quotidien pour évaluer votre
+          éligibilité avec attention.
+        </span>
+      </div>
+
+      <button
+        type="button"
+        onClick={onAdvance}
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-accent-600/30 transition duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-xl active:translate-y-0 active:scale-[0.98]"
+      >
+        Continuer
+        <ArrowIcon className="h-4 w-4" />
+      </button>
     </div>
   );
 }
@@ -858,7 +837,10 @@ function StructureStep({
  *  `register`) pour permettre le formatage du téléphone au fil de la frappe,
  *  la suggestion anti-typo sur l'email et la coche de validation en temps
  *  réel — trois détails "premium" qui rassurent avant l'envoi plutôt que de
- *  sanctionner après coup. */
+ *  sanctionner après coup. Ton retravaillé le 2026-08-01 (retour utilisateur) :
+ *  l'étape doit se sentir humaine et rassurante, pas administrative — d'où le
+ *  bloc de réassurance juste avant les champs, au moment précis où on demande
+ *  des coordonnées personnelles (le point de friction le plus sensible). */
 function CoordonneesStep({
   control,
   register,
@@ -879,10 +861,12 @@ function CoordonneesStep({
   }, []);
 
   const prenom = useController({ name: "prenom", control });
+  const nom = useController({ name: "nom", control });
   const telephone = useController({ name: "telephone", control });
   const email = useController({ name: "email", control });
 
   const prenomValid = (prenom.field.value ?? "").trim().length >= 2;
+  const nomValid = (nom.field.value ?? "").trim().length >= 2;
   const phoneValid = (telephone.field.value ?? "").replace(/\D/g, "").length === 10;
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.field.value ?? "");
   const emailSuggestion = suggestEmailDomain(email.field.value ?? "");
@@ -890,10 +874,38 @@ function CoordonneesStep({
   return (
     <div className="space-y-3 sm:space-y-4">
       <div className="flex items-center gap-2.5 text-slate-900">
-        <IconBadge name="phone" />
-        <h3 className="text-sm font-semibold sm:text-base">
-          Dernière étape avant votre étude personnalisée
-        </h3>
+        <IconBadge name="chat" />
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-600">
+            Vous y êtes presque
+          </p>
+          <h3 className="text-sm font-semibold sm:text-base">
+            Un accompagnateur VAE va étudier votre dossier avec attention
+          </h3>
+        </div>
+      </div>
+      <p className="text-xs leading-relaxed text-slate-500">
+        Laissez-nous vos coordonnées : une vraie personne de notre équipe examine chaque
+        demande personnellement, et vous recontacte pour faire le point ensemble sur votre
+        projet — sans jargon, sans pression.
+      </p>
+
+      {/* Bloc de réassurance placé juste avant les champs personnels — le
+          moment où la friction/hésitation est la plus forte, donc le plus
+          utile pour rassurer avant de demander un numéro et un email. */}
+      <div className="space-y-2 rounded-2xl bg-brand-50/60 p-3.5 text-xs text-brand-900">
+        <div className="flex items-center gap-2.5">
+          <IconBadge name="check" />
+          <span>100% gratuit et sans engagement</span>
+        </div>
+        <div className="flex items-center gap-2.5">
+          <IconBadge name="chat" />
+          <span>Une vraie personne étudie votre dossier, pas un algorithme</span>
+        </div>
+        <div className="flex items-center gap-2.5">
+          <IconBadge name="phone" />
+          <span>Réponse sous 24h, pour en discuter ensemble en toute simplicité</span>
+        </div>
       </div>
 
       {/* Piège à robots : invisible et exclu du tabulateur pour les
@@ -912,23 +924,39 @@ function CoordonneesStep({
         />
       </div>
 
-      <Field label="Prénom" error={errors.prenom?.message}>
-        <div className="relative">
-          <input
-            ref={(el) => {
-              prenom.field.ref(el);
-              prenomRef.current = el;
-            }}
-            name={prenom.field.name}
-            value={prenom.field.value ?? ""}
-            onChange={prenom.field.onChange}
-            onBlur={prenom.field.onBlur}
-            placeholder="Votre prénom"
-            className="form-input pr-9"
-          />
-          {prenomValid && <ValidMark />}
-        </div>
-      </Field>
+      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+        <Field label="Prénom" error={errors.prenom?.message}>
+          <div className="relative">
+            <input
+              ref={(el) => {
+                prenom.field.ref(el);
+                prenomRef.current = el;
+              }}
+              name={prenom.field.name}
+              value={prenom.field.value ?? ""}
+              onChange={prenom.field.onChange}
+              onBlur={prenom.field.onBlur}
+              placeholder="Votre prénom"
+              className="form-input pr-9"
+            />
+            {prenomValid && <ValidMark />}
+          </div>
+        </Field>
+        <Field label="Nom" error={errors.nom?.message}>
+          <div className="relative">
+            <input
+              ref={nom.field.ref}
+              name={nom.field.name}
+              value={nom.field.value ?? ""}
+              onChange={nom.field.onChange}
+              onBlur={nom.field.onBlur}
+              placeholder="Votre nom"
+              className="form-input pr-9"
+            />
+            {nomValid && <ValidMark />}
+          </div>
+        </Field>
+      </div>
 
       <Field label="Téléphone" error={errors.telephone?.message}>
         <div className="relative">
