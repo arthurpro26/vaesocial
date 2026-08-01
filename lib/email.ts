@@ -55,6 +55,17 @@ function buildTransport() {
  * en plus (ou à la place) de l'envoi email ci-dessous.
  */
 export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
+  // TEMPORAIRE — diagnostic de config SMTP en production, à retirer une fois
+  // le problème résolu. Uniquement des booléens de présence, jamais les
+  // valeurs (secrets).
+  console.log("[prediagnostic] Diagnostic SMTP (temporaire) :", {
+    SMTP_HOST: Boolean(process.env.SMTP_HOST),
+    SMTP_PORT: Boolean(process.env.SMTP_PORT),
+    SMTP_USER: Boolean(process.env.SMTP_USER),
+    SMTP_PASSWORD: Boolean(process.env.SMTP_PASSWORD),
+    LEADS_RECIPIENT_EMAIL: Boolean(process.env.LEADS_RECIPIENT_EMAIL),
+  });
+
   const transporter = buildTransport();
   const recipient = process.env.LEADS_RECIPIENT_EMAIL;
   const from = process.env.LEADS_FROM_EMAIL || process.env.SMTP_USER;
