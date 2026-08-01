@@ -450,6 +450,11 @@ export default function PrediagnosticForm({
         </div>
 
         <p className="mt-4 text-sm text-slate-500">En toute simplicité, et sans engagement.</p>
+        {/* Note de fin volontairement humaine — seul emoji du formulaire,
+            réservé à ce dernier mot d'accueil pour laisser une impression
+            chaleureuse sans revenir sur le choix des icônes vectorielles
+            partout ailleurs (retour utilisateur du 2026-08-01). */}
+        <p className="mt-3 text-sm font-medium text-brand-700">Nous avons hâte d&apos;échanger avec vous 😊</p>
       </div>
     );
   }
