@@ -38,6 +38,16 @@ function buildTransport() {
       // refuse l'authentification SMTP avec le mot de passe normal du compte.
       pass: SMTP_PASSWORD,
     },
+    // Sans ces limites, Nodemailer peut attendre plusieurs minutes en
+    // silence si Hostinger n'arrive pas à joindre Gmail (port bloqué,
+    // pare-feu...) — et comme l'email et Google Sheets sont attendus
+    // ensemble (Promise.allSettled), ça bloquait tout le formulaire sur
+    // "Envoi..." indéfiniment, sans jamais afficher ni succès ni erreur.
+    // Avec ces délais, l'email échoue vite et Google Sheets peut quand même
+    // faire aboutir la demande.
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
   });
 }
 
