@@ -14,6 +14,7 @@ import EngagementsSection from "@/components/sections/EngagementsSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
 import { AVIS, DIPLOMES, type DiplomeSlug } from "@/lib/site-data";
 import { DIPLOMES_DATA } from "@/lib/diplomes-data";
+import { siteConfig } from "@/lib/site-config";
 
 // Page diplôme dédiée (/dees, /deaes, /deeje, /deme) — pilotée par
 // lib/diplomes-data.ts. Une seule base de code, un seul template : chaque
@@ -48,7 +49,29 @@ export async function generateMetadata({
     title: { absolute: d.metaTitle },
     description: d.metaDescription,
     alternates: { canonical: `/${d.slug}` },
-    openGraph: { title: d.metaTitle, description: d.metaDescription },
+    // Chaque page diplôme avait jusqu'ici son Title/description propres, mais
+    // héritait de l'Open Graph et Twitter Card génériques de la home (définis
+    // dans app/layout.tsx) — un partage sur les réseaux affichait donc le
+    // mauvais titre. On surcharge ici avec les mêmes données déjà utilisées
+    // pour le title/description, sans rien inventer de nouveau.
+    //
+    // Important : Next.js fusionne les métadonnées "à plat" — dès qu'une page
+    // définit son propre `openGraph`/`twitter`, ça REMPLACE entièrement celui
+    // du layout parent (pas de fusion profonde). On reprend donc aussi
+    // type/locale/siteName et card pour ne pas les perdre.
+    openGraph: {
+      type: "website",
+      locale: "fr_FR",
+      siteName: siteConfig.name,
+      title: d.metaTitle,
+      description: d.metaDescription,
+      url: `/${d.slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: d.metaTitle,
+      description: d.metaDescription,
+    },
   };
 }
 

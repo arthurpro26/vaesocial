@@ -4,6 +4,9 @@ import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Politique de confidentialité",
+  description:
+    "Politique de confidentialité de VAESocial : données collectées via le formulaire de prédiagnostic, finalités du traitement, conservation et vos droits RGPD.",
+  alternates: { canonical: "/confidentialite" },
   // noindex tant que la durée de conservation et l'identité de l'éditeur ne sont
   // pas confirmées — à retirer une fois ces informations complétées.
   robots: { index: false, follow: true },

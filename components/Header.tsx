@@ -52,10 +52,14 @@ export default function Header() {
               </div>
             </div>
           </div>
-          <Link href="#methode" className="hover:text-brand-700">
+          {/* Préfixés par "/" (et pas juste "#...") : ces sections n'existent
+              que sur la home et les pages diplôme. Sans le "/", un clic depuis
+              /prediagnostic, /mentions-legales, /cgv ou /confidentialite ne
+              faisait rien (l'ancre n'existe pas sur la page courante). */}
+          <Link href="/#methode" className="hover:text-brand-700">
             Notre méthode
           </Link>
-          <Link href="#financement" className="hover:text-brand-700">
+          <Link href="/#financement" className="hover:text-brand-700">
             Financement
           </Link>
           <Link href="#faq" className="hover:text-brand-700">

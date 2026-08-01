@@ -5,6 +5,9 @@ import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Mentions légales",
+  description:
+    "Mentions légales de VAESocial : éditeur du site, hébergement, propriété intellectuelle et contact, pour l'accompagnement à la VAE dans le secteur social et médico-social.",
+  alternates: { canonical: "/mentions-legales" },
 };
 
 export default function MentionsLegalesPage() {

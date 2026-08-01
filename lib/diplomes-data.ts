@@ -36,7 +36,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     sigle: "DEES",
     nomComplet: "Diplôme d'État d'Éducateur Spécialisé",
     niveau: "Niveau 6 (Bac+3)",
-    metaTitle: "VAE DEES : devenir Éducateur Spécialisé par l'expérience | VAESocial",
+    metaTitle: "VAE DEES : Éducateur Spécialisé par expérience | VAESocial",
     metaDescription:
       "Obtenez le DEES par la VAE grâce à votre expérience professionnelle. Aucune durée minimale exigée depuis 2024. Diagnostic gratuit en 3 minutes.",
     heroSuffixe: "au DEES",
@@ -119,7 +119,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     sigle: "DEAES",
     nomComplet: "Diplôme d'État d'Accompagnant Éducatif et Social",
     niveau: "Niveau 3 (CAP/BEP)",
-    metaTitle: "VAE DEAES : devenir Accompagnant Éducatif et Social | VAESocial",
+    metaTitle: "VAE DEAES : Accompagnant Éducatif et Social | VAESocial",
     metaDescription:
       "Obtenez le DEAES par la VAE grâce à votre expérience d'accompagnement à domicile ou en structure. Diagnostic d'éligibilité gratuit en 3 minutes.",
     heroSuffixe: "au DEAES",
@@ -287,7 +287,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     sigle: "DEME",
     nomComplet: "Diplôme d'État de Moniteur-Éducateur",
     niveau: "Niveau 4 (Bac)",
-    metaTitle: "VAE DEME : devenir Moniteur-Éducateur par l'expérience | VAESocial",
+    metaTitle: "VAE DEME : Moniteur-Éducateur par expérience | VAESocial",
     metaDescription:
       "Obtenez le DEME par la VAE grâce à votre expérience professionnelle. Aucune durée minimale exigée depuis 2024. Diagnostic gratuit en 3 minutes.",
     heroSuffixe: "au DEME",

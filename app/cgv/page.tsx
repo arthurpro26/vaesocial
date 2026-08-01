@@ -4,6 +4,9 @@ import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Conditions générales de vente",
+  description:
+    "Conditions générales de vente de l'accompagnement à la VAE proposé par VAESocial : prestations concernées, tarifs, paiement et droit de rétractation.",
+  alternates: { canonical: "/cgv" },
   // noindex tant que le contenu réel n'est pas renseigné — à retirer une fois complété.
   robots: { index: false, follow: true },
 };
