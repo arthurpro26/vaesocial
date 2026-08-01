@@ -32,7 +32,7 @@ Voir `.env.example` pour la liste complète. Les plus importantes :
 - `NEXT_PUBLIC_SITE_URL` — URL finale du site (utilisée pour le SEO, le sitemap, les balises Open Graph)
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` — pour l'envoi des leads par email
 - `LEADS_RECIPIENT_EMAIL` — adresse qui reçoit les leads du formulaire de prédiagnostic
-- `GOOGLE_SHEETS_CLIENT_EMAIL`, `GOOGLE_SHEETS_PRIVATE_KEY`, `GOOGLE_SHEETS_SPREADSHEET_ID` — ajout automatique de chaque lead dans un Google Sheet (compte de service, indépendant de l'email)
+- `GOOGLE_SHEETS_CLIENT_EMAIL`, `GOOGLE_SHEETS_PRIVATE_KEY_BASE64` (ou `GOOGLE_SHEETS_PRIVATE_KEY` en fallback), `GOOGLE_SHEETS_SPREADSHEET_ID` — ajout automatique de chaque lead dans un Google Sheet (compte de service, indépendant de l'email)
 - `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA_MEASUREMENT_ID`, `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID` — tracking (facultatif, rien n'est chargé si non renseigné)
 
 Email et Google Sheets sont deux canaux indépendants : si l'un des deux n'est pas configuré ou échoue, l'autre continue de fonctionner normalement. Si les deux échouent, le formulaire affiche une erreur à l'utilisateur au lieu d'un faux succès.

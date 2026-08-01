@@ -13,18 +13,29 @@ export type PrediagnosticLead = {
 };
 
 function buildTransport() {
-  const { SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASSWORD } = process.env;
+  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD } = process.env;
 
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASSWORD) {
     return null;
   }
 
+  const port = Number(SMTP_PORT) || 587;
+
   return nodemailer.createTransport({
     host: SMTP_HOST,
-    port: Number(SMTP_PORT) || 587,
-    secure: SMTP_SECURE === "true",
+    port,
+    // Dérivé du port plutôt qu'une variable SMTP_SECURE séparée à
+    // maintenir : le port 465 (TLS implicite) est TOUJOURS "secure: true" —
+    // c'est la config Gmail (smtp.gmail.com:465). Le port 587 (STARTTLS)
+    // est "secure: false" par convention Nodemailer. Élimine un risque de
+    // mauvaise config (oublier de positionner SMTP_SECURE).
+    secure: port === 465,
     auth: {
       user: SMTP_USER,
+      // Pour Gmail : ce n'est PAS le mot de passe du compte Google, mais un
+      // "mot de passe d'application" généré dans myaccount.google.com/apppasswords
+      // (nécessite la validation en 2 étapes activée sur le compte). Gmail
+      // refuse l'authentification SMTP avec le mot de passe normal du compte.
       pass: SMTP_PASSWORD,
     },
   });
