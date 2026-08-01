@@ -14,19 +14,25 @@ import type { PrediagnosticLead } from "@/lib/email";
 
 function buildAuth() {
   const email = process.env.GOOGLE_SHEETS_CLIENT_EMAIL;
-  const rawKey = process.env.GOOGLE_SHEETS_PRIVATE_KEY;
 
-  if (!email || !rawKey) {
+  // Le champ texte d'Hostinger pour les variables d'environnement altère
+  // apparemment la clé PEM multi-ligne (guillemets ou retours à la ligne mal
+  // conservés — cause exacte de l'erreur OpenSSL "DECODER routines::unsupported"
+  // malgré le \n-replace). GOOGLE_SHEETS_PRIVATE_KEY_BASE64 contourne le
+  // problème : une seule ligne de caractères base64, aucun caractère spécial
+  // à corrompre. Prioritaire si présente ; sinon on retombe sur l'ancienne
+  // variable pour ne rien casser.
+  const privateKey = process.env.GOOGLE_SHEETS_PRIVATE_KEY_BASE64
+    ? Buffer.from(process.env.GOOGLE_SHEETS_PRIVATE_KEY_BASE64, "base64").toString("utf8")
+    : process.env.GOOGLE_SHEETS_PRIVATE_KEY?.replace(/^["']|["']$/g, "").replace(/\\n/g, "\n");
+
+  if (!email || !privateKey) {
     return null;
   }
 
-  // La clé privée est stockée dans Hostinger avec des "\n" littéraux (deux
-  // caractères), pas de vrais retours à la ligne — on les reconvertit ici.
-  const key = rawKey.replace(/\\n/g, "\n");
-
   return new JWT({
     email,
-    key,
+    key: privateKey,
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
 }
