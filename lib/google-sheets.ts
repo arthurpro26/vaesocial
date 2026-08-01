@@ -54,16 +54,21 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
   // dépendre d'un titre d'onglet précis ("Leads", "Feuille 1", etc.).
   const sheet = doc.sheetsByIndex[0];
 
+  // ⚠️ Refonte du formulaire du 2026-08-01 : colonnes "Nom", "Expérience" et
+  // "Message" supprimées, colonne "Activité quotidienne" ajoutée. La
+  // bibliothèque google-spreadsheet fait correspondre ces clés à la ligne
+  // d'en-tête existante du Sheet — pensez à mettre à jour manuellement
+  // l'en-tête de l'onglet en production avec ces mêmes intitulés, sinon les
+  // nouvelles données ne seront pas enregistrées dans la bonne colonne (ou
+  // l'ajout de ligne échouera selon la configuration du Sheet).
   await sheet.addRow({
     Date: new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" }),
     Diplôme: lead.diplomeVise,
     Statut: lead.situationActuelle,
+    "Activité quotidienne": lead.activiteQuotidienne,
     Structure: lead.structure,
-    Expérience: lead.anneesExperience,
     Prénom: lead.prenom,
-    Nom: lead.nom,
     Téléphone: lead.telephone,
     Email: lead.email,
-    Message: lead.messageLibre || "",
   });
 }

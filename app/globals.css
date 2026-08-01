@@ -40,7 +40,7 @@ body {
      lieu de py-3), pour une hauteur de champ quasi identique — voire plus
      compacte — qu'avant, tout en restant au-dessus du minimum tactile 44px. */
   .form-input {
-    @apply w-full min-w-0 rounded-lg border border-slate-200 px-4 py-2.5 text-base text-slate-800 shadow-sm transition focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100;
+    @apply w-full min-w-0 rounded-xl border border-slate-200 px-4 py-2.5 text-base text-slate-800 shadow-sm transition duration-200 ease-out hover:border-slate-300 focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-100;
   }
 }
 
@@ -59,8 +59,64 @@ body {
   animation: step-in 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Étapes du formulaire de prédiagnostic : transition "consciente de la
+   direction" (glisse depuis la droite en avançant, depuis la gauche en
+   reculant) — repère spatial qui donne une sensation de parcours guidé
+   plutôt qu'un simple contenu qui change, à la Typeform/Stripe Checkout.
+   Même easing "expo-out" que .step-transition pour rester cohérent. */
+@keyframes step-in-forward {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes step-in-back {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.step-transition-forward {
+  animation: step-in-forward 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-transition-back {
+  animation: step-in-back 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Petit "pop" utilisé sur la pastille de sélection (case cochée) des
+   étapes à choix — feedback discret mais net au clic. */
+@keyframes check-pop {
+  0% {
+    transform: scale(0.4);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.check-pop {
+  animation: check-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .step-transition {
+  .step-transition,
+  .step-transition-forward,
+  .step-transition-back,
+  .check-pop {
     animation: none;
   }
 }

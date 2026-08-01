@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useController, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { clsx } from "clsx";
 import { prediagnosticSchema, type PrediagnosticFormValues } from "@/lib/prediagnostic-schema";
@@ -16,40 +16,22 @@ const DIPLOME_OPTIONS = [
   { value: "DEAES", label: "DEAES", helper: "Accompagnant éducatif et social · CAP/BEP" },
   { value: "DEEJE", label: "DEEJE", helper: "Éducateur de jeunes enfants · Bac+3" },
   { value: "DEME", label: "DEME", helper: "Moniteur-éducateur · Bac" },
-  { value: "Autre / je ne sais pas encore", label: "Autre / je ne sais pas encore" },
+  { value: "Je ne sais pas", label: "Je ne sais pas" },
 ];
 
-// Étape 2 repensée pour être plus engageante et plus utile à la conversion :
-// chaque option explique tout de suite en quoi elle change concrètement le
-// financement ou le parcours (au lieu d'une simple case administrative), en
-// s'appuyant uniquement sur des dispositifs déjà présentés ailleurs sur le
-// site (CPF, OPCO Santé, France Travail...) — aucune donnée inventée.
+// Étape 2 — refonte du 2026-08-01 : la question porte sur le statut
+// professionnel (et non plus sur le secteur), plus rapide à répondre et plus
+// simple à qualifier côté conseiller. Pas de sous-texte "financement" par
+// option ici : le site ne présente ces dispositifs (CPF, OPCO Santé, France
+// Travail...) que de façon générale, jamais garantis par statut précis — on
+// évite d'induire une promesse de financement qu'on ne peut pas tenir pour
+// chaque cas.
 const SITUATION_OPTIONS = [
-  {
-    value: "Salarié(e) secteur social/médico-social",
-    label: "Salarié(e) dans le secteur social ou médico-social",
-    helper: "Financement via votre OPCO Santé souvent possible",
-    icon: "card" as const,
-  },
-  {
-    value: "Salarié(e) autre secteur",
-    label: "Salarié(e) dans un autre secteur (avec une expérience en lien avec le diplôme visé)",
-    helper: "Une expérience en rapport avec le diplôme est nécessaire pour être éligible à la VAE.",
-    icon: "info" as const,
-  },
-  {
-    value: "Demandeur d'emploi",
-    label: "Demandeur d'emploi",
-    helper: "Un accompagnement finançable via France Travail",
-    icon: "landmark" as const,
-  },
-  {
-    value: "Indépendant(e) ou bénévole",
-    label: "Indépendant(e) ou bénévole",
-    helper: "Votre expérience non-salariée compte aussi pour la VAE",
-    icon: "network" as const,
-  },
-  { value: "Autre", label: "Autre situation" },
+  { value: "Salarié du secteur privé", label: "Salarié du secteur privé", icon: "briefcase" as const },
+  { value: "Agent du secteur public", label: "Agent du secteur public", icon: "landmark" as const },
+  { value: "Demandeur d'emploi", label: "Demandeur d'emploi", icon: "search" as const },
+  { value: "Indépendant", label: "Indépendant", icon: "network" as const },
+  { value: "Autre", label: "Autre" },
 ];
 
 // Suggestions d'autocomplétion pour "Dans quelle structure exercez-vous ?",
@@ -62,22 +44,18 @@ const STRUCTURE_SUGGESTIONS: Record<string, string[]> = {
   DEME: ["IME", "ITEP", "MECS", "SESSAD", "ESAT"],
   DEEJE: ["Crèche", "Micro-crèche", "Multi-accueil", "Halte-garderie", "PMI", "Relais Petite Enfance"],
 };
-// Liste de secours si le diplôme n'est pas encore déterminé ("Autre / je ne
-// sais pas encore") : toutes les suggestions réunies, sans doublons.
+// Liste de secours si le diplôme n'est pas encore déterminé ("Je ne sais
+// pas") : toutes les suggestions réunies, sans doublons.
 const ALL_STRUCTURES = Array.from(new Set(Object.values(STRUCTURE_SUGGESTIONS).flat()));
 
-const EXPERIENCE_OPTIONS = [
-  { value: "Moins de 1 an", label: "Moins d'1 an" },
-  { value: "1 à 3 ans", label: "Entre 1 et 3 ans" },
-  { value: "3 à 5 ans", label: "Entre 3 et 5 ans" },
-  { value: "Plus de 5 ans", label: "Plus de 5 ans" },
-];
+// Longueur minimale alignée sur lib/prediagnostic-schema.ts (activiteQuotidienne).
+const ACTIVITE_MIN_LENGTH = 25;
 
 const ALL_STEPS = [
   { key: "diplomeVise", label: "Votre objectif" },
-  { key: "situationActuelle", label: "Votre statut" },
+  { key: "situationActuelle", label: "Votre situation" },
+  { key: "activiteQuotidienne", label: "Votre quotidien" },
   { key: "structure", label: "Votre structure" },
-  { key: "anneesExperience", label: "Votre expérience" },
   { key: "coordonnees", label: "Vos coordonnées" },
 ] as const;
 
@@ -90,7 +68,7 @@ type SubmitState = "idle" | "loading" | "success" | "error";
 // rendu sobre et maîtrisé attendu d'un site "officiel" — un point relevé
 // explicitement par le client. Un seul set vectoriel, une seule couleur
 // (currentColor), garantit un rendu identique partout et beaucoup plus premium.
-type IconName = "card" | "info" | "landmark" | "network" | "search" | "chat" | "phone" | "check";
+type IconName = "briefcase" | "info" | "landmark" | "network" | "search" | "chat" | "phone" | "check";
 
 function StepIcon({ name, className }: { name: IconName; className?: string }) {
   if (name === "check") {
@@ -117,12 +95,12 @@ function StepIcon({ name, className }: { name: IconName; className?: string }) {
   };
 
   switch (name) {
-    case "card":
+    case "briefcase":
       return (
         <svg {...common}>
-          <rect x="2.5" y="5.5" width="15" height="10" rx="1.5" />
-          <line x1="2.5" y1="8.5" x2="17.5" y2="8.5" />
-          <line x1="5" y1="12.5" x2="8.5" y2="12.5" />
+          <rect x="2.5" y="6.5" width="15" height="9.5" rx="1.5" />
+          <path d="M7 6.5V5a1.5 1.5 0 011.5-1.5h3A1.5 1.5 0 0113 5v1.5" />
+          <line x1="2.5" y1="10.75" x2="17.5" y2="10.75" />
         </svg>
       );
     case "info":
@@ -191,6 +169,108 @@ function IconBadge({ name, size = "sm" }: { name: IconName; size?: "sm" | "lg" }
   );
 }
 
+/** Flèche fine utilisée dans les boutons "Continuer" — glisse légèrement au
+ *  survol pour un feedback discret plutôt qu'un simple changement de couleur. */
+function ArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <line x1="3.5" y1="10" x2="15.5" y2="10" />
+      <polyline points="10,4.5 15.5,10 10,15.5" />
+    </svg>
+  );
+}
+
+function Spinner({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={clsx("animate-spin", className)} aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="3" opacity="0.25" />
+      <path d="M21 12a9 9 0 00-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/** Petite coche qui "pop" à l'intérieur d'un champ dès qu'il devient valide —
+ *  feedback en temps réel façon Stripe, plutôt que de n'informer l'utilisateur
+ *  qu'au moment de l'erreur (au blur). Purement visuel : la validation qui
+ *  bloque réellement l'envoi reste celle du schéma zod. */
+function ValidMark() {
+  return (
+    <span className="check-pop pointer-events-none absolute right-3 top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center text-brand-500">
+      <StepIcon name="check" className="h-4 w-4" />
+    </span>
+  );
+}
+
+/** Vrai uniquement sur les appareils pilotés à la souris (desktop). Sert à
+ *  n'activer l'autofocus qu'où il est sans risque : sur mobile, un focus
+ *  programmatique après un délai n'ouvre généralement pas le clavier virtuel
+ *  (les navigateurs l'exigent en réponse directe à un geste) et peut en
+ *  revanche déclencher un saut de défilement imprévu — on préfère s'abstenir
+ *  plutôt que de risquer l'expérience mobile, explicitement prioritaire ici. */
+function isFinePointerDevice() {
+  return typeof window !== "undefined" && !!window.matchMedia?.("(pointer: fine)").matches;
+}
+
+/** Formate un numéro au fil de la frappe en "06 XX XX XX XX" (paires de
+ *  chiffres) — supprime tout caractère non numérique et limite à 10 chiffres
+ *  (format français). Purement cosmétique : la validation réelle reste dans
+ *  lib/prediagnostic-schema.ts. */
+function formatPhoneNumber(raw: string) {
+  const digits = raw.replace(/\D/g, "").slice(0, 10);
+  return digits.replace(/(\d{2})(?=\d)/g, "$1 ");
+}
+
+// Corrections des fautes de frappe les plus courantes sur les fournisseurs
+// email les plus répandus en France — liste générique de bon sens (pas une
+// donnée propre au projet), utile pour rattraper un lead qui aurait sinon
+// jamais reçu notre réponse sous 24h faute d'une adresse valide.
+const EMAIL_DOMAIN_TYPOS: Record<string, string> = {
+  "gmial.com": "gmail.com",
+  "gmai.com": "gmail.com",
+  "gmail.con": "gmail.com",
+  "gmailcom": "gmail.com",
+  "gnail.com": "gmail.com",
+  "hotmial.com": "hotmail.com",
+  "hotmai.com": "hotmail.com",
+  "hotmail.con": "hotmail.com",
+  "hotmal.com": "hotmail.com",
+  "yaho.com": "yahoo.com",
+  "yahooo.com": "yahoo.com",
+  "yahoo.fre": "yahoo.fr",
+  "outlok.com": "outlook.com",
+  "outllok.com": "outlook.com",
+  "orange.f": "orange.fr",
+  "orange.frr": "orange.fr",
+  "free.frr": "free.fr",
+  "free.f": "free.fr",
+  "laposte.fr": "laposte.net",
+  "wanadoo.frr": "wanadoo.fr",
+};
+
+/** Retourne l'adresse corrigée si le domaine saisi est une faute de frappe
+ *  connue, sinon `null`. */
+function suggestEmailDomain(email: string): string | null {
+  const at = email.lastIndexOf("@");
+  if (at === -1) return null;
+  const domain = email.slice(at + 1).trim().toLowerCase();
+  const fix = EMAIL_DOMAIN_TYPOS[domain];
+  return fix ? `${email.slice(0, at + 1)}${fix}` : null;
+}
+
+// Clé sessionStorage du brouillon en cours — volontairement sessionStorage
+// (pas localStorage) : le brouillon disparaît tout seul à la fermeture de
+// l'onglet, aucune donnée personnelle qui traîne indéfiniment sur l'appareil.
+const DRAFT_STORAGE_KEY = "vaesocial-prediagnostic-draft";
+
 export default function PrediagnosticForm({
   presetDiplome,
 }: {
@@ -198,6 +278,10 @@ export default function PrediagnosticForm({
   presetDiplome?: "DEES" | "DEAES" | "DEEJE" | "DEME";
 }) {
   const [step, setStep] = useState(0);
+  // Sens de la dernière navigation, pour orienter l'animation de transition
+  // entre étapes (glisse depuis la droite en avançant, depuis la gauche en
+  // reculant) — repère spatial qui renforce la sensation de parcours guidé.
+  const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const { setFormActive } = useFormProgress();
 
@@ -222,6 +306,7 @@ export default function PrediagnosticForm({
     handleSubmit,
     trigger,
     getValues,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<PrediagnosticFormValues>({
     resolver: zodResolver(prediagnosticSchema),
@@ -229,15 +314,59 @@ export default function PrediagnosticForm({
     defaultValues: presetDiplome ? { diplomeVise: presetDiplome } : undefined,
   });
 
+  // Restauration d'un brouillon abandonné (fermeture accidentelle de
+  // l'onglet, navigation involontaire) — volontairement APRÈS le premier
+  // rendu (jamais dans `defaultValues` ci-dessus) pour ne jamais faire
+  // diverger le rendu serveur du premier rendu client : Next.js comparerait
+  // les deux et lèverait une erreur d'hydratation. En passant par un effet,
+  // la restauration n'intervient qu'après coup, via un re-rendu normal.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.sessionStorage.getItem(DRAFT_STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw) as { values?: Partial<PrediagnosticFormValues>; step?: number };
+      if (!saved.values) return;
+      const restored: Partial<PrediagnosticFormValues> = { ...saved.values };
+      // Le diplôme préréglé par la page (/dees, /deaes...) prime toujours sur
+      // un brouillon enregistré depuis une autre page.
+      if (presetDiplome) restored.diplomeVise = presetDiplome;
+      reset(restored as PrediagnosticFormValues, { keepDefaultValues: false });
+      if (typeof saved.step === "number") {
+        setStep(Math.min(Math.max(saved.step, 0), totalSteps - 1));
+      }
+    } catch {
+      // Brouillon corrompu ou stockage indisponible (navigation privée) : on
+      // continue simplement avec un formulaire vide, sans bloquer personne.
+    }
+    // Volontairement exécuté une seule fois, au montage.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Sauvegarde continue du brouillon à chaque changement — permet de
+  // reprendre exactement où on en était après une fermeture accidentelle.
+  const watchedValues = useWatch({ control });
+  useEffect(() => {
+    if (typeof window === "undefined" || submitState === "success") return;
+    try {
+      const { honeypot: _honeypot, ...rest } = watchedValues;
+      window.sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({ values: rest, step }));
+    } catch {
+      // Quota dépassé / stockage désactivé : on n'interrompt pas la saisie pour ça.
+    }
+  }, [watchedValues, step, submitState]);
+
   function goNext() {
+    setDirection("forward");
     setStep((s) => Math.min(s + 1, totalSteps - 1));
   }
 
   function goBack() {
+    setDirection("back");
     setStep((s) => Math.max(s - 1, 0));
   }
 
-  async function selectAndAdvance(field: "diplomeVise" | "situationActuelle" | "anneesExperience", value: string, onChange: (v: string) => void) {
+  async function selectAndAdvance(field: "diplomeVise" | "situationActuelle", value: string, onChange: (v: string) => void) {
     onChange(value);
     // petit délai pour laisser voir l'état "sélectionné" avant de passer à l'étape suivante
     setTimeout(async () => {
@@ -246,9 +375,14 @@ export default function PrediagnosticForm({
     }, 220);
   }
 
-  // Étape "structure" (texte libre + suggestions) : pas de sélection discrète
-  // comme les ChoiceStep, donc une fonction d'avance dédiée, réutilisée à la
-  // fois par le clic sur une suggestion et par le bouton "Continuer"/Entrée.
+  // Étapes "texte libre" (pas de sélection discrète comme les ChoiceStep) :
+  // une fonction d'avance dédiée par champ, réutilisée à la fois par le
+  // clic sur une suggestion et par le bouton "Continuer".
+  async function advanceActiviteStep() {
+    const valid = await trigger("activiteQuotidienne");
+    if (valid) goNext();
+  }
+
   async function advanceStructureStep() {
     const valid = await trigger("structure");
     if (valid) goNext();
@@ -274,12 +408,19 @@ export default function PrediagnosticForm({
       });
 
       setSubmitState("success");
+      try {
+        window.sessionStorage.removeItem(DRAFT_STORAGE_KEY);
+      } catch {
+        // Rien de grave si l'effacement échoue : la clé expirera de toute
+        // façon à la fermeture de l'onglet (sessionStorage).
+      }
     } catch {
       setSubmitState("error");
     }
   }
 
   const progressPercent = ((step + 1) / totalSteps) * 100;
+  const stepTransitionClass = direction === "forward" ? "step-transition-forward" : "step-transition-back";
 
   if (submitState === "success") {
     const prenom = getValues("prenom");
@@ -289,7 +430,7 @@ export default function PrediagnosticForm({
           <IconBadge name="check" size="lg" />
         </div>
         <h3 className="text-2xl font-bold text-slate-900">
-          {prenom ? `Merci ${prenom}, votre demande est bien enregistrée !` : "Votre demande est bien enregistrée !"}
+          {prenom ? `Merci ${prenom}, votre étude personnalisée démarre !` : "Votre étude personnalisée démarre !"}
         </h3>
         <p className="mt-3 leading-relaxed text-slate-600">
           Un expert VAE spécialisé dans le secteur social va maintenant analyser votre parcours
@@ -322,16 +463,16 @@ export default function PrediagnosticForm({
       <div className="bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 px-4 pb-2.5 pt-3.5 text-white sm:px-7 sm:pb-4 sm:pt-5">
         <p className="text-[11px] font-medium text-brand-50/90 sm:text-xs">{steps[step].eyebrow}</p>
         <h2 className="mt-0.5 text-base font-bold sm:mt-1 sm:text-xl">Testez votre éligibilité à la VAE</h2>
-        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/25 sm:mt-3">
+        <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/25 sm:mt-3">
           <div
-            className="h-full rounded-full bg-white transition-all duration-500 ease-out"
+            className="h-full rounded-full bg-white transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="px-4 py-3 sm:px-7 sm:py-6">
-        <div key={step} className="step-transition">
+        <div key={step} className={stepTransitionClass}>
           {steps[step].key === "diplomeVise" && (
             <ChoiceStep
               question="Quel diplôme souhaitez-vous obtenir par la VAE ?"
@@ -345,7 +486,7 @@ export default function PrediagnosticForm({
 
           {steps[step].key === "situationActuelle" && (
             <ChoiceStep
-              question="Où en êtes-vous dans votre parcours professionnel ?"
+              question="Quelle est votre situation actuelle ?"
               subtitle="Cette information nous permet de cibler tout de suite les solutions de financement adaptées à votre profil."
               name="situationActuelle"
               control={control}
@@ -353,6 +494,10 @@ export default function PrediagnosticForm({
               onSelect={selectAndAdvance}
               error={errors.situationActuelle?.message}
             />
+          )}
+
+          {steps[step].key === "activiteQuotidienne" && (
+            <ActiviteStep control={control} onAdvance={advanceActiviteStep} error={errors.activiteQuotidienne?.message} />
           )}
 
           {steps[step].key === "structure" && (
@@ -364,97 +509,14 @@ export default function PrediagnosticForm({
             />
           )}
 
-          {steps[step].key === "anneesExperience" && (
-            <ChoiceStep
-              question="Depuis combien de temps exercez-vous dans cette structure ?"
-              name="anneesExperience"
-              control={control}
-              options={EXPERIENCE_OPTIONS}
-              onSelect={selectAndAdvance}
-              error={errors.anneesExperience?.message}
-            />
-          )}
-
           {steps[step].key === "coordonnees" && (
-            <div className="space-y-3 sm:space-y-4">
-              <div className="flex items-center gap-2.5 text-slate-900">
-                <IconBadge name="phone" />
-                <h3 className="text-sm font-semibold sm:text-base">
-                  Un conseiller vous recontacte gratuitement pour faire le point
-                </h3>
-              </div>
-
-              {/* Piège à robots : invisible et exclu du tabulateur pour les
-                  humains (souris, clavier, lecteur d'écran), mais présent
-                  dans le DOM pour les robots qui remplissent tous les champs
-                  sans distinction — voir app/api/prediagnostic/route.ts. */}
-              <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
-                <label htmlFor="site-web">Ne pas remplir ce champ</label>
-                <input
-                  id="site-web"
-                  type="text"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  aria-hidden="true"
-                  {...register("honeypot")}
-                />
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-                <Field label="Prénom" error={errors.prenom?.message}>
-                  <input {...register("prenom")} placeholder="Votre prénom" className="form-input" />
-                </Field>
-                <Field label="Nom" error={errors.nom?.message}>
-                  <input {...register("nom")} placeholder="Votre nom" className="form-input" />
-                </Field>
-              </div>
-              <Field label="Téléphone" error={errors.telephone?.message}>
-                <input
-                  type="tel"
-                  {...register("telephone")}
-                  placeholder="06 XX XX XX XX"
-                  className="form-input"
-                />
-              </Field>
-              <Field label="Email" error={errors.email?.message}>
-                <input
-                  type="email"
-                  {...register("email")}
-                  placeholder="votre@email.fr"
-                  className="form-input"
-                />
-              </Field>
-              <Field label="Un message à ajouter ? (facultatif)">
-                <textarea {...register("messageLibre")} rows={3} className="form-input" />
-              </Field>
-
-              {/* Consentement passif plutôt qu'une case à cocher séparée : l'envoi du
-                  formulaire n'a qu'une seule finalité (être recontacté au sujet de
-                  cette demande), donc l'action elle-même vaut acceptation explicite —
-                  voir la note dans lib/prediagnostic-schema.ts. */}
-              <p className="text-xs leading-relaxed text-slate-500">
-                En envoyant ce formulaire, vous acceptez d&apos;être recontacté·e par VAESocial au
-                sujet de votre demande. Vos données restent confidentielles — voir notre{" "}
-                <Link href="/confidentialite" className="underline hover:text-slate-700">
-                  politique de confidentialité
-                </Link>
-                .
-              </p>
-
-              {submitState === "error" && (
-                <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
-                  Une erreur est survenue lors de l&apos;envoi. Merci de réessayer.
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={isSubmitting || submitState === "loading"}
-                className="w-full rounded-full bg-accent-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-accent-600/30 transition hover:bg-accent-700 disabled:opacity-60"
-              >
-                {submitState === "loading" ? "Envoi..." : "Être recontacté·e gratuitement"}
-              </button>
-            </div>
+            <CoordonneesStep
+              control={control}
+              register={register}
+              errors={errors}
+              submitState={submitState}
+              isSubmitting={isSubmitting}
+            />
           )}
         </div>
 
@@ -462,9 +524,10 @@ export default function PrediagnosticForm({
           <button
             type="button"
             onClick={goBack}
-            className="-ml-2 mt-4 rounded-lg px-2 py-2.5 text-sm font-semibold text-slate-500 hover:text-slate-700"
+            className="-ml-2 mt-4 flex items-center gap-1 rounded-lg px-2 py-2.5 text-sm font-semibold text-slate-500 transition hover:text-slate-700"
           >
-            ← Retour
+            <ArrowIcon className="h-3.5 w-3.5 rotate-180" />
+            Retour
           </button>
         )}
       </form>
@@ -490,71 +553,196 @@ function ChoiceStep({
   question: string;
   /** Ligne courte sous la question, pour expliquer pourquoi on la pose — réduit la friction perçue. */
   subtitle?: string;
-  name: "diplomeVise" | "situationActuelle" | "anneesExperience";
+  name: "diplomeVise" | "situationActuelle";
   control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
   options: { value: string; label: string; helper?: string; icon?: IconName }[];
   onSelect: (field: typeof name, value: string, onChange: (v: string) => void) => void;
   error?: string;
 }) {
+  const { field } = useController({ name, control });
+
+  // Raccourcis clavier 1-9 : sélectionne directement l'option correspondante
+  // — gain de vitesse appréciable pour qui remplit le formulaire au clavier
+  // (desktop), sans rien changer pour les autres (le badge indice n'est
+  // affiché que sur les écrans assez larges pour avoir un clavier physique).
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const index = Number(e.key) - 1;
+      if (!Number.isInteger(index) || index < 0 || index >= options.length) return;
+      onSelect(name, options[index].value, field.onChange);
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options, name]);
+
   return (
     <div>
       <h3 className="text-sm font-semibold text-slate-900 sm:text-base">{question}</h3>
       {subtitle && <p className="mt-1 text-xs text-slate-500">{subtitle}</p>}
-      <Controller
-        name={name}
-        control={control}
-        render={({ field }) => (
-          <div className="mt-2.5 space-y-1.5 sm:mt-4 sm:space-y-2.5">
-            {options.map((opt) => {
-              const selected = field.value === opt.value;
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => onSelect(name, opt.value, field.onChange)}
+      <div className="mt-2.5 space-y-1.5 sm:mt-4 sm:space-y-2.5">
+        {options.map((opt, index) => {
+          const selected = field.value === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => onSelect(name, opt.value, field.onChange)}
+              className={clsx(
+                "flex min-h-11 w-full items-center justify-between rounded-2xl border-2 px-3.5 py-2 text-left transition duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] sm:px-4 sm:py-3",
+                selected
+                  ? "border-brand-600 bg-brand-50 shadow-sm"
+                  : "border-slate-200 hover:-translate-y-0.5 hover:border-brand-300 hover:bg-slate-50 hover:shadow-sm active:translate-y-0 active:scale-[0.99]"
+              )}
+            >
+              <span className="flex items-start gap-2.5">
+                {opt.icon && (
+                  <span className="mt-0.5">
+                    <IconBadge name={opt.icon} />
+                  </span>
+                )}
+                <span>
+                  <span className="block text-sm font-medium text-slate-800">{opt.label}</span>
+                  {opt.helper && (
+                    <span className="mt-0.5 block text-xs text-slate-500">{opt.helper}</span>
+                  )}
+                </span>
+              </span>
+              <span className="ml-3 flex shrink-0 items-center gap-2 sm:ml-4">
+                {/* Indice clavier — desktop uniquement (pas de clavier physique sur mobile) */}
+                <span className="hidden h-5 w-5 items-center justify-center rounded-md border border-slate-200 text-[11px] font-medium text-slate-400 sm:flex">
+                  {index + 1}
+                </span>
+                <span
                   className={clsx(
-                    "flex min-h-11 w-full items-center justify-between rounded-2xl border-2 px-3.5 py-2 text-left transition sm:px-4 sm:py-3",
-                    selected
-                      ? "border-brand-600 bg-brand-50 shadow-sm"
-                      : "border-slate-200 hover:border-brand-300 hover:bg-slate-50"
+                    "flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 sm:h-5 sm:w-5",
+                    selected ? "border-brand-600 bg-brand-600 text-white" : "border-slate-300"
                   )}
                 >
-                  <span className="flex items-start gap-2.5">
-                    {opt.icon && (
-                      <span className="mt-0.5">
-                        <IconBadge name={opt.icon} />
-                      </span>
-                    )}
-                    <span>
-                      <span className="block text-sm font-medium text-slate-800">{opt.label}</span>
-                      {opt.helper && (
-                        <span className="mt-0.5 block text-xs text-slate-500">{opt.helper}</span>
-                      )}
-                    </span>
-                  </span>
+                  {selected && (
+                    <svg viewBox="0 0 20 20" fill="currentColor" className="h-2.5 w-2.5 check-pop sm:h-3 sm:w-3">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.704 5.29a1 1 0 010 1.415l-7.5 7.5a1 1 0 01-1.415 0l-3.5-3.5a1 1 0 111.415-1.414l2.792 2.792 6.793-6.793a1 1 0 011.415 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+/** Étape "Décrivez votre activité au quotidien" : grand champ texte libre à
+ *  auto-hauteur (pas de barre de défilement interne pendant la saisie), avec
+ *  compteur de caractères qui rassure sur la longueur attendue plutôt que de
+ *  bloquer l'utilisateur avec une erreur — le bouton "Continuer" reste
+ *  simplement désactivé tant que le minimum n'est pas atteint. */
+function ActiviteStep({
+  control,
+  onAdvance,
+  error,
+}: {
+  control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
+  onAdvance: () => void;
+  error?: string;
+}) {
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  function autoResize(el: HTMLTextAreaElement | null) {
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }
+
+  // Cette étape n'est jamais la toute première vue par l'utilisateur (elle
+  // arrive après au moins deux choix déjà faits) : le focus programmatique
+  // est donc la continuité naturelle d'un geste déjà entamé, pas une
+  // interruption surprise.
+  useEffect(() => {
+    if (isFinePointerDevice()) textareaRef.current?.focus();
+  }, []);
+
+  return (
+    <div>
+      <h3 className="text-sm font-semibold text-slate-900 sm:text-base">
+        Décrivez votre activité au quotidien
+      </h3>
+      <p className="mt-1 text-xs text-slate-500">
+        Décrivez les personnes que vous accompagnez, vos missions quotidiennes, vos responsabilités
+        et les tâches que vous réalisez régulièrement.
+      </p>
+      <Controller
+        name="activiteQuotidienne"
+        control={control}
+        render={({ field }) => {
+          const length = field.value?.length ?? 0;
+          const valid = length >= ACTIVITE_MIN_LENGTH;
+          return (
+            <>
+              <div className="mt-2.5 sm:mt-4">
+                <textarea
+                  {...field}
+                  ref={(el) => {
+                    field.ref(el);
+                    textareaRef.current = el;
+                    autoResize(el);
+                  }}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    autoResize(e.target);
+                  }}
+                  rows={5}
+                  placeholder="Ex : J'accompagne au quotidien 8 résidents en situation de handicap, j'organise des activités adaptées, je participe aux réunions d'équipe pluridisciplinaire..."
+                  className="form-input min-h-[140px] resize-none leading-relaxed"
+                />
+                <div className="mt-1.5 flex items-center justify-between">
                   <span
                     className={clsx(
-                      "ml-3 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 sm:ml-4 sm:h-5 sm:w-5",
-                      selected ? "border-brand-600 bg-brand-600 text-white" : "border-slate-300"
+                      "text-xs transition-colors",
+                      valid ? "text-brand-600" : "text-slate-400"
                     )}
                   >
-                    {selected && (
-                      <svg viewBox="0 0 20 20" fill="currentColor" className="h-2.5 w-2.5 sm:h-3 sm:w-3">
-                        <path
-                          fillRule="evenodd"
-                          d="M16.704 5.29a1 1 0 010 1.415l-7.5 7.5a1 1 0 01-1.415 0l-3.5-3.5a1 1 0 111.415-1.414l2.792 2.792 6.793-6.793a1 1 0 011.415 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    )}
+                    {valid
+                      ? "Merci, c'est une bonne base pour vous évaluer."
+                      : `${length}/${ACTIVITE_MIN_LENGTH} caractères minimum`}
                   </span>
-                </button>
-              );
-            })}
-          </div>
-        )}
+                </div>
+              </div>
+              {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+
+              {/* Note de réassurance : explique pourquoi on pose une question
+                  aussi ouverte plutôt qu'un simple menu déroulant — réduit la
+                  friction en rendant la longueur demandée légitime aux yeux
+                  du candidat. */}
+              <div className="mt-3 flex items-start gap-2 rounded-xl bg-brand-50/60 p-3 text-xs leading-relaxed text-brand-900">
+                <IconBadge name="info" />
+                <span>
+                  Cette question est essentielle pour nous permettre d&apos;évaluer rapidement si
+                  vous êtes réellement éligible à une VAE.
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={onAdvance}
+                disabled={!valid}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-accent-600/30 transition duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-xl active:translate-y-0 active:scale-[0.98] disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-40 disabled:shadow-none"
+              >
+                Continuer
+                <ArrowIcon className="h-4 w-4" />
+              </button>
+            </>
+          );
+        }}
       />
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
     </div>
   );
 }
@@ -571,16 +759,22 @@ function StructureStep({
   error?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const suggestions = STRUCTURE_SUGGESTIONS[diplomeVise ?? ""] ?? ALL_STRUCTURES;
+
+  useEffect(() => {
+    if (isFinePointerDevice()) inputRef.current?.focus();
+  }, []);
 
   return (
     <div>
       <h3 className="text-sm font-semibold text-slate-900 sm:text-base">
-        Dans quelle structure exercez-vous principalement ?
+        Dans quelle structure exercez-vous actuellement ?
       </h3>
       <p className="mt-1 text-xs text-slate-500">
-        Tapez librement ou choisissez une suggestion. Votre structure n&apos;y figure pas ? Indiquez-la
-        simplement, c&apos;est très bien aussi.
+        Ex : Foyer de vie, IME, ESAT, MECS, EHPAD, MAS, SESSAD, service d&apos;aide à domicile, etc.
+        Tapez librement ou choisissez une suggestion — votre structure n&apos;y figure pas ?
+        Indiquez-la simplement, c&apos;est très bien aussi.
       </p>
       <Controller
         name="structure"
@@ -601,6 +795,10 @@ function StructureStep({
             <div className="relative mt-2.5 sm:mt-4">
               <input
                 {...field}
+                ref={(el) => {
+                  field.ref(el);
+                  inputRef.current = el;
+                }}
                 type="text"
                 autoComplete="off"
                 placeholder="Ex : IME, ESAT, EHPAD, domicile..."
@@ -647,9 +845,170 @@ function StructureStep({
       <button
         type="button"
         onClick={onAdvance}
-        className="mt-4 w-full rounded-full bg-accent-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-accent-600/30 transition hover:bg-accent-700"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-accent-600/30 transition duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-xl active:translate-y-0 active:scale-[0.98]"
       >
-        Continuer →
+        Continuer
+        <ArrowIcon className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+/** Dernière étape : coordonnées. Champs pilotés en `Controller` (plutôt que
+ *  `register`) pour permettre le formatage du téléphone au fil de la frappe,
+ *  la suggestion anti-typo sur l'email et la coche de validation en temps
+ *  réel — trois détails "premium" qui rassurent avant l'envoi plutôt que de
+ *  sanctionner après coup. */
+function CoordonneesStep({
+  control,
+  register,
+  errors,
+  submitState,
+  isSubmitting,
+}: {
+  control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
+  register: ReturnType<typeof useForm<PrediagnosticFormValues>>["register"];
+  errors: ReturnType<typeof useForm<PrediagnosticFormValues>>["formState"]["errors"];
+  submitState: SubmitState;
+  isSubmitting: boolean;
+}) {
+  const prenomRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (isFinePointerDevice()) prenomRef.current?.focus();
+  }, []);
+
+  const prenom = useController({ name: "prenom", control });
+  const telephone = useController({ name: "telephone", control });
+  const email = useController({ name: "email", control });
+
+  const prenomValid = (prenom.field.value ?? "").trim().length >= 2;
+  const phoneValid = (telephone.field.value ?? "").replace(/\D/g, "").length === 10;
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.field.value ?? "");
+  const emailSuggestion = suggestEmailDomain(email.field.value ?? "");
+
+  return (
+    <div className="space-y-3 sm:space-y-4">
+      <div className="flex items-center gap-2.5 text-slate-900">
+        <IconBadge name="phone" />
+        <h3 className="text-sm font-semibold sm:text-base">
+          Dernière étape avant votre étude personnalisée
+        </h3>
+      </div>
+
+      {/* Piège à robots : invisible et exclu du tabulateur pour les
+          humains (souris, clavier, lecteur d'écran), mais présent
+          dans le DOM pour les robots qui remplissent tous les champs
+          sans distinction — voir app/api/prediagnostic/route.ts. */}
+      <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+        <label htmlFor="site-web">Ne pas remplir ce champ</label>
+        <input
+          id="site-web"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          {...register("honeypot")}
+        />
+      </div>
+
+      <Field label="Prénom" error={errors.prenom?.message}>
+        <div className="relative">
+          <input
+            ref={(el) => {
+              prenom.field.ref(el);
+              prenomRef.current = el;
+            }}
+            name={prenom.field.name}
+            value={prenom.field.value ?? ""}
+            onChange={prenom.field.onChange}
+            onBlur={prenom.field.onBlur}
+            placeholder="Votre prénom"
+            className="form-input pr-9"
+          />
+          {prenomValid && <ValidMark />}
+        </div>
+      </Field>
+
+      <Field label="Téléphone" error={errors.telephone?.message}>
+        <div className="relative">
+          <input
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
+            name={telephone.field.name}
+            ref={telephone.field.ref}
+            value={telephone.field.value ?? ""}
+            onChange={(e) => telephone.field.onChange(formatPhoneNumber(e.target.value))}
+            onBlur={telephone.field.onBlur}
+            placeholder="06 XX XX XX XX"
+            className="form-input pr-9"
+          />
+          {phoneValid && <ValidMark />}
+        </div>
+      </Field>
+
+      <Field label="Email" error={errors.email?.message}>
+        <div className="relative">
+          <input
+            type="email"
+            autoComplete="email"
+            name={email.field.name}
+            ref={email.field.ref}
+            value={email.field.value ?? ""}
+            onChange={email.field.onChange}
+            onBlur={email.field.onBlur}
+            placeholder="votre@email.fr"
+            className="form-input pr-9"
+          />
+          {emailValid && <ValidMark />}
+        </div>
+        {emailSuggestion && (
+          <button
+            type="button"
+            onClick={() => email.field.onChange(emailSuggestion)}
+            className="mt-1.5 text-xs font-medium text-brand-600 transition hover:text-brand-700 hover:underline"
+          >
+            Vouliez-vous dire {emailSuggestion} ?
+          </button>
+        )}
+      </Field>
+
+      {/* Consentement passif plutôt qu'une case à cocher séparée : l'envoi du
+          formulaire n'a qu'une seule finalité (être recontacté au sujet de
+          cette demande), donc l'action elle-même vaut acceptation explicite —
+          voir la note dans lib/prediagnostic-schema.ts. */}
+      <p className="text-xs leading-relaxed text-slate-500">
+        En envoyant ce formulaire, vous acceptez d&apos;être recontacté·e par VAESocial au
+        sujet de votre demande. Vos données restent confidentielles — voir notre{" "}
+        <Link href="/confidentialite" className="underline hover:text-slate-700">
+          politique de confidentialité
+        </Link>
+        .
+      </p>
+
+      {submitState === "error" && (
+        <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+          Une erreur est survenue lors de l&apos;envoi. Merci de réessayer.
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={isSubmitting || submitState === "loading"}
+        className="group flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-accent-600/30 transition duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:bg-accent-700 hover:shadow-xl hover:shadow-accent-600/35 active:translate-y-0 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"
+      >
+        {submitState === "loading" ? (
+          <>
+            <Spinner className="h-4 w-4" />
+            Envoi en cours...
+          </>
+        ) : (
+          <>
+            Vérifier mon éligibilité gratuitement
+            <ArrowIcon className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </>
+        )}
       </button>
     </div>
   );
