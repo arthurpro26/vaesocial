@@ -207,10 +207,10 @@ export default function PrediagnosticForm({
   return (
     <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-2xl shadow-brand-900/15">
       {/* En-tête dégradé avec titre constant + barre de progression */}
-      <div className="bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 px-4 pb-3 pt-4 text-white sm:px-7 sm:pb-4 sm:pt-5">
+      <div className="bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 px-4 pb-2.5 pt-3.5 text-white sm:px-7 sm:pb-4 sm:pt-5">
         <p className="text-[11px] font-medium text-brand-50/90 sm:text-xs">{steps[step].eyebrow}</p>
         <h2 className="mt-0.5 text-base font-bold sm:mt-1 sm:text-xl">Testez votre éligibilité à la VAE</h2>
-        <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-white/25 sm:mt-3">
+        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/25 sm:mt-3">
           <div
             className="h-full rounded-full bg-white transition-all duration-500 ease-out"
             style={{ width: `${progressPercent}%` }}
@@ -218,7 +218,7 @@ export default function PrediagnosticForm({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="px-4 py-4 sm:px-7 sm:py-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-4 py-3 sm:px-7 sm:py-6">
         <div key={step} className="step-transition">
           {steps[step].key === "diplomeVise" && (
             <ChoiceStep
@@ -357,7 +357,7 @@ export default function PrediagnosticForm({
         )}
       </form>
 
-      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 border-t border-brand-100 bg-brand-50/60 px-4 py-2.5 text-[11px] font-medium text-brand-800 sm:gap-x-5 sm:gap-y-1.5 sm:px-7 sm:py-3 sm:text-xs">
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 border-t border-brand-100 bg-brand-50/60 px-4 py-2 text-[11px] font-medium text-brand-800 sm:gap-x-5 sm:gap-y-1.5 sm:px-7 sm:py-3 sm:text-xs">
         <span>✓ 100% gratuit</span>
         <span>✓ Sans engagement</span>
         <span>✓ Réponse sous 24h</span>
@@ -392,7 +392,7 @@ function ChoiceStep({
         name={name}
         control={control}
         render={({ field }) => (
-          <div className="mt-3 space-y-2 sm:mt-4 sm:space-y-2.5">
+          <div className="mt-2.5 space-y-1.5 sm:mt-4 sm:space-y-2.5">
             {options.map((opt) => {
               const selected = field.value === opt.value;
               return (
@@ -401,7 +401,7 @@ function ChoiceStep({
                   type="button"
                   onClick={() => onSelect(name, opt.value, field.onChange)}
                   className={clsx(
-                    "flex min-h-11 w-full items-center justify-between rounded-2xl border-2 px-3.5 py-2.5 text-left transition sm:px-4 sm:py-3",
+                    "flex min-h-11 w-full items-center justify-between rounded-2xl border-2 px-3.5 py-2 text-left transition sm:px-4 sm:py-3",
                     selected
                       ? "border-brand-600 bg-brand-50 shadow-sm"
                       : "border-slate-200 hover:border-brand-300 hover:bg-slate-50"
@@ -479,7 +479,7 @@ function StructureStep({
           }
 
           return (
-            <div className="relative mt-3 sm:mt-4">
+            <div className="relative mt-2.5 sm:mt-4">
               <input
                 {...field}
                 type="text"

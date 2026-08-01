@@ -67,7 +67,7 @@ export default async function DiplomePage({
       {/* HERO — même structure grid que la home (accroche / formulaire / réassurance)
           pour conserver le trick de réordonnancement mobile (formulaire remonté). */}
       <section className="bg-gradient-to-b from-brand-50 via-white to-white pb-8 pt-6 sm:pb-20 sm:pt-20">
-        <Container>
+        <Container className="px-3 sm:px-6 lg:px-8">
           <div className="grid gap-4 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-6">
             <div>
               <div className="flex flex-wrap items-center justify-center gap-2.5 text-center sm:gap-3">
@@ -83,13 +83,13 @@ export default async function DiplomePage({
                   <span className="sm:hidden">({AVIS.nombre} avis)</span>
                 </span>
               </div>
-              <h1 className="mt-3 text-balance text-[1.65rem] font-bold leading-tight tracking-tight text-slate-900 sm:mt-6 sm:text-4xl lg:text-5xl">
+              <h1 className="mt-3 text-balance text-[1.65rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:mt-6 sm:text-4xl sm:leading-tight lg:text-5xl">
                 On vous dit d&apos;abord si vous êtes{" "}
                 <span className="text-brand-600">éligible {d.heroSuffixe}</span>.
                 <br />
                 Pas l&apos;inverse.
               </h1>
-              <p className="mt-2.5 text-pretty text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
+              <p className="mt-2.5 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
                 {d.heroIntro}
               </p>
             </div>
