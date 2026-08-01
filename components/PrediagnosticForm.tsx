@@ -41,20 +41,32 @@ const EXPERIENCE_OPTIONS = [
   { value: "Plus de 5 ans", label: "Plus de 5 ans" },
 ];
 
-const STEPS = [
-  { key: "diplomeVise", eyebrow: "Étape 1/5 — Votre objectif" },
-  { key: "situationActuelle", eyebrow: "Étape 2/5 — Votre statut" },
-  { key: "secteur", eyebrow: "Étape 3/5 — Votre secteur" },
-  { key: "anneesExperience", eyebrow: "Étape 4/5 — Votre expérience" },
-  { key: "coordonnees", eyebrow: "Étape 5/5 — Vos coordonnées" },
+const ALL_STEPS = [
+  { key: "diplomeVise", label: "Votre objectif" },
+  { key: "situationActuelle", label: "Votre statut" },
+  { key: "secteur", label: "Votre secteur" },
+  { key: "anneesExperience", label: "Votre expérience" },
+  { key: "coordonnees", label: "Vos coordonnées" },
 ] as const;
 
 type SubmitState = "idle" | "loading" | "success" | "error";
 
-export default function PrediagnosticForm() {
+export default function PrediagnosticForm({
+  presetDiplome,
+}: {
+  /** Quand fourni (pages diplôme dédiées), l'étape "Quel diplôme ?" est sautée et préremplie. */
+  presetDiplome?: "DEES" | "DEAES" | "DEEJE" | "DEME";
+}) {
   const [step, setStep] = useState(0);
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
-  const totalSteps = STEPS.length;
+
+  // Étapes effectives : on retire "diplomeVise" si le diplôme est déjà connu, puis on
+  // renumérote l'eyebrow "Étape X/Y" dynamiquement.
+  const steps = (presetDiplome
+    ? ALL_STEPS.filter((s) => s.key !== "diplomeVise")
+    : ALL_STEPS
+  ).map((s, i, arr) => ({ ...s, eyebrow: `Étape ${i + 1}/${arr.length} — ${s.label}` }));
+  const totalSteps = steps.length;
 
   const {
     register,
@@ -66,6 +78,7 @@ export default function PrediagnosticForm() {
   } = useForm<PrediagnosticFormValues>({
     resolver: zodResolver(prediagnosticSchema),
     mode: "onBlur",
+    defaultValues: presetDiplome ? { diplomeVise: presetDiplome } : undefined,
   });
 
   function goNext() {
@@ -129,7 +142,7 @@ export default function PrediagnosticForm() {
     <div className="mx-auto max-w-md overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-2xl shadow-brand-900/15">
       {/* En-tête dégradé avec titre constant + barre de progression */}
       <div className="bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 px-6 pb-4 pt-5 text-white sm:px-7">
-        <p className="text-xs font-medium text-brand-50/90">{STEPS[step].eyebrow}</p>
+        <p className="text-xs font-medium text-brand-50/90">{steps[step].eyebrow}</p>
         <h2 className="mt-1 text-lg font-bold sm:text-xl">Testez votre éligibilité à la VAE</h2>
         <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/25">
           <div
@@ -141,7 +154,7 @@ export default function PrediagnosticForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="px-6 py-6 sm:px-7">
         <div key={step} className="step-transition">
-          {step === 0 && (
+          {steps[step].key === "diplomeVise" && (
             <ChoiceStep
               question="Quel diplôme souhaitez-vous obtenir par la VAE ?"
               name="diplomeVise"
@@ -152,7 +165,7 @@ export default function PrediagnosticForm() {
             />
           )}
 
-          {step === 1 && (
+          {steps[step].key === "situationActuelle" && (
             <ChoiceStep
               question="Quelle est votre situation actuelle ?"
               name="situationActuelle"
@@ -163,7 +176,7 @@ export default function PrediagnosticForm() {
             />
           )}
 
-          {step === 2 && (
+          {steps[step].key === "secteur" && (
             <ChoiceStep
               question="Dans quel secteur exercez-vous ?"
               name="secteur"
@@ -174,7 +187,7 @@ export default function PrediagnosticForm() {
             />
           )}
 
-          {step === 3 && (
+          {steps[step].key === "anneesExperience" && (
             <ChoiceStep
               question="Depuis combien de temps exercez-vous dans ce secteur ?"
               name="anneesExperience"
@@ -185,7 +198,7 @@ export default function PrediagnosticForm() {
             />
           )}
 
-          {step === 4 && (
+          {steps[step].key === "coordonnees" && (
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-slate-900">
                 <span aria-hidden>📞</span>

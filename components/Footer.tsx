@@ -2,15 +2,7 @@ import Link from "next/link";
 import Container from "./Container";
 import Logo from "./Logo";
 import { siteConfig } from "@/lib/site-config";
-
-// Les 4 diplômes pointent vers la section #diplomes de la homepage (pas de
-// page dédiée pour l'instant — voir le même commentaire dans app/page.tsx).
-const FOOTER_DIPLOMES = [
-  { sigle: "DEES", nom: "Éducateur spécialisé" },
-  { sigle: "DEAES", nom: "Accompagnant éducatif et social" },
-  { sigle: "DEEJE", nom: "Éducateur de jeunes enfants" },
-  { sigle: "DEME", nom: "Moniteur-éducateur" },
-];
+import { DIPLOMES } from "@/lib/site-data";
 
 export default function Footer() {
   return (
@@ -29,9 +21,9 @@ export default function Footer() {
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-brand-300">Diplômes</p>
           <ul className="mt-4 space-y-2.5 text-sm">
-            {FOOTER_DIPLOMES.map((d) => (
+            {DIPLOMES.map((d) => (
               <li key={d.sigle}>
-                <Link href="/#diplomes" className="text-brand-200 hover:text-white">
+                <Link href={`/${d.slug}`} className="text-brand-200 hover:text-white">
                   VAE {d.nom} ({d.sigle})
                 </Link>
               </li>
@@ -48,7 +40,7 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <Link href="/#prediagnostic-form" className="text-brand-200 hover:text-white">
+              <Link href="#prediagnostic-form" className="text-brand-200 hover:text-white">
                 Être rappelé·e gratuitement
               </Link>
             </li>
