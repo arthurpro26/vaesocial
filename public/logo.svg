@@ -1,0 +1,23 @@
+<svg width="220" height="52" viewBox="0 0 220 52" fill="none" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <rect width="34" height="34" y="9" rx="9" fill="url(#vaesocial-logo-gradient)" />
+  <circle cx="13" cy="22.5" r="3" fill="white" fill-opacity="0.55" />
+  <path
+    d="M7.5 35C7.5 28.8 9.8 26.5 13 26.5C16.2 26.5 18.5 28.8 18.5 35Z"
+    fill="white"
+    fill-opacity="0.55"
+  />
+  <circle cx="20.5" cy="21.5" r="3.4" fill="white" />
+  <path
+    d="M14.5 36C14.5 29.3 17 26.7 20.5 26.7C24 26.7 26.5 29.3 26.5 36Z"
+    fill="white"
+  />
+  <text x="46" y="33" font-size="24" font-weight="700">
+    <tspan fill="#21564d">VAE</tspan><tspan fill="#0f172a">Social</tspan>
+  </text>
+  <defs>
+    <linearGradient id="vaesocial-logo-gradient" x1="0" y1="9" x2="34" y2="43" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#55a08f" />
+      <stop offset="1" stop-color="#21564d" />
+    </linearGradient>
+  </defs>
+</svg>
