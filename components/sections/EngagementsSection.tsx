@@ -14,18 +14,18 @@ export default function EngagementsSection() {
             Nos engagements envers vous
           </h2>
         </div>
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-6">
+        <div className="mt-6 grid gap-3 sm:mt-14 sm:grid-cols-2 sm:gap-6">
           {ENGAGEMENTS.map((e) => (
             <div
               key={e.titre}
-              className="flex flex-col gap-2 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:flex-row sm:gap-4 sm:p-7"
+              className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:gap-4 sm:p-7"
             >
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-base sm:h-11 sm:w-11 sm:text-xl">
                 <span aria-hidden>{e.icon}</span>
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 sm:text-base">{e.titre}</h3>
-                <p className="mt-1 line-clamp-4 text-xs leading-relaxed text-slate-600 sm:mt-1.5 sm:line-clamp-none sm:text-sm">
+                <p className="mt-1 text-xs leading-relaxed text-slate-600 sm:mt-1.5 sm:text-sm">
                   {e.texte}
                 </p>
               </div>

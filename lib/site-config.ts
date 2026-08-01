@@ -3,7 +3,7 @@ export const siteConfig = {
   title: "VAESocial — Accompagnement VAE dans le secteur social et médico-social",
   description:
     "VAESocial accompagne les professionnels du secteur social et médico-social dans l'obtention de leur diplôme par la Validation des Acquis de l'Expérience (DEES, DEAES, DEEJE, DEME...).",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.vaesocial.fr",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://vae-social.fr",
   phone: "+33 0000000000",
   email: "arthurpro@avenir-professionnel.fr",
   gtmId: process.env.NEXT_PUBLIC_GTM_ID,

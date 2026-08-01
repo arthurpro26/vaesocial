@@ -47,7 +47,7 @@ export default function MethodeSection() {
         <div className="mt-8 text-center sm:mt-10">
           <Link
             href="#prediagnostic-form"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800"
+            className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50 px-5 py-2.5 text-sm font-semibold text-brand-700 shadow-sm shadow-brand-900/5 transition hover:-translate-y-0.5 hover:border-brand-200 hover:bg-brand-100 hover:shadow-md"
           >
             Tout commence par votre prédiagnostic gratuit →
           </Link>

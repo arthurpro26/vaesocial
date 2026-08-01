@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { clsx } from "clsx";
 import { prediagnosticSchema, type PrediagnosticFormValues } from "@/lib/prediagnostic-schema";
-import { siteConfig } from "@/lib/site-config";
+import { useFormProgress } from "@/lib/form-progress-context";
+import { trackConversion } from "@/lib/tracking";
 
 // --- Données des étapes à choix unique (cartes larges, sélection = avance automatique) ---
 
@@ -17,22 +19,48 @@ const DIPLOME_OPTIONS = [
   { value: "Autre / je ne sais pas encore", label: "Autre / je ne sais pas encore" },
 ];
 
+// Étape 2 repensée pour être plus engageante et plus utile à la conversion :
+// chaque option explique tout de suite en quoi elle change concrètement le
+// financement ou le parcours (au lieu d'une simple case administrative), en
+// s'appuyant uniquement sur des dispositifs déjà présentés ailleurs sur le
+// site (CPF, OPCO Santé, France Travail...) — aucune donnée inventée.
 const SITUATION_OPTIONS = [
-  { value: "Salarié(e) secteur social/médico-social", label: "Salarié(e) dans le secteur social ou médico-social" },
-  { value: "Salarié(e) autre secteur", label: "Salarié(e) dans un autre secteur" },
-  { value: "Demandeur d'emploi", label: "Demandeur d'emploi" },
-  { value: "Indépendant(e)", label: "Indépendant(e)" },
-  { value: "Autre", label: "Autre" },
+  {
+    value: "Salarié(e) secteur social/médico-social",
+    label: "Salarié(e) dans le secteur social ou médico-social",
+    helper: "💳 Financement via votre OPCO Santé souvent possible",
+  },
+  {
+    value: "Salarié(e) autre secteur",
+    label: "Salarié(e) dans un autre secteur (avec une expérience en lien avec le diplôme visé)",
+    helper: "ℹ️ Une expérience en rapport avec le diplôme est nécessaire pour être éligible à la VAE.",
+  },
+  {
+    value: "Demandeur d'emploi",
+    label: "Demandeur d'emploi",
+    helper: "🏛️ Un accompagnement finançable via France Travail",
+  },
+  {
+    value: "Indépendant(e) ou bénévole",
+    label: "Indépendant(e) ou bénévole",
+    helper: "🤝 Votre expérience non-salariée compte aussi pour la VAE",
+  },
+  { value: "Autre", label: "Autre situation" },
 ];
 
-const SECTEUR_OPTIONS = [
-  { value: "Protection de l'enfance", label: "Protection de l'enfance" },
-  { value: "Handicap", label: "Handicap" },
-  { value: "Personnes âgées", label: "Personnes âgées" },
-  { value: "Petite enfance", label: "Petite enfance" },
-  { value: "Insertion / précarité", label: "Insertion / précarité" },
-  { value: "Autre", label: "Autre" },
-];
+// Suggestions d'autocomplétion pour "Dans quelle structure exercez-vous ?",
+// adaptées au diplôme visé (choisi à l'étape 1). Liste indicative, non
+// exhaustive : la saisie manuelle reste toujours possible si la structure de
+// l'utilisateur n'y figure pas.
+const STRUCTURE_SUGGESTIONS: Record<string, string[]> = {
+  DEES: ["IME", "ITEP", "MECS", "CHRS", "ESAT", "FAM", "MAS", "SESSAD", "SAVS", "SAMSAH", "AEMO", "ASE"],
+  DEAES: ["EHPAD", "SSIAD", "SAAD", "Domicile", "FAM", "MAS", "IME"],
+  DEME: ["IME", "ITEP", "MECS", "SESSAD", "ESAT"],
+  DEEJE: ["Crèche", "Micro-crèche", "Multi-accueil", "Halte-garderie", "PMI", "Relais Petite Enfance"],
+};
+// Liste de secours si le diplôme n'est pas encore déterminé ("Autre / je ne
+// sais pas encore") : toutes les suggestions réunies, sans doublons.
+const ALL_STRUCTURES = Array.from(new Set(Object.values(STRUCTURE_SUGGESTIONS).flat()));
 
 const EXPERIENCE_OPTIONS = [
   { value: "Moins de 1 an", label: "Moins d'1 an" },
@@ -44,7 +72,7 @@ const EXPERIENCE_OPTIONS = [
 const ALL_STEPS = [
   { key: "diplomeVise", label: "Votre objectif" },
   { key: "situationActuelle", label: "Votre statut" },
-  { key: "secteur", label: "Votre secteur" },
+  { key: "structure", label: "Votre structure" },
   { key: "anneesExperience", label: "Votre expérience" },
   { key: "coordonnees", label: "Vos coordonnées" },
 ] as const;
@@ -59,6 +87,7 @@ export default function PrediagnosticForm({
 }) {
   const [step, setStep] = useState(0);
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
+  const { setFormActive } = useFormProgress();
 
   // Étapes effectives : on retire "diplomeVise" si le diplôme est déjà connu, puis on
   // renumérote l'eyebrow "Étape X/Y" dynamiquement.
@@ -67,6 +96,13 @@ export default function PrediagnosticForm({
     : ALL_STEPS
   ).map((s, i, arr) => ({ ...s, eyebrow: `Étape ${i + 1}/${arr.length} — ${s.label}` }));
   const totalSteps = steps.length;
+
+  // Signale au Header qu'on est "dans" le questionnaire dès que l'utilisateur
+  // a répondu à la première question, pour masquer son CTA redondant. On
+  // repasse à false une fois la demande envoyée (plus rien à distraire).
+  useEffect(() => {
+    setFormActive(step > 0 && submitState !== "success");
+  }, [step, submitState, setFormActive]);
 
   const {
     register,
@@ -89,13 +125,21 @@ export default function PrediagnosticForm({
     setStep((s) => Math.max(s - 1, 0));
   }
 
-  async function selectAndAdvance(field: "diplomeVise" | "situationActuelle" | "secteur" | "anneesExperience", value: string, onChange: (v: string) => void) {
+  async function selectAndAdvance(field: "diplomeVise" | "situationActuelle" | "anneesExperience", value: string, onChange: (v: string) => void) {
     onChange(value);
     // petit délai pour laisser voir l'état "sélectionné" avant de passer à l'étape suivante
     setTimeout(async () => {
       const valid = await trigger(field);
       if (valid) goNext();
     }, 220);
+  }
+
+  // Étape "structure" (texte libre + suggestions) : pas de sélection discrète
+  // comme les ChoiceStep, donc une fonction d'avance dédiée, réutilisée à la
+  // fois par le clic sur une suggestion et par le bouton "Continuer"/Entrée.
+  async function advanceStructureStep() {
+    const valid = await trigger("structure");
+    if (valid) goNext();
   }
 
   async function onSubmit(values: PrediagnosticFormValues) {
@@ -109,6 +153,14 @@ export default function PrediagnosticForm({
 
       if (!res.ok) throw new Error("Envoi échoué");
 
+      // Point de suivi unique pour toutes les pages (home + 4 diplômes) : un
+      // seul endroit à câbler plus tard à un vrai tag de conversion Google
+      // Ads / GTM. Déclenché uniquement après un envoi réellement réussi.
+      trackConversion("prediagnostic_lead_submitted", {
+        diplome: values.diplomeVise,
+        page: presetDiplome ? `diplome_${presetDiplome.toLowerCase()}` : "home",
+      });
+
       setSubmitState("success");
     } catch {
       setSubmitState("error");
@@ -118,30 +170,44 @@ export default function PrediagnosticForm({
   const progressPercent = ((step + 1) / totalSteps) * 100;
 
   if (submitState === "success") {
+    const prenom = getValues("prenom");
     return (
-      <div className="mx-auto max-w-md rounded-3xl border border-brand-100 bg-white p-8 text-center shadow-2xl shadow-brand-900/15 step-transition">
+      <div className="mx-auto w-full max-w-md rounded-3xl border border-brand-100 bg-white p-6 text-center shadow-2xl shadow-brand-900/15 sm:p-8 step-transition">
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-2xl">
           🎉
         </div>
-        <h3 className="text-2xl font-bold text-slate-900">Demande bien reçue !</h3>
-        <p className="mt-3 text-slate-600">
-          Merci {getValues("prenom") || ""} ! Un conseiller VAESocial revient vers vous très
-          prochainement pour étudier votre éligibilité.
+        <h3 className="text-2xl font-bold text-slate-900">
+          {prenom ? `Merci ${prenom}, votre demande est bien enregistrée !` : "Votre demande est bien enregistrée !"}
+        </h3>
+        <p className="mt-3 leading-relaxed text-slate-600">
+          Un expert VAE spécialisé dans le secteur social va maintenant analyser votre parcours
+          avec attention.
         </p>
-        <div className="mt-6 rounded-2xl bg-brand-50 p-4 text-sm text-brand-900">
-          Besoin d&apos;une réponse plus rapide ? Écrivez-nous directement à{" "}
-          <a href={`mailto:${siteConfig.email}`} className="font-semibold underline">
-            {siteConfig.email}
-          </a>
+
+        <div className="mt-5 space-y-3 rounded-2xl bg-brand-50/60 p-4 text-left text-sm text-brand-900">
+          <div className="flex items-start gap-2.5">
+            <span aria-hidden>📞</span>
+            <span>Vous serez recontacté·e très rapidement</span>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <span aria-hidden>🔍</span>
+            <span>Nous étudierons votre éligibilité ensemble, en toute transparence</span>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <span aria-hidden>💬</span>
+            <span>Vous pourrez poser toutes les questions que vous avez en tête</span>
+          </div>
         </div>
+
+        <p className="mt-4 text-sm text-slate-500">En toute simplicité, et sans engagement. 😊</p>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-md overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-2xl shadow-brand-900/15">
+    <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-2xl shadow-brand-900/15">
       {/* En-tête dégradé avec titre constant + barre de progression */}
-      <div className="bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 px-6 pb-4 pt-5 text-white sm:px-7">
+      <div className="bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 px-5 pb-4 pt-5 text-white sm:px-7">
         <p className="text-xs font-medium text-brand-50/90">{steps[step].eyebrow}</p>
         <h2 className="mt-1 text-lg font-bold sm:text-xl">Testez votre éligibilité à la VAE</h2>
         <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/25">
@@ -152,7 +218,7 @@ export default function PrediagnosticForm({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="px-6 py-6 sm:px-7">
+      <form onSubmit={handleSubmit(onSubmit)} className="px-5 py-6 sm:px-7">
         <div key={step} className="step-transition">
           {steps[step].key === "diplomeVise" && (
             <ChoiceStep
@@ -167,7 +233,8 @@ export default function PrediagnosticForm({
 
           {steps[step].key === "situationActuelle" && (
             <ChoiceStep
-              question="Quelle est votre situation actuelle ?"
+              question="Où en êtes-vous dans votre parcours professionnel ?"
+              subtitle="Cette information nous permet de cibler tout de suite les solutions de financement adaptées à votre profil."
               name="situationActuelle"
               control={control}
               options={SITUATION_OPTIONS}
@@ -176,20 +243,18 @@ export default function PrediagnosticForm({
             />
           )}
 
-          {steps[step].key === "secteur" && (
-            <ChoiceStep
-              question="Dans quel secteur exercez-vous ?"
-              name="secteur"
+          {steps[step].key === "structure" && (
+            <StructureStep
               control={control}
-              options={SECTEUR_OPTIONS}
-              onSelect={selectAndAdvance}
-              error={errors.secteur?.message}
+              diplomeVise={getValues("diplomeVise")}
+              onAdvance={advanceStructureStep}
+              error={errors.structure?.message}
             />
           )}
 
           {steps[step].key === "anneesExperience" && (
             <ChoiceStep
-              question="Depuis combien de temps exercez-vous dans ce secteur ?"
+              question="Depuis combien de temps exercez-vous dans cette structure ?"
               name="anneesExperience"
               control={control}
               options={EXPERIENCE_OPTIONS}
@@ -205,6 +270,22 @@ export default function PrediagnosticForm({
                 <h3 className="text-base font-semibold">
                   Un conseiller vous recontacte gratuitement pour faire le point
                 </h3>
+              </div>
+
+              {/* Piège à robots : invisible et exclu du tabulateur pour les
+                  humains (souris, clavier, lecteur d'écran), mais présent
+                  dans le DOM pour les robots qui remplissent tous les champs
+                  sans distinction — voir app/api/prediagnostic/route.ts. */}
+              <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+                <label htmlFor="site-web">Ne pas remplir ce champ</label>
+                <input
+                  id="site-web"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  {...register("honeypot")}
+                />
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -235,16 +316,18 @@ export default function PrediagnosticForm({
                 <textarea {...register("messageLibre")} rows={3} className="form-input" />
               </Field>
 
-              <label className="flex items-start gap-3 text-sm text-slate-600">
-                <input type="checkbox" {...register("consentement")} className="mt-1 h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
-                <span>
-                  J&apos;accepte d&apos;être recontacté(e) par VAESocial au sujet de ma demande de
-                  prédiagnostic.
-                </span>
-              </label>
-              {errors.consentement && (
-                <p className="text-sm text-red-600">{errors.consentement.message}</p>
-              )}
+              {/* Consentement passif plutôt qu'une case à cocher séparée : l'envoi du
+                  formulaire n'a qu'une seule finalité (être recontacté au sujet de
+                  cette demande), donc l'action elle-même vaut acceptation explicite —
+                  voir la note dans lib/prediagnostic-schema.ts. */}
+              <p className="text-xs leading-relaxed text-slate-500">
+                En envoyant ce formulaire, vous acceptez d&apos;être recontacté·e par VAESocial au
+                sujet de votre demande. Vos données restent confidentielles — voir notre{" "}
+                <Link href="/confidentialite" className="underline hover:text-slate-700">
+                  politique de confidentialité
+                </Link>
+                .
+              </p>
 
               {submitState === "error" && (
                 <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
@@ -255,7 +338,7 @@ export default function PrediagnosticForm({
               <button
                 type="submit"
                 disabled={isSubmitting || submitState === "loading"}
-                className="w-full rounded-full bg-accent-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-accent-500/30 transition hover:bg-accent-600 disabled:opacity-60"
+                className="w-full rounded-full bg-accent-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-accent-600/30 transition hover:bg-accent-700 disabled:opacity-60"
               >
                 {submitState === "loading" ? "Envoi..." : "Être recontacté·e gratuitement"}
               </button>
@@ -267,14 +350,14 @@ export default function PrediagnosticForm({
           <button
             type="button"
             onClick={goBack}
-            className="mt-6 text-sm font-semibold text-slate-400 hover:text-slate-600"
+            className="-ml-2 mt-4 rounded-lg px-2 py-2.5 text-sm font-semibold text-slate-500 hover:text-slate-700"
           >
             ← Retour
           </button>
         )}
       </form>
 
-      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 border-t border-brand-100 bg-brand-50/60 px-6 py-3 text-xs font-medium text-brand-800 sm:px-7">
+      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 border-t border-brand-100 bg-brand-50/60 px-5 py-3 text-xs font-medium text-brand-800 sm:px-7">
         <span>✓ 100% gratuit</span>
         <span>✓ Sans engagement</span>
         <span>✓ Réponse sous 24h</span>
@@ -285,6 +368,7 @@ export default function PrediagnosticForm({
 
 function ChoiceStep({
   question,
+  subtitle,
   name,
   control,
   options,
@@ -292,7 +376,9 @@ function ChoiceStep({
   error,
 }: {
   question: string;
-  name: "diplomeVise" | "situationActuelle" | "secteur" | "anneesExperience";
+  /** Ligne courte sous la question, pour expliquer pourquoi on la pose — réduit la friction perçue. */
+  subtitle?: string;
+  name: "diplomeVise" | "situationActuelle" | "anneesExperience";
   control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
   options: { value: string; label: string; helper?: string }[];
   onSelect: (field: typeof name, value: string, onChange: (v: string) => void) => void;
@@ -301,6 +387,7 @@ function ChoiceStep({
   return (
     <div>
       <h3 className="text-base font-semibold text-slate-900">{question}</h3>
+      {subtitle && <p className="mt-1 text-xs text-slate-500">{subtitle}</p>}
       <Controller
         name={name}
         control={control}
@@ -349,6 +436,102 @@ function ChoiceStep({
         )}
       />
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+function StructureStep({
+  control,
+  diplomeVise,
+  onAdvance,
+  error,
+}: {
+  control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
+  diplomeVise?: string;
+  onAdvance: () => void;
+  error?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const suggestions = STRUCTURE_SUGGESTIONS[diplomeVise ?? ""] ?? ALL_STRUCTURES;
+
+  return (
+    <div>
+      <h3 className="text-base font-semibold text-slate-900">
+        Dans quelle structure exercez-vous principalement ?
+      </h3>
+      <p className="mt-1 text-xs text-slate-500">
+        Tapez librement ou choisissez une suggestion. Votre structure n&apos;y figure pas ? Indiquez-la
+        simplement, c&apos;est très bien aussi.
+      </p>
+      <Controller
+        name="structure"
+        control={control}
+        render={({ field }) => {
+          const query = field.value?.trim().toLowerCase() ?? "";
+          const filtered = suggestions
+            .filter((s) => query === "" || s.toLowerCase().includes(query))
+            .slice(0, 8);
+
+          function choose(value: string) {
+            field.onChange(value);
+            setOpen(false);
+            setTimeout(onAdvance, 220);
+          }
+
+          return (
+            <div className="relative mt-4">
+              <input
+                {...field}
+                type="text"
+                autoComplete="off"
+                placeholder="Ex : IME, ESAT, EHPAD, domicile..."
+                className="form-input"
+                onFocus={() => setOpen(true)}
+                onBlur={() => {
+                  // léger délai pour laisser le temps au clic sur une suggestion
+                  // de s'exécuter avant que la liste ne se ferme
+                  setTimeout(() => setOpen(false), 150);
+                  field.onBlur();
+                }}
+                onKeyDown={(e) => {
+                  // Un <input> seul dans un <form> sans bouton "submit" visible
+                  // déclenche la soumission implicite du formulaire entier sur
+                  // Entrée — on l'intercepte pour avancer d'une étape à la place.
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    setOpen(false);
+                    onAdvance();
+                  }
+                }}
+              />
+              {open && filtered.length > 0 && (
+                <div className="absolute z-20 mt-1.5 max-h-56 w-full overflow-y-auto rounded-2xl border border-slate-200 bg-white py-1.5 shadow-xl shadow-slate-900/10">
+                  {filtered.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      // évite que le blur de l'input ne se déclenche avant le clic
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => choose(s)}
+                      className="block w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-brand-50 hover:text-brand-700"
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        }}
+      />
+      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      <button
+        type="button"
+        onClick={onAdvance}
+        className="mt-4 w-full rounded-full bg-accent-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-accent-600/30 transition hover:bg-accent-700"
+      >
+        Continuer →
+      </button>
     </div>
   );
 }

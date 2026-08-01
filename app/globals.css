@@ -6,13 +6,35 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
-  @apply bg-white text-slate-800 antialiased;
+  /* overflow-x-hidden = filet de sécurité anti-débordement horizontal (pas
+     un correctif en soi, mais évite qu'un débordement résiduel ne casse le
+     rendu mobile) */
+  @apply bg-white text-slate-800 antialiased overflow-x-hidden;
+}
+
+@layer base {
+  /* Focus clavier cohérent et sur-mesure (couleur de marque) sur tous les
+     liens et boutons du site, plutôt que le contour par défaut du navigateur
+     — visible seulement à la navigation clavier (:focus-visible), jamais au
+     clic souris. */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid theme("colors.brand.500");
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
 }
 
 @layer components {
   .form-input {
-    @apply w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm text-slate-800 shadow-sm transition focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100;
+    @apply w-full min-w-0 rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-800 shadow-sm transition focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100;
   }
 }
 

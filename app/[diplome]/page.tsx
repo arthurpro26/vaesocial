@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Container from "@/components/Container";
 import PrediagnosticForm from "@/components/PrediagnosticForm";
 import FaqAccordion from "@/components/FaqAccordion";
+import FaqJsonLd from "@/components/FaqJsonLd";
+import CourseJsonLd from "@/components/CourseJsonLd";
 import Eyebrow from "@/components/Eyebrow";
 import StatsBar from "@/components/sections/StatsBar";
 import MethodeSection from "@/components/sections/MethodeSection";
@@ -60,19 +62,25 @@ export default async function DiplomePage({
 
   return (
     <>
+      <CourseJsonLd diplome={d} />
+
       {/* HERO — même structure grid que la home (accroche / formulaire / réassurance)
           pour conserver le trick de réordonnancement mobile (formulaire remonté). */}
       <section className="bg-gradient-to-b from-brand-50 via-white to-white pb-10 pt-8 sm:pb-20 sm:pt-20">
         <Container>
-          <div className="grid gap-5 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-16">
+          <div className="grid gap-5 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-6">
             <div>
               <div className="flex flex-wrap items-center justify-center gap-3 text-center">
-                <span className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                  ✅ VAE {d.sigle} · {d.niveau}
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
+                  <span aria-hidden>✅</span>
+                  VAE {d.sigle}
+                  <span className="hidden sm:inline">· {d.niveau}</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
-                  <span aria-hidden>⭐⭐⭐⭐⭐</span>
-                  {AVIS.note}/5 ({AVIS.nombre} avis bénéficiaires)
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
+                  <span aria-hidden>⭐</span>
+                  {AVIS.note}/5{" "}
+                  <span className="hidden sm:inline">({AVIS.nombre} avis bénéficiaires)</span>
+                  <span className="sm:hidden">({AVIS.nombre} avis)</span>
                 </span>
               </div>
               <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:mt-6 sm:text-4xl lg:text-5xl">
@@ -88,7 +96,7 @@ export default async function DiplomePage({
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
               <PrediagnosticForm presetDiplome={d.sigle as "DEES" | "DEAES" | "DEEJE" | "DEME"} />
-              <p className="mt-4 text-center text-xs text-slate-400">
+              <p className="mt-4 text-center text-xs text-slate-500">
                 🔒 Vos informations restent confidentielles — jamais revendues à des tiers.
               </p>
             </div>
@@ -139,21 +147,23 @@ export default async function DiplomePage({
             </h2>
             <p className="mt-2 text-base text-slate-600 sm:mt-4 sm:text-lg">{d.publicIntro}</p>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-6 sm:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:mt-14 sm:grid-cols-3 sm:gap-6">
             {d.publicConcerne.map((p) => (
               <div
                 key={p.titre}
-                className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:p-7"
+                className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:block sm:p-7"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-50 text-base sm:h-11 sm:w-11 sm:text-xl">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-base sm:h-11 sm:w-11 sm:text-xl">
                   <span aria-hidden>🤝</span>
                 </div>
-                <h3 className="mt-3 text-sm font-semibold text-slate-900 sm:mt-4 sm:text-base">
-                  {p.titre}
-                </h3>
-                <p className="mt-1.5 line-clamp-4 text-xs leading-relaxed text-slate-600 sm:mt-2 sm:line-clamp-none sm:text-sm">
-                  {p.texte}
-                </p>
+                <div className="sm:mt-4">
+                  <h3 className="text-sm font-semibold text-slate-900 sm:text-base">
+                    {p.titre}
+                  </h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600 sm:mt-2 sm:text-sm">
+                    {p.texte}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -166,25 +176,28 @@ export default async function DiplomePage({
           <div className="text-center">
             <Eyebrow>Débouchés</Eyebrow>
             <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:mt-3 sm:text-4xl">
-              Où exercer avec un {d.sigle} ?
+              🚀 Où exercer avec un {d.sigle} ?
             </h2>
             <p className="mt-2 text-base text-slate-600 sm:mt-4 sm:text-lg">
               {d.debouchesIntro}
             </p>
           </div>
-          <ul className="mx-auto mt-6 grid max-w-2xl grid-cols-2 gap-2.5 sm:mt-10 sm:gap-4">
+          <div className="mx-auto mt-6 grid max-w-2xl gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-5">
             {d.debouches.map((deb) => (
-              <li
-                key={deb}
-                className="flex items-start gap-2 rounded-2xl border border-slate-100 bg-white p-3 text-xs text-slate-700 shadow-sm shadow-slate-900/[0.03] sm:p-4 sm:text-sm"
+              <div
+                key={deb.texte}
+                className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:p-5"
               >
-                <span className="mt-0.5 text-brand-600" aria-hidden>
-                  ✓
-                </span>
-                {deb}
-              </li>
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-lg sm:h-11 sm:w-11 sm:text-xl">
+                  <span aria-hidden>{deb.icon}</span>
+                </div>
+                <p className="text-sm leading-relaxed text-slate-700">{deb.texte}</p>
+              </div>
             ))}
-          </ul>
+          </div>
+          <p className="mx-auto mt-6 max-w-xl text-center text-sm font-semibold text-brand-800 sm:mt-10">
+            {d.debouchesConclusion}
+          </p>
         </Container>
       </section>
 
@@ -209,6 +222,7 @@ export default async function DiplomePage({
           <div className="mt-6 sm:mt-12">
             <FaqAccordion items={d.faq} />
           </div>
+          <FaqJsonLd items={d.faq} />
         </Container>
       </section>
 

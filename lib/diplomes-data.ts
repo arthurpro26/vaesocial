@@ -23,7 +23,8 @@ export type DiplomeData = {
   publicIntro: string;
   publicConcerne: { titre: string; texte: string }[];
   debouchesIntro: string;
-  debouches: string[];
+  debouches: { icon: string; texte: string }[];
+  debouchesConclusion: string;
   noteReferentiel?: string;
   faq: FaqItem[];
   ctaTitre: string;
@@ -63,13 +64,31 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       },
     ],
     debouchesIntro:
-      "Le DEES ouvre principalement des postes dans le secteur privé associatif, majoritaire parmi les employeurs :",
+      "Le DEES ouvre principalement des postes dans le secteur privé associatif, majoritaire parmi les employeurs — et des parcours très variés selon le public que vous choisissez d'accompagner :",
     debouches: [
-      "Protection de l'enfance : MECS, services d'AEMO, foyers de l'enfance",
-      "Handicap : IME, ITEP, ESAT, foyers d'hébergement",
-      "Structures pour adultes en difficulté sociale (CHRS, insertion)",
-      "Fonction publique territoriale et hospitalière (postes plus limités)",
+      {
+        icon: "🛡️",
+        texte:
+          "Protection de l'enfance : MECS, services d'AEMO, foyers de l'enfance — accompagner des enfants et adolescents dans la durée, avec un vrai impact sur leur trajectoire.",
+      },
+      {
+        icon: "🤲",
+        texte:
+          "Handicap : IME, ITEP, ESAT, foyers d'hébergement — un métier de terrain, au contact direct des personnes accompagnées, chaque jour différent.",
+      },
+      {
+        icon: "🏘️",
+        texte:
+          "Insertion sociale : CHRS, structures pour adultes en difficulté — un rôle de repère dans des parcours de vie parfois chaotiques.",
+      },
+      {
+        icon: "🏛️",
+        texte:
+          "Fonction publique territoriale et hospitalière — des postes plus rares mais stables, avec de vraies perspectives d'évolution vers l'encadrement.",
+      },
     ],
+    debouchesConclusion:
+      "🌟 Un diplôme, des dizaines de terrains d'action possibles : le DEES ouvre autant de portes qu'il y a de publics à accompagner.",
     faq: [
       {
         question: "Quel est le niveau du DEES obtenu par VAE ?",
@@ -128,13 +147,31 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       },
     ],
     debouchesIntro:
-      "Le DEAES ouvre des postes très variés, à domicile comme en établissement :",
+      "Le DEAES ouvre des postes très variés, à domicile comme en établissement — de quoi trouver le cadre qui vous correspond :",
     debouches: [
-      "Aide à domicile : SAAD, services d'aide et d'accompagnement",
-      "EHPAD et établissements pour personnes âgées",
-      "Structures pour le handicap : IME, foyers, CHRS",
-      "Petite enfance et accompagnement scolaire (AESH via l'Éducation nationale)",
+      {
+        icon: "🏠",
+        texte:
+          "Aide à domicile : SAAD — accompagner au quotidien, chez elles, des personnes qui ont besoin de vous pour rester autonomes.",
+      },
+      {
+        icon: "🌇",
+        texte:
+          "EHPAD et établissements pour personnes âgées — un métier de lien humain, où chaque petit geste compte vraiment.",
+      },
+      {
+        icon: "🧩",
+        texte:
+          "Structures pour le handicap : IME, foyers, CHRS — un accompagnement de proximité, valorisant au quotidien.",
+      },
+      {
+        icon: "🎈",
+        texte:
+          "Petite enfance et accompagnement scolaire (AESH, via l'Éducation nationale) — changer le quotidien d'un enfant en situation de handicap.",
+      },
     ],
+    debouchesConclusion:
+      "🌟 À domicile, en EHPAD, en crèche ou à l'école : le DEAES vous ouvre des terrains d'action très différents, à choisir selon ce qui vous fait vibrer.",
     faq: [
       {
         question: "Quel est le niveau du DEAES ?",
@@ -193,13 +230,31 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       },
     ],
     debouchesIntro:
-      "Le DEEJE ouvre principalement des postes dans les collectivités territoriales et le secteur de la petite enfance :",
+      "Le DEEJE ouvre principalement des postes dans les collectivités territoriales et le secteur de la petite enfance — au plus près des tout-petits :",
     debouches: [
-      "Crèches collectives et familiales, haltes-garderies",
-      "Services de Protection Maternelle et Infantile (PMI)",
-      "CMPP et établissements médico-sociaux pour jeunes enfants",
-      "Mairies et collectivités territoriales, principaux recruteurs du secteur",
+      {
+        icon: "🧸",
+        texte:
+          "Crèches collectives et familiales, haltes-garderies — accompagner l'éveil des tout-petits, jour après jour, dans leurs premières découvertes.",
+      },
+      {
+        icon: "👶",
+        texte:
+          "Services de Protection Maternelle et Infantile (PMI) — un rôle de prévention et de soutien précieux auprès des familles.",
+      },
+      {
+        icon: "🏥",
+        texte:
+          "CMPP et établissements médico-sociaux pour jeunes enfants — accompagner les enfants qui en ont le plus besoin.",
+      },
+      {
+        icon: "🏛️",
+        texte:
+          "Mairies et collectivités territoriales — le principal recruteur du secteur, avec des postes stables et évolutifs.",
+      },
     ],
+    debouchesConclusion:
+      "🌟 Chaque jour, contribuer à poser les toutes premières bases du développement d'un enfant : peu de métiers offrent un impact aussi concret.",
     noteReferentiel:
       "Le référentiel du DEEJE évolue à partir de septembre 2026 (décret du 6 octobre 2025) : les personnes déjà engagées dans un parcours avant cette date continuent sous l'ancien référentiel jusqu'à la session 2028. Nous vérifions avec vous quel référentiel s'applique à votre situation.",
     faq: [
@@ -260,13 +315,31 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       },
     ],
     debouchesIntro:
-      "Le DEME ouvre principalement des postes dans le secteur privé associatif (80 % des recrutements), avec un taux d'insertion professionnelle élevé :",
+      "Le DEME ouvre principalement des postes dans le secteur privé associatif (80 % des recrutements), avec un taux d'insertion professionnelle élevé — et des terrains d'action très concrets :",
     debouches: [
-      "Handicap : ESAT, MAS, IME",
-      "Protection de l'enfance : MECS, prévention spécialisée",
-      "Secteur de la santé : établissements hospitaliers",
-      "Insertion sociale et professionnelle",
+      {
+        icon: "🧩",
+        texte:
+          "Handicap : ESAT, MAS, IME — un accompagnement au plus près du quotidien, en appui direct de l'éducateur spécialisé.",
+      },
+      {
+        icon: "🛡️",
+        texte:
+          "Protection de l'enfance : MECS, prévention spécialisée — être un repère stable pour des jeunes qui en ont besoin.",
+      },
+      {
+        icon: "🏥",
+        texte:
+          "Secteur de la santé : établissements hospitaliers — accompagner des patients au-delà du seul soin médical.",
+      },
+      {
+        icon: "🌱",
+        texte:
+          "Insertion sociale et professionnelle — aider concrètement des personnes à reprendre pied dans leur parcours de vie.",
+      },
     ],
+    debouchesConclusion:
+      "🌟 Avec un taux d'insertion professionnelle d'environ 94 %, le DEME est l'un des diplômes du secteur qui débouche le plus vite sur un vrai métier.",
     faq: [
       {
         question: "Quel est le niveau du DEME ?",

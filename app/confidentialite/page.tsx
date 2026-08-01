@@ -40,8 +40,8 @@ export default function ConfidentialitePage() {
             <h2 className="text-lg font-semibold text-slate-900">Données collectées</h2>
             <p className="mt-2">
               Via le formulaire de prédiagnostic : prénom, nom, téléphone, email, ainsi que vos
-              réponses sur le diplôme visé, votre situation professionnelle, votre secteur
-              d&apos;activité et votre expérience.
+              réponses sur le diplôme visé, votre situation professionnelle, votre structure
+              d&apos;exercice et votre expérience.
             </p>
           </div>
           <div>

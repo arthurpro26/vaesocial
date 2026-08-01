@@ -8,7 +8,7 @@ export type PrediagnosticLead = {
   diplomeVise: string;
   situationActuelle: string;
   anneesExperience: string;
-  secteur: string;
+  structure: string;
   messageLibre?: string;
 };
 
@@ -59,7 +59,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     `Diplôme visé : ${lead.diplomeVise}`,
     `Situation actuelle : ${lead.situationActuelle}`,
     `Années d'expérience : ${lead.anneesExperience}`,
-    `Secteur : ${lead.secteur}`,
+    `Structure d'exercice : ${lead.structure}`,
     `Message : ${lead.messageLibre || "—"}`,
   ].join("\n");
 

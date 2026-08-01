@@ -3,6 +3,7 @@ import Link from "next/link";
 import Container from "@/components/Container";
 import PrediagnosticForm from "@/components/PrediagnosticForm";
 import FaqAccordion, { type FaqItem } from "@/components/FaqAccordion";
+import FaqJsonLd from "@/components/FaqJsonLd";
 import Eyebrow from "@/components/Eyebrow";
 import StatsBar from "@/components/sections/StatsBar";
 import MethodeSection from "@/components/sections/MethodeSection";
@@ -41,6 +42,7 @@ export const metadata: Metadata = {
   },
   description:
     "VAE dans le secteur social : DEES, DEAES, DEEJE, DEME. Accompagnement 100% à distance, financement CPF possible. Vérifiez votre éligibilité gratuitement.",
+  alternates: { canonical: "/" },
 };
 
 const VALEURS = [
@@ -124,15 +126,19 @@ export default function HomePage() {
           partir de lg (accroche+réassurance à gauche, formulaire à droite sur toute la hauteur). */}
       <section className="bg-gradient-to-b from-brand-50 via-white to-white pb-10 pt-8 sm:pb-20 sm:pt-20">
         <Container>
-          <div className="grid gap-5 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-16">
+          <div className="grid gap-5 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-6">
             <div>
               <div className="flex flex-wrap items-center justify-center gap-3 text-center">
-                <span className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                  ✅ Secteur social &amp; médico-social
+                <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
+                  <span aria-hidden>✅</span>
+                  <span className="hidden sm:inline">Secteur social &amp; médico-social</span>
+                  <span className="sm:hidden">Secteur social</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
-                  <span aria-hidden>⭐⭐⭐⭐⭐</span>
-                  {AVIS.note}/5 ({AVIS.nombre} avis bénéficiaires)
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
+                  <span aria-hidden>⭐</span>
+                  {AVIS.note}/5{" "}
+                  <span className="hidden sm:inline">({AVIS.nombre} avis bénéficiaires)</span>
+                  <span className="sm:hidden">({AVIS.nombre} avis)</span>
                 </span>
               </div>
               <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:mt-6 sm:text-4xl lg:text-5xl">
@@ -149,7 +155,7 @@ export default function HomePage() {
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
               <PrediagnosticForm />
-              <p className="mt-4 text-center text-xs text-slate-400">
+              <p className="mt-4 text-center text-xs text-slate-500">
                 🔒 Vos informations restent confidentielles — jamais revendues à des tiers.
               </p>
             </div>
@@ -218,21 +224,23 @@ export default function HomePage() {
               leviers pour accéder à un diplôme d&apos;État par la VAE.
             </p>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-6 sm:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:mt-14 sm:grid-cols-3 sm:gap-6">
             {PERSONAS.map((p) => (
               <div
                 key={p.titre}
-                className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:p-7"
+                className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:block sm:p-7"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-50 text-base sm:h-11 sm:w-11 sm:text-xl">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-base sm:h-11 sm:w-11 sm:text-xl">
                   <span aria-hidden>{p.icon}</span>
                 </div>
-                <h3 className="mt-3 text-sm font-semibold text-slate-900 sm:mt-4 sm:text-base">
-                  {p.titre}
-                </h3>
-                <p className="mt-1.5 line-clamp-4 text-xs leading-relaxed text-slate-600 sm:mt-2 sm:line-clamp-none sm:text-sm">
-                  {p.texte}
-                </p>
+                <div className="sm:mt-4">
+                  <h3 className="text-sm font-semibold text-slate-900 sm:text-base">
+                    {p.titre}
+                  </h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600 sm:mt-2 sm:text-sm">
+                    {p.texte}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -283,14 +291,14 @@ export default function HomePage() {
               utiles pour vous décider.
             </p>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-6">
+          <div className="mt-6 grid gap-3 sm:mt-14 sm:grid-cols-2 sm:gap-6">
             {DIPLOMES.map((d) => (
               <Link
                 key={d.sigle}
                 href={`/${d.slug}`}
                 className="flex flex-col rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:p-7"
               >
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+                <div className="flex items-center gap-3 sm:gap-4">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-base sm:h-11 sm:w-11 sm:text-xl">
                     <span aria-hidden>🎓</span>
                   </div>
@@ -299,7 +307,7 @@ export default function HomePage() {
                     <p className="text-xs font-medium text-brand-600 sm:text-sm">{d.nom}</p>
                   </div>
                 </div>
-                <p className="mt-3 line-clamp-4 flex-1 text-xs leading-relaxed text-slate-600 sm:mt-4 sm:line-clamp-none sm:text-sm">
+                <p className="mt-3 flex-1 text-xs leading-relaxed text-slate-600 sm:mt-4 sm:text-sm">
                   {d.description}
                 </p>
                 <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-700 sm:mt-5 sm:text-sm">
@@ -330,6 +338,7 @@ export default function HomePage() {
           <div className="mt-6 sm:mt-12">
             <FaqAccordion items={FAQ_ITEMS} />
           </div>
+          <FaqJsonLd items={FAQ_ITEMS} />
         </Container>
       </section>
 

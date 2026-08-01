@@ -9,7 +9,7 @@ export default function Footer() {
     <footer className="bg-brand-900 text-brand-100">
       <Container className="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Link href="/" className="inline-flex items-center">
+          <Link href="/" className="inline-flex items-center py-1">
             <Logo id="footer" variant="light" />
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-brand-200">
@@ -20,10 +20,13 @@ export default function Footer() {
 
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-brand-300">Diplômes</p>
-          <ul className="mt-4 space-y-2.5 text-sm">
+          <ul className="mt-2 text-sm">
             {DIPLOMES.map((d) => (
               <li key={d.sigle}>
-                <Link href={`/${d.slug}`} className="text-brand-200 hover:text-white">
+                <Link
+                  href={`/${d.slug}`}
+                  className="inline-block py-2 text-brand-200 hover:text-white"
+                >
                   VAE {d.nom} ({d.sigle})
                 </Link>
               </li>
@@ -33,14 +36,17 @@ export default function Footer() {
 
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-brand-300">Contact</p>
-          <ul className="mt-4 space-y-2.5 text-sm">
+          <ul className="mt-2 text-sm">
             <li>
-              <a href={`mailto:${siteConfig.email}`} className="text-brand-200 hover:text-white">
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="inline-block break-all py-2 text-brand-200 hover:text-white"
+              >
                 {siteConfig.email}
               </a>
             </li>
             <li>
-              <Link href="#prediagnostic-form" className="text-brand-200 hover:text-white">
+              <Link href="#prediagnostic-form" className="inline-block py-2 text-brand-200 hover:text-white">
                 Être rappelé·e gratuitement
               </Link>
             </li>
@@ -49,19 +55,19 @@ export default function Footer() {
 
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-brand-300">Légal</p>
-          <ul className="mt-4 space-y-2.5 text-sm">
+          <ul className="mt-2 text-sm">
             <li>
-              <Link href="/mentions-legales" className="text-brand-200 hover:text-white">
+              <Link href="/mentions-legales" className="inline-block py-2 text-brand-200 hover:text-white">
                 Mentions légales
               </Link>
             </li>
             <li>
-              <Link href="/cgv" className="text-brand-200 hover:text-white">
+              <Link href="/cgv" className="inline-block py-2 text-brand-200 hover:text-white">
                 CGV
               </Link>
             </li>
             <li>
-              <Link href="/confidentialite" className="text-brand-200 hover:text-white">
+              <Link href="/confidentialite" className="inline-block py-2 text-brand-200 hover:text-white">
                 Politique de confidentialité
               </Link>
             </li>

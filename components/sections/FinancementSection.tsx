@@ -33,7 +33,7 @@ export default function FinancementSection({
           <div className="relative mx-auto mt-6 max-w-xl sm:mt-12">
             <div className="rounded-2xl border border-white/20 bg-white/10 p-5 text-center backdrop-blur-sm sm:p-6">
               <p className="text-sm text-brand-50">Le prix de l&apos;accompagnement</p>
-              <p className="mt-2 text-3xl font-bold">1 800 € à 3 500 €</p>
+              <p className="mt-2 text-2xl font-bold sm:text-3xl">1 800 € à 3 500 €</p>
               <p className="mt-1 text-xs text-brand-100">
                 selon le nombre d&apos;heures nécessaires (15 à 20 h)
               </p>
@@ -48,19 +48,19 @@ export default function FinancementSection({
             <p className="text-center text-sm font-semibold text-brand-50">
               Sources de financement possibles
             </p>
-            <div className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-5 sm:gap-4">
+            <div className="mt-4 grid gap-2.5 sm:mt-5 sm:grid-cols-2 sm:gap-4">
               {FINANCEMENTS.map((f) => (
                 <div
                   key={f.titre}
-                  className="rounded-2xl border border-white/20 bg-white/10 p-3 backdrop-blur-sm sm:p-5"
+                  className="rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm sm:p-5"
                 >
-                  <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2.5">
-                    <span className="text-base sm:text-lg" aria-hidden>
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-lg" aria-hidden>
                       {f.icon}
                     </span>
-                    <p className="text-xs font-semibold sm:text-base">{f.titre}</p>
+                    <p className="text-sm font-semibold sm:text-base">{f.titre}</p>
                   </div>
-                  <p className="mt-1.5 line-clamp-4 text-xs leading-relaxed text-brand-50 sm:mt-2 sm:line-clamp-none sm:text-sm">
+                  <p className="mt-1.5 text-xs leading-relaxed text-brand-50 sm:mt-2 sm:text-sm">
                     {f.texte}
                   </p>
                 </div>
@@ -75,7 +75,7 @@ export default function FinancementSection({
           <div className="relative mt-6 text-center sm:mt-10">
             <Link
               href="#prediagnostic-form"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-brand-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-center text-sm font-semibold text-brand-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto sm:px-8"
             >
               Vérifier mon financement gratuitement →
             </Link>

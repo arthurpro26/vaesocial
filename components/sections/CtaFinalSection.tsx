@@ -23,7 +23,7 @@ export default function CtaFinalSection({
           </p>
           <Link
             href="#prediagnostic-form"
-            className="mt-7 flex w-full items-center justify-center gap-2 rounded-full bg-white px-8 py-4 text-base font-semibold text-brand-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl sm:mt-8 sm:inline-flex sm:w-auto sm:py-3.5 sm:text-sm"
+            className="mt-7 flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-center text-base font-semibold text-brand-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl sm:mt-8 sm:inline-flex sm:w-auto sm:px-8 sm:py-3.5 sm:text-sm"
           >
             {cta}
           </Link>
