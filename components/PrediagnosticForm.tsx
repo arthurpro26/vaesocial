@@ -305,7 +305,7 @@ export default function PrediagnosticForm({
     trigger,
     getValues,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitted },
   } = useForm<PrediagnosticFormValues>({
     resolver: zodResolver(prediagnosticSchema),
     mode: "onBlur",
@@ -438,8 +438,13 @@ export default function PrediagnosticForm({
           {prenom ? `Merci ${prenom}, votre étude personnalisée démarre !` : "Votre étude personnalisée démarre !"}
         </h3>
         <p className="mt-3 leading-relaxed text-slate-600">
-          Un expert VAE spécialisé dans le secteur social va maintenant analyser votre parcours
-          avec attention.
+          {/* Prénoms réels de l'équipe de formateurs VAE Social — remplace la
+              mention générique "un expert VAE" par des personnes réelles et
+              vérifiables, sans rien inventer (retour utilisateur du
+              2026-08-02) : la spécificité rassure plus qu'une formule
+              anonyme, à un coût de mise en œuvre nul. */}
+          Aurore, Karine, Pamela et Jean, nos formateurs VAE spécialisés dans le secteur social,
+          vont maintenant analyser votre parcours avec attention.
         </p>
 
         <div className="mt-5 space-y-3 rounded-2xl bg-brand-50/60 p-4 text-left text-sm text-brand-900">
@@ -526,6 +531,7 @@ export default function PrediagnosticForm({
               errors={errors}
               submitState={submitState}
               isSubmitting={isSubmitting}
+              isSubmitted={isSubmitted}
             />
           )}
         </div>
@@ -860,12 +866,17 @@ function CoordonneesStep({
   errors,
   submitState,
   isSubmitting,
+  isSubmitted,
 }: {
   control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
   register: ReturnType<typeof useForm<PrediagnosticFormValues>>["register"];
   errors: ReturnType<typeof useForm<PrediagnosticFormValues>>["formState"]["errors"];
   submitState: SubmitState;
   isSubmitting: boolean;
+  /** true dès qu'un envoi a été tenté (validé ou non) — sert à autoriser
+   *  l'affichage des erreurs "champ requis" sur les champs jamais touchés,
+   *  voir shouldShowError ci-dessous. */
+  isSubmitted: boolean;
 }) {
   const prenomRef = useRef<HTMLInputElement | null>(null);
 
@@ -884,6 +895,23 @@ function CoordonneesStep({
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.field.value ?? "");
   const emailSuggestion = suggestEmailDomain(email.field.value ?? "");
 
+  // Le Prénom est auto-focusé au chargement de cette étape (voir l'effet
+  // ci-dessus) : si l'utilisateur clique ailleurs (téléphone, email...) ou
+  // lit simplement le bloc de réassurance avant de taper, ce focus se perd
+  // (blur) alors que le champ est encore vide. En mode "onBlur", ça faisait
+  // apparaître un "Required" rouge sur un champ que la personne n'a même pas
+  // encore essayé de remplir — repéré en testant le formulaire en direct le
+  // 2026-08-02, un des pires endroits pour montrer une erreur qui fait peur
+  // (juste avant l'envoi). On n'affiche donc une erreur que si (a) la
+  // personne a déjà tapé quelque chose dans le champ (erreur légitime, ex.
+  // "Prénom trop court.") ou (b) elle a réellement tenté d'envoyer le
+  // formulaire au moins une fois (isSubmitted) : dans ces deux cas, l'erreur
+  // est méritée ; jamais avant.
+  function shouldShowError(value: string | undefined, error?: string) {
+    if (!error) return false;
+    return Boolean((value ?? "").trim()) || isSubmitted;
+  }
+
   return (
     <div className="space-y-3 sm:space-y-4">
       <div className="flex items-center gap-2.5 text-slate-900">
@@ -898,9 +926,9 @@ function CoordonneesStep({
         </div>
       </div>
       <p className="text-xs leading-relaxed text-slate-500">
-        Laissez-nous vos coordonnées : une vraie personne de notre équipe examine chaque
-        demande personnellement, et vous recontacte pour faire le point ensemble sur votre
-        projet — sans jargon, sans pression.
+        Laissez-nous vos coordonnées : notre équipe de formateurs — Aurore, Karine, Pamela et
+        Jean — examine chaque demande personnellement, et vous recontacte pour faire le point
+        ensemble sur votre projet — sans jargon, sans pression.
       </p>
 
       {/* Bloc de réassurance placé juste avant les champs personnels — le
@@ -938,7 +966,10 @@ function CoordonneesStep({
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-        <Field label="Prénom" error={errors.prenom?.message}>
+        <Field
+          label="Prénom"
+          error={shouldShowError(prenom.field.value, errors.prenom?.message) ? errors.prenom?.message : undefined}
+        >
           <div className="relative">
             <input
               ref={(el) => {
@@ -955,7 +986,10 @@ function CoordonneesStep({
             {prenomValid && <ValidMark />}
           </div>
         </Field>
-        <Field label="Nom" error={errors.nom?.message}>
+        <Field
+          label="Nom"
+          error={shouldShowError(nom.field.value, errors.nom?.message) ? errors.nom?.message : undefined}
+        >
           <div className="relative">
             <input
               ref={nom.field.ref}
@@ -971,7 +1005,12 @@ function CoordonneesStep({
         </Field>
       </div>
 
-      <Field label="Téléphone" error={errors.telephone?.message}>
+      <Field
+        label="Téléphone"
+        error={
+          shouldShowError(telephone.field.value, errors.telephone?.message) ? errors.telephone?.message : undefined
+        }
+      >
         <div className="relative">
           <input
             type="tel"
@@ -989,7 +1028,10 @@ function CoordonneesStep({
         </div>
       </Field>
 
-      <Field label="Email" error={errors.email?.message}>
+      <Field
+        label="Email"
+        error={shouldShowError(email.field.value, errors.email?.message) ? errors.email?.message : undefined}
+      >
         <div className="relative">
           <input
             type="email"
