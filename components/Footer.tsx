@@ -50,6 +50,11 @@ export default function Footer() {
                 Être rappelé·e gratuitement
               </Link>
             </li>
+            <li>
+              <Link href="/blog" className="inline-block py-2 text-brand-200 hover:text-white">
+                Blog
+              </Link>
+            </li>
           </ul>
         </div>
 

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
 import { DIPLOMES } from "@/lib/site-data";
+import { BLOG_ARTICLES } from "@/lib/blog-data";
 
 // N'inclut que les pages réellement indexables : /cgv et /confidentialite
 // restent en noindex (contenu juridique pas encore entièrement confirmé —
@@ -28,6 +29,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: `${siteConfig.url}/blog`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    ...BLOG_ARTICLES.map((a) => ({
+      url: `${siteConfig.url}/blog/${a.slug}`,
+      lastModified: new Date(a.datePublished),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     {
       url: `${siteConfig.url}/mentions-legales`,
       lastModified,

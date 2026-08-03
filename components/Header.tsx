@@ -65,7 +65,9 @@ export default function Header() {
           <Link href="#faq" className="hover:text-brand-700">
             FAQ
           </Link>
-          {/* Le lien vers le blog sera ajouté une fois les pages blog créées */}
+          <Link href="/blog" className="hover:text-brand-700">
+            Blog
+          </Link>
         </nav>
         <Link
           href="#prediagnostic-form"
