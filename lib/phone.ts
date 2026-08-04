@@ -67,17 +67,29 @@ export function formatPhoneFr(national: string): string {
 }
 
 /**
- * Formatage au fil de la frappe. Dès que la saisie devient un numéro français
- * reconnaissable, on affiche la forme nationale canonique — l'utilisateur qui
- * a tapé « +33 6 26 40 01 33 » voit « 06 26 40 01 33 » et comprend qu'on l'a
- * bien compris. Tant que ce n'est pas le cas, on se contente de grouper par
- * paires SANS RIEN COUPER, pour ne jamais détruire une saisie en cours.
+ * Formatage au fil de la frappe : regroupement par paires UNIQUEMENT, sans
+ * jamais couper ni réécrire la saisie.
+ *
+ * Une première version normalisait dès que le numéro devenait reconnaissable
+ * (« +33 6 26 40 01 33 » → « 06 26 40 01 33 »). Testée en production le
+ * 4 août 2026, elle produisait « 03 36 26 40 01 33 » : réécrire la valeur d'un
+ * champ contrôlé en cours de frappe replace le curseur au début, et les
+ * caractères suivants s'insèrent en tête. Un formatage qui corrige l'utilisateur
+ * pendant qu'il tape se bat contre son curseur — on attend donc qu'il ait fini.
  */
 export function formatPhoneInput(raw: string): string {
-  const national = normalizePhoneFr(raw);
-  if (national) return formatPhoneFr(national);
-
   const hasPlus = raw.trimStart().startsWith("+");
   const digits = raw.replace(/\D/g, "").slice(0, MAX_INPUT_DIGITS);
   return (hasPlus ? "+" : "") + digits.replace(/(\d{2})(?=\d)/g, "$1 ");
+}
+
+/**
+ * Normalisation à la sortie du champ (onBlur), quand la saisie est terminée et
+ * qu'aucun curseur n'est en jeu. « +33 6 26 40 01 33 » devient « 06 26 40 01 33 ».
+ * Si le numéro n'est pas reconnaissable, on laisse la saisie intacte : c'est au
+ * message de validation d'expliquer le problème, pas au formatage de deviner.
+ */
+export function normalizePhoneOnBlur(raw: string): string {
+  const national = normalizePhoneFr(raw);
+  return national ? formatPhoneFr(national) : raw;
 }

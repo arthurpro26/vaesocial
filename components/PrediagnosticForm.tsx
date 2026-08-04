@@ -6,7 +6,7 @@ import { useForm, Controller, useController, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { clsx } from "clsx";
 import { prediagnosticSchema, type PrediagnosticFormValues } from "@/lib/prediagnostic-schema";
-import { formatPhoneInput, isValidPhoneFr } from "@/lib/phone";
+import { formatPhoneInput, isValidPhoneFr, normalizePhoneOnBlur } from "@/lib/phone";
 import { useFormProgress } from "@/lib/form-progress-context";
 import { trackConversion } from "@/lib/tracking";
 import { trackFormConversion, type FormKey } from "@/lib/google-ads-conversions";
@@ -1059,7 +1059,14 @@ function CoordonneesStep({
             ref={telephone.field.ref}
             value={telephone.field.value ?? ""}
             onChange={(e) => telephone.field.onChange(formatPhoneNumber(e.target.value))}
-            onBlur={telephone.field.onBlur}
+            // La normalisation (+33 / 0033 → 06…) se fait ici, à la sortie du
+            // champ, et surtout pas pendant la frappe : réécrire la valeur en
+            // cours de saisie replace le curseur au début et corrompt le
+            // numéro. Voir lib/phone.ts.
+            onBlur={() => {
+              telephone.field.onChange(normalizePhoneOnBlur(telephone.field.value ?? ""));
+              telephone.field.onBlur();
+            }}
             placeholder="06 XX XX XX XX"
             className="form-input pr-9"
           />
