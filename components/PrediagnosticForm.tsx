@@ -6,6 +6,7 @@ import { useForm, Controller, useController, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { clsx } from "clsx";
 import { prediagnosticSchema, type PrediagnosticFormValues } from "@/lib/prediagnostic-schema";
+import { formatPhoneInput, isValidPhoneFr } from "@/lib/phone";
 import { useFormProgress } from "@/lib/form-progress-context";
 import { trackConversion } from "@/lib/tracking";
 import { trackFormConversion, type FormKey } from "@/lib/google-ads-conversions";
@@ -49,10 +50,32 @@ const STRUCTURE_SUGGESTIONS: Record<string, string[]> = {
 // pas") : toutes les suggestions réunies, sans doublons.
 const ALL_STRUCTURES = Array.from(new Set(Object.values(STRUCTURE_SUGGESTIONS).flat()));
 
+// Ancienneté dans l'activité décrite à l'étape précédente. Ajoutée le
+// 2026-08-04 : la durée d'exercice est la première condition légale
+// d'éligibilité à la VAE (un an minimum d'activité en rapport avec le
+// diplôme), et c'était la seule information manquante pour trancher un
+// dossier sans décrocher le téléphone.
+//
+// Choix fermés et non champ libre : 78 % du trafic est mobile, et un champ
+// texte y ouvre le clavier — le pire ennemi du taux de complétion. Un tap
+// suffit ici. Les bornes sont calées sur le seuil réglementaire d'un an, pour
+// que la première option isole immédiatement les dossiers non recevables.
+const ANCIENNETE_OPTIONS = [
+  { value: "Moins d'un an", label: "Moins d'un an" },
+  { value: "1 à 3 ans", label: "1 à 3 ans" },
+  { value: "3 à 5 ans", label: "3 à 5 ans" },
+  { value: "Plus de 5 ans", label: "Plus de 5 ans" },
+];
+
 const ALL_STEPS = [
   { key: "diplomeVise", label: "Votre objectif" },
   { key: "situationActuelle", label: "Votre situation" },
   { key: "activiteQuotidienne", label: "Votre quotidien" },
+  // Placée juste après la description de l'activité : la personne vient
+  // d'expliquer ce qu'elle fait, « depuis combien de temps » s'enchaîne
+  // naturellement. Placée plus tôt, elle filtrerait avant que la personne
+  // ne soit engagée dans le tunnel.
+  { key: "ancienneteActivite", label: "Votre ancienneté" },
   { key: "structure", label: "Votre structure" },
   { key: "coordonnees", label: "Vos coordonnées" },
 ] as const;
@@ -218,14 +241,12 @@ function isFinePointerDevice() {
   return typeof window !== "undefined" && !!window.matchMedia?.("(pointer: fine)").matches;
 }
 
-/** Formate un numéro au fil de la frappe en "06 XX XX XX XX" (paires de
- *  chiffres) — supprime tout caractère non numérique et limite à 10 chiffres
- *  (format français). Purement cosmétique : la validation réelle reste dans
- *  lib/prediagnostic-schema.ts. */
-function formatPhoneNumber(raw: string) {
-  const digits = raw.replace(/\D/g, "").slice(0, 10);
-  return digits.replace(/(\d{2})(?=\d)/g, "$1 ");
-}
+/** Formatage du téléphone : voir lib/phone.ts. Cette logique a été sortie du
+ *  composant après l'incident du 4 août 2026 (troncature silencieuse des
+ *  saisies au format international), pour que le formulaire, le schéma Zod et
+ *  l'enregistrement partagent exactement la même définition d'un numéro
+ *  valide — au lieu de trois règles divergentes. */
+const formatPhoneNumber = formatPhoneInput;
 
 // Corrections des fautes de frappe les plus courantes sur les fournisseurs
 // email les plus répandus en France — liste générique de bon sens (pas une
@@ -364,7 +385,11 @@ export default function PrediagnosticForm({
     setStep((s) => Math.max(s - 1, 0));
   }
 
-  async function selectAndAdvance(field: "diplomeVise" | "situationActuelle", value: string, onChange: (v: string) => void) {
+  async function selectAndAdvance(
+    field: "diplomeVise" | "situationActuelle" | "ancienneteActivite",
+    value: string,
+    onChange: (v: string) => void
+  ) {
     onChange(value);
     // petit délai pour laisser voir l'état "sélectionné" avant de passer à l'étape suivante
     setTimeout(async () => {
@@ -515,6 +540,18 @@ export default function PrediagnosticForm({
             <ActiviteStep control={control} onAdvance={advanceActiviteStep} error={errors.activiteQuotidienne?.message} />
           )}
 
+          {steps[step].key === "ancienneteActivite" && (
+            <ChoiceStep
+              question="Depuis combien de temps exercez-vous cette activité ?"
+              subtitle="La VAE demande au moins un an d'expérience en rapport avec le diplôme visé — c'est la première chose que nous vérifions pour vous."
+              name="ancienneteActivite"
+              control={control}
+              options={ANCIENNETE_OPTIONS}
+              onSelect={selectAndAdvance}
+              error={errors.ancienneteActivite?.message}
+            />
+          )}
+
           {steps[step].key === "structure" && (
             <StructureStep
               control={control}
@@ -569,7 +606,7 @@ function ChoiceStep({
   question: string;
   /** Ligne courte sous la question, pour expliquer pourquoi on la pose — réduit la friction perçue. */
   subtitle?: string;
-  name: "diplomeVise" | "situationActuelle";
+  name: "diplomeVise" | "situationActuelle" | "ancienneteActivite";
   control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
   options: { value: string; label: string; helper?: string; icon?: IconName }[];
   onSelect: (field: typeof name, value: string, onChange: (v: string) => void) => void;
@@ -891,7 +928,9 @@ function CoordonneesStep({
 
   const prenomValid = (prenom.field.value ?? "").trim().length >= 2;
   const nomValid = (nom.field.value ?? "").trim().length >= 2;
-  const phoneValid = (telephone.field.value ?? "").replace(/\D/g, "").length === 10;
+  // La coche verte ne s'affiche que si le numéro est réellement joignable —
+  // l'ancien test « 10 chiffres » validait des numéros tronqués (voir lib/phone.ts).
+  const phoneValid = isValidPhoneFr(telephone.field.value ?? "");
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.field.value ?? "");
   const emailSuggestion = suggestEmailDomain(email.field.value ?? "");
 

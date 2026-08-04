@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isValidPhoneFr } from "./phone";
 
 // Pas de champ "consentement" par case à cocher séparée : l'action d'envoyer
 // ce formulaire (dont l'unique objet est "être recontacté au sujet de ma
@@ -19,6 +20,13 @@ export const prediagnosticSchema = z.object({
   // pertinente ne doit jamais être bloquée — retour utilisateur du 2026-08-01,
   // l'objectif est le taux de complétion, pas le filtrage.
   activiteQuotidienne: z.string().min(1, "Décrivez brièvement votre activité."),
+  // Ancienneté dans l'activité décrite ci-dessus. Réintroduite le 2026-08-04
+  // à côté du texte libre (et non à sa place) : la nature des missions dit si
+  // le candidat correspond au référentiel, la durée dit s'il est légalement
+  // recevable (un an minimum). Les deux sont nécessaires, aucune ne remplace
+  // l'autre. Un lead « Moins d'un an » n'est pas bloqué — il est signalé côté
+  // conseiller, voir app/api/prediagnostic/route.ts.
+  ancienneteActivite: z.string().min(1, "Indiquez depuis combien de temps."),
   // Champ texte libre (autocomplétion suggérée selon le diplôme visé, mais
   // saisie manuelle toujours possible) — remplace l'ancienne question à choix
   // radio "secteur", jugée trop rigide / peu engageante.
@@ -26,10 +34,13 @@ export const prediagnosticSchema = z.object({
   prenom: z.string().min(2, "Prénom trop court."),
   nom: z.string().min(2, "Nom trop court."),
   email: z.string().email("Adresse email invalide."),
+  // Validation par FORMAT et non par longueur. L'ancienne règle (10 à 20
+  // caractères) acceptait « 33 62 64 00 13 » — un numéro tronqué et
+  // injoignable — et affichait une coche verte. Voir lib/phone.ts pour le
+  // détail de l'incident du 4 août 2026.
   telephone: z
     .string()
-    .min(10, "Numéro de téléphone invalide.")
-    .max(20, "Numéro de téléphone invalide."),
+    .refine(isValidPhoneFr, "Numéro invalide. Exemple : 06 12 34 56 78."),
   // Piège à robots (honeypot) : champ invisible pour les humains via CSS,
   // que les robots de spam remplissent souvent aveuglément. Toujours vide en
   // usage normal — voir PrediagnosticForm.tsx et app/api/prediagnostic/route.ts.

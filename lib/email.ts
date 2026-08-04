@@ -8,8 +8,24 @@ export type PrediagnosticLead = {
   diplomeVise: string;
   situationActuelle: string;
   activiteQuotidienne: string;
+  /** Durée d'exercice déclarée — ajoutée le 2026-08-04. Voir isEligibleDuree(). */
+  ancienneteActivite: string;
   structure: string;
 };
+
+/**
+ * La VAE exige au moins un an d'activité en rapport avec le diplôme visé.
+ * Seule la première option du formulaire ("Moins d'un an") est disqualifiante
+ * sur ce critère de durée — toutes les autres franchissent le seuil légal.
+ *
+ * Volontairement permissive : elle ne bloque jamais l'envoi du formulaire,
+ * elle sert uniquement à signaler le dossier au conseiller. Une personne à
+ * onze mois d'ancienneté sera éligible dans un mois — la perdre au lieu de la
+ * rappeler plus tard serait une erreur commerciale.
+ */
+export function isEligibleDuree(anciennete: string): boolean {
+  return anciennete !== "Moins d'un an";
+}
 
 function buildTransport() {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD } = process.env;
@@ -68,16 +84,31 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
   const recipient = process.env.LEADS_RECIPIENT_EMAIL;
   const from = process.env.LEADS_FROM_EMAIL || process.env.SMTP_USER;
 
-  const subject = `Nouveau prédiagnostic VAE — ${lead.diplomeVise} — ${lead.prenom} ${lead.nom}`;
+  // L'alerte d'ancienneté est portée par l'OBJET de l'email, pas seulement par
+  // le corps : c'est la seule partie visible dans une liste de mails sur
+  // téléphone. On voit si le dossier est recevable avant même de l'ouvrir.
+  const dureeOk = isEligibleDuree(lead.ancienneteActivite);
+  const alerte = dureeOk ? "" : " [ANCIENNETÉ < 1 AN]";
+  const subject = `Nouveau prédiagnostic VAE — ${lead.diplomeVise} — ${lead.prenom} ${lead.nom}${alerte}`;
+
   const text = [
     "Nouveau lead prédiagnostic VAE",
     "",
+    ...(dureeOk
+      ? []
+      : [
+          "⚠️ ANCIENNETÉ DÉCLARÉE INFÉRIEURE À UN AN",
+          "La VAE exige au moins un an d'activité en rapport avec le diplôme visé.",
+          "Dossier probablement non recevable en l'état — à recontacter plus tard.",
+          "",
+        ]),
     `Prénom : ${lead.prenom}`,
     `Nom : ${lead.nom}`,
     `Email : ${lead.email}`,
     `Téléphone : ${lead.telephone}`,
     `Diplôme visé : ${lead.diplomeVise}`,
     `Situation actuelle : ${lead.situationActuelle}`,
+    `Ancienneté dans l'activité : ${lead.ancienneteActivite}`,
     `Structure d'exercice : ${lead.structure}`,
     "",
     "Activité au quotidien :",

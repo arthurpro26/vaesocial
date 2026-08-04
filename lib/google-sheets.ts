@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
-import type { PrediagnosticLead } from "@/lib/email";
+import { isEligibleDuree, type PrediagnosticLead } from "@/lib/email";
 
 /**
  * Point d'intégration Google Sheets pour les leads du formulaire de
@@ -62,11 +62,22 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
   // être mis à jour avec ces mêmes intitulés, dans cet ordre, sinon les
   // nouvelles données ne seront pas enregistrées dans la bonne colonne (ou
   // l'ajout de ligne échouera selon la configuration du Sheet).
+  //
+  // 2026-08-04 : ajout des colonnes "Ancienneté" et "Éligibilité". La seconde
+  // est calculée, pas saisie : elle permet de trier le Sheet et de traiter en
+  // priorité les dossiers recevables sans relire chaque ligne.
   await sheet.addRow({
     Date: new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" }),
     Diplôme: lead.diplomeVise,
     Statut: lead.situationActuelle,
     "Activité quotidienne": lead.activiteQuotidienne,
+    // ⚠️ Ces deux intitulés doivent correspondre EXACTEMENT aux cellules J1 et
+    // K1 du Sheet (vérifiées visuellement le 2026-08-04). « Recevabilité » et
+    // non « Éligibilité » : la capitale accentuée É se saisit mal selon les
+    // dispositions clavier et un seul caractère divergent suffit à ce que la
+    // colonne ne soit jamais remplie, silencieusement.
+    Ancienneté: lead.ancienneteActivite,
+    Recevabilité: isEligibleDuree(lead.ancienneteActivite) ? "OK" : "À vérifier",
     Structure: lead.structure,
     Prénom: lead.prenom,
     Nom: lead.nom,

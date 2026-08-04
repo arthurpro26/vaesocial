@@ -16,14 +16,39 @@
 // modification (formulaire, API route...) n'est nécessaire.
 export type FormKey = "dees" | "deaes" | "deeje" | "deme" | "generique";
 
-export const GOOGLE_ADS_CONVERSION_LABELS: Record<FormKey, string | undefined> = {
-  dees: "AW-18174606822/BbkxCP6cxtgcEOb7qdpD",
-  deaes: undefined,
-  deeje: undefined,
-  deme: undefined,
+// Étiquette unique de l'action de conversion « Envois de formulaires de lead »
+// du compte. Elle est volontairement partagée par TOUS les formulaires.
+//
+// INCIDENT DU 4 AOÛT 2026 — pourquoi ce changement.
+// Auparavant seule la clé `dees` était renseignée, les quatre autres valant
+// `undefined`. Or `formKey` vaut "generique" dès que le formulaire est envoyé
+// depuis la page d'accueil ou /prediagnostic (aucun diplôme présélectionné) :
+// trackFormConversion() sortait alors sans rien envoyer. Résultat, un lead
+// réel reçu à 15h59 n'est jamais remonté dans Google Ads, et la stratégie
+// « Maximiser les conversions » apprenait sur un signal amputé — elle
+// optimisait en ignorant une partie des leads réellement générés.
+//
+// Une seule action de conversion pour un seul objectif commercial (obtenir un
+// lead) est de toute façon la bonne architecture : la ventilation par diplôme
+// se fait dans les rapports, par campagne, pas en multipliant les actions de
+// conversion — ce qui fragmenterait l'apprentissage des enchères entre
+// plusieurs signaux trop peu volumineux chacun pour converger.
+const LEAD_FORM_CONVERSION = "AW-18174606822/BbkxCP6cxtgcEOb7qdpD";
+
+// Le type est `Record<FormKey, string>` et NON `string | undefined` : c'est le
+// garde-fou qui manquait. Si un jour une clé est oubliée, mise à undefined, ou
+// qu'un nouveau diplôme est ajouté à FormKey sans son étiquette, la
+// compilation TypeScript ÉCHOUE et le déploiement Hostinger s'arrête. Le bug
+// ne peut plus passer en production silencieusement — c'est exactement ce qui
+// s'est produit le 4 août 2026 et qui a coûté des conversions non remontées.
+export const GOOGLE_ADS_CONVERSION_LABELS: Record<FormKey, string> = {
+  dees: LEAD_FORM_CONVERSION,
+  deaes: LEAD_FORM_CONVERSION,
+  deeje: LEAD_FORM_CONVERSION,
+  deme: LEAD_FORM_CONVERSION,
   // Formulaire de la page d'accueil et de /prediagnostic, quand aucun
   // diplôme n'est présélectionné (presetDiplome absent).
-  generique: undefined,
+  generique: LEAD_FORM_CONVERSION,
 };
 
 declare global {

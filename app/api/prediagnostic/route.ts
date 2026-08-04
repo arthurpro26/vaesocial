@@ -3,6 +3,7 @@ import { prediagnosticSchema } from "@/lib/prediagnostic-schema";
 import { sendPrediagnosticLead } from "@/lib/email";
 import { appendLeadToSheet } from "@/lib/google-sheets";
 import { isRateLimited } from "@/lib/rate-limit";
+import { formatPhoneFr, normalizePhoneFr } from "@/lib/phone";
 
 export async function POST(request: NextRequest) {
   // "x-forwarded-for" est l'en-tête standard derrière un proxy/reverse-proxy
@@ -45,9 +46,18 @@ export async function POST(request: NextRequest) {
   // garantit que l'échec de l'un n'empêche jamais l'autre de s'exécuter ni de
   // réussir. On logue explicitement chaque résultat pour pouvoir diagnostiquer
   // un échec silencieux depuis les logs Hostinger, sans avoir à deviner.
+  // Le schéma a déjà garanti que le numéro est normalisable ; on enregistre la
+  // forme nationale canonique (« 06 26 40 01 33 ») quelle que soit la saisie
+  // d'origine, pour que le numéro soit directement cliquable depuis l'email et
+  // le Google Sheet sans retraitement manuel.
+  const lead = {
+    ...parsed.data,
+    telephone: formatPhoneFr(normalizePhoneFr(parsed.data.telephone)!),
+  };
+
   const [emailResult, sheetResult] = await Promise.allSettled([
-    sendPrediagnosticLead(parsed.data),
-    appendLeadToSheet(parsed.data),
+    sendPrediagnosticLead(lead),
+    appendLeadToSheet(lead),
   ]);
 
   const emailOk = emailResult.status === "fulfilled" && emailResult.value.delivered;
