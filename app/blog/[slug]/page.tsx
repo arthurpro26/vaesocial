@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Container from "@/components/Container";
 import ArticleBody from "@/components/blog/ArticleBody";
+import ArticleStickyCta from "@/components/blog/ArticleStickyCta";
 import ArticleJsonLd from "@/components/ArticleJsonLd";
 import { BLOG_ARTICLES, getArticleBySlug } from "@/lib/blog-data";
 import { siteConfig } from "@/lib/site-config";
@@ -67,7 +68,9 @@ export default async function BlogArticlePage({
   return (
     <>
       <ArticleJsonLd article={article} />
-      <article className="py-10 sm:py-16">
+      {/* pb-24 : réserve la hauteur de la barre d'accès fixe (ArticleStickyCta)
+          pour qu'elle ne recouvre jamais la fin de l'article. */}
+      <article className="py-10 pb-24 sm:py-16 sm:pb-28">
         <Container className="max-w-2xl">
           <Link
             href="/blog"
@@ -95,6 +98,7 @@ export default async function BlogArticlePage({
           </div>
         </Container>
       </article>
+      <ArticleStickyCta />
     </>
   );
 }

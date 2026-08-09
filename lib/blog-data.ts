@@ -31,6 +31,135 @@ export type BlogArticle = {
 };
 
 export const BLOG_ARTICLES: BlogArticle[] = [
+  // ⚠️ STRATÉGIE ÉDITORIALE — décision du 9 août 2026, après vérification chiffrée.
+  // Les requêtes informationnelles génériques (« livret 2 vae », « recevabilité vae »,
+  // « combien de temps dure une vae »…) pèsent ~5 700 recherches/mois en France, à
+  // concurrence FAIBLE. Les mêmes intentions avec le nom du diplôme (« livret 2 éducateur
+  // spécialisé ») ne pèsent que ~130 recherches/mois — 44 fois moins : les candidats ne
+  // tapent pas leur diplôme quand ils cherchent de l'aide sur leur dossier.
+  // D'où la règle : on se positionne sur le GÉNÉRIQUE pour capter le trafic, mais TOUS les
+  // exemples viennent du secteur social et médico-social. C'est le contenu qui trie les
+  // lecteurs, pas le référencement. Un lecteur hors secteur ne coûte rien ; un lecteur du
+  // secteur se reconnaît immédiatement et convertit.
+  {
+    slug: "livret-2-vae-guide-complet",
+    title: "Livret 2 VAE : le guide complet pour le remplir (et ne pas se décourager)",
+    metaTitle: "Livret 2 VAE : comment le remplir — guide complet 2026",
+    metaDescription:
+      "Le livret 2, désormais appelé dossier de validation, est l'étape qui décourage le plus de candidats. Voici comment le structurer, combien de situations décrire, et les erreurs qui coûtent une validation partielle.",
+    excerpt:
+      "C'est l'étape où la moitié des candidats abandonnent. Pourtant, le livret 2 n'est pas un exercice de rédaction : c'est un travail de preuve. Voici comment s'y prendre.",
+    category: "Méthode",
+    datePublished: "2026-08-09",
+    readingTime: "7 min",
+    content: [
+      {
+        type: "p",
+        text: "Le livret 2 est le moment où une VAE se gagne ou se perd. La recevabilité, elle, ne valide qu'une chose : que vous avez le droit de vous présenter. Le livret 2, lui, est le document sur lequel le jury va réellement décider si vous obtenez votre diplôme. Et c'est aussi l'étape où beaucoup de candidats s'arrêtent — non pas par manque de compétences, mais parce qu'ils ne savent pas quoi écrire ni comment.",
+      },
+      {
+        type: "callout",
+        icon: "ℹ️",
+        text: "Depuis la réforme engagée en 2022 et la mise en place du portail France VAE, le vocabulaire officiel a changé : le livret 1 est devenu le « dossier de faisabilité », et le livret 2 le « dossier de validation ». Les deux appellations coexistent encore partout, y compris chez les certificateurs. Si vous lisez « dossier de validation », il s'agit bien du livret 2.",
+      },
+      {
+        type: "h2",
+        text: "Ce que le jury lit vraiment",
+      },
+      {
+        type: "p",
+        text: "L'erreur la plus fréquente est de raconter son parcours. Un jury de VAE ne lit pas une biographie professionnelle : il cherche, dans ce que vous décrivez, les compétences inscrites au référentiel du diplôme. Chaque paragraphe que vous écrivez doit pouvoir être rattaché à une compétence attendue. Si un passage ne prouve rien, il ne sert à rien — même s'il est bien écrit et sincère.",
+      },
+      {
+        type: "p",
+        text: "Concrètement, le dossier de validation vous demande de décrire un nombre limité de situations professionnelles vécues — généralement entre six et dix selon les diplômes — et de les analyser. Le mot important est « analyser ». Décrire ce que vous avez fait ne suffit pas. Il faut expliquer pourquoi vous l'avez fait ainsi, ce que vous avez pris en compte, ce que vous avez ajusté, et ce que vous en avez tiré.",
+      },
+      {
+        type: "h2",
+        text: "La différence entre décrire et prouver",
+      },
+      {
+        type: "p",
+        text: "Prenons un exemple concret dans le secteur social. Écrire « j'accompagne des adultes en situation de handicap dans un foyer de vie » ne prouve rien : c'est une fiche de poste. En revanche, décrire une situation précise — l'élaboration du projet individualisé d'un résident, la façon dont vous avez recueilli ses attentes malgré des difficultés de communication, les objectifs que vous avez posés avec l'équipe, la mise en place d'un atelier adapté, puis la manière dont vous avez réévalué le projet six mois plus tard — voilà qui démontre une compétence.",
+      },
+      {
+        type: "p",
+        text: "La règle est simple : une situation, un contexte, des personnes réelles, une difficulté rencontrée, des choix que vous avez faits, et un résultat. Le jury doit pouvoir vous imaginer en train de travailler.",
+      },
+      {
+        type: "cta",
+        titre: "Vous ne savez pas si votre expérience suffit ?",
+        texte:
+          "C'est la question qui bloque le plus de candidats avant même de commencer. En quelques minutes, dites-nous ce que vous faites au quotidien : nous vous disons franchement si votre parcours correspond au diplôme visé, et lequel serait le plus adapté. C'est gratuit et sans engagement.",
+        cta: "Tester mon éligibilité gratuitement",
+      },
+      {
+        type: "h2",
+        text: "Comment choisir les situations à décrire",
+      },
+      {
+        type: "p",
+        text: "Le réflexe naturel est de choisir ses plus belles réussites. C'est rarement le bon critère. Ce qu'il faut choisir, ce sont les situations qui couvrent le plus largement le référentiel — quitte à retenir une situation ordinaire mais riche plutôt qu'un moment exceptionnel mais étroit.",
+      },
+      {
+        type: "p",
+        text: "Une méthode qui fonctionne : imprimez le référentiel du diplôme, listez les compétences attendues, puis en face de chacune, notez une situation vécue. Les compétences qui restent sans situation en face sont vos angles morts. C'est là qu'il faut chercher dans votre mémoire, ou parfois reconnaître qu'il vous manque une expérience — et le jury préférera toujours une lacune assumée à une compétence inventée.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Privilégiez les situations où vous avez décidé quelque chose, pas seulement exécuté.",
+          "Choisissez des situations récentes : vous vous en souviendrez précisément, et elles reflètent votre pratique actuelle.",
+          "Variez les contextes — travail direct, coordination en équipe, lien avec les familles ou les partenaires extérieurs.",
+          "Gardez les traces : comptes rendus, projets écrits, plannings d'activités. Ils vous aideront à retrouver les détails.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "Les erreurs qui coûtent une validation partielle",
+      },
+      {
+        type: "p",
+        text: "Une validation partielle signifie que le jury reconnaît une partie de vos compétences, mais pas toutes. Ce n'est pas un échec — vous conservez le bénéfice des blocs validés — mais c'est souvent évitable. Trois causes reviennent constamment.",
+      },
+      {
+        type: "p",
+        text: "La première : un dossier qui reste au niveau du « nous ». Beaucoup de professionnels du social écrivent naturellement au nom de l'équipe, par culture du collectif. Mais le jury valide une personne, pas une équipe. Il faut assumer le « je », même si cela met mal à l'aise.",
+      },
+      {
+        type: "p",
+        text: "La deuxième : l'absence de recul. Décrire correctement ce que l'on fait sans jamais interroger ses propres choix donne un dossier plat. Le jury cherche un professionnel capable d'analyser sa pratique, pas seulement de l'exercer.",
+      },
+      {
+        type: "p",
+        text: "La troisième : un référentiel couvert de façon déséquilibrée. Trois situations magnifiques sur le même domaine de compétences, et rien sur les autres. Le jury n'a alors aucun élément pour valider les blocs manquants.",
+      },
+      {
+        type: "callout",
+        icon: "⚠️",
+        text: "Ne recopiez jamais un livret 2 trouvé en ligne, même « pour vous inspirer de la structure ». Les jurys lisent des centaines de dossiers et repèrent immédiatement les tournures qui circulent. Un dossier qui sonne faux est bien plus pénalisant qu'un dossier maladroit mais authentique.",
+      },
+      {
+        type: "h2",
+        text: "Combien de temps y consacrer",
+      },
+      {
+        type: "p",
+        text: "Il n'existe pas de durée officielle : cela dépend du diplôme, de votre aisance à l'écrit et du temps dont vous disposez. Ce qui est constant, en revanche, c'est que le livret 2 ne s'écrit pas d'un trait. Il se construit par allers-retours — on décrit une situation, on la relit une semaine plus tard, on s'aperçoit qu'on a oublié l'essentiel, on reprend.",
+      },
+      {
+        type: "p",
+        text: "C'est précisément pour cette raison que l'accompagnement existe et qu'il est finançable. Non pas pour écrire à votre place — c'est interdit, et un jury le verrait — mais pour vous poser les bonnes questions, repérer ce qui manque au regard du référentiel, et vous éviter de découvrir un angle mort le jour du passage devant le jury.",
+      },
+      {
+        type: "cta",
+        titre: "Un accompagnement pour ne pas rester seul face au dossier",
+        texte:
+          "Nous accompagnons exclusivement les professionnels du secteur social et médico-social — éducateur spécialisé, moniteur-éducateur, accompagnant éducatif et social. Un premier échange gratuit permet de faire le point sur votre situation, votre expérience et vos possibilités de financement.",
+        cta: "Demander mon prédiagnostic gratuit",
+      },
+    ],
+  },
   {
     slug: "cpf-reste-a-charge-2026",
     title: "CPF et VAE en 2026 : le reste à charge passe à 150 €, ce qui change pour vous",
