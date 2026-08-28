@@ -337,6 +337,92 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
     ],
   },
+  {
+    slug: "recevabilite-vae-guide-complet",
+    title: "Recevabilité VAE : ce qu'elle vérifie vraiment (et pourquoi elle n'a rien à voir avec le jury)",
+    metaTitle: "Recevabilité VAE : guide complet — conditions, délais, dossier 2026",
+    metaDescription:
+      "La recevabilité est la première étape d'une VAE : elle ne juge pas vos compétences, seulement votre droit à candidater. Conditions d'expérience, délai légal de réponse, contenu du dossier — le guide complet.",
+    excerpt:
+      "Avant même de parler de compétences, il faut franchir une première porte : la recevabilité. Beaucoup de candidats s'en inquiètent à tort — voici ce qu'elle vérifie réellement.",
+    category: "Méthode",
+    datePublished: "2026-08-28",
+    readingTime: "6 min",
+    content: [
+      {
+        type: "p",
+        text: "Avant de parler de livret 2, de compétences ou de jury, une VAE commence par une étape plus discrète mais tout aussi déterminante : la recevabilité. C'est elle qui décide si vous avez, ne serait-ce que, le droit de vous présenter. Beaucoup de candidats l'abordent avec la même angoisse que le jury final — à tort, car elle ne vérifie pas du tout la même chose.",
+      },
+      {
+        type: "h2",
+        text: "Ce que la recevabilité vérifie (et ce qu'elle ne vérifie pas)",
+      },
+      {
+        type: "p",
+        text: "La recevabilité, c'est la constitution du dossier administratif qui ouvre officiellement le droit à candidater à la VAE auprès du certificateur. Concrètement, elle répond à une seule question : votre expérience correspond-elle, dans sa nature, au métier visé par le diplôme ? Elle ne demande pas encore de démontrer vos compétences dans le détail — c'est le rôle du livret de compétences, l'étape suivante. Elle vérifie seulement que vous n'êtes pas hors sujet : quelqu'un qui vise le DEME doit avoir accompagné, à un titre ou un autre, des personnes en difficulté sociale ou en situation de handicap ; quelqu'un qui vise le DEES, des enfants, adolescents ou adultes en difficulté.",
+      },
+      {
+        type: "callout",
+        icon: "ℹ️",
+        text: "Le certificateur dispose légalement de deux mois pour répondre à une demande de recevabilité. Passé ce délai sans réponse, la recevabilité est réputée acquise — le silence de l'administration ne bloque jamais votre parcours.",
+      },
+      {
+        type: "h2",
+        text: "Combien d'expérience faut-il réellement",
+      },
+      {
+        type: "p",
+        text: "C'est la question qui revient le plus souvent, et c'est aussi celle où circulent le plus d'idées fausses. Depuis la réforme engagée en 2024, aucune durée minimale d'expérience n'est exigée pour candidater à une VAE — que ce soit pour le DEES, le DEAES, le DEEJE ou le DEME. Avant cette réforme, une ancienneté minimale était requise ; ce n'est plus le cas. Ce qui compte désormais, c'est la nature de votre expérience — professionnelle, bénévole ou en tant qu'aidant — au regard du référentiel du diplôme visé, pas sa durée en années.",
+      },
+      {
+        type: "p",
+        text: "Cela ne veut pas dire que n'importe quelle expérience, aussi courte soit-elle, suffit automatiquement. Une expérience de quelques mois peut être recevable si elle est réellement représentative des missions du métier ; une expérience de dix ans peut être fragile si elle ne couvre qu'une petite partie du référentiel. C'est précisément ce qu'un diagnostic sérieux doit évaluer avant de déposer quoi que ce soit — pas seulement compter des années.",
+      },
+      {
+        type: "cta",
+        titre: "Vous ne savez pas si votre expérience est recevable ?",
+        texte:
+          "Décrivez-nous votre quotidien professionnel : nous vous disons franchement si votre expérience correspond au diplôme visé, sans jargon et sans vous faire perdre de temps sur un dossier voué à l'échec.",
+        cta: "Tester ma recevabilité gratuitement",
+      },
+      {
+        type: "h2",
+        text: "Comment se déroule l'évaluation avant le dépôt du dossier",
+      },
+      {
+        type: "p",
+        text: "Avant même de déposer le dossier administratif, un temps d'échange avec un accompagnateur permet de vérifier trois choses : que votre expérience est bien suffisante au regard du diplôme visé, le volume d'heures d'accompagnement dont vous aurez besoin pour construire un dossier solide, et — plus simplement — que le courant passe avec la personne qui va vous accompagner sur plusieurs mois. Ce sont ces trois points qui permettent de vous orienter en confiance avant tout engagement, plutôt que de découvrir un problème une fois le dossier déjà déposé.",
+      },
+      {
+        type: "p",
+        text: "Le dossier administratif à proprement parler demande généralement un CV détaillé, des justificatifs de votre expérience (attestations d'employeur, bulletins de salaire, ou tout document prouvant la nature de vos missions), et le cas échéant vos diplômes déjà obtenus. Rien de tout cela ne se rédige seul du jour au lendemain — c'est pour cette raison qu'un accompagnement existe dès cette étape, et non seulement à partir du livret de compétences.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Un CV détaillé, centré sur les missions réellement exercées plutôt que sur les intitulés de poste.",
+          "Des justificatifs d'expérience : attestations d'employeur, bulletins de salaire, ou équivalent pour une expérience bénévole ou d'aidant.",
+          "Vos diplômes déjà obtenus, même s'ils ne sont pas du secteur social ou médico-social.",
+          "Une première formulation, même imparfaite, du métier que vous exercez au quotidien — elle sera affinée avec votre accompagnateur.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "Une fois la recevabilité obtenue",
+      },
+      {
+        type: "p",
+        text: "La recevabilité n'est qu'une porte d'entrée : elle ne valide rien sur le fond, elle autorise seulement à continuer. L'étape suivante, le livret de compétences, est celle où votre expérience sera réellement évaluée dans le détail — c'est un travail différent, plus long, qui mérite un accompagnement à part entière. Ce qui compte à ce stade de la recevabilité, c'est de ne pas se tromper de diplôme ni de sous-estimer le travail à venir : mieux vaut le savoir dès le diagnostic initial qu'au milieu du parcours.",
+      },
+      {
+        type: "cta",
+        titre: "Un accompagnement dès le diagnostic, pas seulement pour le dossier",
+        texte:
+          "Nous accompagnons exclusivement les professionnels du secteur social et médico-social. Un premier échange gratuit permet de vérifier votre recevabilité, d'estimer le volume d'accompagnement nécessaire, et de faire connaissance avant tout engagement.",
+        cta: "Demander mon prédiagnostic gratuit",
+      },
+    ],
+  },
 ];
 
 export function getArticleBySlug(slug: string): BlogArticle | undefined {
