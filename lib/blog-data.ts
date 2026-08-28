@@ -423,6 +423,92 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
     ],
   },
+  {
+    slug: "duree-vae-2026-combien-de-temps",
+    title: "Combien de temps dure une VAE en 2026 ? Le vrai calendrier, étape par étape",
+    metaTitle: "Durée d'une VAE en 2026 : combien de temps ça prend réellement",
+    metaDescription:
+      "Recevabilité, livret de compétences, jury : combien de temps dure chaque étape d'une VAE, et pourquoi la durée totale varie autant d'un candidat à l'autre. Le calendrier réaliste.",
+    excerpt:
+      "C'est la deuxième question que tout le monde pose, juste après « est-ce que mon expérience suffit ». La réponse n'est pas un chiffre unique — c'est un calendrier en plusieurs étapes.",
+    category: "Méthode",
+    datePublished: "2026-08-28",
+    readingTime: "5 min",
+    content: [
+      {
+        type: "p",
+        text: "« Combien de temps ça va me prendre ? » C'est l'une des toutes premières questions que pose un candidat à la VAE — juste après celle de savoir si son expérience est recevable. La réponse honnête est qu'il n'existe pas de durée fixe : une VAE se déroule en plusieurs étapes distinctes, dont certaines ont un cadre réglementaire précis et d'autres dépendent entièrement de votre rythme. Voici le détail, étape par étape.",
+      },
+      {
+        type: "h2",
+        text: "Le temps calendaire n'est pas le temps de travail",
+      },
+      {
+        type: "p",
+        text: "Avant de parler de mois, il faut distinguer deux choses qu'on confond souvent. Le temps calendaire, c'est la durée totale entre le moment où vous vous lancez et celui où vous passez devant le jury. Le temps de travail réel, c'est le nombre d'heures que vous y consacrez concrètement. Un accompagnement VAE représente en général 15 à 20 heures de travail effectif avec votre accompagnateur — réparties sur plusieurs mois, pas concentrées sur une semaine. C'est ce qui rend la VAE compatible avec une activité professionnelle à temps plein : vous n'arrêtez jamais de travailler pour la préparer.",
+      },
+      {
+        type: "h2",
+        text: "Recevabilité : jusqu'à deux mois, souvent moins",
+      },
+      {
+        type: "p",
+        text: "Une fois votre dossier de recevabilité déposé, le certificateur dispose légalement de deux mois pour vous répondre. C'est un maximum, pas une norme : beaucoup de réponses arrivent avant. Et si jamais le délai est dépassé sans réponse, la recevabilité est réputée acquise — l'absence de réponse ne vous pénalise jamais.",
+      },
+      {
+        type: "h2",
+        text: "Le livret de compétences : l'étape qui prend le plus de temps",
+      },
+      {
+        type: "p",
+        text: "C'est là que se joue la majeure partie du calendrier, et c'est aussi l'étape la moins prévisible. Il n'existe pas de durée officielle pour rédiger un livret de compétences : cela dépend de votre aisance à l'écrit, du temps dont vous disposez chaque semaine, et surtout du fait que ce document se construit par allers-retours plutôt que d'un seul jet. On décrit une situation, on la relit, on s'aperçoit qu'il manque un élément d'analyse, on reprend. C'est un travail itératif, pas un exercice de rédaction qu'on boucle en un week-end.",
+      },
+      {
+        type: "callout",
+        icon: "ℹ️",
+        text: "Rédiger le livret de compétences seul, sans accompagnement, c'est possible réglementairement — mais c'est souvent ce qui explique les parcours qui traînent sur un an ou deux, faute de retours réguliers pour savoir si on est sur la bonne voie.",
+      },
+      {
+        type: "cta",
+        titre: "Vous voulez une estimation pour votre propre situation ?",
+        texte:
+          "Le calendrier dépend beaucoup de votre expérience et de votre disponibilité. En quelques minutes, on peut vous donner une estimation réaliste plutôt qu'une moyenne générale.",
+        cta: "Demander mon estimation gratuite",
+      },
+      {
+        type: "h2",
+        text: "Au global : comptez en moyenne 6 à 12 mois",
+      },
+      {
+        type: "p",
+        text: "En pratique, pour les candidats du secteur social et médico-social que nous accompagnons, un parcours VAE complet — du diagnostic initial jusqu'au passage devant le jury — dure en moyenne entre 6 et 12 mois. C'est nettement plus rapide qu'une formation initiale classique, puisque vous ne suivez pas d'enseignements déjà couverts par votre expérience : vous rédigez et présentez un dossier qui valorise ce que vous savez déjà faire.",
+      },
+      {
+        type: "h2",
+        text: "Ce qui peut allonger ou raccourcir ce délai",
+      },
+      {
+        type: "ul",
+        items: [
+          "Votre disponibilité réelle chaque semaine — un parcours avancé par sessions régulières va plus vite qu'un parcours qui s'arrête et repart au gré de l'actualité professionnelle.",
+          "La proximité entre votre expérience et le référentiel du diplôme visé — moins il y a d'angles morts à combler, moins le livret demande de recherche et de reformulation.",
+          "Le calendrier des sessions de jury du certificateur, qui n'est pas entièrement sous votre contrôle ni sous le nôtre.",
+          "La qualité du suivi pendant la rédaction — des retours réguliers évitent de découvrir un problème de fond à un stade avancé, ce qui est la cause la plus fréquente des parcours qui s'éternisent.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Le point important à retenir : la durée d'une VAE se pilote. Ce n'est pas une contrainte administrative subie du début à la fin — c'est un calendrier que vous construisez avec votre rythme, et qu'un accompagnement régulier permet de tenir sans mauvaise surprise.",
+      },
+      {
+        type: "cta",
+        titre: "Un accompagnement qui tient le calendrier avec vous",
+        texte:
+          "Un seul interlocuteur dédié, du diagnostic jusqu'au jury, avec des séances qui s'organisent autour de votre emploi du temps. Premier échange gratuit et sans engagement.",
+        cta: "Demander mon prédiagnostic gratuit",
+      },
+    ],
+  },
 ];
 
 export function getArticleBySlug(slug: string): BlogArticle | undefined {
