@@ -27,12 +27,49 @@ const DIPLOME_OPTIONS = [
 // option ici : le site ne présente ces dispositifs (CPF, OPCO Santé, France
 // Travail...) que de façon générale, jamais garantis par statut précis — on
 // évite d'induire une promesse de financement qu'on ne peut pas tenir pour
-// chaque cas.
+// chaque cas. CETTE RÈGLE RESTE VALABLE : les `helper` ci-dessous ne parlent
+// que du type d'employeur, jamais d'un dispositif de financement.
+//
+// AJOUT DU 29/08/2026 — pourquoi ces `helper`.
+// Constat terrain de Yoni : les salariés d'établissements ASSOCIATIFS (IME,
+// ITEP, MECS, ESAT, foyers) se déclarent très souvent "Agent du secteur
+// public", parce qu'ils assimilent leur mission de service public à un statut
+// public. La colonne "Statut" du Google Sheet devenait donc inexploitable :
+// elle mélangeait de vrais agents publics (mairie, hôpital) et des salariés
+// de droit privé, deux profils dont l'aiguillage de financement n'a rien à
+// voir. Les deux lignes d'aide se répondent volontairement : la première est
+// INCLUSIVE (elle rattrape l'associatif), la seconde est RESTRICTIVE (elle
+// dissuade de la cocher par défaut).
+//
+// ⚠️ Ne jamais modifier les `value` : ce sont eux qui partent dans l'email et
+// dans la colonne "Statut" du Sheet. Changer une `value` désaligne
+// l'historique des leads déjà enregistrés. Seuls `label` et `helper` sont de
+// l'affichage.
 const SITUATION_OPTIONS = [
-  { value: "Salarié du secteur privé", label: "Salarié du secteur privé", icon: "briefcase" as const },
-  { value: "Agent du secteur public", label: "Agent du secteur public", icon: "landmark" as const },
-  { value: "Demandeur d'emploi", label: "Demandeur d'emploi", icon: "search" as const },
-  { value: "Indépendant", label: "Indépendant", icon: "network" as const },
+  {
+    value: "Salarié du secteur privé",
+    label: "Salarié du secteur privé",
+    helper: "Y compris associatif : IME, ITEP, MECS, ESAT, foyer…",
+    icon: "briefcase" as const,
+  },
+  {
+    value: "Agent du secteur public",
+    label: "Agent du secteur public",
+    helper: "Mairie, département, hôpital public uniquement",
+    icon: "landmark" as const,
+  },
+  {
+    value: "Demandeur d'emploi",
+    label: "Demandeur d'emploi",
+    helper: "Inscrit ou non à France Travail",
+    icon: "search" as const,
+  },
+  {
+    value: "Indépendant",
+    label: "Indépendant",
+    helper: "Libéral, auto-entrepreneur",
+    icon: "network" as const,
+  },
   { value: "Autre", label: "Autre" },
 ];
 
