@@ -130,6 +130,13 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
   }
 
   // Version HTML — ajoutée le 29/08/2026.
+  //
+  // L'en-tête est dessiné en HTML/CSS, PAS avec public/logo.svg : le SVG est
+  // supprimé par plusieurs clients mail (Gmail), et les images distantes sont
+  // bloquées par défaut tant que le destinataire ne les autorise pas. Un
+  // dégradé CSS avec `background-color` en repli s'affiche partout, sans rien
+  // à charger. Les couleurs reprennent celles du logo (tailwind.config.ts :
+  // brand.400 #55a08f → brand.700 #21564d, accent.600 #ea580c).
   // Objectif : passer de « je lis le lead, je recopie le numéro, je rédige un
   // SMS » à deux gestes. Le bouton Appeler ouvre le téléphone, le bouton SMS
   // ouvre Messages avec le destinataire ET le texte déjà remplis.
@@ -160,9 +167,22 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
   const ligne = (libelle: string, valeur: string) =>
     `<tr><td style="padding:4px 12px 4px 0;color:#64748b;white-space:nowrap">${libelle}</td><td style="padding:4px 0;color:#0f172a"><strong>${esc(valeur)}</strong></td></tr>`;
 
+  // Repli visible dans la version HTML — ajouté le 29/08/2026 après test réel.
+  // Le premier jet ne mettait le texte du SMS que dans la version texte de
+  // l'email : invisible, puisque les clients mail affichent le HTML dès qu'il
+  // existe. Or ce repli est indispensable : beaucoup de messageries (Gmail
+  // notamment) suppriment les liens `sms:` par sécurité, et le bouton devient
+  // inerte. Il faut donc toujours pouvoir copier le texte à la main.
+  const blocCopie = `<p style="margin:24px 0 4px;color:#64748b">SMS de relance — à copier si le bouton ne réagit pas</p>
+  <p style="margin:0;padding:12px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;white-space:pre-wrap;font-size:15px">${esc(buildRelanceSms(lead))}</p>`;
+
   const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;color:#0f172a">
-  <h2 style="margin:0 0 4px">Nouveau lead ${esc(lead.diplomeVise)}</h2>
-  <p style="margin:0 0 16px;color:#64748b">${esc(lead.prenom)} ${esc(lead.nom)}</p>
+  <div style="background-color:#21564d;background-image:linear-gradient(135deg,#55a08f 0%,#21564d 100%);border-radius:14px;padding:22px 24px;margin:0 0 20px">
+    <p style="margin:0;color:#ffffff;font-size:21px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
+    <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Nouveau lead — ${esc(lead.diplomeVise)}</p>
+  </div>
+  <h2 style="margin:0 0 4px;font-size:22px">${esc(lead.prenom)} ${esc(lead.nom)}</h2>
+  <p style="margin:0 0 18px;color:#ea580c;font-weight:600;font-size:15px">Rappelez maintenant — les premières minutes font la différence.</p>
   ${dureeOk ? "" : `<p style="margin:0 0 16px;padding:12px;background:#fef3c7;border-radius:8px">Ancienneté déclarée : <strong>moins d'un an</strong>. À vérifier au cas par cas — depuis la réforme 2024, aucune durée minimale n'est exigée.</p>`}
   <div style="margin:0 0 20px">${actions}</div>
   <table style="border-collapse:collapse;font-size:15px">
@@ -175,6 +195,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
   </table>
   <p style="margin:20px 0 4px;color:#64748b">Activité au quotidien</p>
   <p style="margin:0;padding:12px;background:#f8fafc;border-radius:8px;white-space:pre-wrap">${esc(lead.activiteQuotidienne)}</p>
+  ${blocCopie}
 </div>`;
 
   await transporter.sendMail({
