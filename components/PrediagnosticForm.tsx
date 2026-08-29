@@ -422,21 +422,44 @@ export default function PrediagnosticForm({
 
       if (!res.ok) throw new Error("Envoi échoué");
 
-      // Point de suivi unique pour toutes les pages (home + 4 diplômes) : un
-      // seul endroit à câbler plus tard à un vrai tag de conversion Google
-      // Ads / GTM. Déclenché uniquement après un envoi réellement réussi.
-      trackConversion("prediagnostic_lead_submitted", {
-        diplome: values.diplomeVise,
-        page: presetDiplome ? `diplome_${presetDiplome.toLowerCase()}` : "home",
-      });
+      // INCIDENT DU 29 AOÛT 2026 — pourquoi on lit le corps de la réponse.
+      // Un HTTP 200 ne suffit PAS à conclure qu'un lead existe : le piège à
+      // robots de /api/prediagnostic renvoie volontairement un 200 pour ne
+      // pas alerter le robot (voir ce fichier côté API). Tant qu'on ne
+      // testait que `res.ok`, chaque robot piégé déclenchait une conversion
+      // Google Ads — 5 conversions remontées pour 2 leads réels le 29/08,
+      // avec une stratégie « Maximiser les conversions » qui apprenait
+      // là-dessus. Seul `leadRecorded` fait foi.
+      //
+      // Volontairement permissif (`!== false` et non `=== true`) : si la
+      // réponse n'est pas exploitable ou provient d'une version de l'API
+      // antérieure à ce drapeau, on préfère comptabiliser la conversion
+      // plutôt que de perdre un lead réel — c'est le sens de l'incident du
+      // 4 août 2026 (signal amputé, enchères mal apprises).
+      const payload = (await res.json().catch(() => ({}))) as {
+        leadRecorded?: boolean;
+      };
+      const leadRecorded = payload?.leadRecorded !== false;
 
-      // Conversion Google Ads propre au formulaire envoyé (DEES/DEAES/DEEJE/
-      // DEME sur les pages dédiées, "générique" sur la home et /prediagnostic).
-      // Sans effet tant que lib/google-ads-conversions.ts n'a pas reçu les
-      // libellés de conversion — voir ce fichier pour l'activer.
-      const formKey: FormKey = presetDiplome ? (presetDiplome.toLowerCase() as FormKey) : "generique";
-      trackFormConversion(formKey);
+      if (leadRecorded) {
+        // Point de suivi unique pour toutes les pages (home + 4 diplômes) : un
+        // seul endroit à câbler plus tard à un vrai tag de conversion Google
+        // Ads / GTM. Déclenché uniquement après un envoi réellement réussi.
+        trackConversion("prediagnostic_lead_submitted", {
+          diplome: values.diplomeVise,
+          page: presetDiplome ? `diplome_${presetDiplome.toLowerCase()}` : "home",
+        });
 
+        // Conversion Google Ads propre au formulaire envoyé (DEES/DEAES/DEEJE/
+        // DEME sur les pages dédiées, "générique" sur la home et /prediagnostic).
+        const formKey: FormKey = presetDiplome
+          ? (presetDiplome.toLowerCase() as FormKey)
+          : "generique";
+        trackFormConversion(formKey);
+      }
+
+      // Le robot, lui, voit toujours l'écran de confirmation : le piège reste
+      // silencieux, seule la conversion n'est plus comptée.
       setSubmitState("success");
       try {
         window.sessionStorage.removeItem(DRAFT_STORAGE_KEY);

@@ -38,8 +38,18 @@ export async function POST(request: NextRequest) {
   // Piège à robots : si ce champ invisible est rempli, on répond un faux
   // succès sans jamais envoyer l'email — évite d'alerter le robot tout en ne
   // polluant pas la boîte mail de leads.
+  //
+  // INCIDENT DU 29 AOÛT 2026 — `leadRecorded: false` est indispensable.
+  // Ce faux succès est un HTTP 200. Or PrediagnosticForm ne testait que
+  // `res.ok` : chaque robot tombé dans le piège déclenchait donc une
+  // conversion Google Ads (5 conversions remontées pour 2 leads réels le
+  // 29/08). Pire, la stratégie « Maximiser les conversions » apprenait sur
+  // ce signal et allait chercher davantage de trafic robot. Le robot doit
+  // continuer à croire que son envoi a réussi (d'où le 200), mais le
+  // navigateur doit savoir qu'aucun lead n'a été enregistré : c'est
+  // exactement le rôle de ce drapeau.
   if (parsed.data.honeypot) {
-    return NextResponse.json({ success: true, delivered: false });
+    return NextResponse.json({ success: true, delivered: false, leadRecorded: false });
   }
 
   // Les deux canaux (email + Google Sheets) sont indépendants : Promise.allSettled
@@ -91,5 +101,14 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return NextResponse.json({ success: true, delivered: emailOk, sheetSaved: sheetOk });
+  // `leadRecorded: true` : on n'arrive ici que si au moins un des deux canaux
+  // (email ou Sheet) a réellement enregistré le lead — le cas contraire est
+  // déjà sorti en 500 juste au-dessus. C'est ce drapeau, et lui seul, qui
+  // autorise le navigateur à comptabiliser une conversion Google Ads.
+  return NextResponse.json({
+    success: true,
+    delivered: emailOk,
+    sheetSaved: sheetOk,
+    leadRecorded: true,
+  });
 }
