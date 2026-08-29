@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { buildRelanceSms, buildSmsHref, buildTelHref } from "@/lib/relance-sms";
 
 export type PrediagnosticLead = {
   prenom: string;
@@ -113,6 +114,9 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     "",
     "Activité au quotidien :",
     lead.activiteQuotidienne,
+    "",
+    "— SMS de relance prêt à copier (si la personne ne décroche pas) —",
+    buildRelanceSms(lead),
   ].join("\n");
 
   // Si le SMTP n'est pas encore configuré (environnement de développement),
@@ -125,12 +129,61 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     return { delivered: false };
   }
 
+  // Version HTML — ajoutée le 29/08/2026.
+  // Objectif : passer de « je lis le lead, je recopie le numéro, je rédige un
+  // SMS » à deux gestes. Le bouton Appeler ouvre le téléphone, le bouton SMS
+  // ouvre Messages avec le destinataire ET le texte déjà remplis.
+  //
+  // ⚠️ Les champs proviennent d'un formulaire public : tout ce qui vient du
+  // lead est échappé avant d'entrer dans le HTML. Sans ça, une saisie
+  // contenant du balisage se retrouverait interprétée dans la boîte mail.
+  const esc = (v: string) =>
+    String(v ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+
+  const telHref = buildTelHref(lead.telephone);
+  const smsHref = buildSmsHref(lead);
+
+  const bouton = (href: string, libelle: string, fond: string) =>
+    `<a href="${href}" style="display:inline-block;margin:0 8px 8px 0;padding:14px 22px;background:${fond};color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:16px">${libelle}</a>`;
+
+  const actions = [
+    telHref ? bouton(telHref, `Appeler ${esc(lead.prenom)}`, "#0f766e") : "",
+    smsHref ? bouton(smsHref, "Envoyer le SMS de relance", "#334155") : "",
+  ]
+    .filter(Boolean)
+    .join("");
+
+  const ligne = (libelle: string, valeur: string) =>
+    `<tr><td style="padding:4px 12px 4px 0;color:#64748b;white-space:nowrap">${libelle}</td><td style="padding:4px 0;color:#0f172a"><strong>${esc(valeur)}</strong></td></tr>`;
+
+  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;color:#0f172a">
+  <h2 style="margin:0 0 4px">Nouveau lead ${esc(lead.diplomeVise)}</h2>
+  <p style="margin:0 0 16px;color:#64748b">${esc(lead.prenom)} ${esc(lead.nom)}</p>
+  ${dureeOk ? "" : `<p style="margin:0 0 16px;padding:12px;background:#fef3c7;border-radius:8px">Ancienneté déclarée : <strong>moins d'un an</strong>. À vérifier au cas par cas — depuis la réforme 2024, aucune durée minimale n'est exigée.</p>`}
+  <div style="margin:0 0 20px">${actions}</div>
+  <table style="border-collapse:collapse;font-size:15px">
+    ${ligne("Téléphone", lead.telephone)}
+    ${ligne("Email", lead.email)}
+    ${ligne("Diplôme visé", lead.diplomeVise)}
+    ${ligne("Situation", lead.situationActuelle)}
+    ${ligne("Ancienneté", lead.ancienneteActivite)}
+    ${ligne("Structure", lead.structure)}
+  </table>
+  <p style="margin:20px 0 4px;color:#64748b">Activité au quotidien</p>
+  <p style="margin:0;padding:12px;background:#f8fafc;border-radius:8px;white-space:pre-wrap">${esc(lead.activiteQuotidienne)}</p>
+</div>`;
+
   await transporter.sendMail({
     from,
     to: recipient,
     replyTo: lead.email,
     subject,
     text,
+    html,
   });
 
   return { delivered: true };
