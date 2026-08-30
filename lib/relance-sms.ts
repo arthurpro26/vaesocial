@@ -4,61 +4,97 @@ import { normalizePhoneFr } from "@/lib/phone";
  * Construction du SMS de relance envoyé à un lead qui n'a pas décroché.
  *
  * POURQUOI CE FICHIER EXISTE (29/08/2026).
- * Yoni appelle chaque lead ; quand la personne ne répond pas, il laisse un
- * message vocal puis envoie un SMS. Ce SMS était rédigé à la main à chaque
- * fois. L'objectif ici est qu'il tienne en UN geste : l'email de lead contient
- * un lien `sms:` avec le destinataire ET le texte déjà remplis — il relit et
- * appuie sur envoyer.
+ * Arthur appelle chaque lead ; quand la personne ne répond pas, il laisse un
+ * message vocal puis envoie un SMS. Ce texte était rédigé à la main à chaque
+ * fois. Il est désormais généré ici, et arrive prêt à l'emploi dans l'email de
+ * lead : un lien `sms:` pré-rempli, plus le texte en clair à copier.
  *
- * Le SMS part de la ligne personnelle de Yoni (Free), pas d'une passerelle :
+ * Le SMS part de la ligne personnelle d'Arthur (Free), pas d'une passerelle :
  * les réponses arrivent donc normalement dans ses messages. C'est aussi ce qui
  * évite tout sujet de conformité — c'est un humain qui envoie, à la main, à
  * une personne qui a elle-même demandé à être rappelée.
  *
  * NOTE — l'API SMS de Free ne peut PAS servir à ça : elle n'envoie qu'au
- * titulaire de la ligne. Vérifié le 29/08/2026. Elle sert uniquement à
- * s'auto-alerter (voir l'alerte "nouveau lead").
+ * titulaire de la ligne. Vérifié le 29/08/2026. Elle ne pourrait servir qu'à
+ * s'auto-alerter de l'arrivée d'un lead.
+ *
+ * ⚠️ LE FORMAT DE CE MESSAGE N'EST PAS ARBITRAIRE (révision du 30/08/2026).
+ * Il reprend celui d'un message d'Arthur qui a réellement converti : 9 rendez-
+ * vous obtenus sur 13 leads. Les règles à ne pas casser :
+ *   - aéré, un saut de ligne entre chaque idée (jamais un pavé compact) ;
+ *   - le nom complet du diplôme entre parenthèses après le sigle ;
+ *   - emoji comme repères visuels seulement (🎓 le diplôme, 👉 les liens) ;
+ *   - on demande D'ABORD un créneau précis, l'agenda vient APRÈS ;
+ *   - vouvoiement chaleureux, signature « Arthur » (jamais « Yoni »).
+ * Une première version tenait en un seul bloc sans emoji : rejetée en test
+ * réel par Arthur (« pas d'espace, pas d'emoji, c'est affreux »).
  */
 
 /** Libellés officiels des diplômes, pour que le SMS nomme le bon métier. */
 const DIPLOME_LIBELLE: Record<string, string> = {
-  DEES: "Éducateur spécialisé",
-  DEAES: "Accompagnant éducatif et social",
-  DEEJE: "Éducateur de jeunes enfants",
-  DEME: "Moniteur-éducateur",
+  DEES: "Diplôme d'État d'Éducateur Spécialisé",
+  DEAES: "Diplôme d'État d'Accompagnant Éducatif et Social",
+  DEEJE: "Diplôme d'État d'Éducateur de Jeunes Enfants",
+  DEME: "Diplôme d'État de Moniteur-Éducateur",
 };
 
 /**
- * Nom affiché dans le SMS (« c'est Untel de VAESocial »). Renseigné via
- * LEADS_SMS_SIGNATURE. Si la variable est absente, la phrase reste correcte
- * sans le prénom — on n'invente jamais un nom.
+ * Nom qui signe le message, via LEADS_SMS_SIGNATURE. Arthur est le nom
+ * professionnel utilisé avec les prospects — ne jamais coder un prénom en dur
+ * ici, la variable existe précisément pour qu'il change sans redéploiement.
  */
 function signature(): string {
-  const s = process.env.LEADS_SMS_SIGNATURE?.trim();
-  return s ? `${s} de VAESocial` : "VAESocial";
+  return process.env.LEADS_SMS_SIGNATURE?.trim() || "L'équipe VAESocial";
 }
 
 /**
- * Texte du SMS de relance. Volontairement construit sur un seul appel à
- * l'action — « matin ou après-midi ? » — parce qu'un SMS à deux propositions
- * fait chuter le taux de réponse. La question binaire se répond en un mot,
- * et un mot suffit à ouvrir la conversation.
- *
- * Aucun contenu promotionnel : c'est un message de service faisant suite à
- * une demande de rappel de la personne elle-même.
+ * Lien de prise de rendez-vous (plages Google Agenda), via LEADS_AGENDA_URL.
+ * Si la variable est absente, le paragraphe correspondant disparaît purement
+ * et simplement : mieux vaut un message sans lien qu'un message avec un lien
+ * mort. On ne code pas l'URL en dur — elle change si Arthur recrée sa plage.
  */
+function agendaUrl(): string | null {
+  const u = process.env.LEADS_AGENDA_URL?.trim();
+  return u && /^https?:\/\//.test(u) ? u : null;
+}
+
+/** Texte complet du SMS de relance, prêt à envoyer. */
 export function buildRelanceSms(lead: { prenom: string; diplomeVise: string }): string {
   const libelle = DIPLOME_LIBELLE[lead.diplomeVise];
   // Si le diplôme n'est pas dans la table (ex. « Je ne sais pas »), on reste
   // générique plutôt que d'écrire un libellé faux.
-  const objet = libelle ? `votre demande pour la VAE ${libelle}` : "votre demande de VAE";
+  const objet = libelle
+    ? `votre demande concernant la VAE ${lead.diplomeVise} (${libelle}) 🎓`
+    : "votre demande de VAE 🎓";
 
-  return [
-    `Bonjour ${lead.prenom}, c'est ${signature()}.`,
+  const lignes: string[] = [
+    `Bonjour ${lead.prenom},`,
+    "",
     `Je viens d'essayer de vous joindre au sujet de ${objet} — je vous ai laissé un message vocal.`,
-    `Rien d'urgent, je voulais surtout faire le point avec vous sur votre parcours et vérifier votre éligibilité. Comptez 15 minutes.`,
-    `Vous préférez plutôt le matin ou l'après-midi ? Répondez-moi ici, je m'adapte.`,
-  ].join(" ");
+    "",
+    "Rien d'urgent ! Je souhaitais faire le point avec vous sur votre parcours et vérifier ensemble votre éligibilité. Comptez une vingtaine de minutes.",
+    "",
+    "À quel moment puis-je vous rappeler ?",
+    "",
+    "☀️ En matinée (10h - 12h)",
+    "🕐 L'après-midi (14h - 18h)",
+    "🌙 En soirée, après 18h",
+    "",
+    "Répondez-moi simplement avec le créneau qui vous arrange, je m'adapte à vos disponibilités.",
+  ];
+
+  const agenda = agendaUrl();
+  if (agenda) {
+    lignes.push(
+      "",
+      "Vous pouvez aussi choisir directement le jour et l'heure qui vous conviennent dans mon agenda :",
+      `👉 ${agenda}`
+    );
+  }
+
+  lignes.push("", "Je me réjouis d'échanger avec vous !", "", signature());
+
+  return lignes.join("\n");
 }
 
 /** « 06 26 40 01 33 » → « +33626400133 ». null si le numéro est inexploitable. */
@@ -77,9 +113,13 @@ export function buildTelHref(telephone: string): string | null {
  * Lien SMS pré-rempli.
  *
  * La forme « sms:NUMERO&body=... » est celle qu'attend iOS (Messages).
- * Android attend « ?body= ». Yoni est sur iPhone : on retient la forme iOS.
- * Si un jour le pré-remplissage ne fonctionne plus, le texte complet reste
- * disponible en clair dans le corps de l'email — le repli est toujours là.
+ * Android attend « ?body= ». Arthur est sur iPhone : on retient la forme iOS.
+ *
+ * ⚠️ Ce message est long (sauts de ligne, emoji, lien d'agenda) et se retrouve
+ * encodé dans l'URL : certains clients tronquent au-delà d'une taille limite,
+ * et plusieurs messageries (Gmail) suppriment purement et simplement les liens
+ * `sms:`. C'est pourquoi l'email affiche TOUJOURS le texte en clair à côté :
+ * le copier-coller reste le chemin qui ne casse jamais.
  */
 export function buildSmsHref(lead: { prenom: string; diplomeVise: string; telephone: string }): string | null {
   const intl = toInternational(lead.telephone);
