@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { buildRelanceSms, buildSmsHref, buildTelHref } from "@/lib/relance-sms";
+import { buildRelancePageHref, buildRelanceSms, buildTelHref } from "@/lib/relance-sms";
 
 export type PrediagnosticLead = {
   prenom: string;
@@ -152,14 +152,16 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
       .replace(/"/g, "&quot;");
 
   const telHref = buildTelHref(lead.telephone);
-  const smsHref = buildSmsHref(lead);
+  // Le bouton pointe vers /relance (lien https, jamais filtré) et non vers un
+  // `sms:` direct que Gmail supprimerait. Voir buildRelancePageHref().
+  const smsHref = buildRelancePageHref(lead);
 
   const bouton = (href: string, libelle: string, fond: string) =>
     `<a href="${href}" style="display:inline-block;margin:0 8px 8px 0;padding:14px 22px;background:${fond};color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:16px">${libelle}</a>`;
 
   const actions = [
     telHref ? bouton(telHref, `Appeler ${esc(lead.prenom)}`, "#0f766e") : "",
-    smsHref ? bouton(smsHref, "Envoyer le SMS de relance", "#334155") : "",
+    smsHref ? bouton(smsHref, "Préparer le SMS de relance", "#334155") : "",
   ]
     .filter(Boolean)
     .join("");

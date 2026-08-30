@@ -1,4 +1,5 @@
 import { normalizePhoneFr } from "@/lib/phone";
+import { siteConfig } from "@/lib/site-config";
 
 /**
  * Construction du SMS de relance envoyé à un lead qui n'a pas décroché.
@@ -125,4 +126,33 @@ export function buildSmsHref(lead: { prenom: string; diplomeVise: string; teleph
   const intl = toInternational(lead.telephone);
   if (!intl) return null;
   return `sms:${intl}&body=${encodeURIComponent(buildRelanceSms(lead))}`;
+}
+
+/**
+ * Lien vers la page /relance du site, qui porte les boutons « Ouvrir
+ * Messages » et « Copier le texte ».
+ *
+ * POURQUOI PASSER PAR UNE PAGE plutôt que de mettre `sms:` directement dans
+ * l'email : les messageries filtrent les schémas d'URL qu'elles ne
+ * connaissent pas, et Gmail supprime systématiquement les liens `sms:` — le
+ * bouton s'affiche mais ne réagit pas (constaté en test réel le 30/08/2026).
+ * Un lien `https://` passe partout, et la page peut faire ce qu'un email ne
+ * pourra jamais : copier dans le presse-papier.
+ *
+ * Seules trois valeurs transitent : prénom, diplôme, numéro. La page les
+ * revalide et ne fait confiance à rien. Elle est en noindex.
+ */
+export function buildRelancePageHref(lead: {
+  prenom: string;
+  diplomeVise: string;
+  telephone: string;
+}): string | null {
+  const intl = toInternational(lead.telephone);
+  if (!intl) return null;
+  const params = new URLSearchParams({
+    p: lead.prenom,
+    d: lead.diplomeVise,
+    t: intl,
+  });
+  return `${siteConfig.url}/relance?${params.toString()}`;
 }
