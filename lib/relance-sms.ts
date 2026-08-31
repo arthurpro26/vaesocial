@@ -253,6 +253,11 @@ export function buildMauvaisNumeroMailto(lead: MauvaisNumeroLead): string | null
   return (
     `mailto:${cible}` +
     `?subject=${encodeURIComponent(MAUVAIS_NUMERO_SUJET)}` +
-    `&body=${encodeURIComponent(buildMauvaisNumeroTexte(lead))}`
+    // ⚠️ Les sauts de ligne doivent être encodés « %0D%0A » (CRLF), PAS « %0A »
+    // seul. C'est ce qu'impose la RFC 6068, et c'est la cause n°1 d'un message
+    // qui arrive tout collé dans la fenêtre de rédaction : beaucoup de clients
+    // mail ignorent un %0A isolé et écrasent la mise en forme. Constaté en
+    // test réel par Arthur le 31/08/2026 (« tout est collé »).
+    `&body=${encodeURIComponent(buildMauvaisNumeroTexte(lead).replace(/\n/g, "\r\n"))}`
   );
 }
