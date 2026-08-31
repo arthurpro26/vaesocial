@@ -156,3 +156,103 @@ export function buildRelancePageHref(lead: {
   });
   return `${siteConfig.url}/relance?${params.toString()}`;
 }
+
+/**
+ * Email « le numéro fourni ne fonctionne pas » — ajouté le 31/08/2026.
+ *
+ * POURQUOI : sur un lead payant, un numéro mal saisi = un lead perdu sans
+ * même un échange. L'email est alors le seul canal qui reste. Ce bouton fait
+ * passer Arthur de « je rouvre ma messagerie, je retrouve l'adresse, je
+ * rédige » à un clic.
+ *
+ * Un lien `mailto:` est accepté par TOUS les clients mail, contrairement à
+ * `sms:` que Gmail supprime (constaté en test réel le 30/08/2026) — pas
+ * besoin ici de passer par une page intermédiaire.
+ *
+ * Le texte suit les mêmes règles que le SMS qui a converti 9 fois sur 13 :
+ * aéré, libellé complet du diplôme entre parenthèses, emoji comme repères,
+ * on demande d'abord un créneau, l'agenda vient après, signature Arthur.
+ */
+export type MauvaisNumeroLead = {
+  prenom: string;
+  diplomeVise: string;
+  telephone: string;
+  email: string;
+};
+
+/** Adresse exploitable ? Sinon on n'affiche pas le bouton du tout. */
+function destinataireValide(email: string): string | null {
+  const v = (email ?? "").trim();
+  return v && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) ? v : null;
+}
+
+/** Objet de l'email « mauvais numéro ». */
+export const MAUVAIS_NUMERO_SUJET = "Je n'arrive pas à vous joindre — VAESocial";
+
+/** Corps de l'email « mauvais numéro », en texte brut. */
+export function buildMauvaisNumeroTexte(lead: MauvaisNumeroLead): string {
+  const libelle = DIPLOME_LIBELLE[lead.diplomeVise];
+  const objetVae = libelle
+    ? `votre demande concernant la VAE ${lead.diplomeVise} (${libelle}) 🎓`
+    : "votre demande de VAE 🎓";
+
+  // Le numéro est rappelé tel que la personne l'a saisi : c'est ce qui lui
+  // permet de repérer elle-même l'erreur. S'il est vide, on reste vague
+  // plutôt que d'écrire un numéro faux.
+  const numero = (lead.telephone ?? "").trim();
+  const ligneNumero = numero
+    ? `Le numéro que vous m'avez indiqué (${numero}) ne semble pas fonctionner — il y a sans doute eu une petite erreur de saisie.`
+    : "Le numéro que vous m'avez indiqué ne semble pas fonctionner — il y a sans doute eu une petite erreur de saisie.";
+
+  const lignes: string[] = [
+    `Bonjour ${lead.prenom},`,
+    "",
+    `J'ai bien reçu ${objetVae} et j'ai essayé de vous appeler.`,
+    "",
+    ligneNumero,
+    "",
+    "Pouvez-vous simplement répondre à cet email en m'indiquant le bon numéro ? Je vous rappelle dès que possible.",
+    "",
+    "Précisez-moi aussi le moment qui vous arrange :",
+    "",
+    "☀️ En matinée (10h - 12h)",
+    "🕐 L'après-midi (14h - 18h)",
+    "🌙 En soirée, après 18h",
+    "",
+    "Comptez une vingtaine de minutes : le temps de faire le point sur votre parcours et de vérifier ensemble votre éligibilité.",
+  ];
+
+  const agenda = agendaUrl();
+  if (agenda) {
+    lignes.push(
+      "",
+      "Vous pouvez aussi choisir directement le jour et l'heure qui vous conviennent dans mon agenda :",
+      `👉 ${agenda}`
+    );
+  }
+
+  lignes.push("", "Au plaisir d'échanger avec vous !", "", signature());
+
+  return lignes.join("\n");
+}
+
+/**
+ * Lien `mailto:` pré-rempli (destinataire + objet + corps).
+ * null si l'adresse du lead est inexploitable.
+ */
+export function buildMauvaisNumeroMailto(lead: MauvaisNumeroLead): string | null {
+  const destinataire = destinataireValide(lead.email);
+  if (!destinataire) return null;
+  // Le « @ » du destinataire reste littéral : c'est la forme que RFC 6068 et
+  // tous les clients mail attendent (« mailto:nom@domaine.fr »). Un « @ »
+  // percent-encodé est accepté par la norme mais mal décodé par certains
+  // clients, qui ouvrent alors une fenêtre avec une adresse illisible. Le
+  // reste est encodé normalement : si une adresse contenait « & » ou « ? »,
+  // elle casserait la suite de l'URL.
+  const cible = encodeURIComponent(destinataire).replace(/%40/g, "@");
+  return (
+    `mailto:${cible}` +
+    `?subject=${encodeURIComponent(MAUVAIS_NUMERO_SUJET)}` +
+    `&body=${encodeURIComponent(buildMauvaisNumeroTexte(lead))}`
+  );
+}

@@ -1,5 +1,11 @@
 import nodemailer from "nodemailer";
-import { buildRelancePageHref, buildRelanceSms, buildTelHref } from "@/lib/relance-sms";
+import {
+  buildMauvaisNumeroMailto,
+  buildMauvaisNumeroTexte,
+  buildRelancePageHref,
+  buildRelanceSms,
+  buildTelHref,
+} from "@/lib/relance-sms";
 
 export type PrediagnosticLead = {
   prenom: string;
@@ -117,6 +123,9 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     "",
     "— SMS de relance prêt à copier (si la personne ne décroche pas) —",
     buildRelanceSms(lead),
+    "",
+    "— Email prêt à copier (si le numéro fourni ne fonctionne pas) —",
+    buildMauvaisNumeroTexte(lead),
   ].join("\n");
 
   // Si le SMTP n'est pas encore configuré (environnement de développement),
@@ -155,13 +164,30 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
   // Le bouton pointe vers /relance (lien https, jamais filtré) et non vers un
   // `sms:` direct que Gmail supprimerait. Voir buildRelancePageHref().
   const smsHref = buildRelancePageHref(lead);
+  // Troisième chemin — ajouté le 31/08/2026. Un numéro mal saisi ne doit pas
+  // coûter le lead : l'email reste joignable. `mailto:` est le seul schéma
+  // d'URL que TOUS les clients mail acceptent (contrairement à `sms:`), donc
+  // pas de page intermédiaire ici. null si l'adresse est inexploitable — le
+  // bouton disparaît alors au lieu d'ouvrir une fenêtre vide.
+  const mauvaisNumeroHref = buildMauvaisNumeroMailto(lead);
+
+  // Les URL des boutons portent des « & » (?p=...&d=...&body=...). Dans un
+  // attribut HTML, « & » doit être écrit « &amp; » : sans ça, un paramètre qui
+  // s'appellerait un jour &copy=, &reg= ou &times= serait silencieusement
+  // transformé en caractère par le client mail, et le lien partirait tronqué.
+  // L'entité est reconvertie en « & » à l'ouverture : l'URL finale est
+  // identique, on supprime juste la classe de bug.
+  const attr = (href: string) => href.replace(/&/g, "&amp;");
 
   const bouton = (href: string, libelle: string, fond: string) =>
-    `<a href="${href}" style="display:inline-block;margin:0 8px 8px 0;padding:14px 22px;background:${fond};color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:16px">${libelle}</a>`;
+    `<a href="${attr(href)}" style="display:inline-block;margin:0 8px 8px 0;padding:14px 22px;background:${fond};color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:16px">${libelle}</a>`;
 
   const actions = [
     telHref ? bouton(telHref, `Appeler ${esc(lead.prenom)}`, "#0f766e") : "",
     smsHref ? bouton(smsHref, "Préparer le SMS de relance", "#334155") : "",
+    mauvaisNumeroHref
+      ? bouton(mauvaisNumeroHref, "Mauvais numéro — écrire un email", "#b45309")
+      : "",
   ]
     .filter(Boolean)
     .join("");
