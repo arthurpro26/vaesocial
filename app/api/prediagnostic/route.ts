@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prediagnosticSchema } from "@/lib/prediagnostic-schema";
-import { sendPrediagnosticLead } from "@/lib/email";
+import { sendConfirmationToLead, sendPrediagnosticLead } from "@/lib/email";
 import { appendLeadToSheet } from "@/lib/google-sheets";
 import { isRateLimited } from "@/lib/rate-limit";
 import { formatPhoneFr, normalizePhoneFr } from "@/lib/phone";
@@ -65,9 +65,15 @@ export async function POST(request: NextRequest) {
     telephone: formatPhoneFr(normalizePhoneFr(parsed.data.telephone)!),
   };
 
-  const [emailResult, sheetResult] = await Promise.allSettled([
+  // Troisième canal, ajouté le 01/09/2026 : l'accusé de réception envoyé au
+  // lead lui-même. Il est lancé en parallèle des deux autres, mais son sort
+  // est SANS EFFET sur l'enregistrement du lead — voir le calcul de
+  // `leadRecorded` plus bas. Un accusé de réception qui échoue ne doit jamais
+  // faire perdre un lead ni annuler une conversion Google Ads.
+  const [emailResult, sheetResult, confirmationResult] = await Promise.allSettled([
     sendPrediagnosticLead(lead),
     appendLeadToSheet(lead),
+    sendConfirmationToLead(lead),
   ]);
 
   const emailOk = emailResult.status === "fulfilled" && emailResult.value.delivered;
@@ -88,6 +94,14 @@ export async function POST(request: NextRequest) {
       "[prediagnostic] Google Sheets : ÉCHEC —",
       sheetResult.status === "rejected" ? sheetResult.reason : "raison inconnue"
     );
+  }
+
+  if (confirmationResult.status === "fulfilled") {
+    console.log(
+      `[prediagnostic] Accusé de réception au lead : ${confirmationResult.value.delivered ? "OK (envoyé)" : "non envoyé"}`
+    );
+  } else {
+    console.error("[prediagnostic] Accusé de réception au lead : ÉCHEC —", confirmationResult.reason);
   }
 
   // On ne renvoie jamais un faux succès : si ni l'email ni le Sheet n'ont

@@ -54,7 +54,7 @@ function signature(): string {
  * et simplement : mieux vaut un message sans lien qu'un message avec un lien
  * mort. On ne code pas l'URL en dur — elle change si Arthur recrée sa plage.
  */
-function agendaUrl(): string | null {
+export function agendaUrl(): string | null {
   const u = process.env.LEADS_AGENDA_URL?.trim();
   return u && /^https?:\/\//.test(u) ? u : null;
 }
@@ -260,4 +260,81 @@ export function buildMauvaisNumeroMailto(lead: MauvaisNumeroLead): string | null
     // test réel par Arthur le 31/08/2026 (« tout est collé »).
     `&body=${encodeURIComponent(buildMauvaisNumeroTexte(lead).replace(/\n/g, "\r\n"))}`
   );
+}
+
+/**
+ * Email de confirmation envoyé AU LEAD, automatiquement, dès l'arrivée du
+ * formulaire — ajouté le 01/09/2026.
+ *
+ * POURQUOI : les campagnes diffusent 7 jours sur 7, Arthur ne travaille que
+ * 21 jours par mois. Un lead qui arrive un samedi attendait jusqu'au lundi
+ * sans le moindre signe de vie. Or un lead qui n'a aucune nouvelle refroidit,
+ * et va voir ailleurs — la concurrence sur « vae dees » est dense.
+ * Ce message part dans la minute et tient la personne au chaud ; celles qui
+ * sont pressées peuvent même réserver seules dans l'agenda.
+ *
+ * CONFORMITÉ : c'est un message TRANSACTIONNEL — il confirme une demande que
+ * la personne vient elle-même de faire. Pas de consentement préalable requis,
+ * pas de mention STOP, pas de restriction horaire. Ne JAMAIS y glisser de
+ * contenu promotionnel (offres, prix, promotions) : ça le ferait basculer en
+ * prospection commerciale, avec toutes les obligations qui vont avec.
+ *
+ * CE QU'ON N'Y MET PAS, VOLONTAIREMENT : le tarif et le reste à charge de
+ * 150 €. Le montant dépend du solde CPF réel de la personne, qu'Arthur
+ * vérifie avec elle pendant l'appel. L'annoncer avant serait au mieux
+ * approximatif, au pire un engagement qu'on ne peut pas tenir.
+ *
+ * Format : celui qui convertit (9 RDV sur 13) — voir buildRelanceSms().
+ */
+export type ConfirmationLead = {
+  prenom: string;
+  diplomeVise: string;
+  email: string;
+};
+
+/** Objet de l'email de confirmation. */
+export function buildConfirmationSujet(lead: ConfirmationLead): string {
+  const sigle = DIPLOME_LIBELLE[lead.diplomeVise] ? ` ${lead.diplomeVise}` : "";
+  return `${lead.prenom}, votre demande de VAE${sigle} est bien reçue`;
+}
+
+/** Corps de l'email de confirmation, en texte brut. */
+export function buildConfirmationTexte(lead: ConfirmationLead): string {
+  const libelle = DIPLOME_LIBELLE[lead.diplomeVise];
+  const objet = libelle
+    ? `votre demande concernant la VAE ${lead.diplomeVise} (${libelle}) 🎓`
+    : "votre demande de VAE 🎓";
+
+  const lignes: string[] = [
+    `Bonjour ${lead.prenom},`,
+    "",
+    `Nous vous confirmons la bonne réception de ${objet}`,
+    "",
+    "Je vous rappelle personnellement sous 24 à 48 heures pour faire le point sur votre parcours et vérifier ensemble votre éligibilité. Comptez une vingtaine de minutes.",
+  ];
+
+  const agenda = agendaUrl();
+  if (agenda) {
+    lignes.push(
+      "",
+      "Si vous préférez choisir vous-même le jour et l'heure qui vous conviennent, vous pouvez réserver directement dans mon agenda :",
+      `👉 ${agenda}`
+    );
+  }
+
+  lignes.push(
+    "",
+    "Une précision qui rassure souvent : depuis la réforme 2024, aucune durée minimale d'expérience n'est exigée pour entamer une VAE.",
+    "",
+    "À très vite,",
+    "",
+    signature()
+  );
+
+  return lignes.join("\n");
+}
+
+/** Le lead est-il joignable par email ? Sinon, on n'envoie rien. */
+export function emailLeadExploitable(email: string): string | null {
+  return destinataireValide(email);
 }

@@ -1,10 +1,14 @@
 import nodemailer from "nodemailer";
 import {
+  agendaUrl,
+  buildConfirmationSujet,
+  buildConfirmationTexte,
   buildMauvaisNumeroMailto,
   buildMauvaisNumeroTexte,
   buildRelancePageHref,
   buildRelanceSms,
   buildTelHref,
+  emailLeadExploitable,
 } from "@/lib/relance-sms";
 
 export type PrediagnosticLead = {
@@ -234,6 +238,83 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     text,
     html,
   });
+
+  return { delivered: true };
+}
+
+/**
+ * Accusé de réception envoyé AU LEAD dès l'arrivée du formulaire.
+ * Ajouté le 01/09/2026 — voir buildConfirmationTexte() pour le pourquoi.
+ *
+ * ⚠️ CETTE FONCTION NE DOIT JAMAIS FAIRE ÉCHOUER L'ENREGISTREMENT DU LEAD.
+ * Elle est appelée dans le même Promise.allSettled que l'email de lead et le
+ * Google Sheet, mais son résultat n'entre PAS dans le calcul de
+ * `leadRecorded` : si l'accusé de réception échoue, le lead est quand même
+ * enregistré et la conversion Google Ads quand même comptée. Voir
+ * app/api/prediagnostic/route.ts et l'incident du 29/08/2026.
+ *
+ * Renvoie { delivered: false } sans lever d'exception dans tous les cas
+ * prévisibles : SMTP absent (développement), adresse du lead inexploitable.
+ */
+export async function sendConfirmationToLead(lead: PrediagnosticLead) {
+  const destinataire = emailLeadExploitable(lead.email);
+  if (!destinataire) {
+    console.warn("[prediagnostic] Accusé de réception : adresse du lead inexploitable, non envoyé.");
+    return { delivered: false };
+  }
+
+  const transporter = buildTransport();
+  const from = process.env.LEADS_FROM_EMAIL || process.env.SMTP_USER;
+  // Les réponses du lead doivent atterrir dans la boîte d'Arthur, pas dans
+  // l'adresse technique d'envoi.
+  const replyTo = process.env.LEADS_RECIPIENT_EMAIL || from;
+
+  const text = buildConfirmationTexte(lead);
+  const subject = buildConfirmationSujet(lead);
+
+  if (!transporter || !from) {
+    console.warn("[prediagnostic] Accusé de réception : SMTP non configuré, message affiché en log :");
+    console.warn(text);
+    return { delivered: false };
+  }
+
+  const esc = (v: string) =>
+    String(v ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+
+  // La ligne « 👉 <url> » du texte brut devient un vrai bouton dans la version
+  // HTML. C'est l'appel à l'action principal du message : c'est lui qui permet
+  // à quelqu'un qui reçoit ce mail un samedi soir de réserver son rendez-vous
+  // sans attendre lundi. Une URL en texte n'est pas cliquable partout ; un
+  // bouton l'est toujours.
+  //
+  // On ne transforme QUE l'URL d'agenda connue, jamais une adresse qui
+  // viendrait d'un champ du formulaire — c'est ce qui rend l'opération sûre.
+  const agenda = agendaUrl();
+  const corpsHtml = (() => {
+    const echappe = esc(text);
+    if (!agenda) return echappe;
+    const ligne = esc(`👉 ${agenda}`);
+    const bouton = `</p>
+  <p style="margin:22px 0"><a href="${esc(agenda)}" style="display:inline-block;padding:14px 24px;background:#0f766e;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:16px">Choisir mon créneau</a></p>
+  <p style="margin:0;white-space:pre-wrap">`;
+    return echappe.includes(ligne) ? echappe.replace(ligne, bouton) : echappe;
+  })();
+
+  // Même en-tête que l'email de lead : dessiné en HTML/CSS, sans image
+  // distante ni SVG, pour s'afficher partout sans rien à charger.
+  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;color:#0f172a;font-size:16px;line-height:1.6">
+  <div style="background-color:#21564d;background-image:linear-gradient(135deg,#55a08f 0%,#21564d 100%);border-radius:14px;padding:22px 24px;margin:0 0 24px">
+    <p style="margin:0;color:#ffffff;font-size:21px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
+    <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Votre accompagnement VAE</p>
+  </div>
+  <p style="margin:0;white-space:pre-wrap">${corpsHtml}</p>
+</div>`;
+
+  await transporter.sendMail({ from, to: destinataire, replyTo, subject, text, html });
 
   return { delivered: true };
 }
