@@ -85,3 +85,269 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
     Email: lead.email,
   });
 }
+
+/* ------------------------------------------------------------------------ *
+ * LECTURE DES LEADS + RELANCE GROUPÉE — ajouté le 01/09/2026.
+ *
+ * POURQUOI : jusqu'ici le Sheet ne servait qu'à écrire. Or une part des leads
+ * payants ne décroche jamais, et rien ne permettait de savoir lesquels, ni de
+ * leur écrire sans rouvrir chaque ligne à la main.
+ *
+ * ⚠️ LE RISQUE PRINCIPAL DE CE MODULE EST LE DOUBLE ENVOI. Recevoir deux fois
+ * la même relance est le meilleur moyen de perdre définitivement un lead. La
+ * protection ne repose PAS sur l'interface : elle est ici, côté serveur.
+ *   1. une ligne dont la colonne « Relancé le » est déjà remplie est refusée,
+ *      quoi que demande le client ;
+ *   2. la date est écrite dans le Sheet IMMÉDIATEMENT après chaque envoi
+ *      réussi, un par un — une interruption en cours de route ne peut donc
+ *      pas provoquer de renvoi au tour suivant ;
+ *   3. si la colonne « Relancé le » n'existe pas, on n'envoie RIEN du tout.
+ *      Envoyer sans pouvoir tracer, ce serait s'exposer au double envoi dès
+ *      la fois suivante. Échouer bruyamment vaut mieux.
+ * ------------------------------------------------------------------------ */
+
+/** Intitulé attendu en ligne 1 du Sheet, à créer à la main une seule fois. */
+export const COLONNE_RELANCE = "Relancé le";
+
+export type LeadSheet = {
+  /** Numéro de ligne A1 dans le Sheet — sert d'identifiant stable. */
+  ligne: number;
+  date: string;
+  diplomeVise: string;
+  prenom: string;
+  nom: string;
+  telephone: string;
+  email: string;
+  recevabilite: string;
+  /** Date de la relance déjà envoyée, ou "" si jamais relancé. */
+  relanceLe: string;
+};
+
+export type LectureLeads =
+  | { ok: true; leads: LeadSheet[] }
+  | { ok: false; raison: "config" | "colonne"; message: string };
+
+/**
+ * Comparaison d'intitulés de colonne insensible à la casse et aux accents.
+ * « Relancé le », « relance le », « Relancé Le » désignent la même colonne :
+ * les capitales accentuées se saisissent mal selon les claviers, et un seul
+ * caractère divergent suffirait à faire échouer le marquage silencieusement.
+ */
+function memeIntitule(a: string, b: string): boolean {
+  const n = (v: string) =>
+    v
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .toLowerCase();
+  return n(a) === n(b);
+}
+
+async function ouvrirOnglet() {
+  const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+  const auth = buildAuth();
+  if (!auth || !spreadsheetId) return null;
+
+  const doc = new GoogleSpreadsheet(spreadsheetId, auth);
+  await doc.loadInfo();
+  const sheet = doc.sheetsByIndex[0];
+  await sheet.loadHeaderRow();
+  return sheet;
+}
+
+/** Intitulé réel de la colonne de relance dans le Sheet, ou null si absente. */
+function colonneRelance(headerValues: string[]): string | null {
+  return headerValues.find((h) => memeIntitule(h, COLONNE_RELANCE)) ?? null;
+}
+
+/**
+ * Lecteur de cellule tolérant aux intitulés.
+ *
+ * On ne lit JAMAIS une colonne par son nom exact : « Prénom » et « Prenom »,
+ * « Téléphone » et « telephone » désignent la même chose, et un seul caractère
+ * divergent renverrait une valeur vide sans le moindre message d'erreur — le
+ * genre de panne qui se voit trois semaines plus tard. C'est exactement le
+ * risque signalé en tête de appendLeadToSheet().
+ */
+function lecteur(headerValues: string[]) {
+  const correspondance = new Map<string, string>();
+  for (const entete of headerValues) {
+    const cle = entete
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .toLowerCase();
+    if (!correspondance.has(cle)) correspondance.set(cle, entete);
+  }
+  return (row: { get: (k: string) => unknown }, intitule: string): string => {
+    const cle = intitule
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim()
+      .toLowerCase();
+    const reel = correspondance.get(cle);
+    return reel ? String(row.get(reel) ?? "").trim() : "";
+  };
+}
+
+/** Tous les leads du Sheet, du plus récent au plus ancien. */
+export async function readLeadsFromSheet(): Promise<LectureLeads> {
+  const sheet = await ouvrirOnglet();
+  if (!sheet) {
+    return {
+      ok: false,
+      raison: "config",
+      message:
+        "Google Sheets non configuré (GOOGLE_SHEETS_CLIENT_EMAIL / GOOGLE_SHEETS_PRIVATE_KEY_BASE64 / GOOGLE_SHEETS_SPREADSHEET_ID).",
+    };
+  }
+
+  const colonne = colonneRelance(sheet.headerValues);
+  if (!colonne) {
+    return {
+      ok: false,
+      raison: "colonne",
+      message: `La colonne « ${COLONNE_RELANCE} » est absente du Sheet. Ajoutez-la dans la première cellule libre de la ligne 1, puis rechargez.`,
+    };
+  }
+
+  const rows = await sheet.getRows();
+  const lu = lecteur(sheet.headerValues);
+
+  const leads: LeadSheet[] = rows.map((row) => ({
+    ligne: row.rowNumber,
+    date: lu(row, "Date"),
+    diplomeVise: lu(row, "Diplôme"),
+    prenom: lu(row, "Prénom"),
+    nom: lu(row, "Nom"),
+    telephone: lu(row, "Téléphone"),
+    email: lu(row, "Email"),
+    recevabilite: lu(row, "Recevabilité"),
+    relanceLe: lu(row, colonne),
+  }));
+
+  // Le plus récent en haut : c'est l'ordre dans lequel on travaille.
+  return { ok: true, leads: leads.reverse() };
+}
+
+export type ResultatRelance = {
+  envoyes: LeadSheet[];
+  ignores: { lead: LeadSheet; raison: string }[];
+  echecs: { lead: LeadSheet; message: string }[];
+};
+
+/**
+ * Envoie la relance aux lignes demandées, une par une, et marque le Sheet
+ * après chaque succès.
+ *
+ * L'envoi lui-même est injecté (paramètre `envoyer`) : ce module ne connaît
+ * rien à l'email, et la fonction reste testable sans SMTP.
+ *
+ * Séquentiel et espacé À DESSEIN. Une rafale d'envois simultanés depuis une
+ * petite adresse abîme sa réputation, et ce sont alors TOUS les emails du
+ * site — accusés de réception compris — qui finissent en indésirables.
+ */
+export async function relancerLeads(
+  lignes: number[],
+  envoyer: (lead: LeadSheet) => Promise<void>,
+  options: { pauseMs?: number } = {}
+): Promise<ResultatRelance> {
+  const pauseMs = options.pauseMs ?? 1500;
+  const resultat: ResultatRelance = { envoyes: [], ignores: [], echecs: [] };
+
+  const sheet = await ouvrirOnglet();
+  if (!sheet) throw new Error("Google Sheets non configuré : envoi annulé.");
+
+  const colonne = colonneRelance(sheet.headerValues);
+  // Pas de colonne de traçage = pas d'envoi. Voir l'avertissement en tête de
+  // section : sans trace, le double envoi devient certain.
+  if (!colonne) {
+    throw new Error(
+      `La colonne « ${COLONNE_RELANCE} » est absente du Sheet : envoi annulé pour éviter tout doublon.`
+    );
+  }
+
+  const rows = await sheet.getRows();
+  const lu = lecteur(sheet.headerValues);
+  const demandees = new Set(lignes);
+
+  for (const row of rows) {
+    if (!demandees.has(row.rowNumber)) continue;
+
+    const lead: LeadSheet = {
+      ligne: row.rowNumber,
+      date: lu(row, "Date"),
+      diplomeVise: lu(row, "Diplôme"),
+      prenom: lu(row, "Prénom"),
+      nom: lu(row, "Nom"),
+      telephone: lu(row, "Téléphone"),
+      email: lu(row, "Email"),
+      recevabilite: lu(row, "Recevabilité"),
+      relanceLe: lu(row, colonne),
+    };
+
+    // Garde-fou n°1 : relu dans le Sheet au moment de l'envoi, pas d'après ce
+    // que dit le navigateur. Deux onglets ouverts ne peuvent pas doubler.
+    if (lead.relanceLe) {
+      resultat.ignores.push({ lead, raison: `déjà relancé le ${lead.relanceLe}` });
+      continue;
+    }
+    if (!lead.email) {
+      resultat.ignores.push({ lead, raison: "pas d'adresse email" });
+      continue;
+    }
+
+    try {
+      await envoyer(lead);
+    } catch (erreur) {
+      resultat.echecs.push({
+        lead,
+        message: erreur instanceof Error ? erreur.message : String(erreur),
+      });
+      continue;
+    }
+
+    // Garde-fou n°2 : on marque tout de suite. Si l'écriture échoue, on le dit
+    // — la relance est partie, et il faut le savoir pour ne pas la renvoyer.
+    try {
+      row.set(colonne, new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" }));
+      await row.save();
+    } catch (erreur) {
+      resultat.echecs.push({
+        lead,
+        message: `Email ENVOYÉ mais Sheet non marqué (${
+          erreur instanceof Error ? erreur.message : String(erreur)
+        }) — inscrivez la date à la main pour éviter un second envoi.`,
+      });
+      continue;
+    }
+
+    resultat.envoyes.push(lead);
+    if (pauseMs > 0) await new Promise((r) => setTimeout(r, pauseMs));
+  }
+
+  for (const ligne of demandees) {
+    const connue =
+      resultat.envoyes.some((l) => l.ligne === ligne) ||
+      resultat.ignores.some((i) => i.lead.ligne === ligne) ||
+      resultat.echecs.some((e) => e.lead.ligne === ligne);
+    if (!connue) {
+      resultat.ignores.push({
+        lead: {
+          ligne,
+          date: "",
+          diplomeVise: "",
+          prenom: "",
+          nom: "",
+          telephone: "",
+          email: "",
+          recevabilite: "",
+          relanceLe: "",
+        },
+        raison: "ligne introuvable dans le Sheet",
+      });
+    }
+  }
+
+  return resultat;
+}

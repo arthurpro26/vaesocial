@@ -6,6 +6,8 @@ import {
   buildMauvaisNumeroMailto,
   buildMauvaisNumeroTexte,
   buildRelancePageHref,
+  buildRelanceEmailSujet,
+  buildRelanceEmailTexte,
   buildRelanceSms,
   buildTelHref,
   emailLeadExploitable,
@@ -317,4 +319,63 @@ export async function sendConfirmationToLead(lead: PrediagnosticLead) {
   await transporter.sendMail({ from, to: destinataire, replyTo, subject, text, html });
 
   return { delivered: true };
+}
+
+/**
+ * Relance envoyée à un lead qu'on n'a jamais réussi à joindre — 01/09/2026.
+ * Voir buildRelanceEmailTexte() dans lib/relance-sms.ts pour le pourquoi et
+ * pour les règles de conformité à ne pas casser.
+ *
+ * Contrairement à l'accusé de réception, cette fonction LÈVE une exception en
+ * cas d'échec : l'appelant (relancerLeads) a besoin de savoir précisément qui
+ * a reçu le message et qui ne l'a pas reçu, pour ne marquer dans le Sheet que
+ * les envois réellement partis.
+ */
+export async function sendRelanceToLead(lead: {
+  prenom: string;
+  diplomeVise: string;
+  email: string;
+}) {
+  const destinataire = emailLeadExploitable(lead.email);
+  if (!destinataire) throw new Error("adresse email inexploitable");
+
+  const transporter = buildTransport();
+  const from = process.env.LEADS_FROM_EMAIL || process.env.SMTP_USER;
+  // Les réponses (« 1 », « 2 », « 3 ») doivent arriver dans la boîte d'Arthur.
+  const replyTo = process.env.LEADS_RECIPIENT_EMAIL || from;
+
+  if (!transporter || !from) throw new Error("SMTP non configuré");
+
+  const text = buildRelanceEmailTexte(lead);
+  const subject = buildRelanceEmailSujet(lead);
+
+  const esc = (v: string) =>
+    String(v ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+
+  // Seule l'URL d'agenda connue est transformée en bouton — jamais une valeur
+  // venue d'un champ de formulaire. C'est ce qui rend l'opération sûre.
+  const agenda = agendaUrl();
+  const corpsHtml = (() => {
+    const echappe = esc(text);
+    if (!agenda) return echappe;
+    const ligne = esc(`👉 ${agenda}`);
+    const bouton = `</p>
+  <p style="margin:22px 0"><a href="${esc(agenda)}" style="display:inline-block;padding:14px 24px;background:#0f766e;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:16px">Choisir mon créneau</a></p>
+  <p style="margin:0;white-space:pre-wrap">`;
+    return echappe.includes(ligne) ? echappe.replace(ligne, bouton) : echappe;
+  })();
+
+  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;color:#0f172a;font-size:16px;line-height:1.6">
+  <div style="background-color:#21564d;background-image:linear-gradient(135deg,#55a08f 0%,#21564d 100%);border-radius:14px;padding:22px 24px;margin:0 0 24px">
+    <p style="margin:0;color:#ffffff;font-size:21px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
+    <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Votre accompagnement VAE</p>
+  </div>
+  <p style="margin:0;white-space:pre-wrap">${corpsHtml}</p>
+</div>`;
+
+  await transporter.sendMail({ from, to: destinataire, replyTo, subject, text, html });
 }

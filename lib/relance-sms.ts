@@ -338,3 +338,90 @@ export function buildConfirmationTexte(lead: ConfirmationLead): string {
 export function emailLeadExploitable(email: string): string | null {
   return destinataireValide(email);
 }
+
+/**
+ * Email de RELANCE envoyé à un lead qu'on n'a jamais réussi à avoir au
+ * téléphone — ajouté le 01/09/2026.
+ *
+ * POURQUOI : une part importante des leads payants ne décroche jamais. Sans
+ * relance, ils sont perdus après avoir été payés. Le téléphone reste le
+ * meilleur canal — cet email ne le remplace pas, il rattrape ceux que le
+ * téléphone n'attrape plus.
+ *
+ * ⚠️ CONFORMITÉ — LIRE AVANT DE MODIFIER CE TEXTE.
+ * La personne a rempli elle-même un formulaire en demandant à être rappelée :
+ * cet email prolonge SA demande, il ne démarche personne. C'est ce qui le rend
+ * légitime sans consentement supplémentaire. Ce qui le ferait basculer en
+ * prospection commerciale — et donc l'exposerait à toutes les obligations
+ * correspondantes : y glisser une offre, un tarif, une promotion, une
+ * nouveauté. On ne le fait pas.
+ * La sortie « 3 » n'est pas décorative : c'est le moyen de désinscription.
+ * Une réponse « 3 » doit être respectée immédiatement et définitivement.
+ *
+ * FORMULATION : « nous n'avons pas encore réussi à échanger » est vrai dans
+ * tous les cas — appel manqué, numéro qui sonne dans le vide, ou lead jamais
+ * appelé. Écrire « j'ai essayé de vous joindre à plusieurs reprises » serait
+ * faux pour une partie de la liste : on ne l'écrit pas.
+ *
+ * FORMAT : celui qui a converti 9 rendez-vous sur 13 (voir buildRelanceSms).
+ * La nouveauté ici est le choix chiffré : répondre coûte une seule touche.
+ */
+export type RelanceEmailLead = {
+  prenom: string;
+  diplomeVise: string;
+  email: string;
+};
+
+/** Objet de l'email de relance. */
+export function buildRelanceEmailSujet(lead: RelanceEmailLead): string {
+  const sigle = DIPLOME_LIBELLE[lead.diplomeVise] ? ` ${lead.diplomeVise}` : "";
+  return `${lead.prenom}, où en êtes-vous pour votre VAE${sigle} ?`;
+}
+
+/** Corps de l'email de relance, en texte brut. */
+export function buildRelanceEmailTexte(lead: RelanceEmailLead): string {
+  const libelle = DIPLOME_LIBELLE[lead.diplomeVise];
+  const objet = libelle
+    ? `votre demande concernant la VAE ${lead.diplomeVise} (${libelle}) 🎓`
+    : "votre demande de VAE 🎓";
+
+  const lignes: string[] = [
+    `Bonjour ${lead.prenom},`,
+    "",
+    `Je reviens vers vous au sujet de ${objet}`,
+    "",
+    "Nous n'avons pas encore réussi à échanger ensemble depuis votre demande, et je ne voudrais pas que votre projet reste en suspens à cause d'un simple appel manqué.",
+    "",
+    "Pour me répondre, un seul chiffre suffit :",
+    "",
+    "1️⃣ Je suis toujours intéressé(e), rappelez-moi",
+    "2️⃣ Intéressé(e), mais plus tard — recontactez-moi dans quelques semaines",
+    "3️⃣ Je ne souhaite plus être contacté(e)",
+    "",
+    "Si c'est 1, précisez-moi le moment qui vous arrange :",
+    "",
+    "☀️ En matinée (10h - 12h)",
+    "🕐 L'après-midi (14h - 18h)",
+    "🌙 En soirée, après 18h",
+  ];
+
+  const agenda = agendaUrl();
+  if (agenda) {
+    lignes.push(
+      "",
+      "Vous pouvez aussi choisir vous-même le jour et l'heure dans mon agenda :",
+      `👉 ${agenda}`
+    );
+  }
+
+  lignes.push(
+    "",
+    "Une précision qui rassure souvent : depuis la réforme 2024, aucune durée minimale d'expérience n'est exigée pour entamer une VAE.",
+    "",
+    "Au plaisir de vous lire,",
+    "",
+    signature()
+  );
+
+  return lignes.join("\n");
+}
