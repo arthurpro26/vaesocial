@@ -108,16 +108,16 @@ export default function RelanceListeClient({
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
       <h1 className="text-2xl font-bold text-slate-900">Console de relance</h1>
       <p className="mt-2 leading-relaxed text-slate-600">
-        Marquez la colonne <strong>Mail</strong> de votre Google Sheet, en face des leads à
-        relancer — n&apos;importe quel signe suffit. Ils apparaissent ici, déjà cochés.
-        Vous vérifiez, vous envoyez : {MAX_PAR_ENVOI} au maximum à la fois.
+        Collez vos leads dans l&apos;onglet <strong>MAIL</strong> de votre Google Sheet — prénom,
+        diplôme, email. Ils apparaissent ici, déjà cochés. Vous vérifiez, vous envoyez :
+        {MAX_PAR_ENVOI} au maximum à la fois.
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Chiffre valeur={stats.total} libelle="leads au total" />
-        <Chiffre valeur={stats.relancables} libelle="marqués, prêts à partir" accent />
-        <Chiffre valeur={stats.faits} libelle="déjà relancés" />
-        <Chiffre valeur={stats.sansEmail} libelle="marqués sans email" />
+        <Chiffre valeur={stats.total} libelle="lignes dans MAIL" />
+        <Chiffre valeur={stats.relancables} libelle="prêts à partir" accent />
+        <Chiffre valeur={stats.faits} libelle="déjà envoyés" />
+        <Chiffre valeur={stats.sansEmail} libelle="sans email" />
       </div>
 
       {apercu ? (
@@ -149,7 +149,7 @@ export default function RelanceListeClient({
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
         <Onglet actif={filtre === "marques"} onClick={() => setFiltre("marques")}>
-          Marqués ({stats.relancables})
+          À envoyer ({stats.relancables})
         </Onglet>
         <Onglet actif={filtre === "faits"} onClick={() => setFiltre("faits")}>
           Déjà relancés ({stats.faits})
@@ -179,7 +179,7 @@ export default function RelanceListeClient({
         {visibles.length === 0 ? (
           <li className="p-6 text-center leading-relaxed text-slate-500">
             {filtre === "marques"
-              ? "Aucun lead marqué. Mettez une croix dans la colonne Mail de votre Sheet, puis rechargez cette page."
+              ? "L'onglet MAIL est vide. Collez-y vos leads, puis rechargez cette page."
               : "Aucun lead dans cette vue."}
           </li>
         ) : null}

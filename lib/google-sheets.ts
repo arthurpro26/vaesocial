@@ -106,8 +106,17 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
  *      la fois suivante. Échouer bruyamment vaut mieux.
  * ------------------------------------------------------------------------ */
 
-/** Intitulé attendu en ligne 1 du Sheet, à créer à la main une seule fois. */
-export const COLONNE_RELANCE = "Relancé le";
+/**
+ * Nom de la feuille de travail — refonte du 02/09/2026.
+ *
+ * Arthur ne veut pas cocher des cases dans une interface : il veut coller ses
+ * leads dans un onglet du Sheet, le soir, et que ça parte. Cet onglet est donc
+ * la file d'attente. On n'y touche à rien d'autre que la date d'envoi.
+ */
+export const FEUILLE_MAIL = "MAIL";
+
+/** Colonne écrite par le code après chaque envoi réussi — la trace. */
+export const COLONNE_RELANCE = "Envoyé le";
 
 /**
  * Colonne de sélection — ajoutée le 02/09/2026 à la demande d'Arthur.
@@ -120,7 +129,7 @@ export const COLONNE_RELANCE = "Relancé le";
  * la date s'inscrit dans « Relancé le ». Le lendemain, il ne voit donc que ses
  * nouvelles marques — pas d'accumulation, pas de confusion.
  */
-export const COLONNE_MAIL = "Mail";
+export const COLONNE_MAIL = "Envoyé le";
 
 export type LeadSheet = {
   /** Numéro de ligne A1 dans le Sheet — sert d'identifiant stable. */
@@ -165,7 +174,12 @@ async function ouvrirOnglet() {
 
   const doc = new GoogleSpreadsheet(spreadsheetId, auth);
   await doc.loadInfo();
-  const sheet = doc.sheetsByIndex[0];
+
+  // On cible l'onglet MAIL, jamais le premier onglet : le fichier de leads
+  // (onglet SOCIAL) ne doit être ni lu ni modifié par la relance.
+  const sheet = doc.sheetsByIndex.find((f) => memeIntitule(f.title, FEUILLE_MAIL));
+  if (!sheet) return null;
+
   await sheet.loadHeaderRow();
   return sheet;
 }
@@ -217,27 +231,24 @@ export async function readLeadsFromSheet(): Promise<LectureLeads> {
     return {
       ok: false,
       raison: "config",
-      message:
-        "Google Sheets non configuré (GOOGLE_SHEETS_CLIENT_EMAIL / GOOGLE_SHEETS_PRIVATE_KEY_BASE64 / GOOGLE_SHEETS_SPREADSHEET_ID).",
+      message: `Google Sheets non configuré, ou onglet « ${FEUILLE_MAIL} » introuvable dans le document.`,
     };
   }
 
-  const colonne = colonneRelance(sheet.headerValues);
-  const colonneMarque = trouverColonne(sheet.headerValues, COLONNE_MAIL);
-  const manquantes = [
-    colonne ? null : COLONNE_RELANCE,
-    colonneMarque ? null : COLONNE_MAIL,
-  ].filter(Boolean);
+  const manquantes = ["Prénom", "Diplôme", "Email", COLONNE_RELANCE].filter(
+    (c) => !trouverColonne(sheet.headerValues, c)
+  );
 
-  if (!colonne || !colonneMarque) {
+  if (manquantes.length > 0) {
     return {
       ok: false,
       raison: "colonne",
-      message: `Colonne${manquantes.length > 1 ? "s" : ""} absente${
-        manquantes.length > 1 ? "s" : ""
-      } du Sheet : « ${manquantes.join(" » et « ")} ». Ajoutez-la dans la ligne 1, puis rechargez.`,
+      message: `Il manque dans l'onglet « ${FEUILLE_MAIL} », en ligne 1 : « ${manquantes.join(
+        " », « "
+      )} ». Ajoutez ces intitulés, puis rechargez.`,
     };
   }
+  const colonne = trouverColonne(sheet.headerValues, COLONNE_RELANCE) as string;
 
   const rows = await sheet.getRows();
   const lu = lecteur(sheet.headerValues);
@@ -252,7 +263,9 @@ export async function readLeadsFromSheet(): Promise<LectureLeads> {
     email: lu(row, "Email"),
     recevabilite: lu(row, "Recevabilité"),
     relanceLe: lu(row, colonne),
-    marque: Boolean(lu(row, colonneMarque)),
+    // Être dans l'onglet MAIL vaut sélection : Arthur a fait son choix en
+    // collant la ligne, il n'a pas à le refaire dans l'interface.
+    marque: true,
   }));
 
   // Le plus récent en haut : c'est l'ordre dans lequel on travaille.
@@ -288,12 +301,11 @@ export async function relancerLeads(
   if (!sheet) throw new Error("Google Sheets non configuré : envoi annulé.");
 
   const colonne = colonneRelance(sheet.headerValues);
-  const colonneMarque = trouverColonne(sheet.headerValues, COLONNE_MAIL);
   // Pas de colonne de traçage = pas d'envoi. Voir l'avertissement en tête de
   // section : sans trace, le double envoi devient certain.
-  if (!colonne || !colonneMarque) {
+  if (!colonne) {
     throw new Error(
-      `Colonne « ${!colonne ? COLONNE_RELANCE : COLONNE_MAIL} » absente du Sheet : envoi annulé.`
+      `Colonne « ${COLONNE_RELANCE} » absente de l'onglet « ${FEUILLE_MAIL} » : envoi annulé.`
     );
   }
 
@@ -314,20 +326,13 @@ export async function relancerLeads(
       email: lu(row, "Email"),
       recevabilite: lu(row, "Recevabilité"),
       relanceLe: lu(row, colonne),
-      marque: Boolean(lu(row, colonneMarque)),
+      marque: true,
     };
 
     // Garde-fou n°1 : relu dans le Sheet au moment de l'envoi, pas d'après ce
     // que dit le navigateur. Deux onglets ouverts ne peuvent pas doubler.
     if (lead.relanceLe) {
       resultat.ignores.push({ lead, raison: `déjà relancé le ${lead.relanceLe}` });
-      continue;
-    }
-    // Garde-fou n°3 : c'est le Sheet qui décide, pas le navigateur. Une ligne
-    // non marquée n'est jamais relancée, même si le client la demande. Un bug
-    // d'interface ne peut donc pas écrire à quelqu'un qu'Arthur n'a pas choisi.
-    if (!lead.marque) {
-      resultat.ignores.push({ lead, raison: `non marqué dans la colonne « ${COLONNE_MAIL} »` });
       continue;
     }
     if (!lead.email) {
@@ -349,8 +354,6 @@ export async function relancerLeads(
     // — la relance est partie, et il faut le savoir pour ne pas la renvoyer.
     try {
       row.set(colonne, new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" }));
-      // La marque est consommée : demain, Arthur ne verra que ses nouvelles.
-      row.set(colonneMarque, "");
       await row.save();
     } catch (erreur) {
       resultat.echecs.push({
@@ -383,7 +386,7 @@ export async function relancerLeads(
           email: "",
           recevabilite: "",
           relanceLe: "",
-          marque: false,
+          marque: true,
         },
         raison: "ligne introuvable dans le Sheet",
       });
