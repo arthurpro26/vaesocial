@@ -378,47 +378,53 @@ export function buildRelanceEmailSujet(lead: RelanceEmailLead): string {
   return `${lead.prenom}, où en êtes-vous pour votre VAE${sigle} ?`;
 }
 
-/** Corps de l'email de relance, en texte brut. */
+/**
+ * Corps de l'email de relance, en texte brut.
+ *
+ * ÉCRIT DU POINT DE VUE DE LA PERSONNE QUI REÇOIT (révision du 02/09/2026).
+ * Elle a rempli un formulaire il y a des semaines, n'a jamais eu personne au
+ * téléphone, et se sent vaguement fautive. Trois règles :
+ *   - AUCUN reproche, même implicite. Jamais « vous n'avez pas répondu ».
+ *   - On lui rappelle SON projet, pas notre service.
+ *   - Un seul geste demandé, et il coûte zéro effort.
+ * La preuve (1 300 accompagnés, 93 % de réussite) arrive APRÈS le bénéfice :
+ * on répond d'abord à « qu'est-ce que j'y gagne », ensuite à « puis-je vous
+ * faire confiance ».
+ */
 export function buildRelanceEmailTexte(lead: RelanceEmailLead): string {
   const libelle = DIPLOME_LIBELLE[lead.diplomeVise];
   const objet = libelle
-    ? `votre demande concernant la VAE ${lead.diplomeVise} (${libelle}) 🎓`
-    : "votre demande de VAE 🎓";
+    ? `le ${lead.diplomeVise} (${libelle})`
+    : "un diplôme d'État";
 
   const lignes: string[] = [
     `Bonjour ${lead.prenom},`,
     "",
-    `Je reviens vers vous au sujet de ${objet}`,
+    `Vous nous avez contactés pour faire reconnaître votre expérience par ${objet} 🎓`,
     "",
-    "Nous n'avons pas encore réussi à échanger ensemble depuis votre demande, et je ne voudrais pas que votre projet reste en suspens à cause d'un simple appel manqué.",
+    "Nous n'avons pas encore réussi à échanger, et ce serait dommage que votre projet s'arrête sur un appel manqué.",
     "",
-    "Pour me répondre, un seul chiffre suffit :",
+    "Le principe est simple : vous obtenez exactement le même diplôme d'État que par la formation, sans retourner à l'école et sans quitter votre poste. C'est votre expérience qui compte.",
     "",
-    "1️⃣ Je suis toujours intéressé(e), rappelez-moi",
-    "2️⃣ Intéressé(e), mais plus tard — recontactez-moi dans quelques semaines",
-    "3️⃣ Je ne souhaite plus être contacté(e)",
+    "Plus de 1 300 candidats accompagnés, et 93 % de réussite devant le jury.",
     "",
-    "Si c'est 1, précisez-moi le moment qui vous arrange :",
-    "",
-    "☀️ En matinée (10h - 12h)",
-    "🕐 L'après-midi (14h - 18h)",
-    "🌙 En soirée, après 18h",
+    "La prochaine étape tient en un échange d'une vingtaine de minutes, gratuit et sans engagement : on regarde votre parcours ensemble et on vérifie votre éligibilité.",
   ];
 
   const agenda = agendaUrl();
   if (agenda) {
-    lignes.push(
-      "",
-      "Vous pouvez aussi choisir vous-même le jour et l'heure dans mon agenda :",
-      `👉 ${agenda}`
-    );
+    lignes.push("", "Choisissez le moment qui vous arrange :", `👉 ${agenda}`);
   }
 
   lignes.push(
     "",
-    "Une précision qui rassure souvent : depuis la réforme 2024, aucune durée minimale d'expérience n'est exigée pour entamer une VAE.",
+    "Vous préférez que je vous rappelle ? Répondez à ce message avec un seul chiffre :",
     "",
-    "Au plaisir de vous lire,",
+    "1️⃣ Rappelez-moi",
+    "2️⃣ Plus tard — recontactez-moi dans quelques semaines",
+    "3️⃣ Je ne souhaite plus être contacté(e)",
+    "",
+    "À très vite,",
     "",
     signature()
   );

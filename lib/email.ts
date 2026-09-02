@@ -356,25 +356,75 @@ export async function sendRelanceToLead(lead: {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
 
-  // Seule l'URL d'agenda connue est transformée en bouton — jamais une valeur
-  // venue d'un champ de formulaire. C'est ce qui rend l'opération sûre.
+  // MISE EN FORME (révision du 02/09/2026).
+  // Trois passages du texte deviennent des blocs visuels : la preuve chiffrée,
+  // le bouton de rendez-vous, le choix 1/2/3. Chaque bloc est reconnu à partir
+  // d'une chaîne CONNUE du message — jamais d'une valeur venue d'un formulaire :
+  // c'est ce qui rend l'opération sûre. Si une phrase change, le paragraphe
+  // reste en texte brut : la mise en forme se dégrade, rien ne casse.
+  const P = "margin:0;white-space:pre-wrap";
   const agenda = agendaUrl();
+
   const corpsHtml = (() => {
-    const echappe = esc(text);
-    if (!agenda) return echappe;
-    const ligne = esc(`👉 ${agenda}`);
-    const bouton = `</p>
-  <p style="margin:22px 0"><a href="${esc(agenda)}" style="display:inline-block;padding:14px 24px;background:#0f766e;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:16px">Choisir mon créneau</a></p>
-  <p style="margin:0;white-space:pre-wrap">`;
-    return echappe.includes(ligne) ? echappe.replace(ligne, bouton) : echappe;
+    let h = esc(text);
+
+    h = h.replace(
+      esc("Plus de 1 300 candidats accompagnés, et 93 % de réussite devant le jury."),
+      `</p>
+  <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:26px 0;border-collapse:collapse"><tr>
+    <td style="width:50%;padding:16px 10px;background:#f0f7f5;text-align:center;border-radius:12px 0 0 12px">
+      <div style="font-size:25px;font-weight:700;color:#0f766e;line-height:1.1">1 300+</div>
+      <div style="font-size:13px;color:#475569;padding-top:4px">candidats accompagnés</div>
+    </td>
+    <td style="width:50%;padding:16px 10px;background:#f0f7f5;text-align:center;border-left:1px solid #d6e8e3;border-radius:0 12px 12px 0">
+      <div style="font-size:25px;font-weight:700;color:#0f766e;line-height:1.1">93 %</div>
+      <div style="font-size:13px;color:#475569;padding-top:4px">de réussite au jury</div>
+    </td>
+  </tr></table>
+  <p style="${P}">`
+    );
+
+    if (agenda) {
+      h = h.replace(
+        esc(`Choisissez le moment qui vous arrange :\n👉 ${agenda}`),
+        `</p>
+  <p style="margin:30px 0 8px;text-align:center"><a href="${esc(agenda)}" style="display:inline-block;padding:16px 34px;background:#0f766e;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:700;font-size:17px">Choisir mon créneau</a></p>
+  <p style="margin:0 0 26px;text-align:center;font-size:13px;color:#64748b">Gratuit, sans engagement — 20 minutes</p>
+  <p style="${P}">`
+      );
+    }
+
+    h = h.replace(
+      esc(
+        "Vous préférez que je vous rappelle ? Répondez à ce message avec un seul chiffre :\n\n" +
+          "1️⃣ Rappelez-moi\n2️⃣ Plus tard — recontactez-moi dans quelques semaines\n" +
+          "3️⃣ Je ne souhaite plus être contacté(e)"
+      ),
+      `</p>
+  <p style="padding:18px 20px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;margin:0 0 22px;white-space:pre-wrap;font-size:15px">Vous préférez que je vous rappelle ? Répondez à ce message avec un seul chiffre :
+
+1️⃣ Rappelez-moi
+2️⃣ Plus tard — recontactez-moi dans quelques semaines
+3️⃣ Je ne souhaite plus être contacté(e)</p>
+  <p style="${P}">`
+    );
+
+    return h;
   })();
 
-  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;color:#0f172a;font-size:16px;line-height:1.6">
-  <div style="background-color:#21564d;background-image:linear-gradient(135deg,#55a08f 0%,#21564d 100%);border-radius:14px;padding:22px 24px;margin:0 0 24px">
-    <p style="margin:0;color:#ffffff;font-size:21px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
-    <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Votre accompagnement VAE</p>
+  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#eef2f5;padding:24px 12px">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden">
+    <div style="background-color:#21564d;background-image:linear-gradient(135deg,#55a08f 0%,#21564d 100%);padding:24px 28px">
+      <p style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
+      <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Votre expérience vaut un diplôme</p>
+    </div>
+    <div style="padding:28px;color:#0f172a;font-size:16px;line-height:1.65">
+      <p style="${P}">${corpsHtml}</p>
+    </div>
   </div>
-  <p style="margin:0;white-space:pre-wrap">${corpsHtml}</p>
+  <p style="max-width:600px;margin:16px auto 0;text-align:center;font-size:12px;color:#94a3b8;line-height:1.5">
+    Vous recevez ce message parce que vous avez demandé un accompagnement VAE sur vae-social.fr.<br>Répondez « 3 » et nous ne vous recontacterons plus.
+  </p>
 </div>`;
 
   await transporter.sendMail({ from, to: destinataire, replyTo, subject, text, html });
