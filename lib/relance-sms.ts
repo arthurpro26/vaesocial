@@ -393,9 +393,7 @@ export function buildRelanceEmailSujet(lead: RelanceEmailLead): string {
  */
 export function buildRelanceEmailTexte(lead: RelanceEmailLead): string {
   const libelle = DIPLOME_LIBELLE[lead.diplomeVise];
-  const objet = libelle
-    ? `le ${lead.diplomeVise} (${libelle})`
-    : "un diplôme d'État";
+  const objet = libelle ? `le ${lead.diplomeVise} (${libelle})` : "un diplôme d'État";
 
   const lignes: string[] = [
     `Bonjour ${lead.prenom},`,
@@ -404,25 +402,27 @@ export function buildRelanceEmailTexte(lead: RelanceEmailLead): string {
     "",
     "Nous n'avons pas encore réussi à échanger, et ce serait dommage que votre projet s'arrête sur un appel manqué.",
     "",
-    "Le principe est simple : vous obtenez exactement le même diplôme d'État que par la formation, sans retourner à l'école et sans quitter votre poste. C'est votre expérience qui compte.",
+    "Le principe : vous obtenez exactement le même diplôme d'État que par la formation, sans retourner à l'école et sans quitter votre poste. C'est votre expérience qui compte.",
     "",
-    "Plus de 1 300 candidats accompagnés, et 93 % de réussite devant le jury.",
-    "",
-    "La prochaine étape tient en un échange d'une vingtaine de minutes, gratuit et sans engagement : on regarde votre parcours ensemble et on vérifie votre éligibilité.",
+    "La prochaine étape est un échange d'une vingtaine de minutes, gratuit et sans engagement : on regarde votre parcours ensemble et on vérifie votre éligibilité.",
   ];
 
   const agenda = agendaUrl();
   if (agenda) {
-    lignes.push("", "Choisissez le moment qui vous arrange :", `👉 ${agenda}`);
+    lignes.push("", "Choisissez directement le créneau qui vous arrange :", `👉 ${agenda}`);
   }
 
   lignes.push(
     "",
-    "Vous préférez que je vous rappelle ? Répondez à ce message avec un seul chiffre :",
+    "Ou répondez simplement à ce message en m'indiquant quand vous appeler :",
     "",
-    "1️⃣ Rappelez-moi",
-    "2️⃣ Plus tard — recontactez-moi dans quelques semaines",
-    "3️⃣ Je ne souhaite plus être contacté(e)",
+    "☀️ En matinée, entre 10h et 12h",
+    "🕐 L'après-midi, entre 14h et 18h",
+    "🌙 En soirée, après 18h",
+    "",
+    "Dites-moi le jour et l'heure, je m'adapte à vos disponibilités.",
+    "",
+    "Plus de 1 300 candidats accompagnés — 93 % obtiennent leur diplôme devant le jury.",
     "",
     "À très vite,",
     "",

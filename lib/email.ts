@@ -368,25 +368,17 @@ export async function sendRelanceToLead(lead: {
   const corpsHtml = (() => {
     let h = esc(text);
 
+    // La preuve chiffrée passe en bas, en discret : elle rassure, elle ne vend pas.
     h = h.replace(
-      esc("Plus de 1 300 candidats accompagnés, et 93 % de réussite devant le jury."),
+      esc("Plus de 1 300 candidats accompagnés — 93 % obtiennent leur diplôme devant le jury."),
       `</p>
-  <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:26px 0;border-collapse:collapse"><tr>
-    <td style="width:50%;padding:16px 10px;background:#f0f7f5;text-align:center;border-radius:12px 0 0 12px">
-      <div style="font-size:25px;font-weight:700;color:#0f766e;line-height:1.1">1 300+</div>
-      <div style="font-size:13px;color:#475569;padding-top:4px">candidats accompagnés</div>
-    </td>
-    <td style="width:50%;padding:16px 10px;background:#f0f7f5;text-align:center;border-left:1px solid #d6e8e3;border-radius:0 12px 12px 0">
-      <div style="font-size:25px;font-weight:700;color:#0f766e;line-height:1.1">93 %</div>
-      <div style="font-size:13px;color:#475569;padding-top:4px">de réussite au jury</div>
-    </td>
-  </tr></table>
+  <p style="margin:26px 0 0;padding-top:18px;border-top:1px solid #e8edf1;font-size:14px;color:#64748b;text-align:center">Plus de <strong style="color:#0f766e">1 300 candidats accompagnés</strong> — <strong style="color:#0f766e">93 %</strong> obtiennent leur diplôme devant le jury.</p>
   <p style="${P}">`
     );
 
     if (agenda) {
       h = h.replace(
-        esc(`Choisissez le moment qui vous arrange :\n👉 ${agenda}`),
+        esc(`Choisissez directement le créneau qui vous arrange :\n👉 ${agenda}`),
         `</p>
   <p style="margin:30px 0 8px;text-align:center"><a href="${esc(agenda)}" style="display:inline-block;padding:16px 34px;background:#0f766e;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:700;font-size:17px">Choisir mon créneau</a></p>
   <p style="margin:0 0 26px;text-align:center;font-size:13px;color:#64748b">Gratuit, sans engagement — 20 minutes</p>
@@ -396,16 +388,16 @@ export async function sendRelanceToLead(lead: {
 
     h = h.replace(
       esc(
-        "Vous préférez que je vous rappelle ? Répondez à ce message avec un seul chiffre :\n\n" +
-          "1️⃣ Rappelez-moi\n2️⃣ Plus tard — recontactez-moi dans quelques semaines\n" +
-          "3️⃣ Je ne souhaite plus être contacté(e)"
+        "Ou répondez simplement à ce message en m'indiquant quand vous appeler :\n\n" +
+          "☀️ En matinée, entre 10h et 12h\n🕐 L'après-midi, entre 14h et 18h\n🌙 En soirée, après 18h"
       ),
       `</p>
-  <p style="padding:18px 20px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;margin:0 0 22px;white-space:pre-wrap;font-size:15px">Vous préférez que je vous rappelle ? Répondez à ce message avec un seul chiffre :
-
-1️⃣ Rappelez-moi
-2️⃣ Plus tard — recontactez-moi dans quelques semaines
-3️⃣ Je ne souhaite plus être contacté(e)</p>
+  <p style="margin:0 0 12px;font-size:15px;color:#475569">Ou répondez simplement à ce message en m'indiquant quand vous appeler :</p>
+  <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:0 0 18px;border-collapse:separate;border-spacing:0 8px">
+    <tr><td style="padding:13px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;font-size:15px">☀️&nbsp;&nbsp;En matinée, entre 10h et 12h</td></tr>
+    <tr><td style="padding:13px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;font-size:15px">🕐&nbsp;&nbsp;L'après-midi, entre 14h et 18h</td></tr>
+    <tr><td style="padding:13px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;font-size:15px">🌙&nbsp;&nbsp;En soirée, après 18h</td></tr>
+  </table>
   <p style="${P}">`
     );
 
