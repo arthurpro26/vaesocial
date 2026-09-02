@@ -26,7 +26,7 @@ type Reponse = {
   erreur?: string;
 };
 
-type Filtre = "relancables" | "tous" | "faits";
+type Filtre = "marques" | "tous" | "faits";
 
 export default function RelanceListeClient({
   leads,
@@ -37,21 +37,25 @@ export default function RelanceListeClient({
   cle: string;
   apercu: Apercu;
 }) {
-  const [selection, setSelection] = useState<Set<number>>(new Set());
-  const [filtre, setFiltre] = useState<Filtre>("relancables");
+  const relancable = (l: LeadSheet) => Boolean(l.email) && !l.relanceLe && l.marque;
+
+  // Les leads marqués dans le Sheet sont cochés d'entrée : Arthur a déjà fait
+  // son choix là-bas, l'écran ne fait que l'exécuter.
+  const [selection, setSelection] = useState<Set<number>>(
+    () => new Set(leads.filter(relancable).slice(0, MAX_PAR_ENVOI).map((l) => l.ligne))
+  );
+  const [filtre, setFiltre] = useState<Filtre>("marques");
   const [confirmation, setConfirmation] = useState(false);
   const [envoiEnCours, setEnvoiEnCours] = useState(false);
   const [reponse, setReponse] = useState<Reponse | null>(null);
   const [voirMessage, setVoirMessage] = useState(false);
-
-  const relancable = (l: LeadSheet) => Boolean(l.email) && !l.relanceLe;
 
   const stats = useMemo(
     () => ({
       total: leads.length,
       relancables: leads.filter(relancable).length,
       faits: leads.filter((l) => l.relanceLe).length,
-      sansEmail: leads.filter((l) => !l.email).length,
+      sansEmail: leads.filter((l) => l.marque && !l.email).length,
     }),
     [leads]
   );
@@ -59,7 +63,7 @@ export default function RelanceListeClient({
   const visibles = useMemo(() => {
     if (filtre === "tous") return leads;
     if (filtre === "faits") return leads.filter((l) => l.relanceLe);
-    return leads.filter(relancable);
+    return leads.filter((l) => l.marque && !l.relanceLe);
   }, [leads, filtre]);
 
   function basculer(ligne: number) {
@@ -72,11 +76,10 @@ export default function RelanceListeClient({
     });
   }
 
-  /** Sélectionne les N plus récents encore relançables, jamais plus. */
+  /** Recoche tous les marqués, dans la limite d'un envoi. */
   function selectionnerLot() {
     setReponse(null);
-    const lot = leads.filter(relancable).slice(0, MAX_PAR_ENVOI).map((l) => l.ligne);
-    setSelection(new Set(lot));
+    setSelection(new Set(leads.filter(relancable).slice(0, MAX_PAR_ENVOI).map((l) => l.ligne)));
   }
 
   const choisis = leads.filter((l) => selection.has(l.ligne) && relancable(l));
@@ -105,15 +108,16 @@ export default function RelanceListeClient({
     <div className="mx-auto w-full max-w-4xl px-4 py-8">
       <h1 className="text-2xl font-bold text-slate-900">Console de relance</h1>
       <p className="mt-2 leading-relaxed text-slate-600">
-        Les leads que vous n&apos;avez pas réussi à joindre. Cochez, vérifiez, envoyez —
-        {" "}{MAX_PAR_ENVOI} au maximum à la fois.
+        Marquez la colonne <strong>Mail</strong> de votre Google Sheet, en face des leads à
+        relancer — n&apos;importe quel signe suffit. Ils apparaissent ici, déjà cochés.
+        Vous vérifiez, vous envoyez : {MAX_PAR_ENVOI} au maximum à la fois.
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Chiffre valeur={stats.total} libelle="leads au total" />
-        <Chiffre valeur={stats.relancables} libelle="à relancer" accent />
+        <Chiffre valeur={stats.relancables} libelle="marqués, prêts à partir" accent />
         <Chiffre valeur={stats.faits} libelle="déjà relancés" />
-        <Chiffre valeur={stats.sansEmail} libelle="sans email" />
+        <Chiffre valeur={stats.sansEmail} libelle="marqués sans email" />
       </div>
 
       {apercu ? (
@@ -144,8 +148,8 @@ export default function RelanceListeClient({
       ) : null}
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
-        <Onglet actif={filtre === "relancables"} onClick={() => setFiltre("relancables")}>
-          À relancer ({stats.relancables})
+        <Onglet actif={filtre === "marques"} onClick={() => setFiltre("marques")}>
+          Marqués ({stats.relancables})
         </Onglet>
         <Onglet actif={filtre === "faits"} onClick={() => setFiltre("faits")}>
           Déjà relancés ({stats.faits})
@@ -158,7 +162,7 @@ export default function RelanceListeClient({
           onClick={selectionnerLot}
           className="ml-auto rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
         >
-          Cocher les {MAX_PAR_ENVOI} plus récents
+          Tout recocher
         </button>
         {selection.size > 0 ? (
           <button
@@ -173,7 +177,11 @@ export default function RelanceListeClient({
 
       <ul className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200">
         {visibles.length === 0 ? (
-          <li className="p-6 text-center text-slate-500">Aucun lead dans cette vue.</li>
+          <li className="p-6 text-center leading-relaxed text-slate-500">
+            {filtre === "marques"
+              ? "Aucun lead marqué. Mettez une croix dans la colonne Mail de votre Sheet, puis rechargez cette page."
+              : "Aucun lead dans cette vue."}
+          </li>
         ) : null}
         {visibles.map((lead) => {
           const possible = relancable(lead);

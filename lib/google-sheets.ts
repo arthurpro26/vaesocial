@@ -109,6 +109,19 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
 /** Intitulé attendu en ligne 1 du Sheet, à créer à la main une seule fois. */
 export const COLONNE_RELANCE = "Relancé le";
 
+/**
+ * Colonne de sélection — ajoutée le 02/09/2026 à la demande d'Arthur.
+ *
+ * Il passe sa journée dans le Sheet, pas dans une interface web : il marque
+ * d'une croix (ou de n'importe quoi) les leads qu'il veut relancer, et la
+ * console n'a plus qu'à exécuter. Le Sheet devient la source de vérité.
+ *
+ * ⚠️ La marque est CONSOMMÉE : après un envoi réussi, la cellule est vidée et
+ * la date s'inscrit dans « Relancé le ». Le lendemain, il ne voit donc que ses
+ * nouvelles marques — pas d'accumulation, pas de confusion.
+ */
+export const COLONNE_MAIL = "Mail";
+
 export type LeadSheet = {
   /** Numéro de ligne A1 dans le Sheet — sert d'identifiant stable. */
   ligne: number;
@@ -121,6 +134,8 @@ export type LeadSheet = {
   recevabilite: string;
   /** Date de la relance déjà envoyée, ou "" si jamais relancé. */
   relanceLe: string;
+  /** Arthur a-t-il coché cette ligne dans la colonne « Mail » ? */
+  marque: boolean;
 };
 
 export type LectureLeads =
@@ -155,9 +170,14 @@ async function ouvrirOnglet() {
   return sheet;
 }
 
+/** Intitulé réel d'une colonne dans le Sheet, ou null si elle est absente. */
+function trouverColonne(headerValues: string[], attendu: string): string | null {
+  return headerValues.find((h) => memeIntitule(h, attendu)) ?? null;
+}
+
 /** Intitulé réel de la colonne de relance dans le Sheet, ou null si absente. */
 function colonneRelance(headerValues: string[]): string | null {
-  return headerValues.find((h) => memeIntitule(h, COLONNE_RELANCE)) ?? null;
+  return trouverColonne(headerValues, COLONNE_RELANCE);
 }
 
 /**
@@ -203,11 +223,19 @@ export async function readLeadsFromSheet(): Promise<LectureLeads> {
   }
 
   const colonne = colonneRelance(sheet.headerValues);
-  if (!colonne) {
+  const colonneMarque = trouverColonne(sheet.headerValues, COLONNE_MAIL);
+  const manquantes = [
+    colonne ? null : COLONNE_RELANCE,
+    colonneMarque ? null : COLONNE_MAIL,
+  ].filter(Boolean);
+
+  if (!colonne || !colonneMarque) {
     return {
       ok: false,
       raison: "colonne",
-      message: `La colonne « ${COLONNE_RELANCE} » est absente du Sheet. Ajoutez-la dans la première cellule libre de la ligne 1, puis rechargez.`,
+      message: `Colonne${manquantes.length > 1 ? "s" : ""} absente${
+        manquantes.length > 1 ? "s" : ""
+      } du Sheet : « ${manquantes.join(" » et « ")} ». Ajoutez-la dans la ligne 1, puis rechargez.`,
     };
   }
 
@@ -224,6 +252,7 @@ export async function readLeadsFromSheet(): Promise<LectureLeads> {
     email: lu(row, "Email"),
     recevabilite: lu(row, "Recevabilité"),
     relanceLe: lu(row, colonne),
+    marque: Boolean(lu(row, colonneMarque)),
   }));
 
   // Le plus récent en haut : c'est l'ordre dans lequel on travaille.
@@ -259,11 +288,12 @@ export async function relancerLeads(
   if (!sheet) throw new Error("Google Sheets non configuré : envoi annulé.");
 
   const colonne = colonneRelance(sheet.headerValues);
+  const colonneMarque = trouverColonne(sheet.headerValues, COLONNE_MAIL);
   // Pas de colonne de traçage = pas d'envoi. Voir l'avertissement en tête de
   // section : sans trace, le double envoi devient certain.
-  if (!colonne) {
+  if (!colonne || !colonneMarque) {
     throw new Error(
-      `La colonne « ${COLONNE_RELANCE} » est absente du Sheet : envoi annulé pour éviter tout doublon.`
+      `Colonne « ${!colonne ? COLONNE_RELANCE : COLONNE_MAIL} » absente du Sheet : envoi annulé.`
     );
   }
 
@@ -284,12 +314,20 @@ export async function relancerLeads(
       email: lu(row, "Email"),
       recevabilite: lu(row, "Recevabilité"),
       relanceLe: lu(row, colonne),
+      marque: Boolean(lu(row, colonneMarque)),
     };
 
     // Garde-fou n°1 : relu dans le Sheet au moment de l'envoi, pas d'après ce
     // que dit le navigateur. Deux onglets ouverts ne peuvent pas doubler.
     if (lead.relanceLe) {
       resultat.ignores.push({ lead, raison: `déjà relancé le ${lead.relanceLe}` });
+      continue;
+    }
+    // Garde-fou n°3 : c'est le Sheet qui décide, pas le navigateur. Une ligne
+    // non marquée n'est jamais relancée, même si le client la demande. Un bug
+    // d'interface ne peut donc pas écrire à quelqu'un qu'Arthur n'a pas choisi.
+    if (!lead.marque) {
+      resultat.ignores.push({ lead, raison: `non marqué dans la colonne « ${COLONNE_MAIL} »` });
       continue;
     }
     if (!lead.email) {
@@ -311,6 +349,8 @@ export async function relancerLeads(
     // — la relance est partie, et il faut le savoir pour ne pas la renvoyer.
     try {
       row.set(colonne, new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" }));
+      // La marque est consommée : demain, Arthur ne verra que ses nouvelles.
+      row.set(colonneMarque, "");
       await row.save();
     } catch (erreur) {
       resultat.echecs.push({
@@ -343,6 +383,7 @@ export async function relancerLeads(
           email: "",
           recevabilite: "",
           relanceLe: "",
+          marque: false,
         },
         raison: "ligne introuvable dans le Sheet",
       });
