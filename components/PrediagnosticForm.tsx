@@ -18,6 +18,10 @@ const DIPLOME_OPTIONS = [
   { value: "DEAES", label: "DEAES", helper: "Accompagnant éducatif et social · CAP/BEP" },
   { value: "DEEJE", label: "DEEJE", helper: "Éducateur de jeunes enfants · Bac+3" },
   { value: "DEME", label: "DEME", helper: "Moniteur-éducateur · Bac" },
+  // Ajouté le 03/09/2026. Comme pour les autres, la `value` est le sigle :
+  // c'est elle qui part dans l'email et dans la colonne "Diplôme" du Sheet.
+  // Ne jamais la modifier ensuite (voir l'avertissement sur SITUATION_OPTIONS).
+  { value: "DEAP", label: "DEAP", helper: "Auxiliaire de puériculture · Bac" },
   { value: "Je ne sais pas", label: "Je ne sais pas" },
 ];
 
@@ -82,6 +86,21 @@ const STRUCTURE_SUGGESTIONS: Record<string, string[]> = {
   DEAES: ["EHPAD", "SSIAD", "SAAD", "Domicile", "FAM", "MAS", "IME"],
   DEME: ["IME", "ITEP", "MECS", "SESSAD", "ESAT"],
   DEEJE: ["Crèche", "Micro-crèche", "Multi-accueil", "Halte-garderie", "PMI", "Relais Petite Enfance"],
+  // DEAP : le diplôme est délivré par le ministère de la Santé et s'exerce
+  // aussi bien à l'hôpital qu'en accueil du jeune enfant — les suggestions
+  // couvrent donc les deux univers, contrairement au DEEJE (petite enfance
+  // seule).
+  DEAP: [
+    "Crèche",
+    "Micro-crèche",
+    "Multi-accueil",
+    "Halte-garderie",
+    "Maternité",
+    "Néonatalogie",
+    "Pédiatrie",
+    "PMI",
+    "Domicile",
+  ],
 };
 // Liste de secours si le diplôme n'est pas encore déterminé ("Je ne sais
 // pas") : toutes les suggestions réunies, sans doublons.
@@ -331,7 +350,7 @@ export default function PrediagnosticForm({
   presetDiplome,
 }: {
   /** Quand fourni (pages diplôme dédiées), l'étape "Quel diplôme ?" est sautée et préremplie. */
-  presetDiplome?: "DEES" | "DEAES" | "DEEJE" | "DEME";
+  presetDiplome?: "DEES" | "DEAES" | "DEEJE" | "DEME" | "DEAP";
 }) {
   const [step, setStep] = useState(0);
   // Sens de la dernière navigation, pour orienter l'animation de transition

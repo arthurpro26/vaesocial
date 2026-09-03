@@ -28,6 +28,11 @@ export type DiplomeData = {
   noteReferentiel?: string;
   faq: FaqItem[];
   ctaTitre: string;
+  // Thème couleur de la page. Absent = teal de marque (toutes les pages
+  // historiques). "rose" applique la classe `.theme-rose` définie dans
+  // app/globals.css, qui repeint la page entière en redéfinissant les
+  // variables CSS de la palette — aucun composant n'est dupliqué.
+  theme?: "rose";
 };
 
 export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
@@ -363,5 +368,108 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       },
     ],
     ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEME ?",
+  },
+
+  // ---------------------------------------------------------------------
+  // DEAP — ajouté le 03/09/2026.
+  //
+  // Faits vérifiés le 03/09/2026 sur France Compétences (fiche RNCP40743,
+  // "DE - Auxiliaire de puériculture") : fiche ACTIVE, enregistrée du
+  // 01/09/2025 au 01/09/2029, NIVEAU 4, voie "Par expérience" (VAE) ouverte,
+  // certificateur Ministère de la Santé et de la Prévention.
+  //
+  // Rien d'autre n'est affirmé ici : aucun taux d'insertion, aucun salaire,
+  // aucun pourcentage d'employeurs — ces chiffres n'ont pas été vérifiés pour
+  // ce diplôme et n'ont donc rien à faire sur la page (règle "real data only").
+  // ---------------------------------------------------------------------
+  "auxiliaire-puericulture": {
+    slug: "auxiliaire-puericulture",
+    sigle: "DEAP",
+    nomComplet: "Diplôme d'État d'Auxiliaire de Puériculture",
+    niveau: "Niveau 4 (Bac)",
+    theme: "rose",
+    metaTitle: "VAE Auxiliaire de Puériculture (DEAP) par expérience | VAESocial",
+    metaDescription:
+      "Obtenez le diplôme d'État d'auxiliaire de puériculture par la VAE grâce à votre expérience auprès des jeunes enfants. Diagnostic gratuit en 3 minutes.",
+    heroSuffixe: "au DEAP",
+    heroIntro:
+      "✨ Votre expérience auprès des tout-petits vaut le diplôme d'État d'auxiliaire de puériculture. Vérifiez gratuitement si vous êtes éligible en moins de 3 minutes.",
+    heroParagraphe:
+      "Le DEAP est un diplôme d'État de niveau 4 (équivalent Bac) qui atteste de la capacité à prendre soin de l'enfant de la naissance à l'adolescence et à accompagner sa famille, en maternité, en service de pédiatrie, en PMI ou en structure d'accueil du jeune enfant. La validation des acquis de l'expérience est une voie d'accès officielle à ce diplôme : votre pratique quotidienne des soins et de l'éveil du jeune enfant peut suffire à le valider, sans reprendre une formation complète.",
+    publicIntro:
+      "Vous vous occupez déjà d'enfants au quotidien, sans avoir le diplôme d'État ? Votre expérience peut être recevable pour une VAE DEAP.",
+    publicConcerne: [
+      {
+        titre: "Vous travaillez en crèche ou en multi-accueil",
+        texte:
+          "Agente de crèche, animatrice petite enfance, professionnelle en micro-crèche ou en halte-garderie : les soins, les repas, le change, l'éveil et la surveillance que vous assurez chaque jour sont au cœur du référentiel du DEAP.",
+      },
+      {
+        titre: "Vous êtes assistante maternelle ou garde d'enfants",
+        texte:
+          "Une expérience suivie auprès de jeunes enfants à domicile, agréée ou en emploi direct, peut être valorisée dans le dossier — c'est la nature des missions qui compte, pas le lieu d'exercice.",
+      },
+      {
+        titre: "Vous exercez en milieu hospitalier auprès d'enfants",
+        texte:
+          "Agente des services hospitaliers, aide-soignante ou faisant fonction en maternité, en néonatalogie ou en pédiatrie : votre pratique des soins au jeune enfant est directement transposable.",
+      },
+    ],
+    debouchesIntro:
+      "Le DEAP est un diplôme d'État délivré par le ministère chargé de la Santé, et il ouvre des portes dans deux univers très différents — le soin et l'accueil du jeune enfant :",
+    debouches: [
+      {
+        icon: "🍼",
+        texte:
+          "Maternité et néonatalogie — accompagner les tout premiers jours d'un enfant et rassurer des parents qui découvrent tout en même temps.",
+      },
+      {
+        icon: "🏥",
+        texte:
+          "Services de pédiatrie — prendre soin d'enfants hospitalisés et être, pour eux, le visage rassurant du quotidien.",
+      },
+      {
+        icon: "🧸",
+        texte:
+          "Crèches, micro-crèches, multi-accueils et haltes-garderies — l'éveil, les soins et la sécurité affective des tout-petits, jour après jour.",
+      },
+      {
+        icon: "👶",
+        texte:
+          "Services de Protection Maternelle et Infantile (PMI) — la prévention et le soutien aux familles, au plus près de leur réalité.",
+      },
+    ],
+    debouchesConclusion:
+      "🌟 Un diplôme d'État reconnu à l'hôpital comme en crèche : peu de métiers de la petite enfance offrent autant de terrains possibles avec un seul diplôme.",
+    noteReferentiel:
+      "Le DEAP est délivré par le ministère chargé de la Santé. Les modalités du parcours VAE (recevabilité, épreuves complémentaires éventuelles) sont fixées par le certificateur et peuvent évoluer : nous vérifions avec vous les conditions exactes qui s'appliquent à votre dossier avant tout engagement.",
+    faq: [
+      {
+        question: "Peut-on vraiment obtenir le DEAP par la VAE ?",
+        reponse:
+          "Oui. La voie « par expérience » est officiellement ouverte sur la fiche du diplôme d'État d'auxiliaire de puériculture au Répertoire national des certifications professionnelles. C'est une voie d'accès à part entière, au même titre que la formation initiale ou l'apprentissage.",
+      },
+      {
+        question: "Quel est le niveau du DEAP ?",
+        reponse:
+          "Le DEAP est un diplôme d'État de niveau 4, équivalent au baccalauréat. Il est délivré par le ministère chargé de la Santé et de la Prévention.",
+      },
+      {
+        question: "Le diplôme obtenu par VAE est-il le même qu'en formation ?",
+        reponse:
+          "Oui. C'est le même diplôme d'État, avec les mêmes droits et les mêmes possibilités d'exercice. La voie d'obtention n'est pas mentionnée sur le diplôme.",
+      },
+      {
+        question: "Quelle expérience faut-il pour viser le DEAP en VAE ?",
+        reponse:
+          "Depuis la réforme de janvier 2024, aucune durée minimale n'est exigée. Ce qui compte, c'est que votre expérience — en crèche, à domicile, en maternité, en pédiatrie ou en PMI — corresponde aux activités de soin et d'accompagnement du jeune enfant évaluées dans le référentiel du diplôme. C'est précisément ce que le diagnostic gratuit vérifie.",
+      },
+      {
+        question: "Faut-il arrêter de travailler pendant la VAE ?",
+        reponse:
+          "Non. L'accompagnement se fait à distance, en visio, avec des séances organisées autour de votre emploi du temps. C'est d'ailleurs votre activité en cours qui alimente votre dossier.",
+      },
+    ],
+    ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEAP ?",
   },
 };

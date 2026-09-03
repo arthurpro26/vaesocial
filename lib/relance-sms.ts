@@ -37,6 +37,14 @@ const DIPLOME_LIBELLE: Record<string, string> = {
   DEAES: "Diplôme d'État d'Accompagnant Éducatif et Social",
   DEEJE: "Diplôme d'État d'Éducateur de Jeunes Enfants",
   DEME: "Diplôme d'État de Moniteur-Éducateur",
+  // Ajouté le 03/09/2026 avec la page auxiliaire de puériculture. Sans cette
+  // ligne, `DIPLOME_LIBELLE["DEAP"]` vaut `undefined` : l'objet de l'accusé de
+  // réception perd le sigle (« votre demande de VAE est bien reçue » au lieu de
+  // « votre demande de VAE DEAP ») et le corps du message retombe sur le
+  // générique « un diplôme d'État ». Aucun lead n'est perdu, mais chaque
+  // candidate DEAP recevrait un message visiblement moins soigné que les
+  // autres — au moment précis où on teste ce marché.
+  DEAP: "Diplôme d'État d'Auxiliaire de Puériculture",
 };
 
 /**

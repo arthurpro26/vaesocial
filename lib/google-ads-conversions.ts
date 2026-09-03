@@ -14,7 +14,7 @@
 // aucun événement invalide n'est jamais envoyé à Google Ads. Une fois les
 // libellés récupérés, il suffit de les coller ci-dessous — aucune autre
 // modification (formulaire, API route...) n'est nécessaire.
-export type FormKey = "dees" | "deaes" | "deeje" | "deme" | "generique";
+export type FormKey = "dees" | "deaes" | "deeje" | "deme" | "deap" | "generique";
 
 // Étiquette unique de l'action de conversion « Envois de formulaires de lead »
 // du compte. Elle est volontairement partagée par TOUS les formulaires.
@@ -46,6 +46,12 @@ export const GOOGLE_ADS_CONVERSION_LABELS: Record<FormKey, string> = {
   deaes: LEAD_FORM_CONVERSION,
   deeje: LEAD_FORM_CONVERSION,
   deme: LEAD_FORM_CONVERSION,
+  // Ajouté le 03/09/2026 en même temps que la page auxiliaire de puériculture.
+  // SANS cette ligne, `formKey` aurait valu "deap", la recherche dans ce
+  // Record aurait renvoyé `undefined`, et AUCUNE conversion ne serait remontée
+  // à Google Ads pour les leads DEAP — la campagne neuve aurait appris sur un
+  // signal vide, exactement le scénario du 4 août 2026 décrit plus haut.
+  deap: LEAD_FORM_CONVERSION,
   // Formulaire de la page d'accueil et de /prediagnostic, quand aucun
   // diplôme n'est présélectionné (presetDiplome absent).
   generique: LEAD_FORM_CONVERSION,
@@ -59,7 +65,7 @@ declare global {
 
 /**
  * Déclenche la conversion Google Ads propre au formulaire envoyé (DEES,
- * DEAES, DEEJE, DEME ou générique), une fois l'étiquette correspondante
+ * DEAES, DEEJE, DEME, DEAP ou générique), une fois l'étiquette correspondante
  * renseignée dans GOOGLE_ADS_CONVERSION_LABELS ci-dessus.
  *
  * Appelé dès maintenant depuis PrediagnosticForm.tsx : sans effet tant que

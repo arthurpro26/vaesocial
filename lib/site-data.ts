@@ -34,6 +34,18 @@ export const DIPLOMES = [
     description:
       "Accompagnement au quotidien de personnes en difficulté sociale ou en situation de handicap, en appui de l'éducateur spécialisé.",
   },
+  // Ajouté le 03/09/2026. Le slug est le NOM DU MÉTIER et non le sigle :
+  // relevé Keyword Planner du 03/09/2026 (France, 12 mois glissants) —
+  // "vae auxiliaire de puericulture" = 4 400 recherches/mois, "vae deap" = 170.
+  // Les candidates cherchent leur métier, pas l'acronyme. L'URL, le titre et
+  // les annonces doivent suivre le même vocabulaire qu'elles.
+  {
+    slug: "auxiliaire-puericulture",
+    sigle: "DEAP",
+    nom: "Auxiliaire de puériculture",
+    description:
+      "Soins et accompagnement du jeune enfant, en maternité, en service de pédiatrie, en PMI ou en structure d'accueil de la petite enfance.",
+  },
 ] as const;
 
 export type DiplomeSlug = (typeof DIPLOMES)[number]["slug"];

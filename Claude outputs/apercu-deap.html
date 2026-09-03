@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aperçu — page Auxiliaire de puériculture</title>
+<style>
+  :root{
+    --brand-50:253 244 246; --brand-100:249 229 234; --brand-200:240 198 209;
+    --brand-300:226 159 178; --brand-400:207 118 145; --brand-500:184 85 117;
+    --brand-600:156 66 96;  --brand-700:125 53 80;   --brand-800:100 43 65;
+    --brand-900:69 29 45;
+  }
+  .teal{
+    --brand-50:239 247 245; --brand-100:217 236 231; --brand-200:179 217 208;
+    --brand-300:130 190 176; --brand-400:85 160 143; --brand-500:54 132 117;
+    --brand-600:41 107 95;  --brand-700:33 86 77;    --brand-800:27 68 61;
+    --brand-900:20 47 42;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:24px 16px;background:#f1f5f9;color:#0f172a;
+       font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:1000px;margin:0 auto}
+  .legende{font-size:13px;color:#475569;margin:0 0 14px}
+  .legende b{color:#0f172a}
+  .ecran{border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(15,23,42,.13);background:#fff;margin-bottom:34px}
+  .hero{background:linear-gradient(to bottom, rgb(var(--brand-50)), #fff 70%);padding:26px 24px 30px}
+  .pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+  .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 15px;
+        font-size:13px;font-weight:600;background:rgb(var(--brand-100));color:rgb(var(--brand-700))}
+  .pill.amber{background:#fffbeb;color:#92400e}
+  h1{font-size:30px;line-height:1.14;font-weight:700;letter-spacing:-.4px;margin:0 0 10px;text-align:center}
+  h1 .hl{color:rgb(var(--brand-600))}
+  .accroche{text-align:center;font-size:15px;font-weight:600;color:#1e293b;margin:0 auto;max-width:640px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:26px;align-items:start}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  .para{font-size:14px;color:#475569;margin:0 0 14px}
+  .encart{border:1px solid #f1f5f9;background:rgba(255,255,255,.65);border-radius:14px;padding:16px}
+  .encart p{margin:0 0 10px;font-size:13.5px;font-weight:600}
+  .encart li{list-style:none;display:flex;gap:8px;font-size:13px;color:#475569;margin-bottom:8px}
+  .encart ul{margin:0;padding:0}
+  .check{color:rgb(var(--brand-600));font-weight:700}
+  .note{margin-top:12px;border:1px solid #fde68a;background:#fffbeb;border-radius:12px;padding:12px;font-size:12.5px;color:#78350f}
+  .form{border:1px solid #e2e8f0;border-radius:16px;padding:20px;background:#fff;box-shadow:0 4px 14px rgba(15,23,42,.06)}
+  .form h3{margin:0 0 4px;font-size:16px}
+  .form .sub{margin:0 0 14px;font-size:12.5px;color:#64748b}
+  .barre{height:5px;border-radius:999px;background:rgb(var(--brand-100));margin-bottom:16px;overflow:hidden}
+  .barre span{display:block;height:100%;width:22%;background:rgb(var(--brand-500))}
+  .choix{border:1px solid #e2e8f0;border-radius:12px;padding:11px 13px;margin-bottom:8px;font-size:13.5px;display:flex;justify-content:space-between;align-items:center}
+  .choix.on{border-color:rgb(var(--brand-500));background:rgb(var(--brand-50));font-weight:600}
+  .choix small{color:#64748b;font-weight:400}
+  .choix.on small{color:rgb(var(--brand-700))}
+  .btn{display:block;width:100%;margin-top:14px;border:0;border-radius:12px;padding:13px;
+       background:rgb(var(--brand-600));color:#fff;font-size:15px;font-weight:600;text-align:center}
+  .conf{margin-top:10px;text-align:center;font-size:11.5px;color:#64748b}
+  .stats{display:flex;gap:0;border-top:1px solid #f1f5f9;background:#fff}
+  .stat{flex:1;text-align:center;padding:16px 6px;border-right:1px solid #f1f5f9}
+  .stat:last-child{border-right:0}
+  .stat b{display:block;font-size:17px;color:rgb(var(--brand-700))}
+  .stat span{font-size:11px;color:#64748b}
+  .deb{background:rgb(var(--brand-50) / .6);padding:26px 24px}
+  .eyebrow{text-align:center;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgb(var(--brand-600));margin:0 0 6px}
+  .deb h2{text-align:center;font-size:22px;margin:0 0 18px}
+  .grille{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:760px){.grille{grid-template-columns:1fr}}
+  .carte{display:flex;gap:11px;background:#fff;border:1px solid #f1f5f9;border-radius:14px;padding:14px;font-size:13px;color:#334155}
+  .ico{width:38px;height:38px;flex:0 0 38px;border-radius:11px;background:rgb(var(--brand-50));
+       display:flex;align-items:center;justify-content:center;font-size:19px}
+  .concl{text-align:center;font-size:13px;font-weight:600;color:rgb(var(--brand-800));margin:16px auto 0;max-width:560px}
+  .cta{background:linear-gradient(135deg, rgb(var(--brand-600)), rgb(var(--brand-800)));padding:30px 24px;text-align:center;color:#fff}
+  .cta h2{margin:0 0 8px;font-size:21px}
+  .cta p{margin:0 0 16px;font-size:13.5px;color:rgb(var(--brand-100))}
+  .cta a{display:inline-block;background:#fff;color:rgb(var(--brand-700));border-radius:12px;padding:12px 26px;font-weight:600;text-decoration:none;font-size:14.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="legende"><b>Aperçu 1 — /auxiliaire-puericulture en rose</b> (ce que la classe <code>theme-rose</code> produit)</p>
+
+<div class="ecran">
+  <div class="hero">
+    <div class="pills">
+      <span class="pill">✅ VAE DEAP · Niveau 4 (Bac)</span>
+      <span class="pill amber">⭐ 4,9/5 (1257 avis bénéficiaires)</span>
+    </div>
+    <h1>On vous dit d'abord si vous êtes <span class="hl">éligible au DEAP</span>.<br>Pas l'inverse.</h1>
+    <p class="accroche">✨ Votre expérience auprès des tout-petits vaut le diplôme d'État d'auxiliaire de puériculture. Vérifiez gratuitement si vous êtes éligible en moins de 3 minutes.</p>
+
+    <div class="cols">
+      <div>
+        <p class="para">Le DEAP est un diplôme d'État de niveau 4 (équivalent Bac) qui atteste de la capacité à prendre soin de l'enfant de la naissance à l'adolescence et à accompagner sa famille, en maternité, en service de pédiatrie, en PMI ou en structure d'accueil du jeune enfant. La validation des acquis de l'expérience est une voie d'accès officielle à ce diplôme.</p>
+        <div class="note">ℹ️ Le DEAP est délivré par le ministère chargé de la Santé. Les modalités du parcours VAE sont fixées par le certificateur et peuvent évoluer : nous vérifions avec vous les conditions exactes qui s'appliquent à votre dossier.</div>
+        <div class="encart" style="margin-top:14px">
+          <p>👉 Vous vous occupez déjà d'enfants au quotidien, sans avoir le diplôme d'État ?</p>
+          <ul>
+            <li><span class="check">✓</span><span><b>Vous travaillez en crèche ou en multi-accueil.</b> Les soins, les repas, le change, l'éveil et la surveillance que vous assurez chaque jour sont au cœur du référentiel.</span></li>
+            <li><span class="check">✓</span><span><b>Vous êtes assistante maternelle ou garde d'enfants.</b> C'est la nature des missions qui compte, pas le lieu d'exercice.</span></li>
+            <li><span class="check">✓</span><span><b>Vous exercez en milieu hospitalier auprès d'enfants.</b> Maternité, néonatalogie, pédiatrie : votre pratique est directement transposable.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form">
+        <h3>Diagnostic gratuit</h3>
+        <p class="sub">3 minutes · sans engagement</p>
+        <div class="barre"><span></span></div>
+        <p style="margin:0 0 10px;font-size:14px;font-weight:600">Quelle est votre situation actuelle ?</p>
+        <div class="choix on">Salarié du secteur privé <small>Y compris associatif</small></div>
+        <div class="choix">Agent du secteur public <small>Mairie, hôpital public</small></div>
+        <div class="choix">Demandeur d'emploi <small>Inscrit ou non</small></div>
+        <div class="choix">Indépendant <small>Libéral, auto-entrepreneur</small></div>
+        <div class="btn">Continuer</div>
+        <p class="conf">🔒 Vos informations restent confidentielles — jamais revendues à des tiers.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>&lt; 24h</b><span>Délai de réponse</span></div>
+    <div class="stat"><b>100%</b><span>À distance</span></div>
+    <div class="stat"><b>100%</b><span>Financement possible</span></div>
+    <div class="stat"><b>15-20h</b><span>D'accompagnement</span></div>
+    <div class="stat"><b>Gratuit</b><span>Diagnostic initial</span></div>
+  </div>
+
+  <div class="deb">
+    <p class="eyebrow">Débouchés</p>
+    <h2>🚀 Où exercer avec un DEAP ?</h2>
+    <div class="grille">
+      <div class="carte"><div class="ico">🍼</div><p style="margin:0">Maternité et néonatalogie — accompagner les tout premiers jours d'un enfant et rassurer des parents qui découvrent tout en même temps.</p></div>
+      <div class="carte"><div class="ico">🏥</div><p style="margin:0">Services de pédiatrie — prendre soin d'enfants hospitalisés et être, pour eux, le visage rassurant du quotidien.</p></div>
+      <div class="carte"><div class="ico">🧸</div><p style="margin:0">Crèches, micro-crèches, multi-accueils et haltes-garderies — l'éveil, les soins et la sécurité affective des tout-petits.</p></div>
+      <div class="carte"><div class="ico">👶</div><p style="margin:0">Services de Protection Maternelle et Infantile (PMI) — la prévention et le soutien aux familles.</p></div>
+    </div>
+    <p class="concl">🌟 Un diplôme d'État reconnu à l'hôpital comme en crèche : peu de métiers de la petite enfance offrent autant de terrains possibles avec un seul diplôme.</p>
+  </div>
+
+  <div class="cta">
+    <h2>Prêt·e à savoir si vous êtes éligible au DEAP ?</h2>
+    <p>Diagnostic gratuit, réponse personnalisée sous 24h.</p>
+    <a href="#">Vérifier mon éligibilité</a>
+  </div>
+</div>
+
+<p class="legende"><b>Aperçu 2 — la même page sans le thème</b> (le teal actuel, pour comparer)</p>
+
+<div class="ecran teal">
+  <div class="hero">
+    <div class="pills">
+      <span class="pill">✅ VAE DEAP · Niveau 4 (Bac)</span>
+      <span class="pill amber">⭐ 4,9/5 (1257 avis bénéficiaires)</span>
+    </div>
+    <h1>On vous dit d'abord si vous êtes <span class="hl">éligible au DEAP</span>.<br>Pas l'inverse.</h1>
+    <p class="accroche">✨ Votre expérience auprès des tout-petits vaut le diplôme d'État d'auxiliaire de puériculture. Vérifiez gratuitement si vous êtes éligible en moins de 3 minutes.</p>
+    <div class="cols">
+      <div>
+        <div class="encart">
+          <p>👉 Vous vous occupez déjà d'enfants au quotidien ?</p>
+          <ul>
+            <li><span class="check">✓</span><span><b>Vous travaillez en crèche ou en multi-accueil.</b></span></li>
+            <li><span class="check">✓</span><span><b>Vous êtes assistante maternelle ou garde d'enfants.</b></span></li>
+            <li><span class="check">✓</span><span><b>Vous exercez en milieu hospitalier auprès d'enfants.</b></span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="form">
+        <h3>Diagnostic gratuit</h3>
+        <p class="sub">3 minutes · sans engagement</p>
+        <div class="barre"><span></span></div>
+        <div class="choix on">Salarié du secteur privé <small>Y compris associatif</small></div>
+        <div class="choix">Agent du secteur public <small>Mairie, hôpital public</small></div>
+        <div class="btn">Continuer</div>
+      </div>
+    </div>
+  </div>
+  <div class="cta">
+    <h2>Prêt·e à savoir si vous êtes éligible au DEAP ?</h2>
+    <p>Diagnostic gratuit, réponse personnalisée sous 24h.</p>
+    <a href="#">Vérifier mon éligibilité</a>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

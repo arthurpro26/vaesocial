@@ -84,7 +84,13 @@ export default async function DiplomePage({
   const d = getDiplomeOrNotFound(diplome);
 
   return (
-    <>
+    // `theme-rose` (voir app/globals.css) redéfinit les variables CSS de la
+    // palette pour toute la page : le rose se propage automatiquement aux
+    // sections partagées (StatsBar, Méthode, Financement, Témoignages,
+    // Engagements, CTA final) sans qu'aucune d'elles ne soit dupliquée ni
+    // modifiée. Sans `theme`, la valeur est `undefined` et la page garde le
+    // teal de marque — les pages DEES/DEAES/DEEJE/DEME sont inchangées.
+    <div className={d.theme === "rose" ? "theme-rose" : undefined}>
       <CourseJsonLd diplome={d} />
 
       {/* HERO — même structure grid que la home (accroche / formulaire / réassurance)
@@ -118,7 +124,9 @@ export default async function DiplomePage({
             </div>
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
-              <PrediagnosticForm presetDiplome={d.sigle as "DEES" | "DEAES" | "DEEJE" | "DEME"} />
+              <PrediagnosticForm
+                presetDiplome={d.sigle as "DEES" | "DEAES" | "DEEJE" | "DEME" | "DEAP"}
+              />
               <p className="mt-3 text-center text-xs text-slate-500 sm:mt-4">
                 🔒 Vos informations restent confidentielles — jamais revendues à des tiers.
               </p>
@@ -251,6 +259,6 @@ export default async function DiplomePage({
 
       <EngagementsSection />
       <CtaFinalSection titre={d.ctaTitre} />
-    </>
+    </div>
   );
 }

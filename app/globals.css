@@ -2,6 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --------------------------------------------------------------------------
+   Palette de marque — source unique de vérité (2026-09-03)
+
+   Les couleurs `brand-*` de tailwind.config.ts pointent désormais vers ces
+   variables. Les valeurs ci-dessous sont EXACTEMENT le teal historique
+   (#eff7f5 → #142f2a) : le rendu de toutes les pages existantes est
+   inchangé, au pixel près.
+
+   Format : composantes RVB séparées par des espaces, SANS `rgb(...)` autour.
+   C'est ce que la syntaxe `rgb(var(--x) / <alpha-value>)` attend pour que les
+   opacités (bg-brand-50/60, shadow-brand-900/5...) restent fonctionnelles.
+   -------------------------------------------------------------------------- */
+:root {
+  --brand-50: 239 247 245;
+  --brand-100: 217 236 231;
+  --brand-200: 179 217 208;
+  --brand-300: 130 190 176;
+  --brand-400: 85 160 143;
+  --brand-500: 54 132 117;
+  --brand-600: 41 107 95;
+  --brand-700: 33 86 77;
+  --brand-800: 27 68 61;
+  --brand-900: 20 47 42;
+}
+
+/* Thème rose — utilisé uniquement sur la page /auxiliaire-puericulture.
+   Rose profond et désaturé, construit sur la même logique que le teal
+   (assombri, jamais "bonbon") : la page doit rester celle d'un organisme qui
+   prépare un diplôme d'État, pas une page de faire-part. Les niveaux 600/700
+   gardent un contraste supérieur à 4,5:1 sur blanc, condition pour que le
+   texte reste lisible et accessible.
+
+   S'applique en posant `theme-rose` sur un conteneur : tous les enfants
+   héritent, y compris les sections partagées (StatsBar, Méthode,
+   Financement, Témoignages, Engagements, CTA) — zéro composant dupliqué. */
+.theme-rose {
+  --brand-50: 253 244 246;
+  --brand-100: 249 229 234;
+  --brand-200: 240 198 209;
+  --brand-300: 226 159 178;
+  --brand-400: 207 118 145;
+  --brand-500: 184 85 117;
+  --brand-600: 156 66 96;
+  --brand-700: 125 53 80;
+  --brand-800: 100 43 65;
+  --brand-900: 69 29 45;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -26,7 +74,14 @@ body {
      clic souris. */
   a:focus-visible,
   button:focus-visible {
-    outline: 2px solid theme("colors.brand.500");
+    /* 2026-09-03 — était `theme("colors.brand.500")`. Depuis que la palette
+       passe par des variables CSS, `theme()` renverrait ici la chaîne brute
+       `rgb(var(--brand-500) / <alpha-value>)` : le jeton `<alpha-value>` n'est
+       substitué que dans les classes utilitaires générées, jamais dans un
+       `theme()` écrit à la main dans une règle CSS. On lit donc la variable
+       directement — même couleur, et le contour de focus suit automatiquement
+       le thème de la page (teal partout, rose sur la page DEAP). */
+    outline: 2px solid rgb(var(--brand-500));
     outline-offset: 2px;
     border-radius: 4px;
   }
