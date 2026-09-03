@@ -106,6 +106,41 @@ const STRUCTURE_SUGGESTIONS: Record<string, string[]> = {
 // pas") : toutes les suggestions réunies, sans doublons.
 const ALL_STRUCTURES = Array.from(new Set(Object.values(STRUCTURE_SUGGESTIONS).flat()));
 
+// Exemple affiché en filigrane dans « Décrivez votre activité au quotidien »,
+// adapté au diplôme choisi à l'étape 1.
+//
+// AJOUT DU 03/09/2026 — pourquoi. L'exemple était unique et parlait de
+// « résidents en situation de handicap » et de « réunions d'équipe
+// pluridisciplinaire » : parfaitement juste pour un éducateur spécialisé,
+// totalement hors sujet pour une professionnelle de crèche qui vise le DEAP.
+// Un exemple qui ne ressemble pas au métier de la personne produit deux
+// dégâts : soit elle décrit son travail avec les mots du modèle plutôt que
+// les siens, soit elle n'ose pas répondre du tout.
+//
+// Ce n'est pas cosmétique. Ce champ est la matière première du Livret 2 et
+// c'est LE prédicteur de signature : plus la description est concrète et
+// écrite avec les mots du métier, mieux le dossier se qualifie. Chaque
+// exemple suit donc la même structure — qui j'accompagne, ce que je fais
+// concrètement, ce dont je suis responsable.
+const ACTIVITE_PLACEHOLDER: Record<string, string> = {
+  DEES:
+    "Ex : J'accompagne au quotidien 8 résidents en situation de handicap, j'organise des activités adaptées, je participe aux réunions d'équipe pluridisciplinaire...",
+  DEME:
+    "Ex : J'accompagne un groupe de six adolescents en MECS, je gère les levers, les repas et les devoirs, et je rédige les comptes rendus pour l'équipe éducative...",
+  DEAES:
+    "Ex : J'interviens chez trois personnes âgées, je les aide à la toilette, aux repas et aux déplacements, et je repère les changements dans leur autonomie...",
+  DEEJE:
+    "Ex : J'anime les temps d'éveil auprès d'enfants de 1 à 3 ans en multi-accueil, je participe au projet pédagogique et j'accompagne les familles au quotidien...",
+  DEAP:
+    "Ex : Je m'occupe d'un groupe de 10 enfants en crèche, j'assure les soins, les repas, les changes et les temps de sieste, je surveille leur développement et je fais les transmissions aux parents...",
+};
+
+// Filigrane par défaut : volontairement neutre, ni social ni petite enfance.
+// Utilisé quand la personne a répondu « Je ne sais pas » à l'étape 1 — c'est
+// justement le cas où il ne faut orienter sa réponse vers aucun métier.
+const ACTIVITE_PLACEHOLDER_DEFAUT =
+  "Ex : Je m'occupe au quotidien des personnes dont j'ai la charge, j'assure les gestes et les activités de leur journée, et je transmets à mon équipe ce que j'observe...";
+
 // Ancienneté dans l'activité décrite à l'étape précédente. Ajoutée le
 // 2026-08-04 : la durée d'exercice est la première condition légale
 // d'éligibilité à la VAE (un an minimum d'activité en rapport avec le
@@ -616,7 +651,12 @@ export default function PrediagnosticForm({
           )}
 
           {steps[step].key === "activiteQuotidienne" && (
-            <ActiviteStep control={control} onAdvance={advanceActiviteStep} error={errors.activiteQuotidienne?.message} />
+            <ActiviteStep
+              control={control}
+              diplomeVise={getValues("diplomeVise")}
+              onAdvance={advanceActiviteStep}
+              error={errors.activiteQuotidienne?.message}
+            />
           )}
 
           {steps[step].key === "ancienneteActivite" && (
@@ -779,13 +819,19 @@ function ChoiceStep({
  *  complétion, pas le filtrage (retour utilisateur du 2026-08-01). */
 function ActiviteStep({
   control,
+  diplomeVise,
   onAdvance,
   error,
 }: {
   control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
+  diplomeVise?: string;
   onAdvance: () => void;
   error?: string;
 }) {
+  // Même logique que StructureStep : l'exemple suit le diplôme choisi, et
+  // retombe sur un filigrane neutre si le diplôme est inconnu ou vaut
+  // « Je ne sais pas ».
+  const placeholder = ACTIVITE_PLACEHOLDER[diplomeVise ?? ""] ?? ACTIVITE_PLACEHOLDER_DEFAUT;
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   function autoResize(el: HTMLTextAreaElement | null) {
@@ -828,7 +874,7 @@ function ActiviteStep({
                 autoResize(e.target);
               }}
               rows={5}
-              placeholder="Ex : J'accompagne au quotidien 8 résidents en situation de handicap, j'organise des activités adaptées, je participe aux réunions d'équipe pluridisciplinaire..."
+              placeholder={placeholder}
               className="form-input min-h-[140px] resize-none leading-relaxed"
             />
             {/* Texte d'aide statique — pas de compteur ni de seuil : une
