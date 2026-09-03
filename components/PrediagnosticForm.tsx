@@ -49,6 +49,44 @@ const DIPLOME_OPTIONS = [
 // dans la colonne "Statut" du Sheet. Changer une `value` désaligne
 // l'historique des leads déjà enregistrés. Seuls `label` et `helper` sont de
 // l'affichage.
+//
+// AJOUT DU 03/09/2026 — les exemples suivent maintenant le diplôme visé.
+// Les structures citées (IME, ITEP, MECS, ESAT, foyer) sont celles du secteur
+// social : parfaites pour un DEES ou un DEME, muettes pour une professionnelle
+// de crèche qui vise le DEAP ou le DEEJE. Or c'est exactement sur cette
+// question que le tri se joue — une auxiliaire en crèche municipale doit se
+// reconnaître dans « public », une auxiliaire en crèche associative dans
+// « privé ». Avec des exemples qui ne lui parlent pas, elle coche au hasard, et
+// la colonne "Statut" du Sheet redevient inexploitable.
+//
+// La logique des deux lignes reste la même quel que soit le diplôme :
+// la première est INCLUSIVE (elle rattrape l'associatif et le privé),
+// la seconde est RESTRICTIVE (elle dissuade de cocher "public" par défaut).
+const SITUATION_HELPERS: Record<string, { prive: string; public: string }> = {
+  // Secteur social — le texte historique, inchangé.
+  social: {
+    prive: "Y compris associatif : IME, ITEP, MECS, ESAT, foyer…",
+    public: "Mairie, département, hôpital public uniquement",
+  },
+  // Petite enfance et santé — DEAP et DEEJE. « Crèche municipale » est nommée
+  // explicitement du côté public : c'est le cas le plus fréquent et le plus
+  // souvent mal coché dans ce métier.
+  petiteEnfance: {
+    prive: "Crèche associative ou privée, micro-crèche, clinique privée…",
+    public: "Crèche municipale, PMI, hôpital public uniquement",
+  },
+};
+
+// Quel jeu d'exemples pour quel diplôme. Tout ce qui n'est pas listé ici
+// (dont « Je ne sais pas ») retombe sur le texte social historique.
+const SITUATION_HELPERS_PAR_DIPLOME: Record<string, keyof typeof SITUATION_HELPERS> = {
+  DEES: "social",
+  DEME: "social",
+  DEAES: "social",
+  DEEJE: "petiteEnfance",
+  DEAP: "petiteEnfance",
+};
+
 const SITUATION_OPTIONS = [
   {
     value: "Salarié du secteur privé",
@@ -76,6 +114,20 @@ const SITUATION_OPTIONS = [
   },
   { value: "Autre", label: "Autre" },
 ];
+
+// Renvoie les options de situation avec les exemples adaptés au diplôme visé.
+// ⚠️ Seul le `helper` est remplacé — les `value` sont recopiées telles quelles
+// par le spread, donc ce qui part dans l'email et dans la colonne "Statut" du
+// Sheet est rigoureusement identique à avant. L'historique des leads reste
+// aligné.
+function situationOptions(diplomeVise?: string) {
+  const jeu = SITUATION_HELPERS[SITUATION_HELPERS_PAR_DIPLOME[diplomeVise ?? ""] ?? "social"];
+  return SITUATION_OPTIONS.map((o) => {
+    if (o.value === "Salarié du secteur privé") return { ...o, helper: jeu.prive };
+    if (o.value === "Agent du secteur public") return { ...o, helper: jeu.public };
+    return o;
+  });
+}
 
 // Suggestions d'autocomplétion pour "Dans quelle structure exercez-vous ?",
 // adaptées au diplôme visé (choisi à l'étape 1). Liste indicative, non
@@ -644,7 +696,7 @@ export default function PrediagnosticForm({
               subtitle="Cette information nous permet de cibler tout de suite les solutions de financement adaptées à votre profil."
               name="situationActuelle"
               control={control}
-              options={SITUATION_OPTIONS}
+              options={situationOptions(getValues("diplomeVise"))}
               onSelect={selectAndAdvance}
               error={errors.situationActuelle?.message}
             />
