@@ -28,26 +28,37 @@
 }
 
 /* Thème rose — utilisé uniquement sur la page /auxiliaire-puericulture.
-   Rose profond et désaturé, construit sur la même logique que le teal
-   (assombri, jamais "bonbon") : la page doit rester celle d'un organisme qui
-   prépare un diplôme d'État, pas une page de faire-part. Les niveaux 600/700
-   gardent un contraste supérieur à 4,5:1 sur blanc, condition pour que le
-   texte reste lisible et accessible.
+   Rose franc et saturé, mais assombri sur les niveaux hauts : la page doit
+   rester celle d'un organisme qui prépare un diplôme d'État, pas un
+   faire-part. Tous les niveaux 600 à 800 dépassent 6,8:1 sur blanc.
 
-   S'applique en posant `theme-rose` sur un conteneur : tous les enfants
-   héritent, y compris les sections partagées (StatsBar, Méthode,
-   Financement, Témoignages, Engagements, CTA) — zéro composant dupliqué. */
-.theme-rose {
-  --brand-50: 253 244 246;
-  --brand-100: 249 229 234;
-  --brand-200: 240 198 209;
-  --brand-300: 226 159 178;
-  --brand-400: 207 118 145;
-  --brand-500: 184 85 117;
-  --brand-600: 156 66 96;
-  --brand-700: 125 53 80;
-  --brand-800: 100 43 65;
-  --brand-900: 69 29 45;
+   RÉVISION DU 03/09/2026 — la première version (500 = #b85575) était trop
+   pâle : dans le formulaire, la carte sélectionnée ne se distinguait
+   pratiquement pas des autres. Le niveau 500, qui porte la bordure de
+   sélection et la barre de progression, est passé de 4,57:1 à 5,12:1 sur
+   blanc, et toute la gamme a été resaturée.
+
+   DEUX SÉLECTEURS, volontairement :
+   - `.theme-rose` : le conteneur de la page (voir app/[diplome]/page.tsx).
+   - `body:has(.theme-rose)` : remonte les mêmes variables jusqu'au <body>,
+     pour que l'en-tête et le pied de page — rendus par le layout racine,
+     donc EN DEHORS du conteneur de la page — passent au rose eux aussi. Sans
+     cette ligne, le logo VAESocial et le menu restaient verts au milieu
+     d'une page rose. Un navigateur trop ancien pour `:has()` ignore
+     simplement la règle : la page reste rose, l'en-tête reste vert — dégradé
+     acceptable, jamais cassé. */
+.theme-rose,
+body:has(.theme-rose) {
+  --brand-50: 253 239 244;
+  --brand-100: 250 219 229;
+  --brand-200: 244 182 201;
+  --brand-300: 234 137 167;
+  --brand-400: 219 90 130;
+  --brand-500: 197 55 100;
+  --brand-600: 167 39 82;
+  --brand-700: 136 30 66;
+  --brand-800: 108 24 52;
+  --brand-900: 74 15 34;
 }
 
 html {

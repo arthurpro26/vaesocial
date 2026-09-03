@@ -34,9 +34,20 @@ export default function Logo({
           fill="white"
         />
         <defs>
+          {/* 03/09/2026 — les deux teintes étaient écrites en dur (#55a08f et
+              #21564d, soit brand-400 et brand-700). Résultat : sur la page
+              rose, le badge du logo restait vert au milieu d'une page rose.
+              Elles lisent maintenant les variables de la palette, donc le
+              logo suit le thème de la page — teal partout, rose sur la page
+              auxiliaire de puériculture. Les couleurs par défaut sont
+              rigoureusement les mêmes qu'avant.
+
+              `style` et non l'attribut `stopColor` : une variable CSS n'est
+              pas résolue dans un attribut de présentation SVG, seulement dans
+              une déclaration de style. */}
           <linearGradient id={gradientId} x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#55a08f" />
-            <stop offset="1" stopColor="#21564d" />
+            <stop style={{ stopColor: "rgb(var(--brand-400))" }} />
+            <stop offset="1" style={{ stopColor: "rgb(var(--brand-700))" }} />
           </linearGradient>
         </defs>
       </svg>
