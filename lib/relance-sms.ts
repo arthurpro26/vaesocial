@@ -29,6 +29,21 @@ import { siteConfig } from "@/lib/site-config";
  *   - vouvoiement chaleureux, signature « Arthur » (jamais « Yoni »).
  * Une première version tenait en un seul bloc sans emoji : rejetée en test
  * réel par Arthur (« pas d'espace, pas d'emoji, c'est affreux »).
+ *
+ * RÉVISION DU 09/09/2026 — deux corrections demandées par Arthur. Elles ne
+ * touchent à aucune des règles ci-dessus :
+ *   - « Rien d'urgent ! » supprimé du SMS : la phrase disait au lead qu'il
+ *     n'avait aucune raison de rappeler tout de suite.
+ *   - la durée annoncée passe de « une vingtaine de minutes » à « un quart
+ *     d'heure » dans les QUATRE messages : l'appel dure réellement 15 min.
+ *     Annoncer 20 min pour un appel de 15 partait mal une relation où l'on
+ *     demande ensuite de la confiance sur un dossier à 3 000 €.
+ *
+ * L'adresse par PRÉNOM est conservée volontairement. Arthur a demandé
+ * « Monsieur/Madame + nom » : impossible en l'état, le formulaire ne collecte
+ * pas la civilité et la deviner d'après le prénom se trompe (Yacine, Camille,
+ * Dominique...). Se tromper de genre à la première ligne coûte plus cher que
+ * le prénom. À refaire proprement via un choix M./Mme sur la page /relance.
  */
 
 /** Libellés officiels des diplômes, pour que le SMS nomme le bon métier. */
@@ -81,7 +96,7 @@ export function buildRelanceSms(lead: { prenom: string; diplomeVise: string }): 
     "",
     `Je viens d'essayer de vous joindre au sujet de ${objet} — je vous ai laissé un message vocal.`,
     "",
-    "Rien d'urgent ! Je souhaitais faire le point avec vous sur votre parcours et vérifier ensemble votre éligibilité. Comptez une vingtaine de minutes.",
+    "Je souhaitais faire le point avec vous sur votre parcours et vérifier ensemble votre éligibilité. Comptez un quart d'heure.",
     "",
     "À quel moment puis-je vous rappeler ?",
     "",
@@ -227,7 +242,7 @@ export function buildMauvaisNumeroTexte(lead: MauvaisNumeroLead): string {
     "🕐 L'après-midi (14h - 18h)",
     "🌙 En soirée, après 18h",
     "",
-    "Comptez une vingtaine de minutes : le temps de faire le point sur votre parcours et de vérifier ensemble votre éligibilité.",
+    "Comptez un quart d'heure : le temps de faire le point sur votre parcours et de vérifier ensemble votre éligibilité.",
   ];
 
   const agenda = agendaUrl();
@@ -318,7 +333,7 @@ export function buildConfirmationTexte(lead: ConfirmationLead): string {
     "",
     `Nous vous confirmons la bonne réception de ${objet}`,
     "",
-    "Je vous rappelle personnellement sous 24 à 48 heures pour faire le point sur votre parcours et vérifier ensemble votre éligibilité. Comptez une vingtaine de minutes.",
+    "Je vous rappelle personnellement sous 24 à 48 heures pour faire le point sur votre parcours et vérifier ensemble votre éligibilité. Comptez un quart d'heure.",
   ];
 
   const agenda = agendaUrl();
@@ -412,7 +427,7 @@ export function buildRelanceEmailTexte(lead: RelanceEmailLead): string {
     "",
     "Le principe : vous obtenez exactement le même diplôme d'État que par la formation, sans retourner à l'école et sans quitter votre poste. C'est votre expérience qui compte.",
     "",
-    "La prochaine étape est un échange d'une vingtaine de minutes, gratuit et sans engagement : on regarde votre parcours ensemble et on vérifie votre éligibilité.",
+    "La prochaine étape est un échange d'un quart d'heure, gratuit et sans engagement : on regarde votre parcours ensemble et on vérifie votre éligibilité.",
   ];
 
   const agenda = agendaUrl();
