@@ -24,3 +24,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Dossiers de travail hors dépôt (ajouté le 09/09/2026)
+_to_delete/
+Claude outputs/
