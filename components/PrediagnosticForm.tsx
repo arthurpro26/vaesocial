@@ -210,10 +210,33 @@ const ANCIENNETE_OPTIONS = [
   { value: "Plus de 5 ans", label: "Plus de 5 ans" },
 ];
 
+// Ajouté le 2026-09-14 — voir lib/prediagnostic-schema.ts pour le pourquoi.
+//
+// Trois options et non un oui/non : une personne qui a quitté le secteur il y a
+// deux ans reste un candidat VAE parfaitement valable (la VAE valide une
+// expérience acquise, pas une expérience en cours). Un oui/non l'aurait écartée
+// à tort, et ces profils-là sont parmi les meilleurs dossiers.
+const EXPERIENCE_SECTEUR_OPTIONS = [
+  { value: "Oui, actuellement", label: "Oui, actuellement" },
+  { value: "Oui, par le passé", label: "Oui, par le passé" },
+  { value: "Non, jamais", label: "Non, jamais" },
+];
+
+// Seule valeur qui interrompt le parcours. Isolée dans une constante pour que
+// le libellé ne puisse jamais diverger entre la liste d'options et le test de
+// blocage : deux chaînes recopiées à la main finissent toujours par diverger,
+// et ici la divergence serait silencieuse (plus aucun blocage, sans erreur).
+const EXPERIENCE_SECTEUR_BLOQUANTE = "Non, jamais";
+
 const ALL_STEPS = [
   { key: "diplomeVise", label: "Votre objectif" },
   { key: "situationActuelle", label: "Votre situation" },
   { key: "activiteQuotidienne", label: "Votre quotidien" },
+  // Placée juste après la description libre de l'activité : la personne vient
+  // d'écrire ce qu'elle fait, on lui demande dans la foulée si c'est auprès de
+  // personnes accompagnées. Placée avant, la question serait abstraite ; placée
+  // après l'ancienneté, elle laisserait passer le cas qu'elle doit arrêter.
+  { key: "experienceSecteur", label: "Votre expérience" },
   // Placée juste après la description de l'activité : la personne vient
   // d'expliquer ce qu'elle fait, « depuis combien de temps » s'enchaîne
   // naturellement. Placée plus tôt, elle filtrerait avant que la personne
@@ -445,6 +468,10 @@ export default function PrediagnosticForm({
   // reculant) — repère spatial qui renforce la sensation de parcours guidé.
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
+  // Parcours interrompu faute d'expérience dans le secteur (2026-09-14). Un
+  // état à part et non un SubmitState : il n'y a eu ni envoi, ni erreur —
+  // rien n'a été soumis, et c'est précisément l'intérêt.
+  const [blocked, setBlocked] = useState(false);
   const { setFormActive } = useFormProgress();
 
   // Étapes effectives : on retire "diplomeVise" si le diplôme est déjà connu, puis on
@@ -459,8 +486,8 @@ export default function PrediagnosticForm({
   // a répondu à la première question, pour masquer son CTA redondant. On
   // repasse à false une fois la demande envoyée (plus rien à distraire).
   useEffect(() => {
-    setFormActive(step > 0 && submitState !== "success");
-  }, [step, submitState, setFormActive]);
+    setFormActive(step > 0 && submitState !== "success" && !blocked);
+  }, [step, submitState, blocked, setFormActive]);
 
   const {
     register,
@@ -529,11 +556,21 @@ export default function PrediagnosticForm({
   }
 
   async function selectAndAdvance(
-    field: "diplomeVise" | "situationActuelle" | "ancienneteActivite",
+    field: "diplomeVise" | "situationActuelle" | "ancienneteActivite" | "experienceSecteur",
     value: string,
     onChange: (v: string) => void
   ) {
     onChange(value);
+
+    // Aucune expérience auprès de personnes accompagnées : on s'arrête ici.
+    // Le parcours ne va pas jusqu'aux coordonnées, donc aucun envoi n'a lieu :
+    // ni email, ni ligne dans le Sheet, ni conversion Google Ads. Le délai
+    // reprend celui de l'avance normale, pour que la sélection soit visible
+    // avant le changement d'écran.
+    if (field === "experienceSecteur" && value === EXPERIENCE_SECTEUR_BLOQUANTE) {
+      setTimeout(() => setBlocked(true), 220);
+      return;
+    }
     // petit délai pour laisser voir l'état "sélectionné" avant de passer à l'étape suivante
     setTimeout(async () => {
       const valid = await trigger(field);
@@ -617,6 +654,29 @@ export default function PrediagnosticForm({
 
   const progressPercent = ((step + 1) / totalSteps) * 100;
   const stepTransitionClass = direction === "forward" ? "step-transition-forward" : "step-transition-back";
+
+  // Écran d'arrêt (2026-09-14) : aucune expérience auprès de personnes
+  // accompagnées. On le dit franchement plutôt que de laisser la personne
+  // remplir un formulaire qui ne peut déboucher sur rien — et on garde la
+  // porte ouverte, parce qu'elle peut devenir un vrai candidat plus tard.
+  if (blocked) {
+    return (
+      <div className="mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-2xl shadow-brand-900/15 sm:p-8 step-transition">
+        <h3 className="text-xl font-bold text-slate-900 sm:text-2xl">
+          La VAE ne correspond pas encore à votre situation
+        </h3>
+        <p className="mt-3 leading-relaxed text-slate-600">
+          La VAE valide une expérience déjà acquise auprès de personnes accompagnées. Sans cette
+          expérience, il n&apos;y a pas encore de dossier à construire — nous préférons vous le dire
+          maintenant plutôt que de vous faire perdre du temps.
+        </p>
+        <p className="mt-3 leading-relaxed text-slate-600">
+          Dès que vous aurez travaillé dans le secteur, même en contrat court, à temps partiel ou
+          comme bénévole, revenez vers nous : votre parcours deviendra valorisable.
+        </p>
+      </div>
+    );
+  }
 
   if (submitState === "success") {
     const prenom = getValues("prenom");
@@ -711,6 +771,18 @@ export default function PrediagnosticForm({
             />
           )}
 
+          {steps[step].key === "experienceSecteur" && (
+            <ChoiceStep
+              question="Avez-vous déjà travaillé auprès de personnes accompagnées ?"
+              subtitle="Handicap, protection de l'enfance, grand âge, insertion, soin… en emploi, en stage, en service civique ou comme aidant familial."
+              name="experienceSecteur"
+              control={control}
+              options={EXPERIENCE_SECTEUR_OPTIONS}
+              onSelect={selectAndAdvance}
+              error={errors.experienceSecteur?.message}
+            />
+          )}
+
           {steps[step].key === "ancienneteActivite" && (
             <ChoiceStep
               question="Depuis combien de temps exercez-vous cette activité ?"
@@ -777,7 +849,7 @@ function ChoiceStep({
   question: string;
   /** Ligne courte sous la question, pour expliquer pourquoi on la pose — réduit la friction perçue. */
   subtitle?: string;
-  name: "diplomeVise" | "situationActuelle" | "ancienneteActivite";
+  name: "diplomeVise" | "situationActuelle" | "ancienneteActivite" | "experienceSecteur";
   control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
   options: { value: string; label: string; helper?: string; icon?: IconName }[];
   onSelect: (field: typeof name, value: string, onChange: (v: string) => void) => void;

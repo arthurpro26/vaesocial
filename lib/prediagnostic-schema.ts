@@ -20,6 +20,21 @@ export const prediagnosticSchema = z.object({
   // pertinente ne doit jamais être bloquée — retour utilisateur du 2026-08-01,
   // l'objectif est le taux de complétion, pas le filtrage.
   activiteQuotidienne: z.string().min(1, "Décrivez brièvement votre activité."),
+  // Ajouté le 2026-09-14. La question précédente ("votre activité") ne dit pas
+  // dans QUEL secteur elle s'exerce. Un candidat en reconversion décrivait
+  // honnêtement son métier actuel (grande distribution, logistique...), cochait
+  // ensuite "Plus de 5 ans" à l'ancienneté, et ressortait "Recevabilité : OK" —
+  // lead payé, appelé, inexploitable (cas du 14/09/2026).
+  //
+  // La VAE valide une expérience ACQUISE : sans aucune expérience auprès de
+  // personnes accompagnées, il n'y a rien à valider, quel que soit le nombre
+  // d'années déclarées. C'est la seule question du formulaire qui tranche ce
+  // point. La valeur "Non, jamais" interrompt le parcours AVANT l'envoi (voir
+  // PrediagnosticForm.tsx) : aucun lead enregistré, et surtout AUCUNE
+  // conversion Google Ads — la stratégie d'enchères cesse d'apprendre sur ces
+  // profils et d'aller en chercher d'autres. C'est le même raisonnement que
+  // pour le piège à robots du 29/08/2026, appliqué aux humains hors cible.
+  experienceSecteur: z.string().min(1, "Sélectionnez une réponse."),
   // Ancienneté dans l'activité décrite ci-dessus. Réintroduite le 2026-08-04
   // à côté du texte libre (et non à sa place) : la nature des missions dit si
   // le candidat correspond au référentiel, la durée dit s'il est légalement

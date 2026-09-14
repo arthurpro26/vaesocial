@@ -23,6 +23,8 @@ export type PrediagnosticLead = {
   activiteQuotidienne: string;
   /** Durée d'exercice déclarée — ajoutée le 2026-08-04. Voir isEligibleDuree(). */
   ancienneteActivite: string;
+  /** Expérience auprès de personnes accompagnées — ajoutée le 2026-09-14. */
+  experienceSecteur: string;
   structure: string;
 };
 
@@ -122,6 +124,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     `Diplôme visé : ${lead.diplomeVise}`,
     `Situation actuelle : ${lead.situationActuelle}`,
     `Ancienneté dans l'activité : ${lead.ancienneteActivite}`,
+    `Expérience dans le secteur : ${lead.experienceSecteur}`,
     `Structure d'exercice : ${lead.structure}`,
     "",
     "Activité au quotidien :",
@@ -225,6 +228,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     ${ligne("Diplôme visé", lead.diplomeVise)}
     ${ligne("Situation", lead.situationActuelle)}
     ${ligne("Ancienneté", lead.ancienneteActivite)}
+    ${ligne("Expérience secteur", lead.experienceSecteur)}
     ${ligne("Structure", lead.structure)}
   </table>
   <p style="margin:20px 0 4px;color:#64748b">Activité au quotidien</p>
