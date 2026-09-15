@@ -228,6 +228,21 @@ const EXPERIENCE_SECTEUR_OPTIONS = [
 // et ici la divergence serait silencieuse (plus aucun blocage, sans erreur).
 const EXPERIENCE_SECTEUR_BLOQUANTE = "Non, jamais";
 
+// Statut qui déclenche l'écran de confirmation puis le blocage (2026-09-15).
+// Dans la fonction publique le financement ne passe pas par le CPF mais par
+// l'ANFH ou le CNFPT, via le service formation de l'employeur : circuit long,
+// incertain, et hors de notre périmètre. Plutôt que de laisser le candidat
+// aller au bout d'un parcours qui n'aboutira pas, on l'oriente tout de suite
+// vers son service des ressources humaines.
+//
+// ⚠️ Une CONFIRMATION précède le blocage, et elle n'est pas décorative : dans
+// le social, beaucoup de salariés d'ASSOCIATIONS gérant des établissements
+// (IME, MECS, foyers) cochent « secteur public » parce qu'ils se vivent comme
+// agents du service public. Ce sont pourtant des salariés de droit privé,
+// finançables au CPF, et d'excellents candidats. Sans cette étape on les
+// perdrait tous.
+const SITUATION_BLOQUANTE = "Agent du secteur public";
+
 const ALL_STEPS = [
   { key: "diplomeVise", label: "Votre objectif" },
   { key: "situationActuelle", label: "Votre situation" },
@@ -468,10 +483,15 @@ export default function PrediagnosticForm({
   // reculant) — repère spatial qui renforce la sensation de parcours guidé.
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
-  // Parcours interrompu faute d'expérience dans le secteur (2026-09-14). Un
-  // état à part et non un SubmitState : il n'y a eu ni envoi, ni erreur —
-  // rien n'a été soumis, et c'est précisément l'intérêt.
-  const [blocked, setBlocked] = useState(false);
+  // Parcours interrompu (2026-09-14, étendu le 2026-09-15). Un état à part et
+  // non un SubmitState : il n'y a eu ni envoi, ni erreur — rien n'a été
+  // soumis, et c'est précisément l'intérêt. La valeur porte le MOTIF, parce
+  // que les deux cas n'appellent pas le même message : l'un dit « pas encore
+  // pour vous », l'autre « pas par nous ».
+  const [blocked, setBlocked] = useState<null | "experience" | "public">(null);
+
+  // Écran de confirmation affiché avant de bloquer sur le statut public.
+  const [confirmPublic, setConfirmPublic] = useState(false);
   const { setFormActive } = useFormProgress();
 
   // Étapes effectives : on retire "diplomeVise" si le diplôme est déjà connu, puis on
@@ -486,8 +506,8 @@ export default function PrediagnosticForm({
   // a répondu à la première question, pour masquer son CTA redondant. On
   // repasse à false une fois la demande envoyée (plus rien à distraire).
   useEffect(() => {
-    setFormActive(step > 0 && submitState !== "success" && !blocked);
-  }, [step, submitState, blocked, setFormActive]);
+    setFormActive(step > 0 && submitState !== "success" && !blocked && !confirmPublic);
+  }, [step, submitState, blocked, confirmPublic, setFormActive]);
 
   const {
     register,
@@ -495,6 +515,10 @@ export default function PrediagnosticForm({
     handleSubmit,
     trigger,
     getValues,
+    // Utilisé par l'écran de confirmation du statut public : quand la personne
+    // répond qu'elle est en réalité salariée d'une association, on réécrit sa
+    // réponse à sa place plutôt que de la renvoyer choisir elle-même.
+    setValue,
     reset,
     formState: { errors, isSubmitting, isSubmitted },
   } = useForm<PrediagnosticFormValues>({
@@ -568,7 +592,15 @@ export default function PrediagnosticForm({
     // reprend celui de l'avance normale, pour que la sélection soit visible
     // avant le changement d'écran.
     if (field === "experienceSecteur" && value === EXPERIENCE_SECTEUR_BLOQUANTE) {
-      setTimeout(() => setBlocked(true), 220);
+      setTimeout(() => setBlocked("experience"), 220);
+      return;
+    }
+
+    // Statut « Agent du secteur public » : on NE bloque pas tout de suite, on
+    // demande confirmation. Voir SITUATION_BLOQUANTE pour le pourquoi — le
+    // faux positif « association du secteur social » est fréquent et coûteux.
+    if (field === "situationActuelle" && value === SITUATION_BLOQUANTE) {
+      setTimeout(() => setConfirmPublic(true), 220);
       return;
     }
     // petit délai pour laisser voir l'état "sélectionné" avant de passer à l'étape suivante
@@ -659,7 +691,76 @@ export default function PrediagnosticForm({
   // accompagnées. On le dit franchement plutôt que de laisser la personne
   // remplir un formulaire qui ne peut déboucher sur rien — et on garde la
   // porte ouverte, parce qu'elle peut devenir un vrai candidat plus tard.
-  if (blocked) {
+  // Confirmation du statut public, AVANT blocage. Le libellé insiste sur le
+  // cas associatif, parce que c'est là que se joue le faux positif.
+  if (confirmPublic) {
+    return (
+      <div className="mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-brand-900/15 sm:p-8 step-transition">
+        <h3 className="text-xl font-bold text-slate-900 sm:text-2xl">
+          Confirmons votre statut
+        </h3>
+        <p className="mt-3 leading-relaxed text-slate-600">
+          Vous avez indiqué être agent de la fonction publique. Beaucoup de personnes du secteur
+          social choisissent cette réponse alors qu&apos;elles travaillent en réalité pour une
+          <strong> association</strong> qui gère un établissement — IME, MECS, foyer, service à
+          domicile. Dans ce cas, le statut est <strong>salarié du secteur privé</strong>.
+        </p>
+        <p className="mt-4 font-medium text-slate-900">
+          Êtes-vous agent titulaire ou contractuel d&apos;une mairie, d&apos;un département,
+          d&apos;un hôpital public ou de l&apos;Éducation nationale ?
+        </p>
+        <div className="mt-5 space-y-2.5">
+          <button
+            type="button"
+            onClick={() => {
+              setConfirmPublic(false);
+              setBlocked("public");
+            }}
+            className="min-h-11 w-full rounded-2xl border-2 border-slate-200 px-4 py-3 text-left text-sm font-medium text-slate-800 transition hover:border-brand-300 hover:bg-slate-50"
+          >
+            Oui, je suis agent de la fonction publique
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setConfirmPublic(false);
+              setValue("situationActuelle", "Salarié du secteur privé");
+              goNext();
+            }}
+            className="min-h-11 w-full rounded-2xl border-2 border-brand-600 bg-brand-50 px-4 py-3 text-left text-sm font-medium text-brand-900 transition hover:bg-brand-100"
+          >
+            Non, je travaille pour une association ou un employeur privé
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (blocked === "public") {
+    return (
+      <div className="mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-2xl shadow-brand-900/15 sm:p-8 step-transition">
+        <h3 className="text-xl font-bold text-slate-900 sm:text-2xl">
+          Votre VAE passe par votre employeur
+        </h3>
+        <p className="mt-3 leading-relaxed text-slate-600">
+          Dans la fonction publique, une VAE ne se finance pas par le compte personnel de
+          formation mais par votre employeur, via l&apos;ANFH pour la fonction publique
+          hospitalière ou le CNFPT pour la fonction publique territoriale.
+        </p>
+        <p className="mt-3 leading-relaxed text-slate-600">
+          La démarche est donc à engager directement auprès de votre <strong>service des
+          ressources humaines</strong> ou de votre responsable formation, qui vous orientera vers
+          le dispositif prévu pour les agents. Nous ne pouvons malheureusement pas vous
+          accompagner sur ce circuit.
+        </p>
+        <p className="mt-4 text-sm text-slate-500">
+          Nous préférons vous le dire maintenant plutôt que de vous faire perdre du temps.
+        </p>
+      </div>
+    );
+  }
+
+  if (blocked === "experience") {
     return (
       <div className="mx-auto w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-2xl shadow-brand-900/15 sm:p-8 step-transition">
         <h3 className="text-xl font-bold text-slate-900 sm:text-2xl">
