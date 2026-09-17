@@ -252,12 +252,20 @@ const ALL_STEPS = [
   // personnes accompagnées. Placée avant, la question serait abstraite ; placée
   // après l'ancienneté, elle laisserait passer le cas qu'elle doit arrêter.
   { key: "experienceSecteur", label: "Votre expérience" },
-  // Placée juste après la description de l'activité : la personne vient
-  // d'expliquer ce qu'elle fait, « depuis combien de temps » s'enchaîne
-  // naturellement. Placée plus tôt, elle filtrerait avant que la personne
-  // ne soit engagée dans le tunnel.
-  { key: "ancienneteActivite", label: "Votre ancienneté" },
-  { key: "structure", label: "Votre structure" },
+  // FUSION DU 17/09/2026 — « ancienneté » et « structure » ne forment plus
+  // qu'une seule étape (« Votre poste »). Le tunnel passe de 7 à 6 écrans.
+  //
+  // POURQUOI. Les deux questions portent sur le même objet — le poste occupé
+  // aujourd'hui — et la personne vient de le décrire librement à l'étape
+  // précédente ; beaucoup y ont déjà donné leur ancienneté ET leur structure.
+  // On leur faisait donc franchir deux écrans supplémentaires pour une
+  // information partiellement redonnée. Sur mobile (78 % du trafic), chaque
+  // transition d'écran est une occasion de fermer l'onglet.
+  //
+  // CE QUI NE CHANGE PAS : les deux champs restent distincts dans le schéma,
+  // dans l'email et dans le Google Sheet. La qualification du lead est
+  // strictement identique, seul le nombre d'écrans diminue.
+  { key: "posteActuel", label: "Votre poste" },
   { key: "coordonnees", label: "Vos coordonnées" },
 ] as const;
 
@@ -618,8 +626,12 @@ export default function PrediagnosticForm({
     if (valid) goNext();
   }
 
-  async function advanceStructureStep() {
-    const valid = await trigger("structure");
+  // Étape fusionnée « Votre poste » (17/09/2026) : les DEUX champs doivent
+  // être valides pour avancer. `trigger` reçoit un tableau et ne renvoie true
+  // que si tout passe — un seul des deux renseigné bloque l'avance, et le
+  // message d'erreur s'affiche sous le champ concerné.
+  async function advancePosteStep() {
+    const valid = await trigger(["ancienneteActivite", "structure"]);
     if (valid) goNext();
   }
 
@@ -884,24 +896,13 @@ export default function PrediagnosticForm({
             />
           )}
 
-          {steps[step].key === "ancienneteActivite" && (
-            <ChoiceStep
-              question="Depuis combien de temps exercez-vous cette activité ?"
-              subtitle="La VAE demande au moins un an d'expérience en rapport avec le diplôme visé — c'est la première chose que nous vérifions pour vous."
-              name="ancienneteActivite"
-              control={control}
-              options={ANCIENNETE_OPTIONS}
-              onSelect={selectAndAdvance}
-              error={errors.ancienneteActivite?.message}
-            />
-          )}
-
-          {steps[step].key === "structure" && (
-            <StructureStep
+          {steps[step].key === "posteActuel" && (
+            <PosteActuelStep
               control={control}
               diplomeVise={getValues("diplomeVise")}
-              onAdvance={advanceStructureStep}
-              error={errors.structure?.message}
+              onAdvance={advancePosteStep}
+              erreurAnciennete={errors.ancienneteActivite?.message}
+              erreurStructure={errors.structure?.message}
             />
           )}
 
@@ -1128,6 +1129,74 @@ function ActiviteStep({
         Continuer
         <ArrowIcon className="h-4 w-4" />
       </button>
+    </div>
+  );
+}
+
+/* Étape « Votre poste » — fusion du 17/09/2026 de l'ancienneté et de la
+   structure sur un seul écran. Voir ALL_STEPS pour le raisonnement.
+
+   L'ordre est délibéré : l'ancienneté d'abord (quatre boutons, un seul tap,
+   aucun clavier), la structure ensuite (champ texte qui ouvre le clavier sur
+   mobile). Commencer par le geste le plus facile engage la personne avant de
+   lui demander l'effort de saisie.
+
+   Contrairement aux ChoiceStep classiques, choisir une ancienneté ne fait PAS
+   avancer : il reste la structure à renseigner juste en dessous. */
+function PosteActuelStep({
+  control,
+  diplomeVise,
+  onAdvance,
+  erreurAnciennete,
+  erreurStructure,
+}: {
+  control: ReturnType<typeof useForm<PrediagnosticFormValues>>["control"];
+  diplomeVise?: string;
+  onAdvance: () => void;
+  erreurAnciennete?: string;
+  erreurStructure?: string;
+}) {
+  return (
+    <div>
+      <h3 className="text-sm font-semibold text-slate-900 sm:text-base">
+        Depuis combien de temps exercez-vous cette activité ?
+      </h3>
+      <Controller
+        name="ancienneteActivite"
+        control={control}
+        render={({ field }) => (
+          <div className="mt-2.5 grid grid-cols-2 gap-1.5 sm:mt-3 sm:gap-2">
+            {ANCIENNETE_OPTIONS.map((opt) => {
+              const selected = field.value === opt.value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => field.onChange(opt.value)}
+                  className={clsx(
+                    "min-h-11 rounded-2xl border-2 px-3 py-2 text-sm font-medium transition duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                    selected
+                      ? "border-brand-600 bg-brand-50 text-brand-900 shadow-sm"
+                      : "border-slate-200 text-slate-700 hover:border-brand-300 hover:bg-slate-50"
+                  )}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      />
+      {erreurAnciennete && <p className="mt-1.5 text-xs text-red-600">{erreurAnciennete}</p>}
+
+      <div className="mt-5 sm:mt-6">
+        <StructureStep
+          control={control}
+          diplomeVise={diplomeVise}
+          onAdvance={onAdvance}
+          error={erreurStructure}
+        />
+      </div>
     </div>
   );
 }

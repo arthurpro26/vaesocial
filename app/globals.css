@@ -14,17 +14,50 @@
    C'est ce que la syntaxe `rgb(var(--x) / <alpha-value>)` attend pour que les
    opacités (bg-brand-50/60, shadow-brand-900/5...) restent fonctionnelles.
    -------------------------------------------------------------------------- */
+/* BLEU INSTITUTIONNEL, CHALEUR SUR LES FONDS — révision du 17/09/2026.
+
+   Remplace la palette teal/émeraude d'origine, qui posait un vrai problème de
+   cohérence : le teal est le vocabulaire du bien-être et du coaching, alors
+   que le visiteur vient chercher un DIPLÔME D'ÉTAT délivré par un jury. Le
+   décor contredisait le message.
+
+   Deux registres, volontairement :
+
+   - Les niveaux 400 à 900 sont un bleu profond franchement désaturé. C'est le
+     registre de l'institution, du dossier qui aboutit, du diplôme. Il porte
+     l'en-tête, les titres, la barre de progression : tout ce qui doit dire
+     « organisme sérieux » en trois secondes.
+
+   - Les niveaux 50 à 300 sont volontairement RÉCHAUFFÉS (composante rouge
+     relevée de 4 à 6 points par rapport à une gamme bleue pure). Ce sont les
+     fonds des cartes du formulaire et des encadrés. Un bleu pâle strict y
+     serait clinique, presque administratif — or le candidat type a souvent
+     quitté l'école tôt, redoute d'être jugé, et doit se lancer dans un dossier
+     de plusieurs dizaines de pages. Ces fonds-là doivent accueillir, pas
+     intimider. L'écart est subtil à l'œil mais il change la sensation.
+
+   NE PAS emprunter les codes visuels d'un service public (bleu-blanc-rouge en
+   particulier) : le candidat croirait être sur un portail officiel alors qu'il
+   s'agit d'un accompagnement privé, et découvrirait le malentendu au
+   téléphone. Confiance perdue dès la première minute.
+
+   Contrastes vérifiés : niveaux 600 à 900 au-dessus de 7:1 sur blanc (AAA),
+   niveau 500 au-dessus de 5:1 — c'est lui qui porte la bordure de sélection et
+   la barre de progression du formulaire, il doit rester nettement lisible.
+
+   L'accent corail/orange des boutons d'action est INCHANGÉ : il convertit
+   bien, et le contraste chaud/froid est plus marqué sur bleu que sur teal. */
 :root {
-  --brand-50: 239 247 245;
-  --brand-100: 217 236 231;
-  --brand-200: 179 217 208;
-  --brand-300: 130 190 176;
-  --brand-400: 85 160 143;
-  --brand-500: 54 132 117;
-  --brand-600: 41 107 95;
-  --brand-700: 33 86 77;
-  --brand-800: 27 68 61;
-  --brand-900: 20 47 42;
+  --brand-50: 244 247 252;
+  --brand-100: 224 233 246;
+  --brand-200: 188 206 234;
+  --brand-300: 138 170 214;
+  --brand-400: 82 126 186;
+  --brand-500: 46 92 156;
+  --brand-600: 33 71 128;
+  --brand-700: 26 56 103;
+  --brand-800: 21 45 82;
+  --brand-900: 14 31 58;
 }
 
 /* Thème rose — utilisé uniquement sur la page /auxiliaire-puericulture.
