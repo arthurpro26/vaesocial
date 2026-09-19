@@ -517,6 +517,35 @@ export default function PrediagnosticForm({
     setFormActive(step > 0 && submitState !== "success" && !blocked && !confirmPublic);
   }, [step, submitState, blocked, confirmPublic, setFormActive]);
 
+  // --- SUIVI D'ÉTAPE (19/09/2026) ---------------------------------------
+  // Objectif : savoir À QUELLE ÉTAPE PRÉCISE les visiteurs abandonnent, pour
+  // arrêter de corriger le formulaire à l'aveugle. Chaque écran affiché pousse
+  // un événement dans le dataLayer, consommé ensuite par GTM/GA4.
+  //
+  // CE QUE ÇA NE FAIT PAS : aucune conversion Google Ads n'est déclenchée ici.
+  // Seul l'envoi réel du formulaire (avec leadRecorded === true) le fait —
+  // voir l'incident du 29 août 2026 plus bas. Ces événements sont purement
+  // analytiques : les confondre repeuplerait le Smart Bidding de faux signaux.
+  //
+  // Le `ref` évite de compter deux fois la même étape quand React re-rend
+  // (retour arrière, restauration de brouillon, re-rendu de validation).
+  const stepSeenRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    if (submitState === "success" || blocked || confirmPublic) return;
+    const current = steps[step];
+    if (!current) return;
+    const marker = `${step}:${current.key}`;
+    if (stepSeenRef.current.has(marker)) return;
+    stepSeenRef.current.add(marker);
+    trackConversion("prediagnostic_step_view", {
+      step_index: step + 1,
+      step_total: totalSteps,
+      step_key: current.key,
+      step_label: current.label,
+      diplome: presetDiplome ?? "non_defini",
+    });
+  }, [step, steps, totalSteps, submitState, blocked, confirmPublic, presetDiplome]);
+
   const {
     register,
     control,
@@ -600,6 +629,7 @@ export default function PrediagnosticForm({
     // reprend celui de l'avance normale, pour que la sélection soit visible
     // avant le changement d'écran.
     if (field === "experienceSecteur" && value === EXPERIENCE_SECTEUR_BLOQUANTE) {
+      trackConversion("prediagnostic_blocked", { raison: "sans_experience_secteur" });
       setTimeout(() => setBlocked("experience"), 220);
       return;
     }
@@ -608,6 +638,7 @@ export default function PrediagnosticForm({
     // demande confirmation. Voir SITUATION_BLOQUANTE pour le pourquoi — le
     // faux positif « association du secteur social » est fréquent et coûteux.
     if (field === "situationActuelle" && value === SITUATION_BLOQUANTE) {
+      trackConversion("prediagnostic_confirm_public", {});
       setTimeout(() => setConfirmPublic(true), 220);
       return;
     }
