@@ -19,7 +19,9 @@ type BrandIconName =
   | "diploma"     // diplômes accessibles
   | "building"    // OPCO / structure
   | "lock"        // confidentialité
-  | "handshake";  // accompagnement
+  | "handshake"   // accompagnement
+  | "seal"        // certification partenaire (Qualiopi)
+  | "gov";        // reference publique (France VAE)
 
 export default function BrandIcon({
   name,
@@ -110,6 +112,25 @@ export default function BrandIcon({
           <path d="M2.5 8.5l3-2.5 3.25 1.25L10 6.75l1.25.5L14.5 6l3 2.5" />
           <path d="M5.5 6v6.5l4.5 3 4.5-3V6" />
           <path d="M10 9.75v5.75" />
+        </svg>
+      );
+    case "seal":
+      return (
+        <svg {...common}>
+          <circle cx="10" cy="8" r="4.6" />
+          <path d="M7.9 10.3l1.5 1.5 2.8-2.8" />
+          <path d="M7.4 12.1L6.4 17.5 10 15.6l3.6 1.9-1-5.4" />
+        </svg>
+      );
+    case "gov":
+      return (
+        <svg {...common}>
+          <path d="M10 2.6L17 6.4H3L10 2.6z" />
+          <line x1="5.2" y1="8" x2="5.2" y2="14.4" />
+          <line x1="8.4" y1="8" x2="8.4" y2="14.4" />
+          <line x1="11.6" y1="8" x2="11.6" y2="14.4" />
+          <line x1="14.8" y1="8" x2="14.8" y2="14.4" />
+          <line x1="3" y1="16.6" x2="17" y2="16.6" />
         </svg>
       );
   }

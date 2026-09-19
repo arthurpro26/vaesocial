@@ -106,11 +106,31 @@ export default async function DiplomePage({
                   VAE {d.sigle}
                   <span className="hidden sm:inline">· {d.niveau}</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
+                {/* Vert (et non ambre) : le badge du taux doit etre identique
+                    a celui de la page d'accueil. Deux couleurs pour la meme
+                    information donnent l'impression de deux sites differents
+                    quand le visiteur passe de l'un a l'autre. */}
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-4 py-1.5 text-sm font-semibold text-emerald-800">
                   <BrandIcon name="award" className="h-4 w-4 shrink-0" />
                   {RESULTATS.taux}{" "}
                   <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
                   <span className="sm:hidden">validés</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700">
+                  <BrandIcon name="wallet" className="h-4 w-4 shrink-0" />
+                  Financement CPF
+                </span>
+                {/* « Partenaire » et jamais « Certifie » : la certification
+                    Qualiopi et le referencement France VAE appartiennent a
+                    l'organisme de formation partenaire, pas a ce site. Voir le
+                    commentaire equivalent dans app/page.tsx. */}
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200">
+                  <BrandIcon name="seal" className="h-4 w-4 shrink-0 text-brand-600" />
+                  Partenaire Qualiopi
+                </span>
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200">
+                  <BrandIcon name="gov" className="h-4 w-4 shrink-0 text-brand-600" />
+                  Partenaire France VAE
                 </span>
               </div>
               <h1 className="mt-3 text-balance text-[1.65rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:mt-6 sm:text-4xl sm:leading-tight lg:text-5xl">

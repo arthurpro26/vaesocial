@@ -150,7 +150,23 @@ export default function HomePage() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700">
                   <BrandIcon name="wallet" className="h-4 w-4 shrink-0" />
-                  Éligible CPF
+                  Financement CPF
+                </span>
+                {/* PARTENAIRE, ET PAS « CERTIFIÉ » — la formulation est
+                    juridiquement importante. La certification Qualiopi et le
+                    référencement France VAE appartiennent à l'organisme de
+                    formation partenaire, pas à vae-social.fr. Écrire
+                    « Certifié Qualiopi » ici laisserait croire que ce site est
+                    lui-même l'organisme certifié : c'est faux, et c'est
+                    vérifiable en trente secondes sur l'annuaire public. Ne
+                    jamais retirer le mot « Partenaire ». */}
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200">
+                  <BrandIcon name="seal" className="h-4 w-4 shrink-0 text-brand-600" />
+                  Partenaire Qualiopi
+                </span>
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200">
+                  <BrandIcon name="gov" className="h-4 w-4 shrink-0 text-brand-600" />
+                  Partenaire France VAE
                 </span>
               </div>
               <h1 className="mt-3 text-balance text-[1.65rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:mt-6 sm:text-4xl sm:leading-tight lg:text-5xl">
