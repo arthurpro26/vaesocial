@@ -12,7 +12,8 @@ import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
 import EngagementsSection from "@/components/sections/EngagementsSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
-import { AVIS, DIPLOMES, type DiplomeSlug } from "@/lib/site-data";
+import { RESULTATS, DIPLOMES, type DiplomeSlug } from "@/lib/site-data";
+import BrandIcon from "@/components/BrandIcon";
 import { DIPLOMES_DATA } from "@/lib/diplomes-data";
 import { siteConfig } from "@/lib/site-config";
 
@@ -101,15 +102,15 @@ export default async function DiplomePage({
             <div>
               <div className="flex flex-wrap items-center justify-center gap-2.5 text-center sm:gap-3">
                 <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                  <span aria-hidden>✅</span>
+                  <BrandIcon name="shield" className="h-4 w-4 shrink-0" />
                   VAE {d.sigle}
                   <span className="hidden sm:inline">· {d.niveau}</span>
                 </span>
                 <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
-                  <span aria-hidden>⭐</span>
-                  {AVIS.note}/5{" "}
-                  <span className="hidden sm:inline">({AVIS.nombre} avis bénéficiaires)</span>
-                  <span className="sm:hidden">({AVIS.nombre} avis)</span>
+                  <BrandIcon name="award" className="h-4 w-4 shrink-0" />
+                  {RESULTATS.taux}{" "}
+                  <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
+                  <span className="sm:hidden">validés</span>
                 </span>
               </div>
               <h1 className="mt-3 text-balance text-[1.65rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:mt-6 sm:text-4xl sm:leading-tight lg:text-5xl">
@@ -128,7 +129,7 @@ export default async function DiplomePage({
                 presetDiplome={d.sigle as "DEES" | "DEAES" | "DEEJE" | "DEME" | "DEAP"}
               />
               <p className="mt-3 text-center text-xs text-slate-500 sm:mt-4">
-                🔒 Vos informations restent confidentielles — jamais revendues à des tiers.
+                Vos informations restent confidentielles — jamais revendues à des tiers.
               </p>
             </div>
 
@@ -185,7 +186,7 @@ export default async function DiplomePage({
                 className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:block sm:p-7"
               >
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-base sm:h-11 sm:w-11 sm:text-xl">
-                  <span aria-hidden>🤝</span>
+                  <BrandIcon name="handshake" className="h-4 w-4 shrink-0" />
                 </div>
                 <div className="sm:mt-4">
                   <h3 className="text-sm font-semibold text-slate-900 sm:text-base">

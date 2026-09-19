@@ -51,6 +51,8 @@ export const DIPLOMES = [
 export type DiplomeSlug = (typeof DIPLOMES)[number]["slug"];
 
 export const STATS = [
+  { chiffre: "97 %", label: "De dossiers validés" },
+  { chiffre: "400+", label: "VAE accompagnées" },
   { chiffre: "< 24h", label: "Délai de réponse" },
   { chiffre: "100%", label: "À distance" },
   { chiffre: "100%", label: "Financement possible" },
@@ -166,7 +168,26 @@ export const ENGAGEMENTS = [
 
 // Note collectée auprès des bénéficiaires via la plateforme d'avis dédiée du centre de
 // formation (non affiliée à un tiers type Google/Trustpilot).
-export const AVIS = { note: "4,9", nombre: 1257 };
+// CHIFFRES DE RÉASSURANCE — 19/09/2026.
+//
+// REMPLACE l'ancien `AVIS = { note: "4,9", nombre: 1257 }`, supprimé parce
+// qu'il affichait une note agrégée sur 1257 avis que rien ne documentait.
+// Afficher une note sans les avis derrière expose à la fois à une plainte
+// pour pratique commerciale trompeuse (L.121-2 du code de la consommation)
+// et à une suspension du compte Google Ads — par lequel passe tout le
+// chiffre d'affaires.
+//
+// LES DEUX CHIFFRES CI-DESSOUS SONT DOCUMENTÉS et doivent le rester :
+// ne les modifier QUE si les pièces justificatives suivent. La période
+// ("depuis 2024") n'est pas décorative : c'est elle qui rend le taux
+// vérifiable et défendable si un candidat ou un contrôle le conteste.
+export const RESULTATS = {
+  taux: "97 %",
+  tauxLabel: "de dossiers validés",
+  volume: "400+",
+  volumeLabel: "VAE accompagnées",
+  periode: "depuis 2024",
+};
 
 export type Temoignage = { nom: string; role: string; texte: string; diplomes: DiplomeSlug[] };
 

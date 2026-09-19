@@ -11,7 +11,8 @@ import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
 import EngagementsSection from "@/components/sections/EngagementsSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
-import { AVIS, COMPETENCES, DIPLOMES, REASSURANCES } from "@/lib/site-data";
+import { RESULTATS, COMPETENCES, DIPLOMES, REASSURANCES } from "@/lib/site-data";
+import BrandIcon from "@/components/BrandIcon";
 
 // Page d'accueil — landing page principale de VAESocial.
 // Structure pensée pour le SEO, le trafic Google Ads et la conversion mobile.
@@ -45,11 +46,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+// Icônes vectorielles (voir components/BrandIcon.tsx) : les émojis rendaient
+// différemment sur chaque appareil et juraient avec le formulaire voisin,
+// déjà passé au vectoriel.
 const VALEURS = [
-  { icon: "🎓", titre: "4 diplômes accessibles" },
-  { icon: "💻", titre: "100% à distance" },
-  { icon: "💳", titre: "Financement CPF" },
-  { icon: "🏢", titre: "Financement OPCO Santé" },
+  { icon: "diploma" as const, titre: "4 diplômes accessibles" },
+  { icon: "screen" as const, titre: "100% à distance" },
+  { icon: "wallet" as const, titre: "Financement CPF" },
+  { icon: "building" as const, titre: "Financement OPCO Santé" },
 ];
 
 const PERSONAS = [
@@ -130,15 +134,23 @@ export default function HomePage() {
             <div>
               <div className="flex flex-wrap items-center justify-center gap-2.5 text-center sm:gap-3">
                 <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                  <span aria-hidden>✅</span>
+                  <BrandIcon name="shield" className="h-4 w-4 shrink-0" />
                   <span className="hidden sm:inline">Secteur social &amp; médico-social</span>
                   <span className="sm:hidden">Secteur social</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
-                  <span aria-hidden>⭐</span>
-                  {AVIS.note}/5{" "}
-                  <span className="hidden sm:inline">({AVIS.nombre} avis bénéficiaires)</span>
-                  <span className="sm:hidden">({AVIS.nombre} avis)</span>
+                {/* Remplace l'ancien bandeau « 4,9/5 · 1257 avis », retiré faute
+                    de pouvoir documenter ces avis. Les deux chiffres ci-dessous
+                    sont justifiables pièces à l'appui — voir RESULTATS dans
+                    lib/site-data.ts avant toute modification. */}
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-4 py-1.5 text-sm font-semibold text-emerald-800">
+                  <BrandIcon name="award" className="h-4 w-4 shrink-0" />
+                  {RESULTATS.taux}{" "}
+                  <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
+                  <span className="sm:hidden">validés</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700">
+                  <BrandIcon name="wallet" className="h-4 w-4 shrink-0" />
+                  Éligible CPF
                 </span>
               </div>
               <h1 className="mt-3 text-balance text-[1.65rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:mt-6 sm:text-4xl sm:leading-tight lg:text-5xl">
@@ -148,7 +160,7 @@ export default function HomePage() {
                 Pas l&apos;inverse.
               </h1>
               <p className="mt-2.5 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
-                ✨ Votre expérience vaut un diplôme. Vérifiez gratuitement si vous êtes éligible
+                Votre expérience vaut un diplôme. Vérifiez gratuitement si vous êtes éligible
                 en moins de 3 minutes.
               </p>
             </div>
@@ -156,14 +168,14 @@ export default function HomePage() {
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
               <PrediagnosticForm />
               <p className="mt-3 text-center text-xs text-slate-500 sm:mt-4">
-                🔒 Vos informations restent confidentielles — jamais revendues à des tiers.
+                Vos informations restent confidentielles — jamais revendues à des tiers.
               </p>
             </div>
 
             <div>
               <p className="text-base leading-relaxed text-slate-600 sm:text-lg">
                 Que vous visiez le DEES, le DEAES, le DEEJE ou le DEME, on vous guide à chaque
-                étape 🤝 — sans reprendre une formation complète, et sans aucun engagement de
+                étape — sans reprendre une formation complète, et sans aucun engagement de
                 votre part avant d&apos;avoir la réponse.
               </p>
 
@@ -173,9 +185,7 @@ export default function HomePage() {
                     key={v.titre}
                     className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm font-semibold text-slate-700"
                   >
-                    <span className="text-lg" aria-hidden>
-                      {v.icon}
-                    </span>
+                    <BrandIcon name={v.icon} className="h-5 w-5 shrink-0 text-brand-600" />
                     {v.titre}
                   </li>
                 ))}
@@ -262,7 +272,7 @@ export default function HomePage() {
               </ul>
             </div>
             <div className="rounded-2xl border border-brand-100 bg-brand-50 p-5 text-sm text-brand-900 sm:p-6">
-              <p className="font-semibold">🤝 Notre promesse : la transparence avant tout</p>
+              <p className="flex items-center gap-2 font-semibold"><BrandIcon name="handshake" className="h-5 w-5 shrink-0" />Notre promesse : la transparence avant tout</p>
               <ul className="mt-2.5 space-y-1.5 sm:mt-3 sm:space-y-2">
                 {REASSURANCES.map((r) => (
                   <li key={r} className="flex items-start gap-2 text-brand-800">

@@ -1,6 +1,6 @@
 import Container from "@/components/Container";
 import Eyebrow from "@/components/Eyebrow";
-import { AVIS, TEMOIGNAGES, type DiplomeSlug } from "@/lib/site-data";
+import { RESULTATS, TEMOIGNAGES, type DiplomeSlug } from "@/lib/site-data";
 
 // Affiche les 3 témoignages réels. Sur une page diplôme, celui qui concerne
 // le diplôme visé est mis en avant en premier (sans jamais en inventer un
@@ -23,7 +23,7 @@ export default function TemoignagesSection({ highlight }: { highlight?: DiplomeS
           </h2>
           <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-800">
             <span aria-hidden>⭐⭐⭐⭐⭐</span>
-            {AVIS.note}/5 · {AVIS.nombre} avis bénéficiaires
+            {RESULTATS.taux} {RESULTATS.tauxLabel} · {RESULTATS.volume} {RESULTATS.volumeLabel} {RESULTATS.periode}
           </div>
         </div>
         <div className="mt-6 grid gap-4 sm:mt-14 sm:gap-6 sm:grid-cols-3">
