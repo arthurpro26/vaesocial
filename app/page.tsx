@@ -128,12 +128,12 @@ export default function HomePage() {
           formulaire remonte juste après le titre sur mobile — l'ordre DOM = l'ordre d'affichage
           en une colonne, et l'auto-placement CSS Grid reconstitue la mise en page 2 colonnes à
           partir de lg (accroche+réassurance à gauche, formulaire à droite sur toute la hauteur). */}
-      <section className="bg-gradient-to-b from-brand-50 via-white to-white pb-8 pt-6 sm:pb-20 sm:pt-20">
+      <section className="bg-gradient-to-b from-brand-50 via-white to-white pb-8 pt-4 sm:pb-20 sm:pt-20">
         <Container className="px-3 sm:px-6 lg:px-8">
           <div className="grid gap-4 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-6">
             <div>
-              <div className="flex flex-wrap items-center justify-center gap-2.5 text-center sm:gap-3">
-                <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
+              <div className="flex flex-wrap items-center justify-center gap-2 text-center sm:gap-3">
+                <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-brand-100 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm">
                   <BrandIcon name="shield" className="h-4 w-4 shrink-0" />
                   <span className="hidden sm:inline">Secteur social &amp; médico-social</span>
                   <span className="sm:hidden">Secteur social</span>
@@ -142,13 +142,13 @@ export default function HomePage() {
                     de pouvoir documenter ces avis. Les deux chiffres ci-dessous
                     sont justifiables pièces à l'appui — voir RESULTATS dans
                     lib/site-data.ts avant toute modification. */}
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-4 py-1.5 text-sm font-semibold text-emerald-800">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-emerald-800 sm:px-4 sm:text-sm">
                   <BrandIcon name="award" className="h-4 w-4 shrink-0" />
                   {RESULTATS.taux}{" "}
                   <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
                   <span className="sm:hidden">validés</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-700">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm">
                   <BrandIcon name="wallet" className="h-4 w-4 shrink-0" />
                   Financement CPF
                 </span>
@@ -160,22 +160,22 @@ export default function HomePage() {
                     lui-même l'organisme certifié : c'est faux, et c'est
                     vérifiable en trente secondes sur l'annuaire public. Ne
                     jamais retirer le mot « Partenaire ». */}
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm">
                   <BrandIcon name="seal" className="h-4 w-4 shrink-0 text-brand-600" />
                   Partenaire Qualiopi
                 </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm">
                   <BrandIcon name="gov" className="h-4 w-4 shrink-0 text-brand-600" />
                   Partenaire France VAE
                 </span>
               </div>
-              <h1 className="mt-3 text-balance text-[1.65rem] font-bold leading-[1.15] tracking-tight text-slate-900 sm:mt-6 sm:text-4xl sm:leading-tight lg:text-5xl">
+              <h1 className="mt-2.5 text-[1.65rem] font-bold leading-[1.12] tracking-tight text-slate-900 sm:mt-6 sm:text-balance sm:text-4xl sm:leading-tight lg:text-5xl">
                 On vous dit d&apos;abord si vous êtes{" "}
                 <span className="text-brand-600">éligible</span>.
                 <br />
                 Pas l&apos;inverse.
               </h1>
-              <p className="mt-2.5 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
+              <p className="mt-2 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
                 Votre expérience vaut un diplôme. Vérifiez gratuitement si vous êtes éligible
                 en moins de 3 minutes.
               </p>
