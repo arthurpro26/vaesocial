@@ -1,0 +1,6 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /relance
+
+Sitemap: https://vae-social.fr/sitemap.xml

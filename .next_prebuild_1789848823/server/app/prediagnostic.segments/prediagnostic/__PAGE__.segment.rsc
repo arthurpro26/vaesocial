@@ -1,0 +1,21 @@
+1:"$Sreact.fragment"
+2:I[69930,["/_next/static/chunks/2s1aw23glg_51.js","/_next/static/chunks/1jsam-bpy-07x.js"],"default"]
+3:I[97367,["/_next/static/chunks/2s1aw23glg_51.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+8:I[97367,["/_next/static/chunks/2s1aw23glg_51.js"],"ViewportBoundary"]
+9:I[97367,["/_next/static/chunks/2s1aw23glg_51.js"],"MetadataBoundary"]
+a:I[27201,["/_next/static/chunks/2s1aw23glg_51.js"],"IconMark"]
+c:I[39756,["/_next/static/chunks/2s1aw23glg_51.js"],"default"]
+d:I[37457,["/_next/static/chunks/2s1aw23glg_51.js"],"default"]
+7:X
+f:X
+f:C
+0:{"buildId":"1q1iDSlBK-1B4MI5J5BBx","data":[{"rsc":["$","$1","c",{"children":[["$","section",null,{"className":"bg-brand-50/60 py-12 sm:py-16","children":["$","div",null,{"className":"mx-auto w-full px-4 sm:px-6 lg:px-8 max-w-6xl","children":[["$","h1",null,{"className":"sr-only","children":"Prédiagnostic VAE gratuit : vérifiez votre éligibilité"}],["$","$L2",null,{}]]}]}],[["$","script","script-0",{"src":"/_next/static/chunks/1jsam-bpy-07x.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":"$@6","staleTime":"$7","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L8",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L9",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Prédiagnostic VAE gratuit | VAESocial"}],["$","meta","1",{"name":"description","content":"Vérifiez gratuitement votre éligibilité à la VAE dans le secteur social et médico-social (DEES, DEAES, DEEJE, DEME...) en quelques minutes."}],["$","meta","2",{"name":"robots","content":"index, follow"}],["$","link","3",{"rel":"canonical","href":"https://vae-social.fr/prediagnostic"}],["$","meta","4",{"property":"og:title","content":"VAESocial — Accompagnement VAE dans le secteur social et médico-social"}],["$","meta","5",{"property":"og:description","content":"VAESocial accompagne les professionnels du secteur social et médico-social dans l'obtention de leur diplôme par la Validation des Acquis de l'Expérience (DEES, DEAES, DEEJE, DEME...)."}],["$","meta","6",{"property":"og:url","content":"https://vae-social.fr"}],["$","meta","7",{"property":"og:site_name","content":"VAESocial"}],["$","meta","8",{"property":"og:locale","content":"fr_FR"}],["$","meta","9",{"property":"og:type","content":"website"}],["$","meta","10",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","11",{"name":"twitter:title","content":"VAESocial — Accompagnement VAE dans le secteur social et médico-social"}],["$","meta","12",{"name":"twitter:description","content":"VAESocial accompagne les professionnels du secteur social et médico-social dans l'obtention de leur diplôme par la Validation des Acquis de l'Expérience (DEES, DEAES, DEEJE, DEME...)."}],["$","link","13",{"rel":"icon","href":"/icon.svg?icon.1ajwphdkk9_47.svg","sizes":"any","type":"image/svg+xml"}],["$","$La","14",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":"$@b","staleTime":"$7","varyParams":null},{"rsc":["$","$1","c",{"children":[null,["$","$Lc",null,{"parallelRouterKey":"children","template":["$","$Ld",null,{}]}]]}],"isPartial":"$@e","staleTime":"$7","varyParams":"$f"}],"isUpgradeableISRFallback":false,"a":"$@10","rootVaryParams":null,"needsRuntimeRequest":"$@11"}
+5:null
+11:true
+7:300
+7:C
+10:0
+b:"$undefined"
+e:"$undefined"
+6:"$undefined"

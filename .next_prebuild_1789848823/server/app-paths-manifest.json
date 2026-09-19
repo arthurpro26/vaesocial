@@ -1,0 +1,19 @@
+{
+  "/[diplome]/page": "app/[diplome]/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/prediagnostic/route": "app/api/prediagnostic/route.js",
+  "/api/relance/route": "app/api/relance/route.js",
+  "/blog/[slug]/page": "app/blog/[slug]/page.js",
+  "/blog/page": "app/blog/page.js",
+  "/cgv/page": "app/cgv/page.js",
+  "/confidentialite/page": "app/confidentialite/page.js",
+  "/icon.svg/route": "app/icon.svg/route.js",
+  "/mentions-legales/page": "app/mentions-legales/page.js",
+  "/page": "app/page.js",
+  "/prediagnostic/page": "app/prediagnostic/page.js",
+  "/relance/liste/page": "app/relance/liste/page.js",
+  "/relance/page": "app/relance/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js"
+}

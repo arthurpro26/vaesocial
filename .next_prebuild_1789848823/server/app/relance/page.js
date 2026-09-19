@@ -1,0 +1,13 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/relance/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__1z_34hh._.js")
+R.c("server/chunks/ssr/node_modules_next_dist_1n3w9lb._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__12gacd3._.js")
+R.c("server/chunks/ssr/node_modules_next_dist_1h-1gue._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0ji9-qg._.js")
+R.c("server/chunks/ssr/node_modules_next_dist_client_components_0wpq8j3._.js")
+R.c("server/chunks/ssr/node_modules_next_dist_client_components_builtin_forbidden_0symwr9.js")
+R.c("server/chunks/ssr/node_modules_next_dist_client_components_builtin_unauthorized_0l_sp0x.js")
+R.c("server/chunks/ssr/node_modules_next_dist_client_components_builtin_global-error_0q-w892.js")
+R.c("server/chunks/ssr/_next-internal_server_app_relance_page_actions_11yj4mq.js")
+R.m(16412)
+module.exports=R.m(16412).exports

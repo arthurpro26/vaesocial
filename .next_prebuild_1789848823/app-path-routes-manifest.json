@@ -1,0 +1,19 @@
+{
+  "/[diplome]/page": "/[diplome]",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/prediagnostic/route": "/api/prediagnostic",
+  "/api/relance/route": "/api/relance",
+  "/blog/[slug]/page": "/blog/[slug]",
+  "/blog/page": "/blog",
+  "/cgv/page": "/cgv",
+  "/confidentialite/page": "/confidentialite",
+  "/icon.svg/route": "/icon.svg",
+  "/mentions-legales/page": "/mentions-legales",
+  "/page": "/",
+  "/prediagnostic/page": "/prediagnostic",
+  "/relance/liste/page": "/relance/liste",
+  "/relance/page": "/relance",
+  "/robots.txt/route": "/robots.txt",
+  "/sitemap.xml/route": "/sitemap.xml"
+}
