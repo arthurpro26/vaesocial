@@ -194,7 +194,8 @@ export default function HomePage() {
                   (il égalise la longueur des lignes au lieu de les remplir). */}
               <h1 className="mt-2.5 text-[clamp(1.6rem,6.6vw,2.4rem)] font-bold leading-[1.12] tracking-[-0.03em] text-slate-900 sm:mt-6 lg:text-5xl">
                 Commençons par regarder{" "}
-                <span className="text-brand-600">votre parcours</span>.
+                <span className="text-brand-600">votre parcours</span> et le diplôme qui lui
+                correspond.
               </h1>
               <p className="mt-2 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
                 Trois minutes de questions, puis un expert du secteur social vous rappelle :
