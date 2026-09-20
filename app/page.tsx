@@ -169,15 +169,36 @@ export default function HomePage() {
                   Partenaire France VAE
                 </span>
               </div>
-              <h1 className="mt-2.5 text-[1.65rem] font-bold leading-[1.12] tracking-tight text-slate-900 sm:mt-6 sm:text-balance sm:text-4xl sm:leading-tight lg:text-5xl">
-                On vous dit d&apos;abord si vous êtes{" "}
-                <span className="text-brand-600">éligible</span>.
-                <br />
-                Pas l&apos;inverse.
+              {/* TITRE — refonte du 20/09/2026.
+                  L'ancien titre était « On vous dit d'abord si vous êtes éligible.
+                  Pas l'inverse. » Il a été remplacé pour deux raisons.
+
+                  1. « Pas l'inverse » sous-entend que les concurrents procèdent
+                     malhonnêtement. C'est une posture de vendeur qui se défend,
+                     et elle met le visiteur sur ses gardes dès la première ligne
+                     alors que l'objectif est de le mettre à l'aise.
+
+                  2. Le formulaire ne rend AUCUN verdict d'éligibilité : il
+                     déclenche un rappel. Promettre un verdict était faux, et
+                     c'est aussi le tic de langage des arnaques au CPF — un
+                     terrain sur lequel ce site n'a aucun intérêt à être rangé.
+
+                  Le nouveau titre n'affirme rien et ne promet rien : il propose
+                  une démarche commune, ce qui correspond exactement à ce qui se
+                  passe ensuite au téléphone.
+
+                  TAILLE : `clamp` plutôt qu'un palier fixe. Sur un iPhone la
+                  colonne utile fait ~360 px ; en corps 31 il n'y entre qu'une
+                  quinzaine de caractères par ligne, et un titre long s'y coupe
+                  n'importe où. `sm:text-balance` est retiré pour la même raison
+                  (il égalise la longueur des lignes au lieu de les remplir). */}
+              <h1 className="mt-2.5 text-[clamp(1.6rem,6.6vw,2.4rem)] font-bold leading-[1.12] tracking-[-0.03em] text-slate-900 sm:mt-6 lg:text-5xl">
+                Commençons par regarder{" "}
+                <span className="text-brand-600">votre parcours</span>.
               </h1>
               <p className="mt-2 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
-                Votre expérience vaut un diplôme. Vérifiez gratuitement si vous êtes éligible
-                en moins de 3 minutes.
+                Trois minutes de questions, puis un expert du secteur social vous rappelle :
+                la VAE, les livrets, le financement, et ce qui est possible dans votre situation.
               </p>
             </div>
 

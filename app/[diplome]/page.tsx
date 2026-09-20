@@ -133,11 +133,25 @@ export default async function DiplomePage({
                   Partenaire France VAE
                 </span>
               </div>
-              <h1 className="mt-2.5 text-[1.65rem] font-bold leading-[1.12] tracking-tight text-slate-900 sm:mt-6 sm:text-balance sm:text-4xl sm:leading-tight lg:text-5xl">
-                On vous dit d&apos;abord si vous êtes{" "}
-                <span className="text-brand-600">éligible {d.heroSuffixe}</span>.
-                <br />
-                Pas l&apos;inverse.
+              {/* Même refonte que sur la page d'accueil (voir le commentaire
+                  détaillé dans app/page.tsx). Ici `heroSuffixe` vaut « au DEES »,
+                  « au DEAES »… : on le réutilise tel quel après « vers », ce qui
+                  donne « votre parcours vers le DEES » sans toucher aux données.
+
+                  ATTENTION À LA PRÉPOSITION. `heroSuffixe` vaut « au DEES » :
+                  la formule était construite pour « éligible AU DEES », qui se
+                  dit, alors que « votre parcours AU DEES » ne se dit pas. On
+                  remplace donc « au » par « vers le » à l'affichage, sans
+                  toucher à lib/diplomes-data.ts — d'autres pages utilisent
+                  `heroSuffixe` avec la préposition d'origine.
+                  NE PAS remettre `text-balance` : il coupe le titre au milieu
+                  sur téléphone. */}
+              <h1 className="mt-2.5 text-[clamp(1.6rem,6.6vw,2.4rem)] font-bold leading-[1.12] tracking-[-0.03em] text-slate-900 sm:mt-6 lg:text-5xl">
+                Commençons par regarder{" "}
+                <span className="text-brand-600">
+                  votre parcours {d.heroSuffixe.replace(/^au /, "vers le ")}
+                </span>
+                .
               </h1>
               <p className="mt-2.5 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
                 {d.heroIntro}
