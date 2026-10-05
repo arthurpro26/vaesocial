@@ -5,7 +5,7 @@ import PrediagnosticForm from "@/components/PrediagnosticForm";
 export const metadata: Metadata = {
   title: "Prédiagnostic VAE gratuit",
   description:
-    "Vérifiez gratuitement votre éligibilité à la VAE dans le secteur social et médico-social (DEES, DEAES, DEEJE, DEME...) en quelques minutes.",
+    "Vérifiez gratuitement votre éligibilité à la VAE dans le secteur social (DEES, DEAES, DEEJE, DEME, DEAP, DEASS, CAFERUIS) en quelques minutes.",
   alternates: { canonical: "/prediagnostic" },
 };
 

@@ -28,21 +28,37 @@ import BrandIcon from "@/components/BrandIcon";
 // cartes avec plus d'air et un léger effet de survol.
 //
 // Les sections Méthode / Financement / Témoignages / Engagements / CTA final
-// / Stats sont partagées avec les 4 pages diplôme dédiées (voir
+// / Stats sont partagées avec les pages diplôme dédiées (voir
 // components/sections/) pour ne jamais dupliquer une donnée réelle. Seuls le
 // Hero, "Pour qui ?", "Nos diplômes" et la FAQ restent spécifiques à la home.
 //
 // Prix, témoignages, durées et avis sont des données réelles fournies par
 // Yoni (jamais de chiffre inventé) — voir mémoire projet pour la traçabilité.
 
+// Liste des diplômes dérivée de DIPLOMES (lib/site-data.ts) : ajouter un diplôme
+// là-bas met à jour le paragraphe d'accroche, la pastille « N diplômes » et la
+// meta description d'ici sans retoucher cette page. Ne plus écrire la liste en dur.
+//   LISTE_SIGLES        → « DEES, DEAES, …, CAFERUIS »
+//   LISTE_VISEE         → « le DEES, le DEAES, …, le DEASS ou le CAFERUIS »
+const SIGLES = DIPLOMES.map((d) => d.sigle);
+const LISTE_SIGLES = SIGLES.join(", ");
+const LISTE_VISEE =
+  SIGLES.slice(0, -1)
+    .map((s) => `le ${s}`)
+    .join(", ") + ` ou le ${SIGLES[SIGLES.length - 1]}`;
+
 export const metadata: Metadata = {
   // Titre "absolute" : n'hérite pas du template du layout racine (` | VAESocial`)
   // pour rester sous ~60 caractères, la longueur idéale affichée par Google.
+  // Titre volontairement NON étendu aux 7 sigles : avec les 7, il fait 80
+  // caractères et Google le coupe vers 60. La meta description ci-dessous, elle,
+  // liste tous les diplômes. Variante possible si besoin : « VAE secteur social :
+  // 7 diplômes accessibles | VAESocial ».
   title: {
     absolute: "VAE secteur social : DEES, DEAES, DEEJE, DEME | VAESocial",
   },
   description:
-    "VAE dans le secteur social : DEES, DEAES, DEEJE, DEME. Accompagnement 100% à distance, financement CPF possible. Vérifiez votre éligibilité gratuitement.",
+    `VAE secteur social : ${LISTE_SIGLES}. 100% à distance, financement CPF possible. Vérifiez gratuitement votre éligibilité.`,
   alternates: { canonical: "/" },
 };
 
@@ -50,7 +66,7 @@ export const metadata: Metadata = {
 // différemment sur chaque appareil et juraient avec le formulaire voisin,
 // déjà passé au vectoriel.
 const VALEURS = [
-  { icon: "diploma" as const, titre: "4 diplômes accessibles" },
+  { icon: "diploma" as const, titre: `${DIPLOMES.length} diplômes accessibles` },
   { icon: "screen" as const, titre: "100% à distance" },
   { icon: "wallet" as const, titre: "Financement CPF" },
   { icon: "building" as const, titre: "Financement OPCO Santé" },
@@ -81,7 +97,7 @@ const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Qu'est-ce que la VAE exactement ?",
     reponse:
-      "La Validation des Acquis de l'Expérience est un dispositif officiel qui permet d'obtenir un diplôme d'État (DEES, DEAES, DEEJE, DEME...) en faisant reconnaître son expérience professionnelle, sans reprendre une formation complète. Vous constituez un dossier qui décrit vos pratiques, puis vous le présentez devant un jury qui valide tout ou partie du diplôme visé.",
+      `La Validation des Acquis de l'Expérience est un dispositif officiel qui permet d'obtenir un diplôme ou un certificat d'État (${LISTE_SIGLES}...) en faisant reconnaître son expérience professionnelle, sans reprendre une formation complète. Vous constituez un dossier qui décrit vos pratiques, puis vous le présentez devant un jury qui valide tout ou partie du diplôme visé.`,
   },
   {
     question: "Combien d'expérience faut-il pour se lancer ?",
@@ -220,7 +236,7 @@ export default function HomePage() {
 
             <div>
               <p className="text-base leading-relaxed text-slate-600 sm:text-lg lg:text-brand-100">
-                Que vous visiez le DEES, le DEAES, le DEEJE ou le DEME, on vous guide à chaque
+                Que vous visiez {LISTE_VISEE}, on vous guide à chaque
                 étape — sans reprendre une formation complète, et sans aucun engagement de
                 votre part avant d&apos;avoir la réponse.
               </p>
