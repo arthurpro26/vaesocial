@@ -10,6 +10,7 @@ import { formatPhoneInput, isValidPhoneFr, normalizePhoneOnBlur } from "@/lib/ph
 import { useFormProgress } from "@/lib/form-progress-context";
 import { trackConversion } from "@/lib/tracking";
 import { trackFormConversion, type FormKey } from "@/lib/google-ads-conversions";
+import type { DiplomeSigle } from "@/lib/site-data";
 
 // --- Données des étapes à choix unique (cartes larges, sélection = avance automatique) ---
 
@@ -22,6 +23,10 @@ const DIPLOME_OPTIONS = [
   // c'est elle qui part dans l'email et dans la colonne "Diplôme" du Sheet.
   // Ne jamais la modifier ensuite (voir l'avertissement sur SITUATION_OPTIONS).
   { value: "DEAP", label: "DEAP", helper: "Auxiliaire de puériculture · Bac" },
+  // Ajoutés le 05/10/2026 (mêmes règles : la `value` est le sigle, elle part
+  // dans l'email et dans la colonne "Diplôme" du Sheet, ne jamais la modifier).
+  { value: "DEASS", label: "DEASS", helper: "Assistant de service social · Bac+3" },
+  { value: "CAFERUIS", label: "CAFERUIS", helper: "Chef de service · Niveau 6" },
   { value: "Je ne sais pas", label: "Je ne sais pas" },
 ];
 
@@ -85,6 +90,8 @@ const SITUATION_HELPERS_PAR_DIPLOME: Record<string, keyof typeof SITUATION_HELPE
   DEAES: "social",
   DEEJE: "petiteEnfance",
   DEAP: "petiteEnfance",
+  DEASS: "social",
+  CAFERUIS: "social",
 };
 
 const SITUATION_OPTIONS = [
@@ -153,6 +160,12 @@ const STRUCTURE_SUGGESTIONS: Record<string, string[]> = {
     "PMI",
     "Domicile",
   ],
+  // DEASS et CAFERUIS (05/10/2026). Pour le DEASS, les employeurs cités sont
+  // ceux de la fiche du diplôme au Répertoire national des certifications
+  // professionnelles. Pour le CAFERUIS, les structures où s'exercent les
+  // fonctions d'encadrement.
+  DEASS: ["CCAS", "Conseil départemental", "Mairie", "Mission locale", "Hôpital", "EHPAD", "CHRS", "Association"],
+  CAFERUIS: ["MECS", "IME", "ITEP", "CHRS", "ESAT", "FAM", "MAS", "SESSAD", "AEMO", "Foyer"],
 };
 // Liste de secours si le diplôme n'est pas encore déterminé ("Je ne sais
 // pas") : toutes les suggestions réunies, sans doublons.
@@ -185,6 +198,10 @@ const ACTIVITE_PLACEHOLDER: Record<string, string> = {
     "Ex : J'anime les temps d'éveil auprès d'enfants de 1 à 3 ans en multi-accueil, je participe au projet pédagogique et j'accompagne les familles au quotidien...",
   DEAP:
     "Ex : Je m'occupe d'un groupe de 10 enfants en crèche, j'assure les soins, les repas, les changes et les temps de sieste, je surveille leur développement et je fais les transmissions aux parents...",
+  DEASS:
+    "Ex : J'accueille et j'oriente les familles de mon secteur, j'instruis leurs demandes d'aide, je les accompagne dans leurs démarches de logement et de budget et je travaille avec les partenaires du territoire...",
+  CAFERUIS:
+    "Ex : Je coordonne une équipe de huit éducateurs, j'organise les plannings, je suis responsable du suivi des projets individualisés et du budget de l'unité, et je participe au projet d'établissement...",
 };
 
 // Filigrane par défaut : volontairement neutre, ni social ni petite enfance.
@@ -479,11 +496,19 @@ function suggestEmailDomain(email: string): string | null {
 // l'onglet, aucune donnée personnelle qui traîne indéfiniment sur l'appareil.
 const DRAFT_STORAGE_KEY = "vaesocial-prediagnostic-draft";
 
+/**
+ * Sigle d'un diplôme ayant sa page dédiée. Dérivé de lib/site-data.ts : il
+ * s'élargit tout seul quand on ajoute un diplôme, et `FormKey`
+ * (lib/google-ads-conversions.ts) suit — l'étiquette de conversion devient
+ * obligatoire à la compilation.
+ */
+export type PresetDiplome = DiplomeSigle;
+
 export default function PrediagnosticForm({
   presetDiplome,
 }: {
   /** Quand fourni (pages diplôme dédiées), l'étape "Quel diplôme ?" est sautée et préremplie. */
-  presetDiplome?: "DEES" | "DEAES" | "DEEJE" | "DEME" | "DEAP";
+  presetDiplome?: PresetDiplome;
 }) {
   const [step, setStep] = useState(0);
   // Sens de la dernière navigation, pour orienter l'animation de transition
@@ -705,10 +730,12 @@ export default function PrediagnosticForm({
           page: presetDiplome ? `diplome_${presetDiplome.toLowerCase()}` : "home",
         });
 
-        // Conversion Google Ads propre au formulaire envoyé (DEES/DEAES/DEEJE/
-        // DEME sur les pages dédiées, "générique" sur la home et /prediagnostic).
+        // Conversion Google Ads propre au formulaire envoyé (une clé par page
+        // diplôme dédiée, "générique" sur la home et /prediagnostic). Le type
+        // Lowercase<PresetDiplome> est inclus dans FormKey : une page diplôme
+        // sans étiquette de conversion ne compile plus.
         const formKey: FormKey = presetDiplome
-          ? (presetDiplome.toLowerCase() as FormKey)
+          ? (presetDiplome.toLowerCase() as Lowercase<PresetDiplome>)
           : "generique";
         trackFormConversion(formKey);
       }

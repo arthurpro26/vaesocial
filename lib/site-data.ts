@@ -46,9 +46,42 @@ export const DIPLOMES = [
     description:
       "Soins et accompagnement du jeune enfant, en maternité, en service de pédiatrie, en PMI ou en structure d'accueil de la petite enfance.",
   },
+  // Ajoutés le 05/10/2026. Pas de thème couleur propre : les deux pages
+  // héritent de la palette de marque.
+  //
+  // Slug du DEASS = NOM DU MÉTIER, comme pour l'auxiliaire de puériculture (les
+  // candidats cherchent leur métier, pas l'acronyme). Le volume de recherche de
+  // « vae assistant de service social » n'a PAS été mesuré : à vérifier au
+  // Keyword Planner avant de figer l'URL dans une annonce.
+  //
+  // Le CAFERUIS garde son sigle comme slug : « vae caferuis » = 590 recherches
+  // par mois (Keyword Planner du 01/09/2026) et aucun nom de métier ne s'impose
+  // aussi nettement pour ce certificat (chef de service, responsable d'unité,
+  // cadre socio-éducatif...).
+  {
+    slug: "assistant-service-social",
+    sigle: "DEASS",
+    nom: "Assistant de service social",
+    description:
+      "Accompagnement social des personnes et des familles : accès aux droits, insertion, amélioration des conditions de vie, en collectivité, à l'hôpital ou en structure sociale.",
+  },
+  {
+    slug: "caferuis",
+    sigle: "CAFERUIS",
+    nom: "Chef de service en intervention sociale",
+    description:
+      "Encadrement d'équipe et responsabilité d'une unité d'intervention sociale : pilotage de l'activité, management, gestion et contribution au projet d'établissement.",
+  },
 ] as const;
 
 export type DiplomeSlug = (typeof DIPLOMES)[number]["slug"];
+
+// Sigles de tous les diplômes ayant une page dédiée, dérivés de DIPLOMES : un
+// nouveau diplôme ajouté ci-dessus entre ici tout seul. Sert à typer
+// `FormKey` (lib/google-ads-conversions.ts) et le formulaire — c'est ce qui
+// rend impossible d'ajouter un diplôme sans son étiquette de conversion Google
+// Ads (voir l'incident du 4 août 2026 décrit dans ce fichier-là).
+export type DiplomeSigle = (typeof DIPLOMES)[number]["sigle"];
 
 export const STATS = [
   { chiffre: "97 %", label: "De dossiers validés" },

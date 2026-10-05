@@ -1,5 +1,7 @@
 "use client";
 
+import type { DiplomeSigle } from "@/lib/site-data";
+
 // Étiquettes de conversion Google Ads, une par formulaire — à renseigner une
 // fois les actions de conversion créées côté Google Ads (Outils et
 // paramètres > Conversions > Nouvelle action de conversion).
@@ -14,7 +16,13 @@
 // aucun événement invalide n'est jamais envoyé à Google Ads. Une fois les
 // libellés récupérés, il suffit de les coller ci-dessous — aucune autre
 // modification (formulaire, API route...) n'est nécessaire.
-export type FormKey = "dees" | "deaes" | "deeje" | "deme" | "deap" | "generique";
+//
+// `FormKey` est DÉRIVÉ des sigles de lib/site-data.ts (05/10/2026) et non plus
+// recopié à la main : ajouter un diplôme à DIPLOMES l'ajoute ici, et le
+// `Record<FormKey, string>` ci-dessous refuse alors de compiler tant que son
+// étiquette de conversion n'est pas renseignée. L'oubli qui a causé l'incident
+// du 4 août 2026 devient une erreur de build, pas une panne silencieuse.
+export type FormKey = Lowercase<DiplomeSigle> | "generique";
 
 // Étiquette unique de l'action de conversion « Envois de formulaires de lead »
 // du compte. Elle est volontairement partagée par TOUS les formulaires.
@@ -52,6 +60,11 @@ export const GOOGLE_ADS_CONVERSION_LABELS: Record<FormKey, string> = {
   // à Google Ads pour les leads DEAP — la campagne neuve aurait appris sur un
   // signal vide, exactement le scénario du 4 août 2026 décrit plus haut.
   deap: LEAD_FORM_CONVERSION,
+  // Ajoutés le 05/10/2026 avec les pages DEASS et CAFERUIS. Même étiquette
+  // unique que les autres : les mots clés « deass » et « caferuis » seront dans
+  // la campagne DEES, et la conversion doit remonter dans la même action.
+  deass: LEAD_FORM_CONVERSION,
+  caferuis: LEAD_FORM_CONVERSION,
   // Formulaire de la page d'accueil et de /prediagnostic, quand aucun
   // diplôme n'est présélectionné (presetDiplome absent).
   generique: LEAD_FORM_CONVERSION,
@@ -65,7 +78,7 @@ declare global {
 
 /**
  * Déclenche la conversion Google Ads propre au formulaire envoyé (DEES,
- * DEAES, DEEJE, DEME, DEAP ou générique), une fois l'étiquette correspondante
+ * DEAES, DEEJE, DEME, DEAP, DEASS, CAFERUIS ou générique), une fois l'étiquette correspondante
  * renseignée dans GOOGLE_ADS_CONVERSION_LABELS ci-dessus.
  *
  * Appelé dès maintenant depuis PrediagnosticForm.tsx : sans effet tant que

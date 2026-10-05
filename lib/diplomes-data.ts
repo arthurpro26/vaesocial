@@ -1,5 +1,5 @@
 import type { FaqItem } from "@/components/FaqAccordion";
-import type { DiplomeSlug } from "@/lib/site-data";
+import type { DiplomeSigle, DiplomeSlug } from "@/lib/site-data";
 
 // Contenu spécifique à chaque page diplôme dédiée (/dees, /deaes, /deeje,
 // /deme), utilisé pour le Google Ads (mot-clé → annonce → landing page
@@ -12,7 +12,7 @@ import type { DiplomeSlug } from "@/lib/site-data";
 
 export type DiplomeData = {
   slug: DiplomeSlug;
-  sigle: string;
+  sigle: DiplomeSigle;
   nomComplet: string;
   niveau: string;
   metaTitle: string;
@@ -471,5 +471,196 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       },
     ],
     ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEAP ?",
+  },
+
+  // Ajouté le 05/10/2026. Contenu vérifié sur la fiche France Compétences
+  // RNCP41748 (niveau 6, enregistrée du 01/09/2026 au 31/08/2031, 4 blocs de
+  // compétences, voie « par expérience » ouverte). Les intitulés des blocs sont
+  // recopiés mot pour mot de la fiche. Aucun chiffre ni témoignage inventé.
+  "assistant-service-social": {
+    slug: "assistant-service-social",
+    sigle: "DEASS",
+    nomComplet: "Diplôme d'État d'Assistant de Service Social",
+    niveau: "Niveau 6 (Bac+3)",
+    metaTitle: "VAE Assistant de Service Social (DEASS) par expérience | VAESocial",
+    metaDescription:
+      "Obtenez le diplôme d'État d'assistant de service social (DEASS) par la VAE grâce à votre expérience d'accompagnement social. Diagnostic gratuit en 3 minutes.",
+    heroSuffixe: "au DEASS",
+    heroIntro:
+      "✨ Votre expérience d'accompagnement social vaut le diplôme d'État d'assistant de service social. Vérifiez gratuitement si vous êtes éligible en moins de 3 minutes.",
+    heroParagraphe:
+      "Le DEASS est un diplôme d'État de niveau 6 (Bac+3) qui atteste de la capacité à concevoir et conduire un accompagnement social favorisant l'insertion et l'amélioration des conditions de vie des personnes, à soutenir leur autodétermination et à travailler avec les partenaires du territoire. La validation des acquis de l'expérience est une voie d'accès officielle à ce diplôme : votre pratique de terrain peut être valorisée dans un dossier, sans reprendre une formation complète.",
+    publicIntro:
+      "Vous accompagnez déjà des personnes ou des familles dans leurs démarches et leurs difficultés sociales, sans avoir le diplôme d'État ? Votre expérience peut être recevable pour une VAE DEASS.",
+    publicConcerne: [
+      {
+        titre: "Vous accompagnez l'accès aux droits",
+        texte:
+          "Accueil et orientation du public, instruction de demandes d'aide, accompagnement dans les démarches de logement, de budget, de santé ou de famille : c'est le cœur de l'accompagnement social évalué par le référentiel.",
+      },
+      {
+        titre: "Vous travaillez en collectivité ou en organisme social",
+        texte:
+          "Conseil départemental, CCAS, mairie, mission locale, organisme de sécurité sociale : ces structures emploient des assistants de service social, et votre pratique de terrain peut être valorisée dans le dossier.",
+      },
+      {
+        titre: "Vous exercez en structure sociale, médico-sociale ou à l'hôpital",
+        texte:
+          "Hébergement, établissement médico-social, EHPAD, hôpital : si vous y assurez un accompagnement social des personnes sans avoir le titre d'assistant de service social, la VAE reconnaît votre expérience.",
+      },
+    ],
+    debouchesIntro:
+      "Le DEASS ouvre l'accès au métier d'assistant de service social, exercé dans le champ de l'action sociale et médico-sociale, chez des employeurs très variés :",
+    debouches: [
+      {
+        icon: "🏛️",
+        texte:
+          "Collectivités : conseil départemental, centres d'action sociale (CCAS) et communes — accompagner les habitants dans leurs démarches et leurs difficultés du quotidien.",
+      },
+      {
+        icon: "🏥",
+        texte:
+          "Hôpitaux et établissements médico-sociaux, dont les EHPAD — accompagner les patients, les résidents et leurs proches dans leurs droits et leur projet.",
+      },
+      {
+        icon: "🤝",
+        texte:
+          "Missions locales et organismes de sécurité sociale — soutenir l'insertion et l'accès aux droits des jeunes et des assurés.",
+      },
+      {
+        icon: "🏫",
+        texte:
+          "Écoles et entreprises — accompagner des élèves, des familles ou des salariés au sein d'un établissement scolaire ou d'une entreprise.",
+      },
+    ],
+    debouchesConclusion:
+      "🌟 Un seul diplôme d'État pour exercer en collectivité, à l'hôpital, en structure médico-sociale ou en entreprise.",
+    noteReferentiel:
+      "Le diplôme d'assistant de service social dispose d'un nouveau référentiel de compétences depuis le 1er septembre 2026 (quatre blocs de compétences). Les modalités exactes du dépôt de votre dossier dépendent du certificateur : nous vérifions avec vous la procédure qui s'applique à votre situation avant tout engagement.",
+    faq: [
+      {
+        question: "Peut-on obtenir le DEASS par la VAE ?",
+        reponse:
+          "Oui. La voie « par expérience » est ouverte sur la fiche du diplôme d'État d'assistant de service social au Répertoire national des certifications professionnelles. Le jury réunit notamment un enseignant-chercheur, des représentants de l'État, des formateurs et des professionnels de terrain, employeurs comme salariés.",
+      },
+      {
+        question: "Quel est le niveau du DEASS ?",
+        reponse:
+          "Le DEASS est un diplôme d'État de niveau 6, équivalent à une licence (Bac+3). Obtenu par la VAE, c'est le même diplôme que par la formation initiale, avec les mêmes droits.",
+      },
+      {
+        question: "Quelle expérience faut-il pour viser le DEASS en VAE ?",
+        reponse:
+          "Depuis la réforme de janvier 2024, aucune durée minimale n'est exigée. Ce qui compte, c'est que votre expérience — professionnelle, bénévole ou en tant qu'aidant — corresponde aux missions d'accompagnement social évaluées dans le référentiel du diplôme. C'est précisément ce que le diagnostic gratuit vérifie.",
+      },
+      {
+        question: "Quels sont les blocs de compétences du DEASS ?",
+        reponse:
+          "Le référentiel comporte quatre blocs : concevoir et conduire un accompagnement social favorisant l'insertion sociale et l'amélioration des conditions de vie ; favoriser et soutenir l'autodétermination des individus et des collectifs dans un but d'émancipation ; s'inscrire dans une dynamique partenariale et territoriale en lien avec la mise en œuvre des politiques de cohésion sociale ; s'inscrire dans un contexte professionnel du travail social.",
+      },
+      {
+        question: "Faut-il arrêter de travailler pendant la VAE ?",
+        reponse:
+          "Non. L'accompagnement se fait à distance, en visio, avec des séances organisées autour de votre emploi du temps. C'est d'ailleurs votre activité en cours qui alimente votre dossier.",
+      },
+    ],
+    ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEASS ?",
+  },
+
+  // Ajouté le 05/10/2026. Contenu vérifié sur la fiche France Compétences
+  // RNCP36836 (niveau 6, parcours depuis le 01/09/2022, enregistrement jusqu'au
+  // 31/08/2027, 4 blocs de compétences, emplois et secteurs listés sur la fiche).
+  // Les intitulés des blocs sont recopiés de la fiche. Aucun chiffre ni
+  // témoignage inventé. Le niveau est affiché « Niveau 6 » sans équivalence en
+  // « Bac+ » : les sources consultées divergeaient (Bac+3 / Bac+4).
+  caferuis: {
+    slug: "caferuis",
+    sigle: "CAFERUIS",
+    nomComplet:
+      "Certificat d'aptitude aux fonctions d'encadrement et de responsable d'unité d'intervention sociale",
+    niveau: "Niveau 6",
+    metaTitle: "VAE CAFERUIS : chef de service en intervention sociale | VAESocial",
+    metaDescription:
+      "Obtenez le CAFERUIS par la VAE grâce à votre expérience d'encadrement dans le social ou le médico-social. Diagnostic gratuit en 3 minutes.",
+    heroSuffixe: "au CAFERUIS",
+    heroIntro:
+      "✨ Votre expérience d'encadrement d'équipe dans le social ou le médico-social vaut le CAFERUIS. Vérifiez gratuitement si vous êtes éligible en moins de 3 minutes.",
+    heroParagraphe:
+      "Le CAFERUIS est un certificat de niveau 6 qui atteste de la capacité à piloter l'activité d'une unité d'intervention sociale, à manager une équipe, à gérer les volets administratif, logistique et budgétaire, et à contribuer au projet de l'établissement ou du service. Par la VAE, votre expérience de coordination ou d'encadrement — chef de service, responsable d'unité ou « faisant fonction » — peut être valorisée dans un dossier, sans reprendre une formation complète.",
+    publicIntro:
+      "Vous coordonnez déjà une équipe ou une unité dans le secteur social ou médico-social, avec ou sans le titre ? Votre expérience peut être recevable pour une VAE CAFERUIS.",
+    publicConcerne: [
+      {
+        titre: "Vous êtes éducateur ou moniteur-éducateur et vous coordonnez l'équipe",
+        texte:
+          "Référent, coordinateur ou responsable d'équipe en plus de votre mission éducative : vous exercez déjà une partie des missions d'encadrement évaluées par le jury.",
+      },
+      {
+        titre: "Vous faites fonction de chef de service",
+        texte:
+          "Vous pilotez une unité, organisez les plannings et suivez le budget sans avoir le certificat : la VAE reconnaît cette pratique de terrain.",
+      },
+      {
+        titre: "Vous êtes adjoint de direction ou responsable de pôle",
+        texte:
+          "Vous managez des équipes et contribuez au projet de l'établissement : votre expérience peut être valorisée dans les quatre blocs du certificat.",
+      },
+    ],
+    debouchesIntro:
+      "Le CAFERUIS ouvre des postes d'encadrement dans l'action sociale et médico-sociale, comme ceux-ci :",
+    debouches: [
+      {
+        icon: "🧭",
+        texte:
+          "Chef de service ou responsable d'unité — piloter l'activité d'une équipe au quotidien, dans un établissement ou un service.",
+      },
+      {
+        icon: "🧩",
+        texte:
+          "Responsable de service éducatif ou social, cadre socio-éducatif — faire le lien entre la direction, les équipes et les personnes accompagnées.",
+      },
+      {
+        icon: "🏢",
+        texte:
+          "Responsable de pôle ou adjoint de direction — contribuer au projet d'établissement et coordonner plusieurs unités.",
+      },
+      {
+        icon: "🌍",
+        texte:
+          "Tous les champs de l'action sociale : protection de l'enfance, inclusion sociale, insertion professionnelle, handicap, hébergement et grand âge.",
+      },
+    ],
+    debouchesConclusion:
+      "🌟 Un seul certificat de niveau 6, valable dans tous les champs de l'action sociale et médico-sociale.",
+    noteReferentiel:
+      "Comme pour tout diplôme du travail social, les modalités du parcours VAE (recevabilité, calendrier de dépôt) sont fixées par le certificateur et peuvent évoluer : nous vérifions avec vous les conditions exactes qui s'appliquent à votre dossier avant tout engagement.",
+    faq: [
+      {
+        question: "Peut-on obtenir le CAFERUIS par la VAE ?",
+        reponse:
+          "Oui. La voie « par expérience » est ouverte sur la fiche du CAFERUIS au Répertoire national des certifications professionnelles. Le préfet de région, ou son représentant, préside le jury, composé notamment de formateurs en travail social, de représentants de l'État et des collectivités et de professionnels de l'encadrement.",
+      },
+      {
+        question: "Quel est le niveau du CAFERUIS ?",
+        reponse:
+          "Le CAFERUIS est enregistré au niveau 6 du Répertoire national des certifications professionnelles. Il atteste de compétences d'encadrement et de responsable d'unité d'intervention sociale.",
+      },
+      {
+        question: "Quelle expérience faut-il pour viser le CAFERUIS en VAE ?",
+        reponse:
+          "Il faut justifier d'une expérience dans le secteur social, médico-social, éducatif, de la santé ou de l'économie sociale, et aucune durée minimale n'est exigée depuis la réforme de janvier 2024. Le jury évalue ensuite vos missions de pilotage, de management, de gestion et de contribution au projet d'établissement : ce sont elles qui comptent dans votre dossier.",
+      },
+      {
+        question: "Quels sont les blocs de compétences du CAFERUIS ?",
+        reponse:
+          "Le référentiel comporte quatre blocs : piloter l'activité d'une unité d'intervention sociale ; manager et gérer les ressources humaines d'une unité d'intervention sociale ; gérer les volets administratif, logistique et budgétaire d'une unité d'intervention ; contribuer au projet d'établissement ou de service.",
+      },
+      {
+        question: "Faut-il arrêter de travailler pendant la VAE ?",
+        reponse:
+          "Non. L'accompagnement se fait à distance, en visio, avec des séances organisées autour de votre emploi du temps. C'est d'ailleurs votre activité en cours qui alimente votre dossier.",
+      },
+    ],
+    ctaTitre: "Prêt·e à savoir si vous êtes éligible au CAFERUIS ?",
   },
 };

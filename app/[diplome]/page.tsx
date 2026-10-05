@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Container from "@/components/Container";
 import PrediagnosticForm from "@/components/PrediagnosticForm";
+import AutresDiplomes from "@/components/AutresDiplomes";
 import FaqAccordion from "@/components/FaqAccordion";
 import FaqJsonLd from "@/components/FaqJsonLd";
 import CourseJsonLd from "@/components/CourseJsonLd";
@@ -157,12 +158,14 @@ export default async function DiplomePage({
             </div>
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
-              <PrediagnosticForm
-                presetDiplome={d.sigle as "DEES" | "DEAES" | "DEEJE" | "DEME" | "DEAP"}
-              />
+              <PrediagnosticForm presetDiplome={d.sigle} />
               <p className="mt-3 text-center text-xs text-slate-500 sm:mt-4">
                 Vos informations restent confidentielles — jamais revendues à des tiers.
               </p>
+              {/* Issue de secours pour le trafic venu d'un mot clé voisin (ex. « deass »
+                  ou « caferuis » dans la campagne DEES) : lien vers la bonne page, qui
+                  porte son propre formulaire préréglé. Aucun effet sur le chemin du lead. */}
+              <AutresDiplomes courant={d.slug} />
             </div>
 
             <div>
