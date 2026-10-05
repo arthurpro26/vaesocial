@@ -96,7 +96,7 @@ export default async function DiplomePage({
 
       {/* HERO — même structure grid que la home (accroche / formulaire / réassurance)
           pour conserver le trick de réordonnancement mobile (formulaire remonté). */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-white to-white pb-8 pt-6 sm:pb-20 sm:pt-20 lg:bg-none lg:pb-36 lg:pt-16">
+      <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-white to-white pb-8 pt-6 max-sm:bg-[linear-gradient(to_bottom,rgb(var(--brand-900)),rgb(var(--brand-800))_620px,#fff_780px)] sm:pb-20 sm:pt-20 lg:bg-none lg:pb-36 lg:pt-16">
         {/* Décor réservé au grand écran : bandeau sombre dégradé + deux halos. */}
         <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
           <div className="absolute inset-0 bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700" />
@@ -107,7 +107,7 @@ export default async function DiplomePage({
           <div className="grid gap-4 sm:gap-8 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-16 lg:gap-y-8">
             <div>
               <div className="flex flex-wrap items-center justify-center gap-2 text-center sm:gap-3 lg:justify-start lg:text-left">
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-100 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm lg:bg-white/10 lg:text-white lg:ring-1 lg:ring-white/25">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-100 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm lg:bg-white/10 max-sm:bg-white/10 lg:text-white max-sm:text-white lg:ring-1 max-sm:ring-1 lg:ring-white/25 max-sm:ring-white/25">
                   <BrandIcon name="shield" className="h-4 w-4 shrink-0" />
                   VAE {d.sigle}
                   <span className="hidden sm:inline">· {d.niveau}</span>
@@ -116,13 +116,13 @@ export default async function DiplomePage({
                     a celui de la page d'accueil. Deux couleurs pour la meme
                     information donnent l'impression de deux sites differents
                     quand le visiteur passe de l'un a l'autre. */}
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-emerald-800 sm:px-4 sm:text-sm lg:bg-emerald-400/15 lg:text-emerald-100 lg:ring-1 lg:ring-emerald-300/40">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-emerald-800 sm:px-4 sm:text-sm lg:bg-emerald-400/15 max-sm:bg-emerald-400/15 lg:text-emerald-100 max-sm:text-emerald-100 lg:ring-1 max-sm:ring-1 lg:ring-emerald-300/40 max-sm:ring-emerald-300/40">
                   <BrandIcon name="award" className="h-4 w-4 shrink-0" />
                   {RESULTATS.taux}{" "}
                   <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
                   <span className="sm:hidden">validés</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm lg:bg-white/10 lg:text-white lg:ring-1 lg:ring-white/25">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm lg:bg-white/10 max-sm:bg-white/10 lg:text-white max-sm:text-white lg:ring-1 max-sm:ring-1 lg:ring-white/25 max-sm:ring-white/25">
                   <BrandIcon name="wallet" className="h-4 w-4 shrink-0" />
                   Financement CPF
                 </span>
@@ -130,12 +130,12 @@ export default async function DiplomePage({
                     Qualiopi et le referencement France VAE appartiennent a
                     l'organisme de formation partenaire, pas a ce site. Voir le
                     commentaire equivalent dans app/page.tsx. */}
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm lg:bg-white/10 lg:text-white lg:ring-white/25">
-                  <BrandIcon name="seal" className="h-4 w-4 shrink-0 text-brand-600 lg:text-brand-200" />
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm lg:bg-white/10 max-sm:bg-white/10 lg:text-white max-sm:text-white lg:ring-white/25 max-sm:ring-white/25">
+                  <BrandIcon name="seal" className="h-4 w-4 shrink-0 text-brand-600 lg:text-brand-200 max-sm:text-brand-200" />
                   Partenaire Qualiopi
                 </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm lg:bg-white/10 lg:text-white lg:ring-white/25">
-                  <BrandIcon name="gov" className="h-4 w-4 shrink-0 text-brand-600 lg:text-brand-200" />
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm lg:bg-white/10 max-sm:bg-white/10 lg:text-white max-sm:text-white lg:ring-white/25 max-sm:ring-white/25">
+                  <BrandIcon name="gov" className="h-4 w-4 shrink-0 text-brand-600 lg:text-brand-200 max-sm:text-brand-200" />
                   Partenaire France VAE
                 </span>
               </div>
@@ -152,12 +152,12 @@ export default async function DiplomePage({
                   `heroSuffixe` reste utilisé ailleurs sur la page.
                   NE PAS remettre `text-balance` : il coupe le titre au milieu
                   sur téléphone. */}
-              <h1 className="mt-2.5 text-[clamp(1.6rem,6.6vw,2.4rem)] font-bold leading-[1.12] tracking-[-0.03em] text-slate-900 sm:mt-6 lg:text-[3.4rem] lg:text-white">
+              <h1 className="mt-2.5 text-[clamp(1.6rem,6.6vw,2.4rem)] font-bold leading-[1.12] tracking-[-0.03em] text-slate-900 sm:mt-6 lg:text-[3.4rem] lg:text-white max-sm:text-white">
                 Commençons par regarder{" "}
-                <span className="text-brand-600 lg:text-brand-200">votre parcours</span> et le diplôme qui lui
+                <span className="text-brand-600 lg:text-brand-200 max-sm:text-brand-200">votre parcours</span> et le diplôme qui lui
                 correspond.
               </h1>
-              <p className="mt-2.5 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg lg:text-white">
+              <p className="mt-2.5 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg lg:text-white max-sm:text-white">
                 {d.heroIntro}
               </p>
             </div>

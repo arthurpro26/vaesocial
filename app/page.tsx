@@ -128,12 +128,20 @@ export default function HomePage() {
           formulaire remonte juste après le titre sur mobile — l'ordre DOM = l'ordre d'affichage
           en une colonne, et l'auto-placement CSS Grid reconstitue la mise en page 2 colonnes à
           partir de lg (accroche+réassurance à gauche, formulaire à droite sur toute la hauteur). */}
-      <section className="bg-gradient-to-b from-brand-50 via-white to-white pb-8 pt-4 sm:pb-20 sm:pt-20">
-        <Container className="px-3 sm:px-6 lg:px-8">
-          <div className="grid gap-4 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-6">
+      <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-white to-white pb-8 pt-4 max-sm:bg-[linear-gradient(to_bottom,rgb(var(--brand-900)),rgb(var(--brand-800))_620px,#fff_780px)] sm:pb-20 sm:pt-20 lg:bg-none lg:pb-36 lg:pt-16">
+        {/* Grand écran : bandeau sombre dégradé + deux halos (même décor que les
+            pages diplôme). Sur téléphone, le fond sombre vient du dégradé de la
+            section, limité au haut de page. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700" />
+          <div className="absolute -right-32 -top-40 h-[36rem] w-[36rem] rounded-full bg-brand-400/25 blur-3xl" />
+          <div className="absolute -bottom-56 left-1/4 h-[30rem] w-[30rem] rounded-full bg-accent-500/10 blur-3xl" />
+        </div>
+        <Container className="relative px-3 sm:px-6 lg:max-w-7xl lg:px-10">
+          <div className="grid gap-4 sm:gap-8 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-16 lg:gap-y-8">
             <div>
-              <div className="flex flex-wrap items-center justify-center gap-2 text-center sm:gap-3">
-                <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-brand-100 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm">
+              <div className="flex flex-wrap items-center justify-center gap-2 text-center sm:gap-3 lg:justify-start lg:text-left">
+                <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-brand-100 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm lg:bg-white/10 lg:ring-1 lg:ring-white/25 max-sm:bg-white/10 max-sm:ring-1 max-sm:ring-white/25 lg:text-white max-sm:text-white">
                   <BrandIcon name="shield" className="h-4 w-4 shrink-0" />
                   <span className="hidden sm:inline">Secteur social &amp; médico-social</span>
                   <span className="sm:hidden">Secteur social</span>
@@ -142,13 +150,13 @@ export default function HomePage() {
                     de pouvoir documenter ces avis. Les deux chiffres ci-dessous
                     sont justifiables pièces à l'appui — voir RESULTATS dans
                     lib/site-data.ts avant toute modification. */}
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-emerald-800 sm:px-4 sm:text-sm">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-emerald-800 sm:px-4 sm:text-sm lg:bg-emerald-400/15 lg:ring-1 lg:ring-emerald-300/40 max-sm:bg-emerald-400/15 max-sm:ring-1 max-sm:ring-emerald-300/40 lg:text-emerald-100 max-sm:text-emerald-100">
                   <BrandIcon name="award" className="h-4 w-4 shrink-0" />
                   {RESULTATS.taux}{" "}
                   <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
                   <span className="sm:hidden">validés</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm">
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm lg:bg-white/10 lg:ring-1 lg:ring-white/25 max-sm:bg-white/10 max-sm:ring-1 max-sm:ring-white/25 lg:text-white max-sm:text-white">
                   <BrandIcon name="wallet" className="h-4 w-4 shrink-0" />
                   Financement CPF
                 </span>
@@ -160,12 +168,12 @@ export default function HomePage() {
                     lui-même l'organisme certifié : c'est faux, et c'est
                     vérifiable en trente secondes sur l'annuaire public. Ne
                     jamais retirer le mot « Partenaire ». */}
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm">
-                  <BrandIcon name="seal" className="h-4 w-4 shrink-0 text-brand-600" />
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm lg:bg-white/10 max-sm:bg-white/10 lg:text-white max-sm:text-white lg:ring-white/25 max-sm:ring-white/25">
+                  <BrandIcon name="seal" className="h-4 w-4 shrink-0 text-brand-600 lg:text-brand-200 max-sm:text-brand-200" />
                   Partenaire Qualiopi
                 </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm">
-                  <BrandIcon name="gov" className="h-4 w-4 shrink-0 text-brand-600" />
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm lg:bg-white/10 max-sm:bg-white/10 lg:text-white max-sm:text-white lg:ring-white/25 max-sm:ring-white/25">
+                  <BrandIcon name="gov" className="h-4 w-4 shrink-0 text-brand-600 lg:text-brand-200 max-sm:text-brand-200" />
                   Partenaire France VAE
                 </span>
               </div>
@@ -192,12 +200,12 @@ export default function HomePage() {
                   quinzaine de caractères par ligne, et un titre long s'y coupe
                   n'importe où. `sm:text-balance` est retiré pour la même raison
                   (il égalise la longueur des lignes au lieu de les remplir). */}
-              <h1 className="mt-2.5 text-[clamp(1.6rem,6.6vw,2.4rem)] font-bold leading-[1.12] tracking-[-0.03em] text-slate-900 sm:mt-6 lg:text-5xl">
+              <h1 className="mt-2.5 text-[clamp(1.6rem,6.6vw,2.4rem)] font-bold leading-[1.12] tracking-[-0.03em] text-slate-900 sm:mt-6 lg:text-[3.4rem] lg:text-white max-sm:text-white">
                 Commençons par regarder{" "}
-                <span className="text-brand-600">votre parcours</span> et le diplôme qui lui
+                <span className="text-brand-600 lg:text-brand-200 max-sm:text-brand-200">votre parcours</span> et le diplôme qui lui
                 correspond.
               </h1>
-              <p className="mt-2 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
+              <p className="mt-2 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg lg:text-white max-sm:text-white">
                 Trois minutes de questions, puis un expert du secteur social vous rappelle :
                 la VAE, les livrets, le financement, et ce qui est possible dans votre situation.
               </p>
@@ -205,13 +213,13 @@ export default function HomePage() {
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
               <PrediagnosticForm />
-              <p className="mt-3 text-center text-xs text-slate-500 sm:mt-4">
+              <p className="mt-3 text-center text-xs text-slate-500 sm:mt-4 lg:text-brand-200">
                 Vos informations restent confidentielles — jamais revendues à des tiers.
               </p>
             </div>
 
             <div>
-              <p className="text-base leading-relaxed text-slate-600 sm:text-lg">
+              <p className="text-base leading-relaxed text-slate-600 sm:text-lg lg:text-brand-100">
                 Que vous visiez le DEES, le DEAES, le DEEJE ou le DEME, on vous guide à chaque
                 étape — sans reprendre une formation complète, et sans aucun engagement de
                 votre part avant d&apos;avoir la réponse.
@@ -221,9 +229,9 @@ export default function HomePage() {
                 {VALEURS.map((v) => (
                   <li
                     key={v.titre}
-                    className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm font-semibold text-slate-700"
+                    className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm font-semibold text-slate-700 lg:border-white/15 lg:bg-white/10 lg:text-white"
                   >
-                    <BrandIcon name={v.icon} className="h-5 w-5 shrink-0 text-brand-600" />
+                    <BrandIcon name={v.icon} className="h-5 w-5 shrink-0 text-brand-600 lg:text-brand-200" />
                     {v.titre}
                   </li>
                 ))}
@@ -232,22 +240,22 @@ export default function HomePage() {
               {/* Rappel condensé des compétences valorisables — répond à
                   "est-ce que je suis concerné ?" et évite un vide visuel face au
                   formulaire, plus haut que ce bloc de texte à lui seul. */}
-              <div className="mt-4 rounded-2xl border border-slate-100 bg-white/60 p-4 sm:mt-6 sm:p-6">
-                <p className="text-sm font-semibold text-slate-900">
+              <div className="mt-4 rounded-2xl border border-slate-100 bg-white/60 p-4 sm:mt-6 sm:p-6 lg:border-white/15 lg:bg-white/10 lg:backdrop-blur-sm">
+                <p className="text-sm font-semibold text-slate-900 lg:text-white">
                   👉 Ce sont exactement les compétences évaluées dans un dossier de VAE. Vous en
                   pratiquez peut-être déjà certaines :
                 </p>
                 <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
                   {COMPETENCES.map((c) => (
-                    <li key={c} className="flex items-start gap-2 text-sm text-slate-600">
-                      <span className="mt-0.5 text-brand-600" aria-hidden>
+                    <li key={c} className="flex items-start gap-2 text-sm text-slate-600 lg:text-brand-100">
+                      <span className="mt-0.5 text-brand-600 lg:text-brand-300" aria-hidden>
                         ✓
                       </span>
                       {c}
                     </li>
                   ))}
                 </ul>
-                <p className="mt-3 text-xs text-slate-500">
+                <p className="mt-3 text-xs text-slate-500 lg:text-brand-200">
                   Peu importe l&apos;intitulé exact de votre poste : le jury regarde ce que vous
                   avez réellement pratiqué, en salarié·e, bénévole ou aidant·e.
                 </p>
@@ -257,7 +265,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <StatsBar />
+      <StatsBar flottant />
 
       {/* EMPATHIE + PERSONAS */}
       <section className="bg-white py-12 sm:py-24">
