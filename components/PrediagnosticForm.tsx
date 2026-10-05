@@ -30,6 +30,22 @@ const DIPLOME_OPTIONS = [
   { value: "Je ne sais pas", label: "Je ne sais pas" },
 ];
 
+// Diplômes proposés dans le menu déroulant des pages diplôme : tous ceux de
+// DIPLOME_OPTIONS sauf « Je ne sais pas » (qui n'a de sens que sur la home,
+// où l'étape « Quel diplôme ? » existe encore). Aucune liste en double : ajouter
+// un diplôme à DIPLOME_OPTIONS le fait apparaître ici tout seul. L'affichage
+// met le sigle en premier (c'est lui que les candidats connaissent et tapent
+// dans Google : « deass », « caferuis ») puis le nom en clair, pris avant le
+// « · » du helper. Le sigle d'abord a une raison pratique : sur un petit
+// téléphone, le menu coupe la fin du texte, et mieux vaut perdre un bout de
+// « Accompagnant éducatif et social » que le sigle.
+const DIPLOMES_CHOISISSABLES = DIPLOME_OPTIONS.filter((o) => o.value !== "Je ne sais pas").map(
+  (o) => ({
+    value: o.value,
+    texte: `${o.label} · ${(o.helper ?? "").split(" · ")[0] || o.label}`,
+  })
+);
+
 // Étape 2 — refonte du 2026-08-01 : la question porte sur le statut
 // professionnel (et non plus sur le secteur), plus rapide à répondre et plus
 // simple à qualifier côté conseiller. Pas de sous-texte "financement" par
@@ -600,12 +616,26 @@ export default function PrediagnosticForm({
     try {
       const raw = window.sessionStorage.getItem(DRAFT_STORAGE_KEY);
       if (!raw) return;
-      const saved = JSON.parse(raw) as { values?: Partial<PrediagnosticFormValues>; step?: number };
+      const saved = JSON.parse(raw) as {
+        values?: Partial<PrediagnosticFormValues>;
+        step?: number;
+        origin?: string | null;
+      };
       if (!saved.values) return;
       const restored: Partial<PrediagnosticFormValues> = { ...saved.values };
-      // Le diplôme préréglé par la page (/dees, /deaes...) prime toujours sur
-      // un brouillon enregistré depuis une autre page.
-      if (presetDiplome) restored.diplomeVise = presetDiplome;
+      // Le diplôme préréglé par la page (/dees, /deaes...) prime sur un
+      // brouillon enregistré depuis une AUTRE page. En revanche, si le brouillon
+      // vient de cette même page, on garde le diplôme que la personne a choisi
+      // dans le menu déroulant (05/10/2026 : sans cela, un rechargement de page
+      // la ramenait silencieusement au diplôme préréglé, alors qu'elle avait
+      // répondu aux questions suivantes pour un autre diplôme). Un choix
+      // illisible ou hors liste retombe sur le diplôme de la page.
+      if (presetDiplome) {
+        const choixConserve =
+          saved.origin === presetDiplome &&
+          DIPLOMES_CHOISISSABLES.some((o) => o.value === restored.diplomeVise);
+        if (!choixConserve) restored.diplomeVise = presetDiplome;
+      }
       reset(restored as PrediagnosticFormValues, { keepDefaultValues: false });
       if (typeof saved.step === "number") {
         setStep(Math.min(Math.max(saved.step, 0), totalSteps - 1));
@@ -625,11 +655,14 @@ export default function PrediagnosticForm({
     if (typeof window === "undefined" || submitState === "success") return;
     try {
       const { honeypot: _honeypot, ...rest } = watchedValues;
-      window.sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({ values: rest, step }));
+      window.sessionStorage.setItem(
+        DRAFT_STORAGE_KEY,
+        JSON.stringify({ values: rest, step, origin: presetDiplome ?? null })
+      );
     } catch {
       // Quota dépassé / stockage désactivé : on n'interrompt pas la saisie pour ça.
     }
-  }, [watchedValues, step, submitState]);
+  }, [watchedValues, step, submitState, presetDiplome]);
 
   function goNext() {
     setDirection("forward");
@@ -922,15 +955,38 @@ export default function PrediagnosticForm({
           )}
 
           {steps[step].key === "situationActuelle" && (
-            <ChoiceStep
-              question="Quelle est votre situation actuelle ?"
-              subtitle="Cette information nous permet de cibler tout de suite les solutions de financement adaptées à votre profil."
-              name="situationActuelle"
-              control={control}
-              options={situationOptions(getValues("diplomeVise"))}
-              onSelect={selectAndAdvance}
-              error={errors.situationActuelle?.message}
-            />
+            <>
+              {/* Pages diplôme uniquement : l'étape « Quel diplôme ? » y est
+                  sautée, ce menu en tient lieu. Préréglé sur le diplôme de la
+                  page, modifiable sans quitter le formulaire. */}
+              {presetDiplome && (
+                <DiplomeSelect
+                  value={getValues("diplomeVise") || presetDiplome}
+                  onChange={(vers) => {
+                    // La valeur part telle quelle dans l'email et le Sheet (champ
+                    // `diplomeVise`, inchangé) ; le re-rendu qui suit met aussi à
+                    // jour les exemples de la question de situation.
+                    setValue("diplomeVise", vers, { shouldDirty: true });
+                    if (vers === presetDiplome) return;
+                    // Mesure purement analytique (aucune conversion Google Ads) :
+                    // permet de voir combien de visiteurs changent de diplôme.
+                    trackConversion("prediagnostic_diplome_change", {
+                      page: `diplome_${presetDiplome.toLowerCase()}`,
+                      vers,
+                    });
+                  }}
+                />
+              )}
+              <ChoiceStep
+                question="Quelle est votre situation actuelle ?"
+                subtitle="Cette information nous permet de cibler tout de suite les solutions de financement adaptées à votre profil."
+                name="situationActuelle"
+                control={control}
+                options={situationOptions(getValues("diplomeVise"))}
+                onSelect={selectAndAdvance}
+                error={errors.situationActuelle?.message}
+              />
+            </>
           )}
 
           {steps[step].key === "activiteQuotidienne" && (
@@ -997,6 +1053,66 @@ export default function PrediagnosticForm({
   );
 }
 
+/**
+ * Menu déroulant « Diplôme visé » des pages diplôme (demande de Yoni du
+ * 05/10/2026). Il remplace le gros bloc « Vous cherchez un autre diplôme ? »
+ * qui s'affichait sous le formulaire : au lieu d'envoyer le visiteur vers une
+ * autre page, on lui laisse corriger le diplôme au tout début du parcours.
+ *
+ * Ce qui part dans l'email et dans la colonne « Diplôme » du Sheet est la
+ * valeur CHOISIE ici (champ `diplomeVise`, inchangé) : la `value` de chaque
+ * option est le sigle, comme avant. La conversion Google Ads, elle, reste
+ * rattachée à la page d'arrivée (voir onSubmit) — ce qui est exact, c'est cette
+ * page qui a amené le visiteur — et toutes les pages partagent de toute façon la
+ * même étiquette.
+ *
+ * <select> natif plutôt qu'une liste maison : le sélecteur du téléphone s'ouvre
+ * tout seul, c'est accessible au clavier et aux lecteurs d'écran sans une ligne
+ * de plus, et ça ne coûte aucun JavaScript supplémentaire.
+ */
+function DiplomeSelect({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (diplome: string) => void;
+}) {
+  return (
+    <div className="mb-3 border-b border-slate-100 pb-3 sm:mb-4 sm:pb-4">
+      <label htmlFor="diplome-vise" className="block text-xs font-semibold text-slate-500">
+        Diplôme visé
+      </label>
+      <div className="relative mt-1">
+        <select
+          id="diplome-vise"
+          name="diplomeVise"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="min-h-11 w-full cursor-pointer appearance-none truncate rounded-2xl border-2 border-slate-200 bg-white py-2 pl-3 pr-[34px] text-[12.5px] font-semibold text-slate-900 transition duration-200 hover:border-brand-300 focus:border-brand-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-200 min-[375px]:text-[13px] sm:pl-3.5 sm:pr-10 sm:text-sm"
+        >
+          {DIPLOMES_CHOISISSABLES.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.texte}
+            </option>
+          ))}
+        </select>
+        <svg
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+          className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"
+        >
+          <path
+            fillRule="evenodd"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 function ChoiceStep({
   question,
   subtitle,
@@ -1024,6 +1140,11 @@ function ChoiceStep({
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
+      // Ne pas détourner les touches tapées dans un champ ou dans le menu
+      // déroulant du diplôme : sans ce garde-fou, un chiffre pressé pendant que
+      // le menu a le focus choisirait une réponse de la question et avancerait.
+      const cible = e.target as HTMLElement | null;
+      if (cible && ["SELECT", "INPUT", "TEXTAREA"].includes(cible.tagName)) return;
       const index = Number(e.key) - 1;
       if (!Number.isInteger(index) || index < 0 || index >= options.length) return;
       onSelect(name, options[index].value, field.onChange);

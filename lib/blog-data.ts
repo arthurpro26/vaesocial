@@ -509,6 +509,153 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
     ],
   },
+  {
+    slug: "jury-vae-entretien-deroule-frais",
+    title: "Jury VAE : déroulé de l'entretien, durée, préparation et frais (guide 2026)",
+    metaTitle: "Jury VAE 2026 : entretien, durée, préparation et frais",
+    metaDescription:
+      "Comment se passe le jury VAE : qui siège, durée de l'entretien, préparation, décisions possibles et frais de jury dans le social. Le guide basé sur les sources officielles.",
+    excerpt:
+      "Le jury est l'étape qui impressionne le plus, alors qu'il a déjà lu votre dossier. Voici comment se déroule l'entretien, ce que le jury vérifie, comment s'y préparer — et ce qu'il en coûte vraiment.",
+    category: "Méthode",
+    datePublished: "2026-10-05",
+    readingTime: "6 min",
+    content: [
+      {
+        type: "p",
+        text: "Le jury est la dernière étape d'une VAE, et celle qui impressionne le plus. Pourtant, quand vous vous asseyez face à lui, l'essentiel du travail est derrière vous : votre dossier de validation (le livret 2) est rédigé et, pour les diplômes du social, il a déjà été lu. Voici comment se déroule concrètement le jury, ce qu'il cherche à vérifier, comment s'y préparer et ce qu'il en coûte — en s'appuyant uniquement sur les documents officiels.",
+      },
+      {
+        type: "h2",
+        text: "Qui siège dans le jury ?",
+      },
+      {
+        type: "p",
+        text: "Un jury de VAE compte au minimum deux membres. D'après le guide que le ministère des Solidarités destine aux jurys (édition de février 2026), on y trouve des formateurs du domaine visé, des professionnels de terrain — employeurs, salariés expérimentés, indépendants — et, selon les cas, un représentant du certificateur. Pour les diplômes du travail social, l'entretien est conduit par un binôme qui associe un formateur et un professionnel.",
+      },
+      {
+        type: "p",
+        text: "Deux règles protègent le candidat. Un membre du jury ne doit avoir aucune relation professionnelle ou personnelle avec vous. Et un président est désigné parmi les membres : en cas de partage égal des voix, sa voix l'emporte.",
+      },
+      {
+        type: "h2",
+        text: "Avant l'entretien : votre dossier a déjà été lu",
+      },
+      {
+        type: "p",
+        text: "Pour les diplômes du social, les membres du jury examinent votre dossier avant la séance, à l'aide d'une grille d'évaluation fournie par la DREETS. L'entretien n'est donc pas une première lecture : il sert à vérifier, préciser et compléter ce que le dossier montre déjà. Le jury arrive avec ses questions, notamment pour lever les doutes que la lecture du dossier a pu laisser.",
+      },
+      {
+        type: "h2",
+        text: "Comment se déroule l'entretien",
+      },
+      {
+        type: "p",
+        text: "D'après France VAE, l'entretien suit généralement le même fil : vérification de votre identité, explication du déroulé, courte présentation de votre parcours et de votre motivation, puis questions du jury. Selon le diplôme, l'épreuve peut aussi comporter une mise en situation professionnelle, au cours de laquelle vous réalisez des tâches sous le regard du jury.",
+      },
+      {
+        type: "p",
+        text: "Côté durée, les chiffres varient selon la source et le certificateur. Pour les diplômes du social, le document de procédure du ministère (édition 2023) indique un entretien d'une heure au maximum, destiné à apporter des précisions complémentaires à votre dossier. De façon plus générale, France VAE évoque des entretiens qui durent de 30 minutes à 1 h 30 selon les certifications.",
+      },
+      {
+        type: "callout",
+        icon: "ℹ️",
+        text: "Retenez surtout ceci : on ne vous demande pas de réciter votre livret 2. Le jury cherche à vérifier que vous êtes bien l'auteur de votre dossier et que votre expérience correspond aux compétences du référentiel du diplôme.",
+      },
+      {
+        type: "h2",
+        text: "Ce que le jury cherche à vérifier",
+      },
+      {
+        type: "ul",
+        items: [
+          "Que l'expérience décrite est bien la vôtre : vous devez pouvoir détailler une situation, expliquer vos choix et ce que vous avez fait vous-même.",
+          "Que vos compétences correspondent au référentiel du diplôme, bloc de compétences par bloc de compétences.",
+          "Que les zones d'ombre du dossier peuvent être levées : une situation décrite trop vite, un rôle qui n'est pas clair, une analyse qui manque de recul.",
+        ],
+      },
+      {
+        type: "cta",
+        titre: "Un jury, ça se prépare avant le jour J",
+        texte:
+          "Notre accompagnement comprend une mise en situation face à un jury, pour travailler votre posture et vos réponses avant le passage réel. Le premier échange est gratuit et sans engagement.",
+        cta: "Demander mon prédiagnostic gratuit",
+      },
+      {
+        type: "h2",
+        text: "Comment se préparer à l'entretien",
+      },
+      {
+        type: "p",
+        text: "Les conseils officiels de France VAE tiennent en trois gestes : relire le référentiel du diplôme et votre propre dossier, repérer des exemples concrets qui illustrent chaque compétence, et s'entraîner à présenter votre parcours à l'oral, de façon ordonnée et en quelques minutes. Concrètement :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Relisez votre dossier comme le ferait le jury : repérez les passages où l'on aurait envie de vous demander « comment, concrètement ? ».",
+          "Pour chaque situation importante, ayez en tête le contexte, votre rôle précis, ce que vous avez fait, ce que cela a donné et ce que vous referiez autrement.",
+          "Entraînez-vous à voix haute, idéalement avec votre accompagnateur : France VAE précise que celui-ci peut proposer des simulations d'entretien.",
+          "Le jour J, arrivez environ 30 minutes à l'avance, avec votre convocation, une pièce d'identité, votre dossier, un résumé de votre parcours si on vous l'a demandé et de quoi prendre des notes.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "Les trois décisions possibles",
+      },
+      {
+        type: "p",
+        text: "Après l'entretien, le jury délibère et propose l'une de ces trois issues :",
+      },
+      {
+        type: "ul",
+        items: [
+          "La validation totale : tous les blocs de compétences sont validés et le diplôme est délivré.",
+          "La validation partielle : certains blocs sont validés, d'autres restent à acquérir.",
+          "L'absence de validation : aucune certification n'est délivrée.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Une validation partielle n'est pas un échec. Selon France VAE, les blocs obtenus sont acquis à vie, et le guide du ministère demande au jury de formuler des préconisations précises, claires et opérationnelles pour obtenir les blocs restants.",
+      },
+      {
+        type: "p",
+        text: "Le résultat vous est communiqué par le certificateur : selon France VAE, dans les 15 jours qui suivent l'épreuve ; pour les diplômes du social, le ministère indique une notification par courrier. Si vous n'êtes pas d'accord avec la décision, les modalités de recours sont précisées par le certificateur.",
+      },
+      {
+        type: "h2",
+        text: "Frais de jury : combien ça coûte ?",
+      },
+      {
+        type: "p",
+        text: "Pour les diplômes du travail social, la réponse est rassurante. D'après le document de procédure du ministère des Solidarités (édition 2023), la démarche de VAE — information, dépôt de candidature, instruction de la recevabilité et organisation du jury — ne fait l'objet d'aucune facturation. Autrement dit, passer devant le jury ne vous est pas facturé.",
+      },
+      {
+        type: "p",
+        text: "Restent à votre charge les frais annexes, comme les photocopies et les déplacements, et, si vous en prenez un, l'accompagnement. Cet accompagnement est facultatif et peut être financé par d'autres dispositifs, comme le CPF : nous détaillons le reste à charge dans notre article sur le CPF et la VAE en 2026.",
+      },
+      {
+        type: "callout",
+        icon: "ℹ️",
+        text: "Ce document de procédure date de 2023, et la VAE a connu plusieurs textes depuis. Avant de vous lancer, confirmez les conditions auprès de la DREETS de votre région, service des professions sociales.",
+      },
+      {
+        type: "p",
+        text: "En résumé : le jury est exigeant, mais ce n'est pas un piège. Il vérifie que l'expérience que vous avez décrite est la vôtre et qu'elle correspond au diplôme. Bien préparé, c'est l'étape où votre dossier prend vie.",
+      },
+      {
+        type: "cta",
+        titre: "Votre expérience est-elle prête pour le jury ?",
+        texte:
+          "On fait le point sur votre parcours et sur le diplôme que vous visez, gratuitement et sans engagement. Un seul interlocuteur dédié, du diagnostic jusqu'au jury.",
+        cta: "Vérifier mon éligibilité",
+      },
+      {
+        type: "p",
+        text: "Sources officielles consultées : guide à l'attention des membres de jury pour la validation des acquis de l'expérience (ministère des Solidarités, février 2026) ; procédure de validation pour les diplômes du social (ministère des Solidarités, édition 2023) ; page « La VAE et le jury VAE » du ministère des Solidarités (mai 2025) ; fiches « Comment se déroule un jury VAE ? » et « Entretien jury VAE : comment se préparer » sur vae.gouv.fr.",
+      },
+    ],
+  },
 ];
 
 export function getArticleBySlug(slug: string): BlogArticle | undefined {

@@ -5,11 +5,16 @@ import { STATS } from "@/lib/site-data";
 // Repères chiffrés qui rassurent en un coup d'œil, juste après le Hero.
 // Regroupés dans une carte blanche avec séparateurs (pas une grille éclatée
 // sur toute la largeur) pour rester lisible et structuré même sur grand écran.
-export default function StatsBar() {
+export default function StatsBar({ flottant = false }: { flottant?: boolean }) {
   return (
-    <section className="border-t border-slate-100 bg-brand-50/40 py-5 sm:py-10">
+    <section
+      className={clsx(
+        "border-t border-slate-100 bg-brand-50/40 py-5 sm:py-10",
+        flottant && "lg:relative lg:z-10 lg:-mt-16 lg:border-t-0 lg:bg-transparent lg:pb-6 lg:pt-0"
+      )}
+    >
       <Container>
-        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-x-3 gap-y-4 rounded-2xl border border-slate-100 bg-white px-4 py-5 shadow-sm shadow-slate-900/[0.03] sm:flex sm:flex-nowrap sm:items-center sm:justify-center sm:gap-0 sm:divide-x sm:divide-slate-200 sm:px-4 sm:py-7">
+        <div className={clsx("mx-auto grid max-w-4xl grid-cols-2 gap-x-3 gap-y-4 rounded-2xl border border-slate-100 bg-white px-4 py-5 shadow-sm shadow-slate-900/[0.03] sm:flex sm:flex-nowrap sm:items-center sm:justify-center sm:gap-0 sm:divide-x sm:divide-slate-200 sm:px-4 sm:py-7", flottant && "lg:max-w-5xl lg:shadow-2xl lg:shadow-brand-900/15 lg:ring-1 lg:ring-slate-900/5")}>
           {STATS.map((s, i) => (
             <div
               key={s.label}
