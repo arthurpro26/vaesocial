@@ -1,6 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
+  // Correctif du 05/10/2026 — build en échec sur Hostinger.
+  // Symptôme (journal de déploiement) : « Failed to write app endpoint /page …
+  // node process exited before we could connect to it with exit status: 0 »
+  // pendant le traitement de app/globals.css (PostCSS/Tailwind).
+  // Cause probable (constatée sur d'autres projets Hostinger, panne reproduite
+  // ici en simulation) : Turbopack lance par défaut un processus Node enfant
+  // pour exécuter PostCSS, et l'environnement de build le termine aussitôt.
+  // Cette option fait tourner ce travail dans un thread du processus
+  // principal : plus aucun processus enfant. Vérifié : CSS produit strictement
+  // identique (même empreinte, 39 586 octets) avec et sans l'option.
+  // Si le build échoue encore : changer le script « build » en « next build --webpack ».
+  experimental: {
+    turbopackPluginRuntimeStrategy: "workerThreads",
+  },
+
   images: {
     formats: ["image/avif", "image/webp"],
   },
