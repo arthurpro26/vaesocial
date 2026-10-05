@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm, Controller, useController, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { clsx } from "clsx";
@@ -10,7 +11,7 @@ import { formatPhoneInput, isValidPhoneFr, normalizePhoneOnBlur } from "@/lib/ph
 import { useFormProgress } from "@/lib/form-progress-context";
 import { trackConversion } from "@/lib/tracking";
 import { trackFormConversion, type FormKey } from "@/lib/google-ads-conversions";
-import type { DiplomeSigle } from "@/lib/site-data";
+import { DIPLOMES, type DiplomeSigle } from "@/lib/site-data";
 
 // --- Données des étapes à choix unique (cartes larges, sélection = avance automatique) ---
 
@@ -616,26 +617,15 @@ export default function PrediagnosticForm({
     try {
       const raw = window.sessionStorage.getItem(DRAFT_STORAGE_KEY);
       if (!raw) return;
-      const saved = JSON.parse(raw) as {
-        values?: Partial<PrediagnosticFormValues>;
-        step?: number;
-        origin?: string | null;
-      };
+      const saved = JSON.parse(raw) as { values?: Partial<PrediagnosticFormValues>; step?: number };
       if (!saved.values) return;
       const restored: Partial<PrediagnosticFormValues> = { ...saved.values };
-      // Le diplôme préréglé par la page (/dees, /deaes...) prime sur un
-      // brouillon enregistré depuis une AUTRE page. En revanche, si le brouillon
-      // vient de cette même page, on garde le diplôme que la personne a choisi
-      // dans le menu déroulant (05/10/2026 : sans cela, un rechargement de page
-      // la ramenait silencieusement au diplôme préréglé, alors qu'elle avait
-      // répondu aux questions suivantes pour un autre diplôme). Un choix
-      // illisible ou hors liste retombe sur le diplôme de la page.
-      if (presetDiplome) {
-        const choixConserve =
-          saved.origin === presetDiplome &&
-          DIPLOMES_CHOISISSABLES.some((o) => o.value === restored.diplomeVise);
-        if (!choixConserve) restored.diplomeVise = presetDiplome;
-      }
+      // Le diplôme préréglé par la page (/dees, /deaes...) prime toujours sur
+      // un brouillon enregistré depuis une autre page. C'est aussi ce qui fait
+      // marcher le menu « Diplôme visé » : changer de diplôme ouvre la page de
+      // ce diplôme (voir DiplomeSelect), le brouillon — réponses déjà données
+      // comprises — suit, et le diplôme de la nouvelle page l'emporte.
+      if (presetDiplome) restored.diplomeVise = presetDiplome;
       reset(restored as PrediagnosticFormValues, { keepDefaultValues: false });
       if (typeof saved.step === "number") {
         setStep(Math.min(Math.max(saved.step, 0), totalSteps - 1));
@@ -655,14 +645,11 @@ export default function PrediagnosticForm({
     if (typeof window === "undefined" || submitState === "success") return;
     try {
       const { honeypot: _honeypot, ...rest } = watchedValues;
-      window.sessionStorage.setItem(
-        DRAFT_STORAGE_KEY,
-        JSON.stringify({ values: rest, step, origin: presetDiplome ?? null })
-      );
+      window.sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({ values: rest, step }));
     } catch {
       // Quota dépassé / stockage désactivé : on n'interrompt pas la saisie pour ça.
     }
-  }, [watchedValues, step, submitState, presetDiplome]);
+  }, [watchedValues, step, submitState]);
 
   function goNext() {
     setDirection("forward");
@@ -958,25 +945,8 @@ export default function PrediagnosticForm({
             <>
               {/* Pages diplôme uniquement : l'étape « Quel diplôme ? » y est
                   sautée, ce menu en tient lieu. Préréglé sur le diplôme de la
-                  page, modifiable sans quitter le formulaire. */}
-              {presetDiplome && (
-                <DiplomeSelect
-                  value={getValues("diplomeVise") || presetDiplome}
-                  onChange={(vers) => {
-                    // La valeur part telle quelle dans l'email et le Sheet (champ
-                    // `diplomeVise`, inchangé) ; le re-rendu qui suit met aussi à
-                    // jour les exemples de la question de situation.
-                    setValue("diplomeVise", vers, { shouldDirty: true });
-                    if (vers === presetDiplome) return;
-                    // Mesure purement analytique (aucune conversion Google Ads) :
-                    // permet de voir combien de visiteurs changent de diplôme.
-                    trackConversion("prediagnostic_diplome_change", {
-                      page: `diplome_${presetDiplome.toLowerCase()}`,
-                      vers,
-                    });
-                  }}
-                />
-              )}
+                  page ; en choisir un autre ouvre la page de ce diplôme. */}
+              {presetDiplome && <DiplomeSelect key={presetDiplome} courant={presetDiplome} />}
               <ChoiceStep
                 question="Quelle est votre situation actuelle ?"
                 subtitle="Cette information nous permet de cibler tout de suite les solutions de financement adaptées à votre profil."
@@ -1056,27 +1026,53 @@ export default function PrediagnosticForm({
 /**
  * Menu déroulant « Diplôme visé » des pages diplôme (demande de Yoni du
  * 05/10/2026). Il remplace le gros bloc « Vous cherchez un autre diplôme ? »
- * qui s'affichait sous le formulaire : au lieu d'envoyer le visiteur vers une
- * autre page, on lui laisse corriger le diplôme au tout début du parcours.
+ * qui s'affichait sous le formulaire.
  *
- * Ce qui part dans l'email et dans la colonne « Diplôme » du Sheet est la
- * valeur CHOISIE ici (champ `diplomeVise`, inchangé) : la `value` de chaque
- * option est le sigle, comme avant. La conversion Google Ads, elle, reste
- * rattachée à la page d'arrivée (voir onSubmit) — ce qui est exact, c'est cette
- * page qui a amené le visiteur — et toutes les pages partagent de toute façon la
- * même étiquette.
+ * CHOISIR UN AUTRE DIPLÔME OUVRE LA PAGE DE CE DIPLÔME (demande de Yoni du
+ * 05/10/2026 : « la page doit se mettre à jour sur le diplôme souhaité »).
+ * Titre, texte, débouchés, questions fréquentes et couleurs changent donc avec
+ * le menu, et l'adresse aussi (/deass, /caferuis...). Avantages sur un simple
+ * changement de valeur dans le formulaire : le visiteur ne lit jamais le texte
+ * d'un diplôme qui n'est pas le sien, chaque page garde son propre contenu pour
+ * le référencement, et le chemin du lead ne change pas — le formulaire de la
+ * nouvelle page est préréglé sur son diplôme, comme si le visiteur y était
+ * arrivé directement. À ce stade (première question) il n'a encore rien saisi :
+ * rien n'est perdu, et un éventuel brouillon suit de toute façon.
+ *
+ * Navigation côté client (pas de rechargement complet) : `scroll: false` garde
+ * le visiteur à hauteur du formulaire plutôt que de le renvoyer en haut de page.
+ * Les pages sont préchargées dès que le menu reçoit le focus, pas avant, pour ne
+ * rien télécharger de superflu chez ceux qui ne s'en servent pas.
  *
  * <select> natif plutôt qu'une liste maison : le sélecteur du téléphone s'ouvre
- * tout seul, c'est accessible au clavier et aux lecteurs d'écran sans une ligne
- * de plus, et ça ne coûte aucun JavaScript supplémentaire.
+ * tout seul et c'est accessible au clavier et aux lecteurs d'écran sans une
+ * ligne de plus.
  */
-function DiplomeSelect({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (diplome: string) => void;
-}) {
+function DiplomeSelect({ courant }: { courant: PresetDiplome }) {
+  const router = useRouter();
+  const [enCours, startTransition] = useTransition();
+  // Le <select> est contrôlé : sans cet état, il retomberait sur l'ancien
+  // diplôme le temps que la nouvelle page arrive. Le composant est remonté
+  // (`key`) quand la page change, donc l'état repart de `courant`.
+  const [choisi, setChoisi] = useState<string>(courant);
+
+  function precharger() {
+    DIPLOMES.forEach((d) => router.prefetch(`/${d.slug}`));
+  }
+
+  function changer(sigle: string) {
+    const cible = DIPLOMES.find((d) => d.sigle === sigle);
+    if (!cible || sigle === courant) return;
+    setChoisi(sigle);
+    // Mesure purement analytique (aucune conversion Google Ads) : combien de
+    // visiteurs changent de diplôme, et vers lequel.
+    trackConversion("prediagnostic_diplome_change", {
+      page: `diplome_${courant.toLowerCase()}`,
+      vers: sigle,
+    });
+    startTransition(() => router.push(`/${cible.slug}`, { scroll: false }));
+  }
+
   return (
     <div className="mb-3 border-b border-slate-100 pb-3 sm:mb-4 sm:pb-4">
       <label htmlFor="diplome-vise" className="block text-xs font-semibold text-slate-500">
@@ -1086,9 +1082,12 @@ function DiplomeSelect({
         <select
           id="diplome-vise"
           name="diplomeVise"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="min-h-11 w-full cursor-pointer appearance-none truncate rounded-2xl border-2 border-slate-200 bg-white py-2 pl-3 pr-[34px] text-[12.5px] font-semibold text-slate-900 transition duration-200 hover:border-brand-300 focus:border-brand-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-200 min-[375px]:text-[13px] sm:pl-3.5 sm:pr-10 sm:text-sm"
+          value={choisi}
+          disabled={enCours}
+          aria-busy={enCours}
+          onFocus={precharger}
+          onChange={(e) => changer(e.target.value)}
+          className="min-h-11 w-full cursor-pointer appearance-none truncate rounded-2xl border-2 border-slate-200 bg-white py-2 pl-3 pr-[34px] text-[12.5px] font-semibold text-slate-900 transition duration-200 hover:border-brand-300 focus:border-brand-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-200 disabled:cursor-wait disabled:opacity-70 min-[375px]:text-[13px] sm:pl-3.5 sm:pr-10 sm:text-sm"
         >
           {DIPLOMES_CHOISISSABLES.map((o) => (
             <option key={o.value} value={o.value}>

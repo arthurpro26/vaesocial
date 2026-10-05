@@ -163,17 +163,18 @@ export default async function DiplomePage({
             </div>
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
-              <PrediagnosticForm presetDiplome={d.sigle} />
+              <PrediagnosticForm key={d.sigle} presetDiplome={d.sigle} />
               <p className="mt-3 text-center text-xs text-slate-500 sm:mt-4 lg:text-brand-200">
                 Vos informations restent confidentielles — jamais revendues à des tiers.
               </p>
               {/* Le visiteur arrivé par un mot clé voisin (ex. « deass » ou « caferuis »
-                  dans la campagne DEES) corrige le diplôme dans le menu déroulant
-                  « Diplôme visé » en haut du formulaire (voir DiplomeSelect dans
-                  PrediagnosticForm.tsx). L'ancien bloc « Vous cherchez un autre
-                  diplôme ? » (components/AutresDiplomes.tsx) n'est plus affiché ;
-                  le fichier reste en place pour pouvoir le remettre. Les pages
-                  restent reliées entre elles par le menu et le pied de page. */}
+                  dans la campagne DEES) choisit son diplôme dans le menu déroulant
+                  « Diplôme visé » en haut du formulaire : cela ouvre la page de ce
+                  diplôme (voir DiplomeSelect dans PrediagnosticForm.tsx). La `key`
+                  ci-dessus remonte le formulaire à chaque changement de page.
+                  L'ancien bloc « Vous cherchez un autre diplôme ? »
+                  (components/AutresDiplomes.tsx) n'est plus affiché ; le fichier
+                  reste en place pour pouvoir le remettre. */}
             </div>
 
             <div>
