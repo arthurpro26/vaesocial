@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PrediagnosticPage() {
   return (
-    <section className="bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 py-12 sm:py-16">
+    <section className="bg-brand-50/60 py-12 sm:py-16">
       <Container>
         {/* H1 sr-only : la page n'affichait auparavant aucun H1 (seul le H2
             "Testez votre éligibilité à la VAE" du composant de formulaire
