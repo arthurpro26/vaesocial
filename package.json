@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "seo": "node --experimental-strip-types --no-warnings scripts/referencement-express.mts",
+    "seo:index": "node --experimental-strip-types --no-warnings scripts/indexnow.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

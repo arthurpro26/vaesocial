@@ -1,0 +1,400 @@
+{
+  "version": 1,
+  "mis_a_jour": "2026-10-12",
+  "mode_emploi": "Un sujet = un article. On passe un sujet à « en_cours » dès qu'on l'écrit, à « publie » après mise en ligne et envoi IndexNow. Les volumes ne sont jamais supposés : les mesurer (Planificateur de mots clés ou Search Console) avant de rédiger. Les « sources_verifiees_a_relire » ont été ouvertes le 12/10/2026 : relire avant de s'en servir, les textes évoluent.",
+  "statuts": [
+    "a_rediger",
+    "en_cours",
+    "publie",
+    "a_verifier_avant"
+  ],
+  "sujets": [
+    {
+      "id": "dees-ou-deme",
+      "titre_de_travail": "DEES ou DEME : lequel viser par la VAE selon votre expérience ?",
+      "slug_propose": "dees-ou-deme-quel-diplome-vae",
+      "priorite": 1,
+      "intention": "décision",
+      "diplomes": [
+        "dees",
+        "deme"
+      ],
+      "requete_cible": "dees ou deme vae",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "Arrêté du 6 octobre 2025 relatif au DEES (Légifrance)",
+          "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384644"
+        },
+        {
+          "label": "Instruction interministérielle du 6 août 2025 (révision du DEME)",
+          "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2025-08/TSSA2517154J.pdf"
+        },
+        {
+          "label": "France VAE : questions fréquentes",
+          "url": "https://vae.gouv.fr/faq/"
+        }
+      ],
+      "a_chercher": "Missions et niveaux des deux diplômes : référentiels officiels (fiches France Compétences de chacun).",
+      "note": "Article pivot pour le public moniteur-éducateur → éducateur spécialisé. À relier à l'article déjà publié sur le parcours ME → ES. Aucune promesse de réussite."
+    },
+    {
+      "id": "faisant-fonction-es",
+      "titre_de_travail": "Faisant fonction d'éducateur spécialisé : peut-on passer le DEES par la VAE ?",
+      "slug_propose": "faisant-fonction-educateur-specialise-vae",
+      "priorite": 1,
+      "intention": "information + décision",
+      "diplomes": [
+        "dees"
+      ],
+      "requete_cible": "faisant fonction éducateur spécialisé vae",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_verifier_avant",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "Arrêté du 6 octobre 2025 relatif au DEES (Légifrance)",
+          "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384644"
+        },
+        {
+          "label": "France VAE : questions fréquentes",
+          "url": "https://vae.gouv.fr/faq/"
+        },
+        {
+          "label": "Ministère des Solidarités : la VAE et le jury VAE",
+          "url": "https://solidarites.gouv.fr/VAE"
+        }
+      ],
+      "a_chercher": "Définition officielle de « faisant fonction » et règles de recevabilité côté certificateur (DREETS/rectorat de région).",
+      "note": "Sujet à fort enjeu juridique : ne rien affirmer qui ne soit dans un texte ; renvoyer vers le certificateur pour le cas individuel."
+    },
+    {
+      "id": "situations-livret-2-dees",
+      "titre_de_travail": "Livret 2 DEES : quelles situations choisir pour couvrir les 4 blocs ?",
+      "slug_propose": "livret-2-dees-situations-quatre-blocs",
+      "priorite": 1,
+      "intention": "information",
+      "diplomes": [
+        "dees"
+      ],
+      "requete_cible": "livret 2 dees situations",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "Arrêté du 6 octobre 2025 relatif au DEES (Légifrance)",
+          "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384644"
+        },
+        {
+          "label": "Instruction interministérielle du 16 mars 2026 (VAE et référentiels révisés)",
+          "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2026-04/TRSA2600137J.pdf"
+        },
+        {
+          "label": "France VAE : les étapes du parcours",
+          "url": "https://vae.gouv.fr/savoir-plus/articles/etapes-parcours-france-vae/"
+        }
+      ],
+      "a_chercher": "Intitulés des 4 blocs : annexe I de l'arrêté. Ne pas recopier d'exemples trouvés en ligne.",
+      "note": "S'appuie sur la section « référentiel » de la page DEES. Écrire des exemples génériques, jamais des cas réels de candidats."
+    },
+    {
+      "id": "validation-partielle-dees",
+      "titre_de_travail": "Validation partielle au DEES : ce que les blocs obtenus vous donnent",
+      "slug_propose": "validation-partielle-dees-blocs",
+      "priorite": 1,
+      "intention": "information",
+      "diplomes": [
+        "dees"
+      ],
+      "requete_cible": "validation partielle dees",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "Arrêté du 6 octobre 2025 relatif au DEES (Légifrance)",
+          "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384644"
+        },
+        {
+          "label": "Instruction interministérielle du 6 août 2025 (révision du DEME)",
+          "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2025-08/TSSA2517154J.pdf"
+        },
+        {
+          "label": "Instruction interministérielle du 16 mars 2026 (VAE et référentiels révisés)",
+          "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2026-04/TRSA2600137J.pdf"
+        }
+      ],
+      "a_chercher": "Règle de non-compensation entre blocs (article 12 de l'arrêté) et durée de validité des blocs pour le DEES précisément.",
+      "note": "Pour le DEME l'instruction dit que les blocs validés sont acquis à titre définitif ; vérifier que c'est identique pour le DEES avant de l'écrire."
+    },
+    {
+      "id": "reforme-deme-vae",
+      "titre_de_travail": "Réforme du DEME : ce qui change pour votre VAE",
+      "slug_propose": "reforme-deme-2025-vae",
+      "priorite": 1,
+      "intention": "information",
+      "diplomes": [
+        "deme"
+      ],
+      "requete_cible": "réforme deme vae",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_verifier_avant",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "Instruction interministérielle du 6 août 2025 (révision du DEME)",
+          "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2025-08/TSSA2517154J.pdf"
+        },
+        {
+          "label": "Ministère des Solidarités : la VAE et le jury VAE",
+          "url": "https://solidarites.gouv.fr/VAE"
+        }
+      ],
+      "a_chercher": "Arrêté de référence du DEME révisé (numéro et date à confirmer sur Légifrance) et dates d'application.",
+      "note": "L'instruction du 6 août 2025 parle d'une période transitoire pour les candidats engagés avant l'entrée en vigueur (jury au plus tard le 31/12/2025) : relire le texte exact, des dates ont pu changer depuis."
+    },
+    {
+      "id": "ou-deposer-recevabilite",
+      "titre_de_travail": "VAE dans le social : où et comment déposer sa recevabilité",
+      "slug_propose": "deposer-recevabilite-vae-social",
+      "priorite": 2,
+      "intention": "information",
+      "diplomes": [
+        "dees",
+        "deme",
+        "deaes"
+      ],
+      "requete_cible": "déposer recevabilité vae éducateur",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "France VAE : les étapes du parcours",
+          "url": "https://vae.gouv.fr/savoir-plus/articles/etapes-parcours-france-vae/"
+        },
+        {
+          "label": "France VAE : questions fréquentes",
+          "url": "https://vae.gouv.fr/faq/"
+        },
+        {
+          "label": "Ministère des Solidarités : la VAE et le jury VAE",
+          "url": "https://solidarites.gouv.fr/VAE"
+        }
+      ],
+      "a_chercher": "Parcours France VAE et rôle du certificateur pour les diplômes du social (DREETS, rectorat).",
+      "note": "Complète l'article recevabilité (générique, déjà en ligne). Éviter le doublon : lier plutôt que répéter."
+    },
+    {
+      "id": "financement-vae-sources",
+      "titre_de_travail": "Financer sa VAE dans le social : CPF, employeur, Transitions Pro, France Travail",
+      "slug_propose": "financer-vae-social-cpf-transitions-pro",
+      "priorite": 2,
+      "intention": "décision",
+      "diplomes": [
+        "dees",
+        "deme",
+        "deaes"
+      ],
+      "requete_cible": "financement vae cpf transitions pro",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "France VAE : les étapes du parcours",
+          "url": "https://vae.gouv.fr/savoir-plus/articles/etapes-parcours-france-vae/"
+        }
+      ],
+      "a_chercher": "service-public.gouv.fr (CPF), Centre Inffo, texte du décret 2026-678 sur Légifrance (URL à retrouver).",
+      "note": "Reprend les faits déjà vérifiés dans les articles CPF et Transitions Pro ; ne pas détailler l'éligibilité individuelle."
+    },
+    {
+      "id": "conge-vae-salarie",
+      "titre_de_travail": "Congé VAE : s'absenter de son travail pour préparer sa VAE",
+      "slug_propose": "conge-vae-salarie-social",
+      "priorite": 2,
+      "intention": "information",
+      "diplomes": [
+        "dees",
+        "deme",
+        "deaes"
+      ],
+      "requete_cible": "congé vae salarié",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_verifier_avant",
+      "sources_verifiees_a_relire": [],
+      "a_chercher": "Code du travail (congé pour VAE / autorisation d'absence), service-public.gouv.fr, Légifrance.",
+      "note": "Pas encore vérifié : aucune règle à écrire avant lecture du texte en vigueur."
+    },
+    {
+      "id": "metier-es",
+      "titre_de_travail": "Éducateur spécialisé : missions, lieux d'exercice, évolutions",
+      "slug_propose": "metier-educateur-specialise-missions",
+      "priorite": 2,
+      "intention": "information",
+      "diplomes": [
+        "dees"
+      ],
+      "requete_cible": "métier éducateur spécialisé",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [],
+      "a_chercher": "Onisep (fiche métier), fiche France Compétences du diplôme, fiche ROME de France Travail.",
+      "note": "Page de découverte : sert le haut d'entonnoir. Pas de chiffre de salaire sans grille officielle à jour."
+    },
+    {
+      "id": "deaes-vers-deme",
+      "titre_de_travail": "Du DEAES au DEME par la VAE : un parcours possible ?",
+      "slug_propose": "deaes-vers-deme-vae",
+      "priorite": 2,
+      "intention": "décision",
+      "diplomes": [
+        "deaes",
+        "deme"
+      ],
+      "requete_cible": "deaes deme vae",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "Instruction interministérielle du 6 août 2025 (révision du DEME)",
+          "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2025-08/TSSA2517154J.pdf"
+        }
+      ],
+      "a_chercher": "Fiches France Compétences DEAES et DEME ; passerelles et allègements officiels.",
+      "note": "Public d'accompagnants éducatifs et sociaux. Mesurer le volume avant."
+    },
+    {
+      "id": "salaire-es",
+      "titre_de_travail": "Salaire d'un éducateur spécialisé : ce que disent les grilles",
+      "slug_propose": "salaire-educateur-specialise-grille",
+      "priorite": 3,
+      "intention": "information",
+      "diplomes": [
+        "dees"
+      ],
+      "requete_cible": "salaire éducateur spécialisé",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_verifier_avant",
+      "sources_verifiees_a_relire": [],
+      "a_chercher": "Texte de la convention collective applicable et grille en vigueur (daté), Onisep.",
+      "note": "À publier seulement avec une grille officielle datée ; chiffres qui vieillissent vite."
+    },
+    {
+      "id": "passerelle-caferuis",
+      "titre_de_travail": "CAFERUIS : accéder à l'encadrement par la VAE",
+      "slug_propose": "caferuis-vae-encadrement",
+      "priorite": 3,
+      "intention": "information",
+      "diplomes": [
+        "caferuis"
+      ],
+      "requete_cible": "caferuis vae",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [],
+      "a_chercher": "Fiche France Compétences CAFERUIS, DREETS (page CAFERUIS - validation des acquis).",
+      "note": "Hors cœur de cible actuel (DEES/DEME) : ne pas passer avant les priorités 1 et 2."
+    },
+    {
+      "id": "aidant-et-vae",
+      "titre_de_travail": "Expérience d'aidant, de bénévole : compte-t-elle pour la VAE ?",
+      "slug_propose": "experience-aidant-benevole-vae",
+      "priorite": 3,
+      "intention": "information",
+      "diplomes": [
+        "deaes"
+      ],
+      "requete_cible": "vae expérience aidant bénévolat",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "France VAE : questions fréquentes",
+          "url": "https://vae.gouv.fr/faq/"
+        }
+      ],
+      "a_chercher": "FAQ France VAE (types d'expériences admises) et texte de loi correspondant.",
+      "note": "La FAQ indique que les expériences peuvent venir d'un emploi, de stages, de bénévolat ou de la vie personnelle ; à compléter par le texte juridique."
+    },
+    {
+      "id": "vae-sans-accompagnement",
+      "titre_de_travail": "VAE sans accompagnement : ce que c'est, et quand c'est jouable",
+      "slug_propose": "vae-sans-accompagnement-social",
+      "priorite": 3,
+      "intention": "décision",
+      "diplomes": [
+        "dees",
+        "deme",
+        "deaes"
+      ],
+      "requete_cible": "vae sans accompagnement",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "a_rediger",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "France VAE : parcours VAE sans accompagnement",
+          "url": "https://vae.gouv.fr/savoir-plus/articles/parcours_VAE_sans_accompagnement/"
+        }
+      ],
+      "a_chercher": "Page France VAE « parcours VAE sans accompagnement ».",
+      "note": "Sujet où VAESocial a un intérêt commercial : l'écrire de façon neutre, avec ce que dit France VAE, sans dénigrer le parcours seul."
+    },
+    {
+      "id": "reforme-dees-2026-vae",
+      "titre_de_travail": "Réforme du DEES en 2026 : ce qui change pour votre VAE",
+      "slug_propose": "reforme-dees-2026-vae",
+      "priorite": 1,
+      "intention": "information",
+      "diplomes": [
+        "dees"
+      ],
+      "requete_cible": "réforme dees vae",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "publie",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "Arrêté du 6 octobre 2025 relatif au DEES (Légifrance)",
+          "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384644"
+        },
+        {
+          "label": "Instruction interministérielle du 16 mars 2026 (VAE et référentiels révisés)",
+          "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2026-04/TRSA2600137J.pdf"
+        },
+        {
+          "label": "DREETS Nouvelle-Aquitaine : DEES",
+          "url": "https://nouvelle-aquitaine.dreets.gouv.fr/DEES-Diplome-d-Etat-d-Educateur-Specialise"
+        },
+        {
+          "label": "France Compétences : fiche RNCP37676 (ancienne, inactive)",
+          "url": "https://www.francecompetences.fr/recherche/rncp/37676/"
+        }
+      ],
+      "a_chercher": "",
+      "note": "Publié le 12/10/2026. À revérifier quand la date de bascule des jurys VAE sera clarifiée."
+    },
+    {
+      "id": "me-vers-es",
+      "titre_de_travail": "De moniteur-éducateur à éducateur spécialisé : passer le DEES par la VAE",
+      "slug_propose": "moniteur-educateur-vers-educateur-specialise-vae",
+      "priorite": 1,
+      "intention": "décision",
+      "diplomes": [
+        "dees",
+        "deme"
+      ],
+      "requete_cible": "moniteur éducateur éducateur spécialisé vae",
+      "volume_mensuel": "à mesurer avant d'écrire",
+      "statut": "publie",
+      "sources_verifiees_a_relire": [
+        {
+          "label": "Arrêté du 6 octobre 2025 relatif au DEES (Légifrance)",
+          "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384644"
+        },
+        {
+          "label": "Instruction interministérielle du 6 août 2025 (révision du DEME)",
+          "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2025-08/TSSA2517154J.pdf"
+        }
+      ],
+      "a_chercher": "",
+      "note": "Publié le 12/10/2026."
+    }
+  ]
+}

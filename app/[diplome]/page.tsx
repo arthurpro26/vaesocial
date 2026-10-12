@@ -5,6 +5,9 @@ import PrediagnosticForm from "@/components/PrediagnosticForm";
 import FaqAccordion from "@/components/FaqAccordion";
 import FaqJsonLd from "@/components/FaqJsonLd";
 import CourseJsonLd from "@/components/CourseJsonLd";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import GuidesSection from "@/components/sections/GuidesSection";
+import ReferentielSection from "@/components/sections/ReferentielSection";
 import Eyebrow from "@/components/Eyebrow";
 import StatsBar from "@/components/sections/StatsBar";
 import MethodeSection from "@/components/sections/MethodeSection";
@@ -93,6 +96,12 @@ export default async function DiplomePage({
     // teal de marque — les pages DEES/DEAES/DEEJE/DEME sont inchangées.
     <div className={d.theme === "rose" ? "theme-rose" : undefined}>
       <CourseJsonLd diplome={d} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", path: "/" },
+          { name: `VAE ${d.sigle}`, path: `/${d.slug}` },
+        ]}
+      />
 
       {/* HERO — même structure grid que la home (accroche / formulaire / réassurance)
           pour conserver le trick de réordonnancement mobile (formulaire remonté). */}
@@ -277,6 +286,8 @@ export default async function DiplomePage({
       />
       <TemoignagesSection highlight={d.slug} />
 
+      {d.referentiel && <ReferentielSection referentiel={d.referentiel} sigle={d.sigle} />}
+
       {/* FAQ — spécifique au diplôme */}
       <section id="faq" className="bg-brand-50/60 py-12 sm:py-24">
         <Container className="max-w-3xl">
@@ -298,6 +309,7 @@ export default async function DiplomePage({
 
       <EngagementsSection />
       <CtaFinalSection titre={d.ctaTitre} />
+      <GuidesSection diplome={d.slug} sigle={d.sigle} />
     </div>
   );
 }

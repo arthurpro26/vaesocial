@@ -26,6 +26,17 @@ export type DiplomeData = {
   debouches: { icon: string; texte: string }[];
   debouchesConclusion: string;
   noteReferentiel?: string;
+  // Section « blocs de compétences » (page diplôme). Intitulés recopiés du texte
+  // officiel ; `piste` = situation professionnelle à repérer pour illustrer le bloc
+  // dans un dossier de VAE (conseil de méthode, pas une citation du texte).
+  referentiel?: {
+    titre: string;
+    intro: string;
+    blocs: { intitule: string; piste: string }[];
+    sourceLabel: string;
+    sourceUrl: string;
+    guide?: { slug: string; label: string };
+  };
   faq: FaqItem[];
   ctaTitre: string;
   // Thème couleur de la page. Absent = teal de marque (toutes les pages
@@ -94,6 +105,42 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     ],
     debouchesConclusion:
       "🌟 Un diplôme, des dizaines de terrains d'action possibles : le DEES ouvre autant de portes qu'il y a de publics à accompagner.",
+    referentiel: {
+      titre: "Les quatre blocs de compétences du DEES",
+      intro:
+        "Le nouveau référentiel du DEES (arrêté du 6 octobre 2025, applicable à partir du 1er septembre 2026) s'organise en quatre blocs. Voici leurs intitulés officiels, et le type de situation professionnelle à repérer dans votre parcours pour chacun. Pendant la période de transition, nous vérifions avec vous quel cadre s'applique à votre dossier.",
+      blocs: [
+        {
+          intitule:
+            "Concevoir et conduire un accompagnement éducatif spécialisé dans une visée préventive et inclusive",
+          piste:
+            "Une situation où vous avez conçu et conduit un accompagnement, pas seulement appliqué un projet existant.",
+        },
+        {
+          intitule:
+            "Favoriser et soutenir l'autodétermination des individus et des collectifs dans un but d'émancipation",
+          piste:
+            "Une situation où la personne accompagnée a participé aux décisions qui la concernent.",
+        },
+        {
+          intitule:
+            "S'inscrire dans une dynamique partenariale et territoriale en lien avec la mise en œuvre des politiques de cohésion sociale",
+          piste:
+            "Une situation de travail avec des partenaires extérieurs à votre équipe : famille, école, santé, collectivité.",
+        },
+        {
+          intitule: "S'inscrire dans un contexte professionnel du travail social",
+          piste:
+            "Une situation qui montre votre place dans l'institution et le recul que vous prenez sur votre pratique.",
+        },
+      ],
+      sourceLabel: "Arrêté du 6 octobre 2025, annexe I (Légifrance)",
+      sourceUrl: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384644",
+      guide: {
+        slug: "reforme-dees-2026-vae",
+        label: "Réforme du DEES : ce qui change pour votre VAE",
+      },
+    },
     faq: [
       {
         question: "Quel est le niveau du DEES obtenu par VAE ?",
@@ -114,6 +161,11 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
         question: "La VAE DEES est-elle plus rapide qu'une formation classique ?",
         reponse:
           "Oui : comptez en moyenne 6 à 12 mois pour un parcours VAE, contre 3 ans pour la formation initiale, puisque vous ne suivez pas les enseignements déjà couverts par votre expérience — vous rédigez et présentez un dossier devant un jury.",
+      },
+      {
+        question: "Le référentiel du DEES change-t-il en 2026 ?",
+        reponse:
+          "Oui. Un nouvel arrêté (6 octobre 2025) entre en vigueur le 1er septembre 2026, avec quatre blocs de compétences. Les candidats déjà engagés avant cette date restent soumis aux anciennes modalités jusqu'au 31 juillet 2028 au plus tard, et les premiers jurys de VAE sur le nouveau référentiel sont prévus à partir de septembre 2027. Nous faisons le point sur votre situation lors du diagnostic.",
       },
     ],
     ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEES ?",
@@ -388,7 +440,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     nomComplet: "Diplôme d'État d'Auxiliaire de Puériculture",
     niveau: "Niveau 4 (Bac)",
     theme: "rose",
-    metaTitle: "VAE Auxiliaire de Puériculture (DEAP) par expérience | VAESocial",
+    metaTitle: "VAE Auxiliaire de Puériculture (DEAP) | VAESocial",
     metaDescription:
       "Obtenez le diplôme d'État d'auxiliaire de puériculture par la VAE grâce à votre expérience auprès des jeunes enfants. Diagnostic gratuit en 3 minutes.",
     heroSuffixe: "au DEAP",
@@ -482,7 +534,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     sigle: "DEASS",
     nomComplet: "Diplôme d'État d'Assistant de Service Social",
     niveau: "Niveau 6 (Bac+3)",
-    metaTitle: "VAE Assistant de Service Social (DEASS) par expérience | VAESocial",
+    metaTitle: "VAE Assistant de Service Social (DEASS) | VAESocial",
     metaDescription:
       "Obtenez le diplôme d'État d'assistant de service social (DEASS) par la VAE grâce à votre expérience d'accompagnement social. Diagnostic gratuit en 3 minutes.",
     heroSuffixe: "au DEASS",
@@ -579,7 +631,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     nomComplet:
       "Certificat d'aptitude aux fonctions d'encadrement et de responsable d'unité d'intervention sociale",
     niveau: "Niveau 6",
-    metaTitle: "VAE CAFERUIS : chef de service en intervention sociale | VAESocial",
+    metaTitle: "VAE CAFERUIS : cadre en intervention sociale | VAESocial",
     metaDescription:
       "Obtenez le CAFERUIS par la VAE grâce à votre expérience d'encadrement dans le social ou le médico-social. Diagnostic gratuit en 3 minutes.",
     heroSuffixe: "au CAFERUIS",

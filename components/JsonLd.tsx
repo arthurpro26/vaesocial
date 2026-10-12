@@ -11,6 +11,7 @@ export default function OrganizationJsonLd() {
     url: siteConfig.url,
     description: siteConfig.description,
     email: siteConfig.email,
+    logo: `${siteConfig.url}/logo-square-1200.png`,
   };
 
   return (

@@ -11,6 +11,8 @@
 // un article informationnel ne doit jamais être une impasse sans rappel du
 // prédiagnostic gratuit.
 
+import type { DiplomeSlug } from "@/lib/site-data";
+
 export type ArticleBlock =
   | { type: "p"; text: string }
   | { type: "h2"; text: string }
@@ -27,6 +29,20 @@ export type BlogArticle = {
   category: string;
   datePublished: string; // ISO — utilisé pour le tri, le sitemap et le JSON-LD
   readingTime: string;
+  // Date de dernière mise à jour de fond (ISO). Absente = datePublished. Utilisée
+  // dans le JSON-LD et le sitemap : ne la renseigner que pour une vraie mise à jour.
+  dateModified?: string;
+  // Diplômes concernés. Pilote les liens internes automatiques : bloc « Pour aller
+  // plus loin » en bas de l'article, et section « Nos guides » sur la page du
+  // diplôme. Absent = article générique sur la VAE (diplômes par défaut, voir
+  // DEFAULT_RELATED_DIPLOMES plus bas).
+  diplomes?: DiplomeSlug[];
+  // Sources officielles citées, avec lien : affichées en bas de l'article et reprises
+  // dans le JSON-LD (citation). Remplace le paragraphe « Sources consultées » écrit à
+  // la main. Obligatoire pour tout nouvel article (vérifié par `npm run seo`).
+  sources?: { label: string; url?: string }[];
+  // Date à laquelle les faits de l'article ont été vérifiés sur ces sources (ISO).
+  verifiedOn?: string;
   content: ArticleBlock[];
 };
 
@@ -46,16 +62,22 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     title: "Livret 2 VAE : le guide complet pour le remplir (et ne pas se décourager)",
     metaTitle: "Livret 2 VAE : comment le remplir — guide complet 2026",
     metaDescription:
-      "Le livret 2, désormais appelé dossier de validation, est l'étape qui décourage le plus de candidats. Voici comment le structurer, combien de situations décrire, et les erreurs qui coûtent une validation partielle.",
+      "Le livret 2, ou dossier de validation, décourage beaucoup de candidats. Comment le structurer, combien de situations décrire, quelles erreurs éviter.",
     excerpt:
-      "C'est l'étape où la moitié des candidats abandonnent. Pourtant, le livret 2 n'est pas un exercice de rédaction : c'est un travail de preuve. Voici comment s'y prendre.",
+      "C'est l'étape qui demande le plus de temps : plusieurs mois de rédaction, selon France VAE. Pourtant, le livret 2 n'est pas un exercice de rédaction : c'est un travail de preuve. Voici comment s'y prendre.",
     category: "Méthode",
     datePublished: "2026-08-09",
+    dateModified: "2026-10-12",
     readingTime: "7 min",
+    verifiedOn: "2026-10-12",
+    sources: [
+      { label: "France VAE : rédiger son dossier de validation", url: "https://vae.gouv.fr/savoir-plus/articles/rediger-dossier-validation/" },
+      { label: "France VAE : les étapes du parcours", url: "https://vae.gouv.fr/savoir-plus/articles/etapes-parcours-france-vae/" },
+    ],
     content: [
       {
         type: "p",
-        text: "Le livret 2 est le moment où une VAE se gagne ou se perd. La recevabilité, elle, ne valide qu'une chose : que vous avez le droit de vous présenter. Le livret 2, lui, est le document sur lequel le jury va réellement décider si vous obtenez votre diplôme. Et c'est aussi l'étape où beaucoup de candidats s'arrêtent — non pas par manque de compétences, mais parce qu'ils ne savent pas quoi écrire ni comment.",
+        text: "Le livret 2 est le moment où une VAE se gagne ou se perd. La recevabilité, elle, ne valide qu'une chose : que vous avez le droit de vous présenter. Le livret 2, lui, est le document sur lequel le jury va réellement décider si vous obtenez votre diplôme. Et c'est aussi l'étape la plus longue : France VAE indique une durée moyenne de rédaction de 4 à 6 mois, pour 2 à 4 heures de travail personnel par semaine. On y bute rarement par manque de compétences, plus souvent parce qu'on ne sait pas quoi écrire ni comment.",
       },
       {
         type: "callout",
@@ -72,7 +94,11 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "Concrètement, le dossier de validation vous demande de décrire un nombre limité de situations professionnelles vécues — généralement entre six et dix selon les diplômes — et de les analyser. Le mot important est « analyser ». Décrire ce que vous avez fait ne suffit pas. Il faut expliquer pourquoi vous l'avez fait ainsi, ce que vous avez pris en compte, ce que vous avez ajusté, et ce que vous en avez tiré.",
+        text: "Concrètement, le dossier de validation vous demande de décrire des activités et des situations professionnelles vécues, en montrant comment elles couvrent chacun des blocs de compétences du diplôme, et de les analyser. France VAE ne fixe pas de nombre unique de situations : il dépend du diplôme et de la trame fournie par le certificateur. Le mot important est « analyser ». Décrire ce que vous avez fait ne suffit pas. Il faut expliquer pourquoi vous l'avez fait ainsi, ce que vous avez pris en compte, ce que vous avez ajusté, et ce que vous en avez tiré.",
+      },
+      {
+        type: "p",
+        text: "France VAE rappelle quelques règles de forme : écrire à la première personne, au présent, avec des verbes d'action précis et des phrases courtes, et expliciter le vocabulaire technique plutôt que le jargon de votre structure. Le dossier se termine par une attestation sur l'honneur : un contenu plagié ou frauduleux peut entraîner le refus ou le retrait de la certification.",
       },
       {
         type: "h2",
@@ -163,18 +189,24 @@ export const BLOG_ARTICLES: BlogArticle[] = [
   {
     slug: "cpf-reste-a-charge-2026",
     title: "CPF et VAE en 2026 : le reste à charge passe à 150 €, ce qui change pour vous",
-    metaTitle: "CPF 2026 : reste à charge à 150 € pour la VAE — ce qui change",
+    metaTitle: "CPF 2026 : 150 € de reste à charge pour la VAE",
     metaDescription:
-      "Depuis le 2 avril 2026, la participation obligatoire CPF passe de 103,20 € à 150 €. On vous explique qui est concerné, qui en est exonéré, et l'impact réel sur le financement de votre VAE.",
+      "Depuis le 2 avril 2026, la participation obligatoire CPF passe de 103,20 € à 150 €. Qui est concerné, qui est exonéré, et l'impact sur votre VAE.",
     excerpt:
       "Le reste à charge CPF a augmenté deux fois en 2026 : 103,20 € en janvier, puis 150 € depuis le 2 avril. Voici ce que ça change concrètement pour financer votre VAE.",
     category: "Financement",
     datePublished: "2026-08-03",
+    dateModified: "2026-10-12",
     readingTime: "4 min",
+    verifiedOn: "2026-10-12",
+    sources: [
+      { label: "Service-Public.gouv.fr : CPF, la participation forfaitaire obligatoire augmente", url: "https://www.service-public.gouv.fr/particuliers/actualites/A17364?lang=fr" },
+      { label: "Centre Inffo : CPF, hausse du montant de la participation forfaitaire du titulaire (décret n° 2026-234)", url: "https://www.centre-inffo.fr/site-droit-formation/actualites-droit/cpf-hausse-du-montant-de-la-participation-forfaitaire-du-titulaire" },
+    ],
     content: [
       {
         type: "p",
-        text: "Si vous avez commencé à vous renseigner sur le financement de votre VAE via le CPF, vous avez peut-être vu passer deux montants différents : 103,20 € et 150 €. Les deux sont réels, et la confusion est normale — la règle a changé deux fois en quelques mois. Voici ce qu'il en est exactement, à jour au 3 août 2026.",
+        text: "Si vous avez commencé à vous renseigner sur le financement de votre VAE via le CPF, vous avez peut-être vu passer deux montants différents : 103,20 € et 150 €. Les deux sont réels, et la confusion est normale — la règle a changé deux fois en quelques mois. Voici ce qu'il en est exactement, vérifié sur les sources officielles le 12 octobre 2026.",
       },
       {
         type: "h2",
@@ -186,7 +218,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "Un décret du 30 mars 2026 (décret n° 2026-234, publié au Journal officiel le 1er avril 2026) a ensuite relevé ce montant à 150 € pour toute demande de souscription intervenant à partir du 2 avril 2026 — soit une hausse de 50 % par rapport au montant de départ, inscrite dans la loi de finances 2026. Concrètement : si votre dossier de VAE a été validé sur MonCompteFormation avant le 2 avril 2026, vous êtes resté·e à 103,20 €. Si c'est après, c'est 150 €.",
+        text: "Un décret du 30 mars 2026 (décret n° 2026-234, publié au Journal officiel le 1er avril 2026) a ensuite relevé ce montant à 150 € pour toute demande de souscription intervenant à partir du 2 avril 2026 — soit une hausse d'environ 45 % par rapport à 103,20 €. Concrètement : si votre dossier de VAE a été validé sur MonCompteFormation avant le 2 avril 2026, vous êtes resté·e à 103,20 €. Si c'est après, c'est 150 €.",
       },
       {
         type: "h2",
@@ -195,8 +227,9 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       {
         type: "ul",
         items: [
-          "Les demandeurs d'emploi, indemnisés ou non.",
-          "Les salarié·es dont l'employeur ou l'OPCO complète le financement (abondement) : dans ce cas, l'entreprise peut prendre en charge tout ou partie du reste à charge.",
+          "Les demandeurs d'emploi.",
+          "Les cas où l'employeur abonde la formation.",
+          "Les personnes qui mobilisent des points de leur compte professionnel de prévention (C2P), ou qui bénéficient d'un abondement accident du travail / maladie professionnelle.",
         ],
       },
       {
@@ -224,14 +257,19 @@ export const BLOG_ARTICLES: BlogArticle[] = [
   {
     slug: "transitions-pro-forfait-vae-2000-euros",
     title: "Financement de la VAE par Transitions Pro : le nouveau forfait de 2 000 € (décret du 27 juillet 2026)",
-    metaTitle: "Transitions Pro et VAE : le forfait de 2 000 € expliqué (décret 27/07/2026)",
+    metaTitle: "Transitions Pro et VAE : forfait de 2 000 € (décret 2026)",
     metaDescription:
-      "Un décret du 27 juillet 2026 encadre enfin le financement de la VAE par les associations Transitions Pro, avec un forfait plafonné à 2 000 €. Dépenses éligibles, qui est concerné, comment ça se combine avec le CPF.",
+      "Un décret du 27 juillet 2026 encadre le financement de la VAE par les Transitions Pro : forfait plafonné à 2 000 €, dépenses éligibles, lien avec le CPF.",
     excerpt:
       "Depuis fin juillet 2026, un décret précise enfin comment Transitions Pro finance une VAE dans le cadre d'une reconversion, avec un plafond de 2 000 € par dossier.",
     category: "Financement",
     datePublished: "2026-08-03",
+    dateModified: "2026-10-12",
     readingTime: "4 min",
+    verifiedOn: "2026-10-12",
+    sources: [
+      { label: "Lefebvre Dalloz Formation : Alternance et formation, un été chargé en actualités (décret n° 2026-678 du 27 juillet 2026)", url: "https://formation.lefebvre-dalloz.fr/actualite/alternance-et-formation-un-ete-charge-en-actualites" },
+    ],
     content: [
       {
         type: "p",
@@ -243,11 +281,21 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "Jusqu'ici, le financement de la VAE par Transitions Pro existait dans les textes mais restait flou dans son application concrète : quelles dépenses sont couvertes, dans quelle limite, sur quels motifs un dossier peut être refusé. Le décret du 27 juillet 2026 répond à ces trois questions. Il fixe les dépenses prises en charge dans la limite d'un forfait plafonné à 2 000 € par parcours de VAE.",
+        text: "Le décret du 27 juillet 2026 encadre la prise en charge, par les associations Transitions Pro, des dépenses liées à la VAE. L'ensemble de ces dépenses est financé sur la base d'un montant forfaitaire de 2 000 €. D'après la synthèse de Lefebvre Dalloz, elles comprennent :",
+      },
+      {
+        type: "ul",
+        items: [
+          "les frais de déplacement, de restauration et d'hébergement ;",
+          "l'examen de la recevabilité de la demande ;",
+          "l'accompagnement personnalisé du candidat ;",
+          "les formations obligatoires ou complémentaires recommandées après l'analyse de recevabilité ;",
+          "les frais de la session d'évaluation organisée par le ministère ou l'organisme certificateur.",
+        ],
       },
       {
         type: "p",
-        text: "Autre précision importante : lorsque le candidat n'utilise pas son CPF pour financer sa VAE, une convention doit être signée entre lui, l'organisme prestataire et l'ensemble des co-financeurs impliqués — une formalisation qui sécurise le parcours pour toutes les parties.",
+        text: "Le candidat doit fournir un justificatif d'inscription dans un parcours de VAE. Autre précision : lorsque le CPF n'est pas mobilisé pour financer la VAE, une convention doit être conclue entre le candidat, le ou les financeurs et les organismes intervenant dans la procédure.",
       },
       {
         type: "h2",
@@ -260,7 +308,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       {
         type: "callout",
         icon: "🔄",
-        text: "Ce forfait de 2 000 € ne remplace pas le CPF : il vient en complément lorsque le CPF ne couvre pas l'intégralité de l'accompagnement, ou comme solution principale si vous préférez ne pas mobiliser votre CPF pour ce projet.",
+        text: "Le décret distingue deux cas : le CPF est mobilisé, ou il ne l'est pas, et dans ce second cas une convention est conclue. Les conditions d'accès au financement relèvent de l'association Transitions Pro de votre région : renseignez-vous auprès d'elle avant de vous engager.",
       },
       {
         type: "h2",
@@ -268,7 +316,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "Avant ce décret, l'absence de règles précises rendait le financement Transitions Pro difficile à anticiper — dépenses éligibles floues, délais incertains. Un cadre réglementaire clair, avec un plafond connu à l'avance, permet de bâtir un plan de financement fiable dès le début du parcours, plutôt que de découvrir en cours de route ce qui est pris en charge ou non.",
+        text: "Un cadre écrit, avec une liste de dépenses et un plafond connu à l'avance, permet de bâtir un plan de financement dès le début du parcours, plutôt que de découvrir en cours de route ce qui est pris en charge ou non.",
       },
       {
         type: "cta",
@@ -282,18 +330,26 @@ export const BLOG_ARTICLES: BlogArticle[] = [
   {
     slug: "reforme-deeje-2026",
     title: "Réforme du diplôme d'éducateur de jeunes enfants (DEEJE) : ce qui change en 2026",
-    metaTitle: "Réforme DEEJE 2026 : nouveau référentiel, ce qui change pour votre VAE",
+    metaTitle: "Réforme DEEJE 2026 : nouveau référentiel et VAE",
     metaDescription:
-      "L'arrêté du 6 octobre 2025 réforme en profondeur le DEEJE, avec un nouveau référentiel applicable au 1er septembre 2026. Calendrier, contenu de la réforme, impact sur les parcours de VAE en cours.",
+      "L'arrêté du 6 octobre 2025 réforme le DEEJE, avec un nouveau référentiel au 1er septembre 2026. Calendrier, contenu et impact sur les VAE en cours.",
     excerpt:
       "Le DEEJE change de référentiel au 1er septembre 2026. Voici ce qui évolue, le calendrier de transition, et ce que ça signifie si vous êtes en cours de VAE ou sur le point de vous lancer.",
     category: "Réglementation",
     datePublished: "2026-08-03",
+    dateModified: "2026-10-12",
     readingTime: "5 min",
+    verifiedOn: "2026-10-12",
+    sources: [
+      { label: "Instruction interministérielle du 16 mars 2026 (DEASS, DEES, DEETS, DEEJE, DECESF), Bulletin officiel Solidarités", url: "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2026-04/TRSA2600137J.pdf" },
+      { label: "Assemblée nationale : question écrite n° 10863 sur la réforme du DEEJE (arrêtés du 6 octobre 2025)", url: "https://questions.assemblee-nationale.fr/q17/17-10863QE.htm" },
+      { label: "FNEJE : communiqué du 15 octobre 2025 sur la réforme du DEEJE (point de vue des professionnels)", url: "https://www.lemediasocial.fr/hulkStatic/EL/ELI/2025/10/f3f8371c2-f540-4fc3-b064-0c7e37b0a05b/sharp_/ANX/communique-reforme-deeje-15-10-2025.pdf" },
+    ],
+    diplomes: ["deeje"],
     content: [
       {
         type: "p",
-        text: "Le diplôme d'État d'éducateur de jeunes enfants (DEEJE) va connaître sa réforme la plus importante depuis 2018. L'arrêté du 6 octobre 2025 modifie en profondeur le référentiel du diplôme, avec une entrée en vigueur fixée au 1er septembre 2026. Si vous envisagez une VAE DEEJE, voici ce qu'il faut savoir avant de vous lancer.",
+        text: "Le diplôme d'État d'éducateur de jeunes enfants (DEEJE) est réformé : l'arrêté du 6 octobre 2025, publié au Journal officiel du 14 octobre 2025, modifie son référentiel, avec une mise en œuvre fixée au 1er septembre 2026. Si vous envisagez une VAE DEEJE, voici ce qu'il faut savoir avant de vous lancer, d'après les textes officiels.",
       },
       {
         type: "h2",
@@ -310,15 +366,15 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       {
         type: "ul",
         items: [
-          "À partir du 1er septembre 2026 : toute nouvelle entrée dans un parcours DEEJE (formation initiale comme VAE) suit le nouveau référentiel 2025.",
-          "Les personnes déjà engagées dans un parcours avant cette date terminent selon l'ancien référentiel — l'arrêté du 22 août 2018 reste applicable pour elles.",
-          "Ce régime transitoire pour l'ancien référentiel court jusqu'au 31 juillet 2028, date au-delà de laquelle seul le nouveau référentiel existera.",
+          "Formation : le nouveau référentiel s'applique aux personnes qui entrent en formation à partir de septembre 2026.",
+          "VAE : jusqu'au passage aux référentiels révisés, les jurys évaluent sur la base des référentiels en vigueur avant le 1er septembre 2026. Le premier jury fondé sur les référentiels révisés est prévu à partir de septembre 2027 (instruction interministérielle du 16 mars 2026).",
+          "Un écart subsiste dans l'instruction : une annexe fixe à août 2027 la date limite des jurys sur les anciens référentiels, une autre parle de septembre 2027. Le texte ne tranche pas explicitement.",
         ],
       },
       {
         type: "callout",
         icon: "ℹ️",
-        text: "En clair : si votre dossier de recevabilité VAE est déposé avant le 1er septembre 2026, vous restez sur l'ancien référentiel jusqu'au bout de votre parcours. Aucune obligation de tout recommencer avec le nouveau cadre.",
+        text: "En clair : pour la VAE, l'instruction rattache la bascule à la date de réunion du jury, et ne mentionne pas la date de dépôt de la recevabilité. Confirmez la règle applicable à votre dossier auprès du certificateur, de la DREETS ou du rectorat de votre région avant de vous engager.",
       },
       {
         type: "h2",
@@ -326,7 +382,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "Deux référentiels vont temporairement coexister, ce qui peut sembler complexe de l'extérieur. En pratique, la question qui compte pour vous est simple : à quelle date votre dossier de recevabilité sera-t-il déposé ? C'est cette date, et non la date du jury, qui détermine quel référentiel s'applique à votre parcours. C'est un point qu'on clarifie systématiquement avec chaque candidat·e au moment du diagnostic initial, pour éviter toute mauvaise surprise en cours de route.",
+        text: "Deux référentiels coexistent temporairement, ce qui peut sembler complexe de l'extérieur. Pour un·e candidat·e à la VAE, la question pratique est : à quelle période mon jury pourrait-il se tenir ? D'après l'instruction, un jury réuni avant la fin de l'été 2027 se fonde sur l'ancien référentiel, un jury plus tardif sur le nouveau. Le point à confirmer est la date exacte de bascule et le sort des dossiers déjà engagés : c'est ce qu'on clarifie avec chaque candidat·e au moment du diagnostic initial, pour éviter toute mauvaise surprise en cours de route.",
       },
       {
         type: "cta",
@@ -340,14 +396,21 @@ export const BLOG_ARTICLES: BlogArticle[] = [
   {
     slug: "recevabilite-vae-guide-complet",
     title: "Recevabilité VAE : ce qu'elle vérifie vraiment (et pourquoi elle n'a rien à voir avec le jury)",
-    metaTitle: "Recevabilité VAE : guide complet — conditions, délais, dossier 2026",
+    metaTitle: "Recevabilité VAE : conditions, délais, dossier (guide 2026)",
     metaDescription:
-      "La recevabilité est la première étape d'une VAE : elle ne juge pas vos compétences, seulement votre droit à candidater. Conditions d'expérience, délai légal de réponse, contenu du dossier — le guide complet.",
+      "La recevabilité ne juge pas vos compétences, seulement votre droit à candidater. Conditions d'expérience, délai légal de réponse, contenu du dossier.",
     excerpt:
       "Avant même de parler de compétences, il faut franchir une première porte : la recevabilité. Beaucoup de candidats s'en inquiètent à tort — voici ce qu'elle vérifie réellement.",
     category: "Méthode",
     datePublished: "2026-08-28",
+    dateModified: "2026-10-12",
     readingTime: "6 min",
+    verifiedOn: "2026-10-12",
+    sources: [
+      { label: "France VAE : compléter son dossier de faisabilité", url: "https://vae.gouv.fr/savoir-plus/articles/comment-completer-votre-dossier-de-faisabilite/" },
+      { label: "France VAE : questions fréquentes", url: "https://vae.gouv.fr/faq/" },
+      { label: "Centre Inffo : loi « Marché du travail », la réforme de la VAE", url: "https://www.centre-inffo.fr/site-droit-formation/loi-marche-du-travail-dispositions-relatives-a-la-vae" },
+    ],
     content: [
       {
         type: "p",
@@ -364,7 +427,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       {
         type: "callout",
         icon: "ℹ️",
-        text: "Le certificateur dispose légalement de deux mois pour répondre à une demande de recevabilité. Passé ce délai sans réponse, la recevabilité est réputée acquise — le silence de l'administration ne bloque jamais votre parcours.",
+        text: "Le délai légal de réponse du certificateur est de deux mois. D'après France VAE, il se prononce en général en trois semaines. Si les deux mois sont écoulés sans réponse, France VAE recommande de relancer le certificateur en précisant que la candidature est réputée recevable.",
       },
       {
         type: "h2",
@@ -372,7 +435,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "C'est la question qui revient le plus souvent, et c'est aussi celle où circulent le plus d'idées fausses. Depuis la réforme engagée en 2024, aucune durée minimale d'expérience n'est exigée pour candidater à une VAE — que ce soit pour le DEES, le DEAES, le DEEJE ou le DEME. Avant cette réforme, une ancienneté minimale était requise ; ce n'est plus le cas. Ce qui compte désormais, c'est la nature de votre expérience — professionnelle, bénévole ou en tant qu'aidant — au regard du référentiel du diplôme visé, pas sa durée en années.",
+        text: "C'est la question qui revient le plus souvent, et c'est aussi celle où circulent le plus d'idées fausses. Il n'existe plus de durée minimale d'expérience requise pour engager une VAE : la loi « Marché du travail » a supprimé le minimum d'un an, et la FAQ de France VAE le confirme. Les expériences prises en compte peuvent venir d'un emploi, de stages, de bénévolat ou de la vie personnelle. Ce qui compte désormais, c'est la nature de votre expérience — professionnelle, bénévole ou en tant qu'aidant — au regard du référentiel du diplôme visé, pas sa durée en années.",
       },
       {
         type: "p",
@@ -384,6 +447,14 @@ export const BLOG_ARTICLES: BlogArticle[] = [
         texte:
           "Décrivez-nous votre quotidien professionnel : nous vous disons franchement si votre expérience correspond au diplôme visé, sans jargon et sans vous faire perdre de temps sur un dossier voué à l'échec.",
         cta: "Tester ma recevabilité gratuitement",
+      },
+      {
+        type: "h2",
+        text: "Ce que contient le dossier de faisabilité",
+      },
+      {
+        type: "p",
+        text: "Selon France VAE, le certificateur examine si vos expériences et formations sont suffisamment liées au référentiel de la certification. Pour chaque expérience, le dossier demande la période, la durée, le poste, la structure, les activités, le niveau d'autonomie, les responsabilités, les publics concernés et les outils ou méthodes utilisés. Pour chaque bloc de compétences, vous répondez « oui », « partiellement » ou « non », avec un commentaire obligatoire. Un justificatif d'identité est obligatoire. La décision peut être : recevable, non recevable ou dossier incomplet.",
       },
       {
         type: "h2",
@@ -426,14 +497,21 @@ export const BLOG_ARTICLES: BlogArticle[] = [
   {
     slug: "duree-vae-2026-combien-de-temps",
     title: "Combien de temps dure une VAE en 2026 ? Le vrai calendrier, étape par étape",
-    metaTitle: "Durée d'une VAE en 2026 : combien de temps ça prend réellement",
+    metaTitle: "Durée d'une VAE en 2026 : combien de temps, vraiment",
     metaDescription:
-      "Recevabilité, livret de compétences, jury : combien de temps dure chaque étape d'une VAE, et pourquoi la durée totale varie autant d'un candidat à l'autre. Le calendrier réaliste.",
+      "Recevabilité, livret, jury : combien de temps dure chaque étape d'une VAE, et pourquoi la durée totale varie autant d'un candidat à l'autre.",
     excerpt:
       "C'est la deuxième question que tout le monde pose, juste après « est-ce que mon expérience suffit ». La réponse n'est pas un chiffre unique — c'est un calendrier en plusieurs étapes.",
     category: "Méthode",
     datePublished: "2026-08-28",
+    dateModified: "2026-10-12",
     readingTime: "5 min",
+    verifiedOn: "2026-10-12",
+    sources: [
+      { label: "France VAE : les étapes du parcours", url: "https://vae.gouv.fr/savoir-plus/articles/etapes-parcours-france-vae/" },
+      { label: "France VAE : questions fréquentes", url: "https://vae.gouv.fr/faq/" },
+      { label: "France VAE : rédiger son dossier de validation", url: "https://vae.gouv.fr/savoir-plus/articles/rediger-dossier-validation/" },
+    ],
     content: [
       {
         type: "p",
@@ -453,7 +531,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "Une fois votre dossier de recevabilité déposé, le certificateur dispose légalement de deux mois pour vous répondre. C'est un maximum, pas une norme : beaucoup de réponses arrivent avant. Et si jamais le délai est dépassé sans réponse, la recevabilité est réputée acquise — l'absence de réponse ne vous pénalise jamais.",
+        text: "Une fois le dossier de faisabilité complet transmis, le certificateur dispose légalement de deux mois pour vous répondre. C'est un maximum : selon France VAE, il se prononce en général en trois semaines. Si le délai est dépassé sans réponse, France VAE recommande de relancer le certificateur en précisant que la candidature est réputée recevable.",
       },
       {
         type: "h2",
@@ -461,12 +539,12 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "C'est là que se joue la majeure partie du calendrier, et c'est aussi l'étape la moins prévisible. Il n'existe pas de durée officielle pour rédiger un livret de compétences : cela dépend de votre aisance à l'écrit, du temps dont vous disposez chaque semaine, et surtout du fait que ce document se construit par allers-retours plutôt que d'un seul jet. On décrit une situation, on la relit, on s'aperçoit qu'il manque un élément d'analyse, on reprend. C'est un travail itératif, pas un exercice de rédaction qu'on boucle en un week-end.",
+        text: "C'est là que se joue la majeure partie du calendrier, et c'est aussi l'étape la moins prévisible. Il n'existe pas de durée imposée pour rédiger un livret de compétences : cela dépend de votre aisance à l'écrit, du temps dont vous disposez chaque semaine, et surtout du fait que ce document se construit par allers-retours plutôt que d'un seul jet. On décrit une situation, on la relit, on s'aperçoit qu'il manque un élément d'analyse, on reprend. C'est un travail itératif, pas un exercice de rédaction qu'on boucle en un week-end. France VAE donne un ordre de grandeur : en moyenne 4 à 6 mois de rédaction, à raison de 2 à 4 heures de travail personnel par semaine.",
       },
       {
         type: "callout",
         icon: "ℹ️",
-        text: "Rédiger le livret de compétences seul, sans accompagnement, c'est possible réglementairement — mais c'est souvent ce qui explique les parcours qui traînent sur un an ou deux, faute de retours réguliers pour savoir si on est sur la bonne voie.",
+        text: "Rédiger le livret de compétences seul, sans accompagnement, est possible : France VAE propose d'ailleurs un parcours sans accompagnement. L'accompagnement apporte, lui, des retours réguliers pour savoir si l'on est sur la bonne voie.",
       },
       {
         type: "cta",
@@ -482,6 +560,20 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       {
         type: "p",
         text: "En pratique, pour les candidats du secteur social et médico-social que nous accompagnons, un parcours VAE complet — du diagnostic initial jusqu'au passage devant le jury — dure en moyenne entre 6 et 12 mois. C'est nettement plus rapide qu'une formation initiale classique, puisque vous ne suivez pas d'enseignements déjà couverts par votre expérience : vous rédigez et présentez un dossier qui valorise ce que vous savez déjà faire.",
+      },
+      {
+        type: "h2",
+        text: "Les délais cités par France VAE",
+      },
+      {
+        type: "ul",
+        items: [
+          "Premier contact de l'organisme d'accompagnement : sous 2 semaines après le dépôt de la candidature.",
+          "Réponse sur la recevabilité : 2 mois au maximum (délai légal), en général 3 semaines.",
+          "Rédaction du dossier de validation : 4 à 6 mois en moyenne.",
+          "Décision après le jury : en général dans les 15 jours.",
+          "Parcours complet avec France VAE : jusqu'à 6 à 8 mois pour certains diplômes.",
+        ],
       },
       {
         type: "h2",
@@ -514,12 +606,20 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     title: "Jury VAE : déroulé de l'entretien, durée, préparation et frais (guide 2026)",
     metaTitle: "Jury VAE 2026 : entretien, durée, préparation et frais",
     metaDescription:
-      "Comment se passe le jury VAE : qui siège, durée de l'entretien, préparation, décisions possibles et frais de jury dans le social. Le guide basé sur les sources officielles.",
+      "Comment se passe le jury VAE : qui siège, durée de l'entretien, préparation, décisions possibles et frais de jury dans le social, selon les sources officielles.",
     excerpt:
       "Le jury est l'étape qui impressionne le plus, alors qu'il a déjà lu votre dossier. Voici comment se déroule l'entretien, ce que le jury vérifie, comment s'y préparer — et ce qu'il en coûte vraiment.",
     category: "Méthode",
     datePublished: "2026-10-05",
+    dateModified: "2026-10-12",
     readingTime: "6 min",
+    verifiedOn: "2026-10-05",
+    sources: [
+      { label: "Ministère des Solidarités : guide à l'attention des membres de jury pour la validation des acquis de l'expérience (février 2026)", url: "https://solidarites.gouv.fr/sites/solidarite/files/2026-02/guide-jury-VAE-2026.pdf" },
+      { label: "Ministère des Solidarités : la VAE et le jury VAE", url: "https://solidarites.gouv.fr/VAE" },
+      { label: "France VAE : comment se déroule un jury VAE ?", url: "https://vae.gouv.fr/savoir-plus/articles/comment-se-deroule-un-jury-vae/" },
+      { label: "France VAE : entretien jury VAE, comment se préparer ?", url: "https://vae.gouv.fr/savoir-plus/articles/entretien-jury-vae-comment-se-preparer/" },
+    ],
     content: [
       {
         type: "p",
@@ -650,9 +750,194 @@ export const BLOG_ARTICLES: BlogArticle[] = [
           "On fait le point sur votre parcours et sur le diplôme que vous visez, gratuitement et sans engagement. Un seul interlocuteur dédié, du diagnostic jusqu'au jury.",
         cta: "Vérifier mon éligibilité",
       },
+    ],
+  },
+  // ── Ajoutés le 12/10/2026 — grappe « DEES » ─────────────────────────────────
+  // Faits vérifiés le 12/10/2026 sur : arrêté du 6 octobre 2025 (Légifrance,
+  // articles 6, 12, 17, 18 et annexe I), instruction interministérielle du
+  // 16 mars 2026 (bulletins-officiels.social.gouv.fr), fiche France Compétences
+  // RNCP37676 (inactive, remplacée par RNCP41747), page DEES de la DREETS
+  // Nouvelle-Aquitaine. Aucun chiffre hors de ces sources.
+  {
+    slug: "reforme-dees-2026-vae",
+    title: "Réforme du DEES en 2026 : ce qui change, et ce que ça implique pour votre VAE",
+    metaTitle: "Réforme DEES 2026 : nouveau référentiel, impact sur la VAE",
+    metaDescription:
+      "Nouveau référentiel du DEES au 1er septembre 2026 : quatre blocs de compétences, calendrier de transition et conséquences pour votre VAE.",
+    excerpt:
+      "L'arrêté du 6 octobre 2025 remplace le référentiel du DEES à partir du 1er septembre 2026. Les quatre nouveaux blocs, le calendrier de transition et ce que cela change pour une VAE.",
+    category: "Réglementation",
+    datePublished: "2026-10-12",
+    readingTime: "5 min",
+    diplomes: ["dees"],
+    content: [
       {
         type: "p",
-        text: "Sources officielles consultées : guide à l'attention des membres de jury pour la validation des acquis de l'expérience (ministère des Solidarités, février 2026) ; procédure de validation pour les diplômes du social (ministère des Solidarités, édition 2023) ; page « La VAE et le jury VAE » du ministère des Solidarités (mai 2025) ; fiches « Comment se déroule un jury VAE ? » et « Entretien jury VAE : comment se préparer » sur vae.gouv.fr.",
+        text: "Le diplôme d'État d'éducateur spécialisé (DEES) change de référentiel. L'arrêté du 6 octobre 2025 entre en vigueur le 1er septembre 2026 et remplace, à terme, celui du 22 août 2018. Le diplôme reste de niveau 6, à 180 crédits ECTS : ce qui change, c'est la manière de décrire et d'évaluer les compétences. Voici ce que disent les textes, et ce que cela implique si vous préparez une VAE.",
+      },
+      {
+        type: "h2",
+        text: "Les quatre blocs de compétences du nouveau référentiel",
+      },
+      {
+        type: "p",
+        text: "Le nouveau référentiel est organisé en quatre blocs, chacun validé séparément, sans compensation de l'un par l'autre. Leurs intitulés figurent à l'annexe I de l'arrêté :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Bloc 1 : concevoir et conduire un accompagnement éducatif spécialisé dans une visée préventive et inclusive.",
+          "Bloc 2 : favoriser et soutenir l'autodétermination des individus et des collectifs dans un but d'émancipation.",
+          "Bloc 3 : s'inscrire dans une dynamique partenariale et territoriale en lien avec la mise en œuvre des politiques de cohésion sociale.",
+          "Bloc 4 : s'inscrire dans un contexte professionnel du travail social.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Côté fiche officielle, l'ancienne certification (RNCP37676, organisée en huit blocs) est désormais inactive : son enregistrement s'est terminé le 31 août 2026 et France Compétences indique qu'elle est remplacée par la fiche RNCP41747.",
+      },
+      {
+        type: "h2",
+        text: "Le calendrier de transition",
+      },
+      {
+        type: "ul",
+        items: [
+          "1er septembre 2026 : entrée en vigueur du nouvel arrêté.",
+          "Les candidats déjà engagés avant cette date restent soumis aux anciennes modalités, en formation comme en VAE, jusqu'au 31 juillet 2028 au plus tard.",
+          "L'arrêté du 22 août 2018 est abrogé à l'issue de la session d'examen 2028.",
+          "Selon l'instruction interministérielle du 16 mars 2026, les premiers jurys de VAE fondés sur les référentiels révisés se tiendront à partir de septembre 2027 ; d'ici là, les jurys s'appuient sur les référentiels en vigueur avant le 1er septembre 2026.",
+        ],
+      },
+      {
+        type: "callout",
+        icon: "ℹ️",
+        text: "Ces dates viennent de textes différents, et la notion de candidat « engagé » doit être confirmée pour votre situation. Le plus sûr est de poser la question au service VAE de votre rectorat ou à votre DREETS avant de fixer un calendrier.",
+      },
+      {
+        type: "h2",
+        text: "Ce qui change, et ce qui ne change pas, pour une VAE",
+      },
+      {
+        type: "p",
+        text: "Le niveau ne bouge pas : le DEES obtenu par la VAE reste le même diplôme d'État de niveau 6 que celui obtenu par la formation. Ce qui évolue, c'est la grille de lecture : à terme, votre expérience sera regardée à travers les quatre blocs ci-dessus. Leurs intitulés donnent la direction : concevoir un accompagnement, soutenir l'autodétermination des personnes, travailler avec les partenaires du territoire, se situer dans un contexte professionnel.",
+      },
+      {
+        type: "p",
+        text: "Pour vous préparer, une méthode vaut quel que soit le référentiel retenu : repérez dans votre parcours des situations où vous avez conçu une action (et pas seulement exécuté un projet), où la personne accompagnée a participé aux décisions qui la concernent, et où vous avez travaillé avec des partenaires extérieurs à votre équipe. Ce sont ces situations que vous aurez à décrire dans votre dossier.",
+      },
+      {
+        type: "h2",
+        text: "Pour comparaison : la formation initiale",
+      },
+      {
+        type: "p",
+        text: "Le parcours complet en formation représente 3 442 heures sur trois ans, dont 1 517 heures d'enseignement théorique et 1 925 heures de formation pratique. La VAE ne remplace pas ce volume par un raccourci : elle fait valider ce que votre expérience a déjà couvert.",
+      },
+      {
+        type: "cta",
+        titre: "Votre VAE DEES, selon le bon référentiel",
+        texte:
+          "On fait le point sur votre situation et sur le cadre qui s'applique à votre dossier — gratuitement, sans engagement.",
+        cta: "Vérifier mon éligibilité DEES →",
+      },
+    ],
+    verifiedOn: "2026-10-12",
+    sources: [
+      {
+        label: "Arrêté du 6 octobre 2025 relatif au diplôme d'État d'éducateur spécialisé (Légifrance)",
+        url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384644",
+      },
+      {
+        label: "Instruction interministérielle du 16 mars 2026 sur la révision des diplômes d'État du travail social",
+        url: "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2026-04/TRSA2600137J.pdf",
+      },
+      {
+        label: "Fiche RNCP37676 « DE - Éducateur spécialisé » (France Compétences)",
+        url: "https://www.francecompetences.fr/recherche/rncp/37676/",
+      },
+      {
+        label: "Page « DEES » de la DREETS Nouvelle-Aquitaine",
+        url: "https://nouvelle-aquitaine.dreets.gouv.fr/DEES-Diplome-d-Etat-d-Educateur-Specialise",
+      },
+    ],
+  },
+  {
+    slug: "moniteur-educateur-vers-educateur-specialise-vae",
+    title: "De moniteur-éducateur à éducateur spécialisé : passer le DEES par la VAE",
+    metaTitle: "Moniteur-éducateur à éducateur spécialisé : DEES par la VAE",
+    metaDescription:
+      "Vous êtes moniteur-éducateur et visez le DEES ? Ce qui sépare les deux diplômes, quelles situations choisir selon les quatre blocs, et les étapes de la VAE.",
+    excerpt:
+      "Même terrain, autre niveau de responsabilité : comment faire valoir votre expérience de moniteur-éducateur pour obtenir le DEES, sans reprendre trois ans de formation.",
+    category: "Parcours",
+    datePublished: "2026-10-12",
+    readingTime: "5 min",
+    diplomes: ["dees", "deme"],
+    content: [
+      {
+        type: "p",
+        text: "Passer de moniteur-éducateur (DEME) à éducateur spécialisé (DEES) est l'une des évolutions les plus naturelles du secteur : même terrain, mêmes publics, mais un niveau de responsabilité différent. La VAE permet de franchir cette étape sans reprendre trois années de formation, à condition de présenter son expérience sous le bon angle.",
+      },
+      {
+        type: "h2",
+        text: "Ce qui sépare les deux diplômes",
+      },
+      {
+        type: "p",
+        text: "Le DEME est un diplôme de niveau 4 (équivalent bac), le DEES un diplôme de niveau 6 (équivalent licence, 180 crédits ECTS). Dans beaucoup d'équipes, le moniteur-éducateur accompagne la personne au quotidien, en appui de l'éducateur spécialisé ; ce dernier conçoit et conduit l'accompagnement éducatif, l'inscrit dans un projet et dans un réseau de partenaires. Le nouveau référentiel du DEES le dit dès l'intitulé de son premier bloc : « concevoir et conduire un accompagnement éducatif spécialisé ».",
+      },
+      {
+        type: "h2",
+        text: "Ce que le jury regarde dans un dossier DEES",
+      },
+      {
+        type: "p",
+        text: "Le jury évalue votre expérience au regard du référentiel du diplôme. Pour le DEES, il comporte quatre blocs : concevoir et conduire un accompagnement éducatif ; soutenir l'autodétermination des personnes ; s'inscrire dans une dynamique partenariale et territoriale ; s'inscrire dans un contexte professionnel du travail social. Votre quotidien de moniteur-éducateur nourrit sans doute déjà le premier. Pour les autres, il faut souvent chercher des situations précises.",
+      },
+      {
+        type: "p",
+        text: "Quelques situations à repérer dans votre parcours :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Une situation où vous avez construit ou fait évoluer un projet d'accompagnement, avec ses objectifs, ses moyens et son évaluation.",
+          "Une situation où la personne accompagnée a participé aux décisions qui la concernent, et où vous avez adapté votre pratique en conséquence.",
+          "Une situation où vous avez travaillé avec un partenaire extérieur à votre structure : famille, école, médecin, mandataire, service social, collectivité.",
+          "Une situation où vous avez pris du recul sur votre pratique : réunion de synthèse, analyse de pratique, écrit professionnel, place dans l'équipe.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "Les étapes d'une VAE DEES",
+      },
+      {
+        type: "p",
+        text: "Le parcours suit trois temps : la recevabilité, qui vérifie que vous avez le droit de vous présenter ; le dossier de validation (le « livret 2 »), où vous décrivez vos situations ; puis l'entretien devant le jury. Depuis janvier 2024, aucune durée minimale d'expérience n'est exigée : ce qui compte, c'est que votre expérience corresponde au diplôme visé.",
+      },
+      {
+        type: "callout",
+        icon: "ℹ️",
+        text: "Une expérience courte n'est plus un obstacle administratif, mais le dossier doit rester solide : avoir au moins quelques situations de conception ou de partenariat à décrire fait la différence. Un diagnostic permet de le vérifier avant de vous lancer.",
+      },
+      {
+        type: "cta",
+        titre: "Du DEME au DEES : faisons le point sur votre parcours",
+        texte:
+          "On regarde ensemble vos situations professionnelles et leur correspondance avec les quatre blocs du DEES — gratuitement, sans engagement.",
+        cta: "Vérifier mon éligibilité DEES →",
+      },
+    ],
+    verifiedOn: "2026-10-12",
+    sources: [
+      {
+        label: "Arrêté du 6 octobre 2025 relatif au diplôme d'État d'éducateur spécialisé, annexe I (Légifrance)",
+        url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384644",
+      },
+      {
+        label: "Fiche RNCP37676 « DE - Éducateur spécialisé » : accès par la voie de l'expérience (France Compétences)",
+        url: "https://www.francecompetences.fr/recherche/rncp/37676/",
       },
     ],
   },
@@ -669,4 +954,43 @@ export function getSortedArticles(): BlogArticle[] {
   return [...BLOG_ARTICLES].sort(
     (a, b) => new Date(b.datePublished).getTime() - new Date(a.datePublished).getTime()
   );
+}
+
+
+// ── Liens internes automatiques ──────────────────────────────────────────────
+// Diplômes proposés en bas d'un article quand il n'a pas de champ `diplomes`
+// (articles génériques sur la VAE). DEES en premier : c'est la priorité SEO.
+const DEFAULT_RELATED_DIPLOMES: DiplomeSlug[] = ["dees", "deme", "deaes"];
+
+export function getRelatedDiplomes(article: BlogArticle): DiplomeSlug[] {
+  return article.diplomes && article.diplomes.length > 0
+    ? article.diplomes
+    : DEFAULT_RELATED_DIPLOMES;
+}
+
+function byDateDesc(a: BlogArticle, b: BlogArticle) {
+  return new Date(b.datePublished).getTime() - new Date(a.datePublished).getTime();
+}
+
+// Articles à suggérer à la fin d'un article : mêmes diplômes d'abord, puis même
+// catégorie, puis les plus récents. Un nouvel article est relié sans rien d'autre
+// à écrire que ses champs `diplomes` et `category`.
+export function getRelatedArticles(article: BlogArticle, limit = 3): BlogArticle[] {
+  const own = new Set(article.diplomes ?? []);
+  const score = (a: BlogArticle) =>
+    ((a.diplomes ?? []).some((d) => own.has(d)) ? 2 : 0) +
+    (a.category === article.category ? 1 : 0);
+  return BLOG_ARTICLES.filter((a) => a.slug !== article.slug)
+    .sort((a, b) => score(b) - score(a) || byDateDesc(a, b))
+    .slice(0, limit);
+}
+
+// Articles à lier depuis la page d'un diplôme : ceux qui le ciblent
+// explicitement d'abord, puis les articles génériques sur la VAE.
+export function getArticlesForDiplome(slug: DiplomeSlug, limit = 3): BlogArticle[] {
+  const targeted = BLOG_ARTICLES.filter((a) => a.diplomes?.includes(slug)).sort(byDateDesc);
+  const generic = BLOG_ARTICLES.filter((a) => !a.diplomes || a.diplomes.length === 0).sort(
+    byDateDesc
+  );
+  return [...targeted, ...generic].slice(0, limit);
 }

@@ -5,6 +5,9 @@ import Container from "@/components/Container";
 import ArticleBody from "@/components/blog/ArticleBody";
 import ArticleStickyCta from "@/components/blog/ArticleStickyCta";
 import ArticleJsonLd from "@/components/ArticleJsonLd";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
+import RelatedLinks from "@/components/blog/RelatedLinks";
+import ArticleSources from "@/components/blog/ArticleSources";
 import { BLOG_ARTICLES, getArticleBySlug } from "@/lib/blog-data";
 import { siteConfig } from "@/lib/site-config";
 
@@ -68,6 +71,13 @@ export default async function BlogArticlePage({
   return (
     <>
       <ArticleJsonLd article={article} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", path: "/" },
+          { name: "Blog", path: "/blog" },
+          { name: article.title, path: `/blog/${article.slug}` },
+        ]}
+      />
       {/* pb-24 : réserve la hauteur de la barre d'accès fixe (ArticleStickyCta)
           pour qu'elle ne recouvre jamais la fin de l'article. */}
       <article className="py-10 pb-24 sm:py-16 sm:pb-28">
@@ -96,6 +106,9 @@ export default async function BlogArticlePage({
           <div className="mt-8 sm:mt-10">
             <ArticleBody blocks={article.content} />
           </div>
+
+          <ArticleSources article={article} />
+          <RelatedLinks article={article} />
         </Container>
       </article>
       <ArticleStickyCta />
