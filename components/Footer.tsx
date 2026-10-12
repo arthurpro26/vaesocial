@@ -51,6 +51,11 @@ export default function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/qui-sommes-nous" className="inline-block py-2 text-brand-200 hover:text-white">
+                Qui sommes-nous
+              </Link>
+            </li>
+            <li>
               <Link href="/blog" className="inline-block py-2 text-brand-200 hover:text-white">
                 Blog
               </Link>
