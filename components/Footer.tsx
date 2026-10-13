@@ -1,13 +1,19 @@
 import Link from "next/link";
 import Container from "./Container";
 import Logo from "./Logo";
+import Trico from "./Trico";
+import BrandIcon from "./BrandIcon";
 import { siteConfig } from "@/lib/site-config";
 import { DIPLOMES } from "@/lib/site-data";
 
+// Pied de page « institutionnel » : filet tricolore, colonnes, puis une ligne sobre sur l'éditeur.
+// Le mot « Partenaire » est voulu et ne doit jamais devenir « Certifié » : la certification Qualiopi et
+// le référencement France VAE appartiennent à l'organisme de formation partenaire (voir app/page.tsx).
 export default function Footer() {
   return (
     <footer className="bg-brand-900 text-brand-100">
-      <Container className="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
+      <Trico band className="h-1.5 w-full" />
+      <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Link href="/" className="inline-flex items-center py-1">
             <Logo id="footer" variant="light" />
@@ -35,21 +41,8 @@ export default function Footer() {
         </div>
 
         <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-brand-300">Contact</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-brand-300">VAESocial</p>
           <ul className="mt-2 text-sm">
-            <li>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="inline-block break-all py-2 text-brand-200 hover:text-white"
-              >
-                {siteConfig.email}
-              </a>
-            </li>
-            <li>
-              <Link href="#prediagnostic-form" className="inline-block py-2 text-brand-200 hover:text-white">
-                Être rappelé·e gratuitement
-              </Link>
-            </li>
             <li>
               <Link href="/qui-sommes-nous" className="inline-block py-2 text-brand-200 hover:text-white">
                 Qui sommes-nous
@@ -59,6 +52,19 @@ export default function Footer() {
               <Link href="/blog" className="inline-block py-2 text-brand-200 hover:text-white">
                 Blog
               </Link>
+            </li>
+            <li>
+              <Link href="#prediagnostic-form" className="inline-block py-2 text-brand-200 hover:text-white">
+                Être rappelé·e gratuitement
+              </Link>
+            </li>
+            <li>
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="inline-block break-all py-2 text-brand-200 hover:text-white"
+              >
+                {siteConfig.email}
+              </a>
             </li>
           </ul>
         </div>
@@ -86,7 +92,40 @@ export default function Footer() {
       </Container>
 
       <div className="border-t border-white/10">
-        <Container className="flex flex-col gap-2 py-6 text-xs text-brand-300 sm:flex-row sm:items-center sm:justify-between">
+        <Container className="flex flex-col gap-5 py-7 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-2xl text-xs leading-relaxed text-brand-300">
+            <p>
+              <span className="font-semibold text-brand-100">VAESocial est un site édité par YL KADIMA</span>, SAS ·
+              SIREN 939&nbsp;443&nbsp;867. Détails dans les{" "}
+              <Link href="/mentions-legales" className="underline underline-offset-2 hover:text-white">
+                mentions légales
+              </Link>
+              .
+            </p>
+            <p className="mt-2">
+              La certification Qualiopi et le référencement France VAE sont ceux de notre organisme de formation
+              partenaire.
+            </p>
+          </div>
+          <ul className="flex flex-wrap gap-2">
+            {[
+              { i: "seal" as const, t: "Partenaire Qualiopi" },
+              { i: "gov" as const, t: "Partenaire France VAE" },
+            ].map((x) => (
+              <li
+                key={x.t}
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white ring-1 ring-white/15"
+              >
+                <BrandIcon name={x.i} className="h-4 w-4 text-brand-200" />
+                {x.t}
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </div>
+
+      <div className="border-t border-white/10">
+        <Container className="flex flex-col gap-2 py-5 text-xs text-brand-300 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {siteConfig.name}. Tous droits réservés.
           </p>

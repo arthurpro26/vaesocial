@@ -4,6 +4,8 @@ import Link from "next/link";
 import { clsx } from "clsx";
 import Container from "./Container";
 import Logo from "./Logo";
+import Trico from "./Trico";
+import { siteConfig } from "@/lib/site-config";
 import { DIPLOMES } from "@/lib/site-data";
 import { useFormProgress } from "@/lib/form-progress-context";
 
@@ -18,12 +20,27 @@ export default function Header() {
   const { isFormActive } = useFormProgress();
 
   return (
+    <>
+      {/* Filet tricolore + bandeau d'identité (écran large) : ils défilent avec la page, seul l'en-tête reste collé. */}
+      <div className="relative z-50">
+      <Trico band className="h-1.5 w-full" />
+      <div className="hidden bg-brand-900 text-[0.8rem] text-brand-100 md:block">
+        <Container className="flex h-9 items-center justify-between">
+          <span className="font-medium tracking-wide">Accompagnement à la VAE · Secteur social et médico-social</span>
+          <span className="flex items-center gap-5">
+            <span>Visio gratuite avant toute inscription</span>
+            <span aria-hidden className="h-3.5 w-px bg-white/20" />
+            <a href={`mailto:${siteConfig.email}`} className="hover:text-white">{siteConfig.email}</a>
+          </span>
+        </Container>
+      </div>
+      </div>
     <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur">
       <Container className="flex h-16 items-center justify-between gap-3">
         <Link href="/" className="inline-flex shrink-0 items-center py-2">
           <Logo id="header" />
         </Link>
-        <nav className="hidden items-center gap-11 text-sm font-medium text-slate-600 md:flex">
+        <nav className="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex lg:gap-8">
           {/* Menu "Diplômes" : survol/focus révèle un lien direct vers chacune des
               4 pages dédiées, en plus du lien vers la section d'ensemble de la home. */}
           <div className="group relative">
@@ -62,10 +79,13 @@ export default function Header() {
           <Link href="/#financement" className="hover:text-brand-700">
             Financement
           </Link>
-          <Link href="#faq" className="hover:text-brand-700">
+          <Link href="#faq" className="hidden hover:text-brand-700 lg:inline">
             FAQ
           </Link>
-          <Link href="/blog" className="hover:text-brand-700">
+          <Link href="/qui-sommes-nous" className="hover:text-brand-700">
+            Qui sommes-nous
+          </Link>
+          <Link href="/blog" className="hidden hover:text-brand-700 lg:inline">
             Blog
           </Link>
         </nav>
@@ -83,5 +103,6 @@ export default function Header() {
         </Link>
       </Container>
     </header>
+    </>
   );
 }

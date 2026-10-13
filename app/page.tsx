@@ -1,51 +1,51 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Container from "@/components/Container";
+import BrandIcon from "@/components/BrandIcon";
 import PrediagnosticForm from "@/components/PrediagnosticForm";
 import FaqAccordion, { type FaqItem } from "@/components/FaqAccordion";
 import FaqJsonLd from "@/components/FaqJsonLd";
 import Eyebrow from "@/components/Eyebrow";
-import StatsBar from "@/components/sections/StatsBar";
+import StickyCta from "@/components/StickyCta";
+import TrustBand from "@/components/sections/TrustBand";
 import MethodeSection from "@/components/sections/MethodeSection";
 import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
-import EngagementsSection from "@/components/sections/EngagementsSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
+import { Chip, DOTS, Ico, TINTS } from "@/components/Kit";
 import { RESULTATS, COMPETENCES, DIPLOMES, REASSURANCES } from "@/lib/site-data";
-import BrandIcon from "@/components/BrandIcon";
 
 // Page d'accueil — landing page principale de VAESocial.
 // Structure pensée pour le SEO, le trafic Google Ads et la conversion mobile.
 //
-// Angle éditorial du Hero : "on vous dit d'abord si vous êtes éligible, pas
-// l'inverse" — positionnement honnête (prédiagnostic avant promesse), pensé
-// pour se différencier des pages qui annoncent que tout le monde est éligible.
+// Angle éditorial du Hero : on propose une démarche commune (« commençons par regarder votre
+// parcours »), sans promettre de verdict : le formulaire déclenche un rappel, il ne rend aucun
+// verdict d'éligibilité. Voir l'historique du titre (refonte du 20/09/2026) dans le dépôt.
 //
-// Système visuel : alternance de fonds blanc / vert très pâle (brand-50) pour
-// rythmer le scroll, deux "panneaux" pleine couleur (Financement + CTA final)
-// pour casser le rythme et créer de la profondeur, émojis pour les icônes
-// (choix volontaire : plus chaleureux pour le public visé, zéro dépendance),
-// cartes avec plus d'air et un léger effet de survol.
+// Design « institutionnel » du 13/10/2026 : fond clair, cartes à pastilles, bandeau de confiance
+// bleu marine, filet tricolore discret (voir app/globals.css pour l'exception, et components/Trico.tsx).
 //
-// Les sections Méthode / Financement / Témoignages / Engagements / CTA final
-// / Stats sont partagées avec les pages diplôme dédiées (voir
-// components/sections/) pour ne jamais dupliquer une donnée réelle. Seuls le
-// Hero, "Pour qui ?", "Nos diplômes" et la FAQ restent spécifiques à la home.
+// Les sections Méthode / Financement / Témoignages / Appel final / Bandeau de confiance sont partagées
+// avec les pages diplôme dédiées (voir components/sections/) pour ne jamais dupliquer une donnée réelle.
+// Seuls le Hero, « Pour qui ? », « Nos diplômes » et la FAQ restent spécifiques à la home.
 //
 // Prix, témoignages, durées et avis sont des données réelles fournies par
 // Yoni (jamais de chiffre inventé) — voir mémoire projet pour la traçabilité.
+//
+// « Partenaire Qualiopi » / « Partenaire France VAE » (bandeau de confiance, pied de page) :
+// PARTENAIRE, ET PAS « CERTIFIÉ » — la formulation est juridiquement importante. La certification
+// Qualiopi et le référencement France VAE appartiennent à l'organisme de formation partenaire, pas à
+// vae-social.fr. Écrire « Certifié Qualiopi » laisserait croire que ce site est lui-même l'organisme
+// certifié : c'est faux, et c'est vérifiable en trente secondes sur l'annuaire public. Ne jamais
+// retirer le mot « Partenaire ».
+// Chiffres de réassurance (97 %, 400+) : documentés, voir RESULTATS dans lib/site-data.ts avant toute modification.
 
 // Liste des diplômes dérivée de DIPLOMES (lib/site-data.ts) : ajouter un diplôme
-// là-bas met à jour le paragraphe d'accroche, la pastille « N diplômes » et la
-// meta description d'ici sans retoucher cette page. Ne plus écrire la liste en dur.
+// là-bas met à jour la meta description et la FAQ d'ici, ainsi que les pastilles et les
+// cartes de diplômes, sans retoucher cette page. Ne plus écrire la liste en dur.
 //   LISTE_SIGLES        → « DEES, DEAES, …, CAFERUIS »
-//   LISTE_VISEE         → « le DEES, le DEAES, …, le DEASS ou le CAFERUIS »
 const SIGLES = DIPLOMES.map((d) => d.sigle);
 const LISTE_SIGLES = SIGLES.join(", ");
-const LISTE_VISEE =
-  SIGLES.slice(0, -1)
-    .map((s) => `le ${s}`)
-    .join(", ") + ` ou le ${SIGLES[SIGLES.length - 1]}`;
 
 export const metadata: Metadata = {
   // Titre "absolute" : n'hérite pas du template du layout racine (` | VAESocial`)
@@ -62,35 +62,18 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-// Icônes vectorielles (voir components/BrandIcon.tsx) : les émojis rendaient
-// différemment sur chaque appareil et juraient avec le formulaire voisin,
-// déjà passé au vectoriel.
-const VALEURS = [
-  { icon: "diploma" as const, titre: `${DIPLOMES.length} diplômes accessibles` },
-  { icon: "screen" as const, titre: "100% à distance" },
-  { icon: "wallet" as const, titre: "Financement CPF" },
-  { icon: "building" as const, titre: "Financement OPCO Santé" },
+// Ce que l'on verra à l'écran pendant la visio de 40 minutes (faits donnés par Yoni le 12/10/2026).
+const AU_PROGRAMME = [
+  "Votre expérience, regardée ensemble",
+  "Le diplôme qui lui correspond",
+  "Ce que demande la démarche, sans surprise",
 ];
 
+// Les 3 profils (textes inchangés). Les pastilles sont extraites de ces textes : n'y ajouter aucun mot qui n'y figure pas.
 const PERSONAS = [
-  {
-    icon: "🏢",
-    titre: "Vous travaillez dans une structure médico-sociale",
-    texte:
-      "IME, ITEP, MECS, foyer, EHPAD... votre expérience peut déjà être reconnue pour obtenir un diplôme d'État.",
-  },
-  {
-    icon: "🏠",
-    titre: "Vous accompagnez à domicile",
-    texte:
-      "AES, TISF, auxiliaire de vie... vos années d'expérience peuvent être valorisées grâce à la VAE.",
-  },
-  {
-    icon: "🤝",
-    titre: "Vous exercez sans diplôme d'État",
-    texte:
-      "Même sans diplôme, votre expérience professionnelle peut ouvrir droit à une validation.",
-  },
+  { icon: "building" as const, titre: "Vous travaillez dans une structure médico-sociale", texte: "IME, ITEP, MECS, foyer, EHPAD... votre expérience peut déjà être reconnue pour obtenir un diplôme d'État.", chips: ["IME", "ITEP", "MECS", "Foyer", "EHPAD"] },
+  { icon: "users" as const, titre: "Vous accompagnez à domicile", texte: "AES, TISF, auxiliaire de vie... vos années d'expérience peuvent être valorisées grâce à la VAE.", chips: ["AES", "TISF", "Auxiliaire de vie"] },
+  { icon: "diploma" as const, titre: "Vous exercez sans diplôme d'État", texte: "Même sans diplôme, votre expérience professionnelle peut ouvrir droit à une validation.", chips: ["Sans diplôme", "Expérience professionnelle"] },
 ];
 
 const FAQ_ITEMS: FaqItem[] = [
@@ -139,202 +122,120 @@ const FAQ_ITEMS: FaqItem[] = [
 export default function HomePage() {
   return (
     <>
-      {/* HERO — pitch + formulaire intégré directement (moins de friction pour le trafic Ads).
-          3 blocs distincts (accroche / formulaire / réassurance) plutôt que 2, pour que le
-          formulaire remonte juste après le titre sur mobile — l'ordre DOM = l'ordre d'affichage
-          en une colonne, et l'auto-placement CSS Grid reconstitue la mise en page 2 colonnes à
-          partir de lg (accroche+réassurance à gauche, formulaire à droite sur toute la hauteur). */}
-      <section className="bg-gradient-to-b from-brand-50 via-white to-white pb-8 pt-4 sm:pb-20 sm:pt-20">
-        <Container className="px-3 sm:px-6 lg:px-8">
-          <div className="grid gap-4 sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-6">
+      {/* HERO */}
+      <section className="relative overflow-x-clip bg-gradient-to-b from-brand-50 via-white to-white pb-10 pt-6 sm:pb-20 sm:pt-16">
+        <div aria-hidden className="pointer-events-none absolute -right-32 -top-24 h-[28rem] w-[28rem] rounded-full bg-brand-100/60 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute left-0 top-24 hidden h-56 w-72 opacity-70 lg:block" style={DOTS} />
+        <Container className="relative px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-x-14 lg:gap-y-8">
             <div>
-              <div className="flex flex-wrap items-center justify-center gap-2 text-center sm:gap-3">
-                <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-brand-100 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm">
-                  <BrandIcon name="shield" className="h-4 w-4 shrink-0" />
-                  <span className="hidden sm:inline">Secteur social &amp; médico-social</span>
-                  <span className="sm:hidden">Secteur social</span>
-                </span>
-                {/* Remplace l'ancien bandeau « 4,9/5 · 1257 avis », retiré faute
-                    de pouvoir documenter ces avis. Les deux chiffres ci-dessous
-                    sont justifiables pièces à l'appui — voir RESULTATS dans
-                    lib/site-data.ts avant toute modification. */}
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-emerald-800 sm:px-4 sm:text-sm">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-900/10 sm:text-sm">
                   <BrandIcon name="award" className="h-4 w-4 shrink-0" />
-                  {RESULTATS.taux}{" "}
-                  <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
+                  {RESULTATS.taux} <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
                   <span className="sm:hidden">validés</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-brand-50 px-3 py-1.5 text-[0.8125rem] font-semibold text-brand-700 sm:px-4 sm:text-sm">
-                  <BrandIcon name="wallet" className="h-4 w-4 shrink-0" />
-                  Financement CPF
-                </span>
-                {/* PARTENAIRE, ET PAS « CERTIFIÉ » — la formulation est
-                    juridiquement importante. La certification Qualiopi et le
-                    référencement France VAE appartiennent à l'organisme de
-                    formation partenaire, pas à vae-social.fr. Écrire
-                    « Certifié Qualiopi » ici laisserait croire que ce site est
-                    lui-même l'organisme certifié : c'est faux, et c'est
-                    vérifiable en trente secondes sur l'annuaire public. Ne
-                    jamais retirer le mot « Partenaire ». */}
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm">
-                  <BrandIcon name="seal" className="h-4 w-4 shrink-0 text-brand-600" />
-                  Partenaire Qualiopi
-                </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-semibold text-slate-700 ring-1 ring-slate-200 sm:px-4 sm:text-sm">
-                  <BrandIcon name="gov" className="h-4 w-4 shrink-0 text-brand-600" />
-                  Partenaire France VAE
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-brand-900/10 sm:text-sm">
+                  <BrandIcon name="users" className="h-4 w-4 shrink-0" />
+                  {RESULTATS.volume} {RESULTATS.volumeLabel}
                 </span>
               </div>
-              {/* TITRE — refonte du 20/09/2026.
-                  L'ancien titre était « On vous dit d'abord si vous êtes éligible.
-                  Pas l'inverse. » Il a été remplacé pour deux raisons.
-
-                  1. « Pas l'inverse » sous-entend que les concurrents procèdent
-                     malhonnêtement. C'est une posture de vendeur qui se défend,
-                     et elle met le visiteur sur ses gardes dès la première ligne
-                     alors que l'objectif est de le mettre à l'aise.
-
-                  2. Le formulaire ne rend AUCUN verdict d'éligibilité : il
-                     déclenche un rappel. Promettre un verdict était faux, et
-                     c'est aussi le tic de langage des arnaques au CPF — un
-                     terrain sur lequel ce site n'a aucun intérêt à être rangé.
-
-                  Le nouveau titre n'affirme rien et ne promet rien : il propose
-                  une démarche commune, ce qui correspond exactement à ce qui se
-                  passe ensuite au téléphone.
-
-                  TAILLE : `clamp` plutôt qu'un palier fixe. Sur un iPhone la
-                  colonne utile fait ~360 px ; en corps 31 il n'y entre qu'une
-                  quinzaine de caractères par ligne, et un titre long s'y coupe
-                  n'importe où. `sm:text-balance` est retiré pour la même raison
-                  (il égalise la longueur des lignes au lieu de les remplir). */}
-              <h1 className="mt-2.5 text-[clamp(1.6rem,6.6vw,2.4rem)] font-bold leading-[1.12] tracking-[-0.03em] text-slate-900 sm:mt-6 lg:text-5xl">
-                Commençons par regarder{" "}
-                <span className="text-brand-600">votre parcours</span> et le diplôme qui lui
-                correspond.
+              <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
+                Commençons par regarder <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">votre parcours</span> et le diplôme qui lui correspond.
               </h1>
-              <p className="mt-2 text-sm font-semibold text-slate-800 sm:mt-4 sm:text-lg">
-                Trois minutes de questions, puis un expert du secteur social vous rappelle :
-                la VAE, les livrets, le financement, et ce qui est possible dans votre situation.
+              <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-700 sm:mt-6 sm:text-lg">
+                Trois minutes de questions, puis un expert du secteur social vous rappelle : la VAE, les livrets, le financement, et ce qui est possible dans votre situation.
               </p>
+              <p className="mt-6 text-sm font-semibold text-brand-900">Que vous visiez :</p>
+              <ul className="mt-2.5 flex flex-wrap gap-2">
+                {DIPLOMES.map((d, i) => (
+                  <li key={d.sigle}>
+                    <Link href={`/${d.slug}`} className={`inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-bold ring-1 ring-brand-900/10 transition hover:-translate-y-0.5 ${i % 2 === 0 ? "bg-white text-brand-700" : "bg-brand-50 text-brand-800"}`}>{d.sigle}</Link>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600">On vous guide à chaque étape, sans reprendre une formation complète, et sans aucun engagement de votre part avant d&apos;avoir la réponse.</p>
             </div>
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
-              <PrediagnosticForm />
-              <p className="mt-3 text-center text-xs text-slate-500 sm:mt-4">
-                Vos informations restent confidentielles — jamais revendues à des tiers.
+              <div className="relative">
+                <div aria-hidden className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-brand-100 via-white to-accent-100/60 blur-xl" />
+                <div className="rounded-3xl bg-white p-1.5 shadow-[0_30px_70px_-30px_rgba(14,31,58,0.45)] ring-1 ring-brand-900/10 sm:p-2">
+                  <PrediagnosticForm />
+                </div>
+              </div>
+              <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-slate-600 sm:mt-4">
+                <BrandIcon name="lock" className="h-3.5 w-3.5 shrink-0 text-brand-600" />
+                Vos informations restent confidentielles, jamais revendues à des tiers.
               </p>
             </div>
 
             <div>
-              <p className="text-base leading-relaxed text-slate-600 sm:text-lg">
-                Que vous visiez {LISTE_VISEE}, on vous guide à chaque
-                étape — sans reprendre une formation complète, et sans aucun engagement de
-                votre part avant d&apos;avoir la réponse.
-              </p>
-
-              <ul className="mt-4 grid grid-cols-2 gap-2.5 sm:mt-6">
-                {VALEURS.map((v) => (
-                  <li
-                    key={v.titre}
-                    className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm font-semibold text-slate-700"
-                  >
-                    <BrandIcon name={v.icon} className="h-5 w-5 shrink-0 text-brand-600" />
-                    {v.titre}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Rappel condensé des compétences valorisables — répond à
-                  "est-ce que je suis concerné ?" et évite un vide visuel face au
-                  formulaire, plus haut que ce bloc de texte à lui seul. */}
-              <div className="mt-4 rounded-2xl border border-slate-100 bg-white/60 p-4 sm:mt-6 sm:p-6">
-                <p className="text-sm font-semibold text-slate-900">
-                  👉 Ce sont exactement les compétences évaluées dans un dossier de VAE. Vous en
-                  pratiquez peut-être déjà certaines :
-                </p>
-                <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
-                  {COMPETENCES.map((c) => (
-                    <li key={c} className="flex items-start gap-2 text-sm text-slate-600">
-                      <span className="mt-0.5 text-brand-600" aria-hidden>
-                        ✓
-                      </span>
-                      {c}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-3 text-xs text-slate-500">
-                  Peu importe l&apos;intitulé exact de votre poste : le jury regarde ce que vous
-                  avez réellement pratiqué, en salarié·e, bénévole ou aidant·e.
-                </p>
+              <div className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-34px_rgba(14,31,58,0.45)] ring-1 ring-brand-900/10">
+                <div className="flex items-center gap-1.5 border-b border-brand-900/10 bg-brand-50 px-4 py-2.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-brand-200" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-brand-200" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-brand-200" />
+                  <span className="ml-3 text-xs font-semibold text-brand-700">Ensuite : votre visio · 40 minutes</span>
+                </div>
+                <div className="p-5 sm:p-6">
+                  <ul className="space-y-3">
+                    {AU_PROGRAMME.map((t) => (
+                      <li key={t} className="flex items-start gap-3 text-[0.95rem] font-medium leading-snug text-brand-900">
+                        <span className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-brand-100 text-brand-600"><Ico name="check" className="h-3.5 w-3.5" /></span>
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-5 rounded-xl bg-brand-50 px-4 py-2.5 text-center text-sm text-brand-800"><span className="font-semibold">Gratuite</span> · aucune inscription sans cet échange</p>
+                </div>
               </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <StatsBar />
+      <TrustBand />
 
-      {/* EMPATHIE + PERSONAS */}
-      <section className="bg-white py-12 sm:py-24">
+      {/* POUR QUI */}
+      <section className="relative bg-white py-12 sm:py-20">
         <Container>
-          <div className="mx-auto max-w-2xl text-center">
+          <div className="mx-auto max-w-3xl text-center">
             <Eyebrow>Pour qui ?</Eyebrow>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:mt-3 sm:text-4xl">
-              Quel que soit votre parcours, une voie existe vers le diplôme.
-            </h2>
-            <p className="mt-2 text-base text-slate-600 sm:mt-4 sm:text-lg">
-              Structure, domicile, autodidacte ou en reconversion : chaque situation a ses propres
-              leviers pour accéder à un diplôme d&apos;État par la VAE.
-            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-brand-900 [text-wrap:balance] sm:text-4xl">Quel que soit votre parcours, une voie existe vers le diplôme.</h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">Structure, domicile, autodidacte ou en reconversion : chaque situation a ses propres leviers pour accéder à un diplôme d&apos;État par la VAE.</p>
           </div>
-          <div className="mt-6 grid gap-3 sm:mt-14 sm:grid-cols-3 sm:gap-6">
-            {PERSONAS.map((p) => (
-              <div
-                key={p.titre}
-                className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:block sm:p-7"
-              >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-base sm:h-11 sm:w-11 sm:text-xl">
-                  <span aria-hidden>{p.icon}</span>
+          <div className="mt-10 grid gap-4 sm:mt-12 sm:gap-5 md:grid-cols-3">
+            {PERSONAS.map((p, i) => {
+              const t = TINTS[i];
+              return (
+                <div key={p.titre} className="group relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brand-900/10 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-900/10 sm:p-7">
+                  <div aria-hidden className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${t.bar}`} />
+                  <div className="flex items-center justify-between">
+                    <span className={`flex h-12 w-12 items-center justify-center rounded-2xl ${t.tile}`}><BrandIcon name={p.icon} className="h-6 w-6" /></span>
+                    <span className="text-4xl font-bold text-brand-100">0{i + 1}</span>
+                  </div>
+                  <h3 className="mt-5 text-lg font-bold leading-snug text-brand-900">{p.titre}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-700">{p.texte}</p>
+                  <div className="mt-5 flex flex-wrap gap-1.5">{p.chips.map((c) => (<Chip key={c} className={t.chip}>{c}</Chip>))}</div>
                 </div>
-                <div className="sm:mt-4">
-                  <h3 className="text-sm font-semibold text-slate-900 sm:text-base">
-                    {p.titre}
-                  </h3>
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600 sm:mt-2 sm:text-sm">
-                    {p.texte}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-
-          <div className="mx-auto mt-6 grid max-w-3xl gap-4 sm:mt-8 sm:gap-5 sm:grid-cols-2">
-            <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm shadow-slate-900/[0.03] sm:p-6">
-              <p className="text-sm font-semibold text-slate-700">
-                Votre expérience correspond peut-être déjà à :
-              </p>
-              <ul className="mt-2.5 space-y-1.5 sm:mt-3 sm:space-y-2">
+          <div className="mx-auto mt-6 grid max-w-4xl gap-4 sm:mt-8 sm:gap-5 md:grid-cols-2">
+            <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brand-900/10 sm:p-7">
+              <p className="text-sm font-bold text-brand-900">Votre expérience correspond peut-être déjà à :</p>
+              <ul className="mt-3 space-y-2">
                 {COMPETENCES.map((c) => (
-                  <li key={c} className="flex items-start gap-2 text-sm text-slate-600">
-                    <span className="mt-0.5 text-brand-600" aria-hidden>
-                      ✓
-                    </span>
-                    {c}
-                  </li>
+                  <li key={c} className="flex items-start gap-2.5 text-sm text-slate-700"><span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-brand-50 text-brand-600"><Ico name="check" className="h-3 w-3" /></span>{c}</li>
                 ))}
               </ul>
             </div>
-            <div className="rounded-2xl border border-brand-100 bg-brand-50 p-5 text-sm text-brand-900 sm:p-6">
-              <p className="flex items-center gap-2 font-semibold"><BrandIcon name="handshake" className="h-5 w-5 shrink-0" />Notre promesse : la transparence avant tout</p>
-              <ul className="mt-2.5 space-y-1.5 sm:mt-3 sm:space-y-2">
+            <div className="rounded-3xl bg-brand-50 p-6 ring-1 ring-brand-900/10 sm:p-7">
+              <p className="flex items-center gap-2 text-sm font-bold text-brand-900"><BrandIcon name="handshake" className="h-5 w-5 shrink-0 text-brand-600" />Notre promesse : la transparence avant tout</p>
+              <ul className="mt-3 space-y-2">
                 {REASSURANCES.map((r) => (
-                  <li key={r} className="flex items-start gap-2 text-brand-800">
-                    <span className="mt-0.5 text-brand-600" aria-hidden>
-                      ✓
-                    </span>
-                    {r}
-                  </li>
+                  <li key={r} className="flex items-start gap-2.5 text-sm text-brand-900"><span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-white text-brand-600 shadow-sm"><Ico name="check" className="h-3 w-3" /></span>{r}</li>
                 ))}
               </ul>
             </div>
@@ -342,72 +243,68 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* DIPLÔMES — chaque carte pointe vers sa page dédiée pour Google Ads */}
-      <section id="diplomes" className="bg-brand-50/60 py-12 sm:py-24">
+      {/* NOS DIPLÔMES */}
+      <section id="diplomes" className="relative scroll-mt-16 overflow-hidden bg-brand-50/70 py-12 sm:py-20">
+        <div aria-hidden className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full border-[28px] border-brand-100/70" />
+        <div aria-hidden className="pointer-events-none absolute right-6 top-8 hidden h-40 w-56 opacity-70 sm:block" style={DOTS} />
         <Container>
-          <div className="mx-auto max-w-2xl text-center">
+          <div className="relative mx-auto max-w-2xl text-center">
             <Eyebrow>Nos diplômes</Eyebrow>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:mt-3 sm:text-4xl">
-              Les diplômes accessibles par la VAE
-            </h2>
-            <p className="mt-2 text-base text-slate-600 sm:mt-4 sm:text-lg">
-              Trouvez le vôtre — chaque diplôme a sa propre page avec toutes les informations
-              utiles pour vous décider.
-            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-brand-900 [text-wrap:balance] sm:text-4xl">Les diplômes accessibles par la VAE</h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">Trouvez le vôtre : chaque diplôme a sa propre page avec toutes les informations utiles pour vous décider.</p>
           </div>
-          <div className="mt-6 grid gap-3 sm:mt-14 sm:grid-cols-2 sm:gap-6">
-            {DIPLOMES.map((d) => (
-              <Link
-                key={d.sigle}
-                href={`/${d.slug}`}
-                className="flex flex-col rounded-2xl border border-slate-100 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/5 sm:p-7"
-              >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-base sm:h-11 sm:w-11 sm:text-xl">
-                    <span aria-hidden>🎓</span>
+          <div className="relative mt-8 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+            {DIPLOMES.map((d, i) => {
+              const t = TINTS[i % 4];
+              return (
+                <Link key={d.sigle} href={`/${d.slug}`} className="group relative flex flex-col overflow-hidden rounded-3xl bg-white p-5 shadow-sm ring-1 ring-brand-900/10 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-900/10 sm:p-6">
+                  <div aria-hidden className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${t.bar}`} />
+                  <div className="flex items-center gap-3">
+                    <span className={`flex h-11 w-11 flex-none items-center justify-center rounded-2xl ${t.tile}`}><BrandIcon name="diploma" className="h-5 w-5" /></span>
+                    <div className="min-w-0">
+                      <p className="text-xl font-bold leading-none text-brand-900">{d.sigle}</p>
+                      <p className="mt-1 text-xs font-semibold leading-snug text-brand-600">{d.nom}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-lg font-bold text-slate-900 sm:text-xl">{d.sigle}</p>
-                    <p className="text-xs font-medium text-brand-600 sm:text-sm">{d.nom}</p>
-                  </div>
-                </div>
-                <p className="mt-3 flex-1 text-xs leading-relaxed text-slate-600 sm:mt-4 sm:text-sm">
-                  {d.description}
-                </p>
-                <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-700 sm:mt-5 sm:text-sm">
-                  Voir ce diplôme →
-                </span>
-              </Link>
-            ))}
+                  <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-700">{d.description}</p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">Voir ce diplôme <Ico name="arrow" className="h-4 w-4 transition group-hover:translate-x-1" /></span>
+                </Link>
+              );
+            })}
+            <Link href="#prediagnostic-form" className="relative flex flex-col justify-between overflow-hidden rounded-3xl bg-brand-600 p-5 text-white shadow-xl shadow-brand-900/20 sm:p-6">
+              <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full border-[18px] border-white/10" />
+              <div className="relative">
+                <p className="text-lg font-bold leading-snug">Vous hésitez entre deux diplômes ?</p>
+                <p className="mt-2 text-sm leading-relaxed text-brand-50">Le premier échange sert aussi à ça : repérer celui qui correspond à votre expérience.</p>
+              </div>
+              <span className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-bold">Être rappelé·e gratuitement <Ico name="arrow" className="h-4 w-4" /></span>
+            </Link>
           </div>
         </Container>
       </section>
 
       <MethodeSection />
+
       <FinancementSection />
+
       <TemoignagesSection />
 
       {/* FAQ */}
-      <section id="faq" className="bg-brand-50/60 py-12 sm:py-24">
+      <section id="faq" className="scroll-mt-16 bg-brand-50/70 py-12 sm:py-20">
         <Container className="max-w-3xl">
           <div className="text-center">
             <Eyebrow>FAQ</Eyebrow>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:mt-3 sm:text-4xl">
-              Vos questions sur la VAE
-            </h2>
-            <p className="mt-2 text-base text-slate-600 sm:mt-4 sm:text-lg">
-              Toutes les réponses pour démarrer en confiance.
-            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-brand-900 [text-wrap:balance] sm:text-4xl">Vos questions sur la VAE</h2>
+            <p className="mt-4 text-base text-slate-600 sm:text-lg">Toutes les réponses pour démarrer en confiance.</p>
           </div>
-          <div className="mt-6 sm:mt-12">
-            <FaqAccordion items={FAQ_ITEMS} />
-          </div>
+          <div className="mt-8 sm:mt-10"><FaqAccordion items={FAQ_ITEMS} /></div>
           <FaqJsonLd items={FAQ_ITEMS} />
         </Container>
       </section>
 
-      <EngagementsSection />
       <CtaFinalSection />
+
+      <StickyCta href="#prediagnostic-form" label="Mon prédiagnostic gratuit" hideWhenVisible={["#prediagnostic-form", "#cta-final", "footer"]} />
     </>
   );
 }

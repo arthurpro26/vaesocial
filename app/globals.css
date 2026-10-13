@@ -36,10 +36,18 @@
      de plusieurs dizaines de pages. Ces fonds-là doivent accueillir, pas
      intimider. L'écart est subtil à l'œil mais il change la sensation.
 
-   NE PAS emprunter les codes visuels d'un service public (bleu-blanc-rouge en
-   particulier) : le candidat croirait être sur un portail officiel alors qu'il
-   s'agit d'un accompagnement privé, et découvrirait le malentendu au
-   téléphone. Confiance perdue dès la première minute.
+   NE PAS emprunter les codes visuels d'un service public : le candidat
+   croirait être sur un portail officiel alors qu'il s'agit d'un accompagnement
+   privé, et découvrirait le malentendu au téléphone. Confiance perdue dès la
+   première minute. Pas de Marianne, pas de « RF », pas de bloc-marque de
+   l'État, pas du bleu #000091, pas de « République française ».
+
+   UNE SEULE EXCEPTION, voulue par Yoni le 13/10/2026 (« pour qu'ils
+   comprennent qu'on n'est pas des amateurs ») : un filet tricolore très
+   discret (components/Trico.tsx) qui sert de signature de marque : bandeau fin
+   en haut et en bas du site, mini-filet au-dessus des titres de section.
+   Jamais plus gros que ça. Les deux variables `--trico-*` ci-dessous gardent
+   son bleu fixe, même quand la page change de thème (voir `.theme-rose`).
 
    Contrastes vérifiés : niveaux 600 à 900 au-dessus de 7:1 sur blanc (AAA),
    niveau 500 au-dessus de 5:1 — c'est lui qui porte la bordure de sélection et
@@ -58,6 +66,10 @@
   --brand-700: 26 56 103;
   --brand-800: 21 45 82;
   --brand-900: 14 31 58;
+  /* Bleu du filet tricolore (components/Trico.tsx) : volontairement HORS de la
+     palette brand-*, pour ne pas virer au rose sur la page .theme-rose. */
+  --trico-blue: 33 71 128;
+  --trico-blue-light: 138 170 214;
 }
 
 /* Thème rose — utilisé uniquement sur la page /auxiliaire-puericulture.

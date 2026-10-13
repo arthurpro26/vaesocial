@@ -22,6 +22,9 @@ export type DiplomeData = {
   heroParagraphe: string;
   publicIntro: string;
   publicConcerne: { titre: string; texte: string }[];
+  // Une liste de mots-repères par carte de `publicConcerne` (même ordre), affichés en pastilles.
+  // Ils sont tous tirés des textes de la carte : n'ajouter aucun mot qui n'y figure pas.
+  publicChips: string[][];
   debouchesIntro: string;
   debouches: { icon: string; texte: string }[];
   debouchesConclusion: string;
@@ -79,6 +82,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
           "En IME, ITEP, ESAT ou foyer pour adultes handicapés, sans DEES, votre pratique professionnelle reste votre meilleur argument pour l'obtenir.",
       },
     ],
+    publicChips: [["Moniteur-éducateur", "AES"], ["MECS", "AEMO", "Foyer de l'enfance"], ["IME", "ITEP", "ESAT", "Foyer"]],
     debouchesIntro:
       "Le DEES ouvre principalement des postes dans le secteur privé associatif, majoritaire parmi les employeurs — et des parcours très variés selon le public que vous choisissez d'accompagner :",
     debouches: [
@@ -203,6 +207,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
           "L'accompagnement d'enfants en situation de handicap à l'école ou en structure spécialisée entre dans le champ du DEAES.",
       },
     ],
+    publicChips: [["Auxiliaire de vie", "Aide à domicile", "SAAD"], ["EHPAD", "AMP", "Aide-soignant·e"], ["AESH", "Handicap"]],
     debouchesIntro:
       "Le DEAES ouvre des postes très variés, à domicile comme en établissement — de quoi trouver le cadre qui vous correspond :",
     debouches: [
@@ -286,6 +291,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
           "Animateur·rice petite enfance, professionnel·le en crèche collective, familiale ou en halte-garderie : votre expérience reste votre meilleur argument.",
       },
     ],
+    publicChips: [["Auxiliaire de puériculture", "Crèche"], ["Assistant·e maternel·le", "À domicile"], ["Crèche collective", "Crèche familiale", "Halte-garderie"]],
     debouchesIntro:
       "Le DEEJE ouvre principalement des postes dans les collectivités territoriales et le secteur de la petite enfance — au plus près des tout-petits :",
     debouches: [
@@ -371,6 +377,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
           "MECS, prévention spécialisée, insertion sociale : votre pratique de terrain reste votre meilleur argument pour obtenir le DEME.",
       },
     ],
+    publicChips: [["AES", "AMP"], ["ESAT", "MAS", "IME"], ["MECS", "Prévention spécialisée", "Insertion sociale"]],
     debouchesIntro:
       "Le DEME ouvre principalement des postes dans le secteur privé associatif (80 % des recrutements), avec un taux d'insertion professionnelle élevé — et des terrains d'action très concrets :",
     debouches: [
@@ -467,6 +474,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
           "Agente des services hospitaliers, aide-soignante ou faisant fonction en maternité, en néonatalogie ou en pédiatrie : votre pratique des soins au jeune enfant est directement transposable.",
       },
     ],
+    publicChips: [["Crèche", "Micro-crèche", "Halte-garderie"], ["Assistante maternelle", "Garde d'enfants"], ["Maternité", "Néonatalogie", "Pédiatrie"]],
     debouchesIntro:
       "Le DEAP est un diplôme d'État délivré par le ministère chargé de la Santé, et il ouvre des portes dans deux univers très différents — le soin et l'accueil du jeune enfant :",
     debouches: [
@@ -561,6 +569,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
           "Hébergement, établissement médico-social, EHPAD, hôpital : si vous y assurez un accompagnement social des personnes sans avoir le titre d'assistant de service social, la VAE reconnaît votre expérience.",
       },
     ],
+    publicChips: [["Accès aux droits", "Logement", "Budget", "Santé"], ["Conseil départemental", "CCAS", "Mairie", "Mission locale"], ["Hébergement", "EHPAD", "Hôpital"]],
     debouchesIntro:
       "Le DEASS ouvre l'accès au métier d'assistant de service social, exercé dans le champ de l'action sociale et médico-sociale, chez des employeurs très variés :",
     debouches: [
@@ -658,6 +667,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
           "Vous managez des équipes et contribuez au projet de l'établissement : votre expérience peut être valorisée dans les quatre blocs du certificat.",
       },
     ],
+    publicChips: [["Référent", "Coordinateur", "Responsable d'équipe"], ["Chef de service", "Plannings", "Budget"], ["Adjoint de direction", "Responsable de pôle"]],
     debouchesIntro:
       "Le CAFERUIS ouvre des postes d'encadrement dans l'action sociale et médico-sociale, comme ceux-ci :",
     debouches: [
