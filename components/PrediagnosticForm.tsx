@@ -28,6 +28,9 @@ const DIPLOME_OPTIONS = [
   // dans l'email et dans la colonne "Diplôme" du Sheet, ne jamais la modifier).
   { value: "DEASS", label: "DEASS", helper: "Assistant de service social · Bac+3" },
   { value: "CAFERUIS", label: "CAFERUIS", helper: "Chef de service · Niveau 6" },
+  // Ajouté le 13/10/2026 (mêmes règles : la `value` est le sigle, elle part dans
+  // l'email et dans la colonne "Diplôme" du Sheet, ne jamais la modifier).
+  { value: "DEETS", label: "DEETS", helper: "Éducateur technique spécialisé · Niveau 6" },
   { value: "Je ne sais pas", label: "Je ne sais pas" },
 ];
 
@@ -109,6 +112,7 @@ const SITUATION_HELPERS_PAR_DIPLOME: Record<string, keyof typeof SITUATION_HELPE
   DEAP: "petiteEnfance",
   DEASS: "social",
   CAFERUIS: "social",
+  DEETS: "social",
 };
 
 const SITUATION_OPTIONS = [
@@ -183,6 +187,9 @@ const STRUCTURE_SUGGESTIONS: Record<string, string[]> = {
   // fonctions d'encadrement.
   DEASS: ["CCAS", "Conseil départemental", "Mairie", "Mission locale", "Hôpital", "EHPAD", "CHRS", "Association"],
   CAFERUIS: ["MECS", "IME", "ITEP", "CHRS", "ESAT", "FAM", "MAS", "SESSAD", "AEMO", "Foyer"],
+  // DEETS (13/10/2026) : les structures citées par la fiche métier du ministère
+  // des Solidarités et par la fiche RNCP du diplôme.
+  DEETS: ["ESAT", "Entreprise adaptée", "IME", "ITEP", "Chantier d'insertion", "Atelier d'insertion", "Foyer de vie"],
 };
 // Liste de secours si le diplôme n'est pas encore déterminé ("Je ne sais
 // pas") : toutes les suggestions réunies, sans doublons.
@@ -219,6 +226,8 @@ const ACTIVITE_PLACEHOLDER: Record<string, string> = {
     "Ex : J'accueille et j'oriente les familles de mon secteur, j'instruis leurs demandes d'aide, je les accompagne dans leurs démarches de logement et de budget et je travaille avec les partenaires du territoire...",
   CAFERUIS:
     "Ex : Je coordonne une équipe de huit éducateurs, j'organise les plannings, je suis responsable du suivi des projets individualisés et du budget de l'unité, et je participe au projet d'établissement...",
+  DEETS:
+    "Ex : J'encadre un atelier de dix travailleurs en ESAT, j'organise la production, j'apprends les gestes du métier à chacun, j'évalue ses progrès avec l'équipe éducative et je construis avec lui son projet professionnel...",
 };
 
 // Filigrane par défaut : volontairement neutre, ni social ni petite enfance.

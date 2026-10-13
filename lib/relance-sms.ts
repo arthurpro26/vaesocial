@@ -66,6 +66,9 @@ const DIPLOME_LIBELLE: Record<string, string> = {
   DEASS: "Diplôme d'État d'Assistant de Service Social",
   CAFERUIS:
     "Certificat d'aptitude aux fonctions d'encadrement et de responsable d'unité d'intervention sociale",
+  // Ajouté le 13/10/2026 avec la page éducateur technique spécialisé (même
+  // raison que pour DEAP : sans cette ligne, le SMS perdrait le sigle).
+  DEETS: "Diplôme d'État d'Éducateur Technique Spécialisé",
 };
 
 /**

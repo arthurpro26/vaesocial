@@ -725,4 +725,139 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     ],
     ctaTitre: "Prêt·e à savoir si vous êtes éligible au CAFERUIS ?",
   },
+
+  // Ajouté le 13/10/2026. Faits repris de deux sources officielles : la fiche
+  // RNCP41746 de France Compétences (niveau 6, quatre blocs, voies d'accès, jury,
+  // parcours certifiants à partir du 01/09/2026, remplace la fiche RNCP37677) et la
+  // fiche métier « Éducateur technique spécialisé » du ministère des Solidarités
+  // (missions, lieux d'exercice, 180 ECTS). Rien d'autre : aucun chiffre de
+  // salaire, de délai ou d'insertion propre au DEETS n'a été trouvé, donc aucun
+  // n'est affiché.
+  "educateur-technique-specialise": {
+    slug: "educateur-technique-specialise",
+    sigle: "DEETS",
+    nomComplet: "Diplôme d'État d'Éducateur Technique Spécialisé",
+    niveau: "Niveau 6 (grade licence)",
+    metaTitle: "VAE éducateur technique spécialisé (DEETS) | VAESocial",
+    metaDescription:
+      "Obtenez le DEETS (éducateur technique spécialisé) par la VAE grâce à votre expérience en atelier, ESAT, IME ou chantier d'insertion. Diagnostic gratuit en 3 minutes.",
+    heroSuffixe: "au DEETS",
+    heroIntro:
+      "✨ Votre expérience d'encadrement technique et d'accompagnement en atelier vaut le DEETS. Vérifiez gratuitement si vous êtes éligible en moins de 3 minutes.",
+    heroParagraphe:
+      "Le DEETS est un diplôme d'État de niveau 6 (grade licence). L'éducateur technique spécialisé élabore des parcours d'insertion, met en œuvre des actions de formation professionnelle et assure l'encadrement technique d'activités professionnelles, au sein d'une équipe pluriprofessionnelle. Par la VAE, votre pratique de terrain — en ESAT, IME, entreprise adaptée ou chantier d'insertion — peut être valorisée dans un dossier, sans reprendre une formation complète.",
+    publicIntro:
+      "Vous transmettez déjà un savoir-faire technique à des personnes que vous accompagnez, avec ou sans le diplôme ? Votre expérience peut être recevable pour une VAE DEETS.",
+    publicConcerne: [
+      {
+        titre: "Vous encadrez un atelier ou une activité de travail",
+        texte:
+          "En ESAT, en entreprise adaptée ou en atelier, vous organisez le travail, transmettez les gestes du métier et aidez chacun à tenir son rythme : c'est le cœur des missions évaluées par le jury.",
+      },
+      {
+        titre: "Vous accompagnez des parcours d'insertion",
+        texte:
+          "Chantier d'insertion, IME, ITEP : vous évaluez les compétences de chaque personne, construisez avec elle un parcours d'apprentissage et l'accompagnez vers un emploi ou une formation.",
+      },
+      {
+        titre: "Vous venez d'un métier technique et vous exercez sans le diplôme",
+        texte:
+          "Cuisine, espaces verts, menuiserie, entretien... vous avez un métier de base et vous encadrez aujourd'hui des personnes en atelier : votre double expérience, technique et éducative, est exactement ce que le diplôme reconnaît.",
+      },
+    ],
+    publicChips: [["ESAT", "Entreprise adaptée", "Atelier"], ["Chantier d'insertion", "IME", "ITEP"], ["Métier de base", "Cuisine", "Espaces verts"]],
+    debouchesIntro:
+      "Le DEETS ouvre des postes d'encadrement technique et d'accompagnement éducatif dans le secteur public ou privé non lucratif, notamment :",
+    debouches: [
+      {
+        icon: "🛠️",
+        texte:
+          "Travail adapté : ESAT, entreprise adaptée, atelier — encadrer l'activité de production d'une structure et accompagner chaque travailleur dans ses apprentissages et son parcours.",
+      },
+      {
+        icon: "🌱",
+        texte:
+          "Handicap et jeunesse : IME, ITEP, centre éducatif fermé — transmettre un premier apprentissage professionnel à des enfants et des adolescents, en lien avec l'équipe éducative.",
+      },
+      {
+        icon: "🧱",
+        texte:
+          "Insertion professionnelle : chantier d'insertion, atelier d'insertion — accompagner des personnes éloignées de l'emploi vers un poste ou une formation.",
+      },
+      {
+        icon: "🤝",
+        texte:
+          "Autres structures : foyer de vie, entreprise, collectivité — des fonctions qui s'appuient sur les mêmes compétences : encadrer, évaluer, construire des parcours.",
+      },
+    ],
+    debouchesConclusion:
+      "🌟 Un diplôme de niveau 6 qui reconnaît à la fois votre savoir-faire technique et votre posture éducative.",
+    noteReferentiel:
+      "Le DEETS a un nouveau référentiel (fiche RNCP41746) dont les parcours certifiants débutent le 1er septembre 2026. Les modalités du parcours VAE (recevabilité, calendrier de dépôt) sont fixées par le certificateur et peuvent évoluer : nous vérifions avec vous les conditions exactes qui s'appliquent à votre dossier avant tout engagement.",
+    referentiel: {
+      titre: "Les quatre blocs de compétences du DEETS",
+      intro:
+        "Le référentiel du DEETS (fiche RNCP41746) s'organise en quatre blocs. Voici leurs intitulés officiels, et le type de situation professionnelle à repérer dans votre parcours pour chacun.",
+      blocs: [
+        {
+          intitule:
+            "Concevoir et conduire un accompagnement éducatif et technique spécialisé dans une visée d'insertion professionnelle",
+          piste:
+            "Une situation où vous avez conçu une activité ou un parcours d'apprentissage au poste de travail, pas seulement appliqué un planning.",
+        },
+        {
+          intitule:
+            "Favoriser et soutenir l'autodétermination des individus et des collectifs dans un but d'émancipation",
+          piste:
+            "Une situation où la personne accompagnée a choisi ou construit avec vous son parcours de travail.",
+        },
+        {
+          intitule:
+            "S'inscrire dans une dynamique partenariale et territoriale en lien avec la mise en œuvre des politiques de cohésion sociale",
+          piste:
+            "Une situation de travail avec des partenaires extérieurs à votre équipe : entreprises, prescripteurs, famille, collectivité.",
+        },
+        {
+          intitule: "S'inscrire dans un contexte professionnel du travail social",
+          piste:
+            "Une situation qui montre votre place dans l'institution et le recul que vous prenez sur votre pratique.",
+        },
+      ],
+      sourceLabel: "Fiche RNCP41746 du DEETS, France Compétences",
+      sourceUrl: "https://www.francecompetences.fr/recherche/rncp/41746/",
+    },
+    faq: [
+      {
+        question: "Peut-on obtenir le DEETS par la VAE ?",
+        reponse:
+          "Oui. La voie « par expérience » est ouverte sur la fiche du diplôme au Répertoire national des certifications professionnelles. Le jury est présidé par un enseignant-chercheur ; le préfet de région et le recteur d'académie, ou leurs représentants, en sont vice-présidents, et il compte des formateurs ainsi que des professionnels qualifiés, employeurs et salariés.",
+      },
+      {
+        question: "Quel est le niveau du DEETS ?",
+        reponse:
+          "Le DEETS est un diplôme d'État de niveau 6 (grade licence), qui correspond à 180 crédits ECTS en formation. Obtenu par la VAE, c'est le même diplôme que par la formation.",
+      },
+      {
+        question: "Quelle expérience faut-il pour viser le DEETS en VAE ?",
+        reponse:
+          "Depuis la réforme de janvier 2024, aucune durée minimale n'est exigée. Ce qui compte, c'est que votre expérience corresponde aux missions évaluées : encadrer des activités professionnelles, concevoir des parcours d'apprentissage et d'insertion, accompagner des personnes individuellement et en groupe.",
+      },
+      {
+        question: "Quels sont les blocs de compétences du DEETS ?",
+        reponse:
+          "Le référentiel comporte quatre blocs : concevoir et conduire un accompagnement éducatif et technique spécialisé dans une visée d'insertion professionnelle ; favoriser et soutenir l'autodétermination des individus et des collectifs dans un but d'émancipation ; s'inscrire dans une dynamique partenariale et territoriale en lien avec la mise en œuvre des politiques de cohésion sociale ; s'inscrire dans un contexte professionnel du travail social.",
+      },
+      {
+        question: "Quelle différence entre le DEETS et le DEES ?",
+        reponse:
+          "Les deux sont des diplômes d'État de niveau 6 du travail social. Le DEES est centré sur l'accompagnement éducatif ; le DEETS s'appuie en plus sur une activité professionnelle : l'éducateur technique spécialisé encadre des apprentissages, évalue les compétences et construit des parcours d'insertion. Si votre quotidien est un atelier ou une production, c'est plutôt le DEETS. Nous vous aidons à trancher lors du premier échange.",
+      },
+      {
+        question: "Faut-il arrêter de travailler pendant la VAE ?",
+        reponse:
+          "Non. L'accompagnement se fait à distance, en visio, avec des séances organisées autour de votre emploi du temps. C'est d'ailleurs votre activité en cours qui alimente votre dossier.",
+      },
+    ],
+    ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEETS ?",
+  },
 };

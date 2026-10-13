@@ -72,6 +72,19 @@ export const DIPLOMES = [
     description:
       "Encadrement d'équipe et responsabilité d'une unité d'intervention sociale : pilotage de l'activité, management, gestion et contribution au projet d'établissement.",
   },
+  // Ajouté le 13/10/2026. Slug = NOM DU MÉTIER (même règle que l'auxiliaire de
+  // puériculture et le DEASS : les candidats cherchent leur métier). Volume de
+  // recherche annoncé par Yoni (~2 400/mois, relevé de sa main, mot clé exact non
+  // précisé) : à confirmer au Keyword Planner avant de figer l'URL dans une annonce.
+  // Les faits de la page viennent de la fiche RNCP41746 et de la fiche métier du
+  // ministère des Solidarités (voir lib/diplomes-data.ts).
+  {
+    slug: "educateur-technique-specialise",
+    sigle: "DEETS",
+    nom: "Éducateur technique spécialisé",
+    description:
+      "Encadrement technique d'activités professionnelles et accompagnement éducatif vers l'insertion, en ESAT, IME, entreprise adaptée ou chantier d'insertion.",
+  },
 ] as const;
 
 export type DiplomeSlug = (typeof DIPLOMES)[number]["slug"];

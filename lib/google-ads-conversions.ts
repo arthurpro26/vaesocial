@@ -65,6 +65,11 @@ export const GOOGLE_ADS_CONVERSION_LABELS: Record<FormKey, string> = {
   // la campagne DEES, et la conversion doit remonter dans la même action.
   deass: LEAD_FORM_CONVERSION,
   caferuis: LEAD_FORM_CONVERSION,
+  // Ajouté le 13/10/2026 avec la page éducateur technique spécialisé. Même
+  // étiquette unique que les autres : SANS cette ligne, `formKey` vaudrait
+  // "deets", la recherche renverrait `undefined` et AUCUNE conversion ne
+  // remonterait à Google Ads pour les leads DEETS (scénario du 4 août 2026).
+  deets: LEAD_FORM_CONVERSION,
   // Formulaire de la page d'accueil et de /prediagnostic, quand aucun
   // diplôme n'est présélectionné (presetDiplome absent).
   generique: LEAD_FORM_CONVERSION,
@@ -78,7 +83,7 @@ declare global {
 
 /**
  * Déclenche la conversion Google Ads propre au formulaire envoyé (DEES,
- * DEAES, DEEJE, DEME, DEAP, DEASS, CAFERUIS ou générique), une fois l'étiquette correspondante
+ * DEAES, DEEJE, DEME, DEAP, DEASS, CAFERUIS, DEETS ou générique), une fois l'étiquette correspondante
  * renseignée dans GOOGLE_ADS_CONVERSION_LABELS ci-dessus.
  *
  * Appelé dès maintenant depuis PrediagnosticForm.tsx : sans effet tant que

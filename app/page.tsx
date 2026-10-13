@@ -253,7 +253,7 @@ export default function HomePage() {
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-brand-900 [text-wrap:balance] sm:text-4xl">Les diplômes accessibles par la VAE</h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">Trouvez le vôtre : chaque diplôme a sa propre page avec toutes les informations utiles pour vous décider.</p>
           </div>
-          <div className="relative mt-8 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+          <div className="relative mt-8 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
             {DIPLOMES.map((d, i) => {
               const t = TINTS[i % 4];
               return (
@@ -274,7 +274,7 @@ export default function HomePage() {
             <Link href="#prediagnostic-form" className="relative flex flex-col justify-between overflow-hidden rounded-3xl bg-brand-600 p-5 text-white shadow-xl shadow-brand-900/20 sm:p-6">
               <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full border-[18px] border-white/10" />
               <div className="relative">
-                <p className="text-lg font-bold leading-snug">Vous hésitez entre deux diplômes ?</p>
+                <p className="text-lg font-bold leading-snug [text-wrap:balance]">Vous hésitez entre deux diplômes ?</p>
                 <p className="mt-2 text-sm leading-relaxed text-brand-50">Le premier échange sert aussi à ça : repérer celui qui correspond à votre expérience.</p>
               </div>
               <span className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-bold">Être rappelé·e gratuitement <Ico name="arrow" className="h-4 w-4" /></span>
