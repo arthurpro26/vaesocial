@@ -150,14 +150,6 @@ export default async function DiplomePage({
                 (mt-auto), quelle que soit la hauteur de l'étape affichée dans le
                 formulaire. Avant (20/10/2026), un blanc restait sous le déroulé. */}
             <div className="lg:flex lg:flex-col lg:self-stretch">
-              {/* Pastille « VAE DEES » : ordinateur seulement depuis le 20/10/2026
-                  (Arthur : sur téléphone, juste au-dessus du titre, « elle sert à rien »). */}
-              <div className="hidden lg:flex lg:flex-wrap lg:items-center lg:gap-2">
-                <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-brand-700 ring-1 ring-brand-900/10 sm:text-sm">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" aria-hidden />
-                  VAE {d.sigle}
-                </span>
-              </div>
               {/* TITRE (H1) — modifié le 19/10/2026 (plan SEO, go d'Arthur).
                   Avant : le même H1 sur l'accueil et les 8 pages diplôme (« Commençons par
                   regarder votre parcours… »), ce que Google peut lire comme des pages en
@@ -168,7 +160,7 @@ export default async function DiplomePage({
                   Le visiteur qui relève d'un autre diplôme reste réorienté par le menu
                   « Diplôme visé » du formulaire et par la visio.
                   NE PAS remettre `text-balance` : il coupe le titre au milieu sur téléphone. */}
-              <h1 className="text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 lg:mt-6">
+              <h1 className="text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900">
                 VAE {DIPLOMES.find((x) => x.slug === d.slug)?.nom ?? d.sigle} :{" "}
                 <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">
                   votre expérience
