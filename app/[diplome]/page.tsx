@@ -11,13 +11,13 @@ import ReferentielSection from "@/components/sections/ReferentielSection";
 import Eyebrow from "@/components/Eyebrow";
 import StickyCta from "@/components/StickyCta";
 import TrustBand from "@/components/sections/TrustBand";
-import HeroLogos from "@/components/sections/HeroLogos";
 import MethodeSection from "@/components/sections/MethodeSection";
+import LogoCards from "@/components/sections/LogoCards";
 import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
 import { Chip, DOTS, Ico, TINTS, cap } from "@/components/Kit";
-import { RESULTATS, DIPLOMES, type DiplomeSlug } from "@/lib/site-data";
+import { RESULTATS, DIPLOMES, ETAPES, type DiplomeSlug } from "@/lib/site-data";
 import BrandIcon from "@/components/BrandIcon";
 import { DIPLOMES_DATA } from "@/lib/diplomes-data";
 import { siteConfig } from "@/lib/site-config";
@@ -145,7 +145,24 @@ export default async function DiplomePage({
         <Container className="relative px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-x-14 lg:gap-y-8">
             <div>
-              <HeroLogos />
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-brand-700 ring-1 ring-brand-900/10 sm:text-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" aria-hidden />
+                  VAE {d.sigle}
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-900/10 sm:text-sm">
+                  <BrandIcon name="award" className="h-4 w-4 shrink-0" />
+                  {RESULTATS.taux}{" "}
+                  <span className="hidden sm:inline">
+                    {RESULTATS.tauxLabel} {RESULTATS.periode}
+                  </span>
+                  <span className="sm:hidden">validés</span>
+                </span>
+                <span className="hidden items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-brand-900/10 sm:inline-flex sm:text-sm">
+                  <BrandIcon name="users" className="h-4 w-4 shrink-0" />
+                  {RESULTATS.volume} {RESULTATS.volumeLabel}
+                </span>
+              </div>
               {/* TITRE (H1) — modifié le 19/10/2026 (plan SEO, go d'Arthur).
                   Avant : le même H1 sur l'accueil et les 8 pages diplôme (« Commençons par
                   regarder votre parcours… »), ce que Google peut lire comme des pages en
@@ -166,19 +183,32 @@ export default async function DiplomePage({
               <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-700 sm:mt-6 sm:text-lg">
                 {sansEmoji(d.heroIntro)}
               </p>
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-900/10 sm:text-sm">
-                  <BrandIcon name="award" className="h-4 w-4 shrink-0" />
-                  {RESULTATS.taux}{" "}
-                  <span className="hidden sm:inline">
-                    {RESULTATS.tauxLabel} {RESULTATS.periode}
-                  </span>
-                  <span className="sm:hidden">validés</span>
-                </span>
-                <span className="hidden items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-brand-900/10 sm:inline-flex sm:text-sm">
-                  <BrandIcon name="users" className="h-4 w-4 shrink-0" />
-                  {RESULTATS.volume} {RESULTATS.volumeLabel}
-                </span>
+              <LogoCards className="mt-6 sm:mt-7" />
+              {/* Ordinateur seulement : la colonne de gauche était vide sous l'intro depuis que
+                  la carte « Ensuite : votre visio » est passée sous le formulaire (19/10/2026,
+                  demande d'Arthur). On y met le déroulé de la VAE, qu'Arthur veut plus visible.
+                  Sur téléphone, le formulaire suit directement l'intro : rien n'est ajouté. */}
+              <div className="mt-8 hidden lg:block">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">Comment se passe votre VAE {d.sigle}</p>
+                <ol className="mt-4 space-y-3">
+                  {ETAPES.map((e, i) => (
+                    <li key={e.titre} className="flex items-start gap-3">
+                      <span className={`mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-full text-xs font-bold ${i === 2 ? "bg-brand-900 text-white" : "bg-brand-100 text-brand-700"}`}>
+                        {i + 1}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-[0.95rem] font-semibold leading-snug text-brand-900">{e.titre}</span>
+                        <span className="mt-0.5 block text-sm leading-snug text-slate-600">{e.texte}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-4 text-sm text-slate-600">
+                  15 à 20 heures d&apos;accompagnement individuel, à distance, sur plusieurs mois.{" "}
+                  <a href="#methode" className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900">
+                    Voir le détail des étapes
+                  </a>
+                </p>
               </div>
             </div>
 

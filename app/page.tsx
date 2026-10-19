@@ -8,7 +8,7 @@ import FaqJsonLd from "@/components/FaqJsonLd";
 import Eyebrow from "@/components/Eyebrow";
 import StickyCta from "@/components/StickyCta";
 import TrustBand from "@/components/sections/TrustBand";
-import HeroLogos from "@/components/sections/HeroLogos";
+import LogoCards from "@/components/sections/LogoCards";
 import MethodeSection from "@/components/sections/MethodeSection";
 import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
@@ -130,14 +130,7 @@ export default function HomePage() {
         <Container className="relative px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-x-14 lg:gap-y-8">
             <div>
-              <HeroLogos />
-              <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
-                Commençons par regarder <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">votre parcours</span> et le diplôme qui lui correspond.
-              </h1>
-              <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-700 sm:mt-6 sm:text-lg">
-                Trois minutes de questions, puis un expert du secteur social vous rappelle : la VAE, les livrets, le financement, et ce qui est possible dans votre situation.
-              </p>
-              <div className="mt-4 flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-900/10 sm:text-sm">
                   <BrandIcon name="award" className="h-4 w-4 shrink-0" />
                   {RESULTATS.taux} <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
@@ -148,6 +141,12 @@ export default function HomePage() {
                   {RESULTATS.volume} {RESULTATS.volumeLabel}
                 </span>
               </div>
+              <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
+                Commençons par regarder <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">votre parcours</span> et le diplôme qui lui correspond.
+              </h1>
+              <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-700 sm:mt-6 sm:text-lg">
+                Trois minutes de questions, puis un expert du secteur social vous rappelle : la VAE, les livrets, le financement, et ce qui est possible dans votre situation.
+              </p>
               <p className="mt-6 text-sm font-semibold text-brand-900">Que vous visiez :</p>
               <ul className="mt-2.5 flex flex-wrap gap-2">
                 {DIPLOMES.map((d, i) => (
@@ -157,6 +156,7 @@ export default function HomePage() {
                 ))}
               </ul>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600">On vous guide à chaque étape, sans reprendre une formation complète, et sans aucun engagement de votre part avant d&apos;avoir la réponse.</p>
+              <LogoCards className="mt-6 sm:mt-7" />
             </div>
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
