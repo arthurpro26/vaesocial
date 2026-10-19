@@ -35,6 +35,21 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 
+  // Redirection 301 www → sans www (19/10/2026, plan SEO, go d'Arthur).
+  // Avant : https://www.vae-social.fr/... répondait 200 (doublon du site, seule la
+  // balise canonique indiquait la bonne adresse). Les paramètres d'URL (gclid, kw…)
+  // sont conservés par Next.js lors de la redirection.
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.vae-social.fr" }],
+        destination: "https://vae-social.fr/:path*",
+        permanent: true,
+      },
+    ];
+  },
+
   // En-têtes de sécurité de base, appliqués à toutes les routes.
   async headers() {
     return [

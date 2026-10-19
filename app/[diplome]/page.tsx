@@ -163,20 +163,34 @@ export default async function DiplomePage({
                   {RESULTATS.volume} {RESULTATS.volumeLabel}
                 </span>
               </div>
-              {/* PAS DE DIPLÔME DANS LE TITRE, volontairement, alors même que cette page en
-                  cible un. Une personne qui arrive sur /dees peut très bien relever du DEAES
-                  ou du DEME : nommer le diplôme dans le titre l'enfermerait dans un choix
-                  qu'elle n'est pas en mesure de faire, et le rôle de l'appel est
-                  précisément de la réorienter. « Le diplôme qui lui correspond » laisse la
-                  porte ouverte tout en promettant le bon conseil.
+              {/* TITRE (H1) — modifié le 19/10/2026 (plan SEO, go d'Arthur).
+                  Avant : le même H1 sur l'accueil et les 8 pages diplôme (« Commençons par
+                  regarder votre parcours… »), ce que Google peut lire comme des pages en
+                  double (20 pages sur 22 « explorées, non indexées » au 19/10).
+                  Désormais chaque page diplôme a son propre H1, qui nomme le métier.
+                  EXCEPTION /dees : H1 d'origine gardé tant que dure le test Google Ads DEES
+                  (page d'atterrissage de la campagne : ne pas la modifier pendant la mesure ;
+                  à aligner après le verdict, ≈ 4/11).
+                  Le visiteur qui relève d'un autre diplôme reste réorienté par le menu
+                  « Diplôme visé » du formulaire et par la visio.
                   NE PAS remettre `text-balance` : il coupe le titre au milieu sur téléphone. */}
-              <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
-                Commençons par regarder{" "}
-                <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">
-                  votre parcours
-                </span>{" "}
-                et le diplôme qui lui correspond.
-              </h1>
+              {d.slug === "dees" ? (
+                <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
+                  Commençons par regarder{" "}
+                  <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">
+                    votre parcours
+                  </span>{" "}
+                  et le diplôme qui lui correspond.
+                </h1>
+              ) : (
+                <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
+                  VAE {DIPLOMES.find((x) => x.slug === d.slug)?.nom ?? d.sigle} :{" "}
+                  <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">
+                    votre expérience
+                  </span>{" "}
+                  peut valoir le {d.sigle}.
+                </h1>
+              )}
               <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-700 sm:mt-6 sm:text-lg">
                 {sansEmoji(d.heroIntro)}
               </p>
