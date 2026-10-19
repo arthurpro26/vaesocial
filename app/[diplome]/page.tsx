@@ -18,7 +18,7 @@ import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
 import { Chip, DOTS, Ico, TINTS, cap } from "@/components/Kit";
-import { DIPLOMES, ETAPES, type DiplomeSlug } from "@/lib/site-data";
+import { DIPLOMES, ETAPES, FINANCEMENTS, type DiplomeSlug } from "@/lib/site-data";
 import BrandIcon from "@/components/BrandIcon";
 import { DIPLOMES_DATA } from "@/lib/diplomes-data";
 import { siteConfig } from "@/lib/site-config";
@@ -144,8 +144,12 @@ export default async function DiplomePage({
         <div aria-hidden className="pointer-events-none absolute -right-32 -top-24 h-[28rem] w-[28rem] rounded-full bg-brand-100/60 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute left-0 top-24 hidden h-56 w-72 opacity-70 lg:block" style={DOTS} />
         <Container className="relative px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-x-14 lg:gap-y-8">
-            <div>
+          <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:grid-rows-[1fr_auto] lg:items-start lg:gap-x-14 lg:gap-y-8">
+            {/* Ordinateur : la colonne de gauche prend toute la hauteur du formulaire
+                (grid-rows 1fr + self-stretch) et la carte Financement se cale en bas
+                (mt-auto), quelle que soit la hauteur de l'étape affichée dans le
+                formulaire. Avant (20/10/2026), un blanc restait sous le déroulé. */}
+            <div className="lg:flex lg:flex-col lg:self-stretch">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-brand-700 ring-1 ring-brand-900/10 sm:text-sm">
                   <span className="h-1.5 w-1.5 rounded-full bg-brand-500" aria-hidden />
@@ -199,6 +203,33 @@ export default async function DiplomePage({
                     Voir le détail des étapes
                   </a>
                 </p>
+              </div>
+              {/* Carte Financement (ordinateur seulement), ajoutée le 20/10/2026 à la demande
+                  d'Arthur pour occuper le bas de la colonne de gauche. Les quatre solutions
+                  sont celles de FINANCEMENTS (lib/site-data.ts), détaillées plus bas dans la
+                  page (#financement). Aucune promesse chiffrée de prise en charge ici. */}
+              <div className="hidden lg:mt-auto lg:block lg:pt-8">
+                <div className="flex items-start gap-4 rounded-2xl bg-white p-5 shadow-[0_8px_24px_-14px_rgba(14,31,58,0.35)] ring-1 ring-brand-900/10">
+                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-900/10">
+                    <BrandIcon name="wallet" className="h-5 w-5" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">Financement</p>
+                    <p className="mt-1 text-[0.95rem] font-semibold leading-snug text-brand-900">
+                      Selon votre situation, plusieurs prises en charge existent. On identifie la vôtre pendant la visio.
+                    </p>
+                    <ul className="mt-3 flex flex-wrap gap-2">
+                      {FINANCEMENTS.map((f) => (
+                        <li key={f.titre} className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800 ring-1 ring-brand-900/10">
+                          {f.titre}
+                        </li>
+                      ))}
+                    </ul>
+                    <a href="#financement" className="mt-3 inline-block text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900">
+                      Voir les financements
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
 
