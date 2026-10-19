@@ -9,12 +9,13 @@ import Eyebrow from "@/components/Eyebrow";
 import StickyCta from "@/components/StickyCta";
 import TrustBand from "@/components/sections/TrustBand";
 import LogoCards from "@/components/sections/LogoCards";
+import StatsRow from "@/components/sections/StatsRow";
 import MethodeSection from "@/components/sections/MethodeSection";
 import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
 import { Chip, DOTS, Ico, TINTS } from "@/components/Kit";
-import { RESULTATS, COMPETENCES, DIPLOMES, REASSURANCES } from "@/lib/site-data";
+import { COMPETENCES, DIPLOMES, REASSURANCES } from "@/lib/site-data";
 
 // Page d'accueil — landing page principale de VAESocial.
 // Structure pensée pour le SEO, le trafic Google Ads et la conversion mobile.
@@ -130,18 +131,7 @@ export default function HomePage() {
         <Container className="relative px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-x-14 lg:gap-y-8">
             <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-900/10 sm:text-sm">
-                  <BrandIcon name="award" className="h-4 w-4 shrink-0" />
-                  {RESULTATS.taux} <span className="hidden sm:inline">{RESULTATS.tauxLabel} {RESULTATS.periode}</span>
-                  <span className="sm:hidden">validés</span>
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-brand-900/10 sm:text-sm">
-                  <BrandIcon name="users" className="h-4 w-4 shrink-0" />
-                  {RESULTATS.volume} {RESULTATS.volumeLabel}
-                </span>
-              </div>
-              <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
+              <h1 className="text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900">
                 Commençons par regarder <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">votre parcours</span> et le diplôme qui lui correspond.
               </h1>
               <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-700 sm:mt-6 sm:text-lg">
@@ -156,6 +146,7 @@ export default function HomePage() {
                 ))}
               </ul>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600">On vous guide à chaque étape, sans reprendre une formation complète, et sans aucun engagement de votre part avant d&apos;avoir la réponse.</p>
+              <StatsRow className="mt-6 sm:mt-7" />
               <LogoCards className="mt-6 sm:mt-7" />
             </div>
 

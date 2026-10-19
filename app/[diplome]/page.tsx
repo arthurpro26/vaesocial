@@ -13,11 +13,12 @@ import StickyCta from "@/components/StickyCta";
 import TrustBand from "@/components/sections/TrustBand";
 import MethodeSection from "@/components/sections/MethodeSection";
 import LogoCards from "@/components/sections/LogoCards";
+import StatsRow from "@/components/sections/StatsRow";
 import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
 import { Chip, DOTS, Ico, TINTS, cap } from "@/components/Kit";
-import { RESULTATS, DIPLOMES, ETAPES, type DiplomeSlug } from "@/lib/site-data";
+import { DIPLOMES, ETAPES, type DiplomeSlug } from "@/lib/site-data";
 import BrandIcon from "@/components/BrandIcon";
 import { DIPLOMES_DATA } from "@/lib/diplomes-data";
 import { siteConfig } from "@/lib/site-config";
@@ -150,18 +151,6 @@ export default async function DiplomePage({
                   <span className="h-1.5 w-1.5 rounded-full bg-brand-500" aria-hidden />
                   VAE {d.sigle}
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-900/10 sm:text-sm">
-                  <BrandIcon name="award" className="h-4 w-4 shrink-0" />
-                  {RESULTATS.taux}{" "}
-                  <span className="hidden sm:inline">
-                    {RESULTATS.tauxLabel} {RESULTATS.periode}
-                  </span>
-                  <span className="sm:hidden">validés</span>
-                </span>
-                <span className="hidden items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-brand-900/10 sm:inline-flex sm:text-sm">
-                  <BrandIcon name="users" className="h-4 w-4 shrink-0" />
-                  {RESULTATS.volume} {RESULTATS.volumeLabel}
-                </span>
               </div>
               {/* TITRE (H1) — modifié le 19/10/2026 (plan SEO, go d'Arthur).
                   Avant : le même H1 sur l'accueil et les 8 pages diplôme (« Commençons par
@@ -183,6 +172,7 @@ export default async function DiplomePage({
               <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-700 sm:mt-6 sm:text-lg">
                 {sansEmoji(d.heroIntro)}
               </p>
+              <StatsRow className="mt-6 sm:mt-7" />
               <LogoCards className="mt-6 sm:mt-7" />
               {/* Ordinateur seulement : la colonne de gauche était vide sous l'intro depuis que
                   la carte « Ensuite : votre visio » est passée sous le formulaire (19/10/2026,
