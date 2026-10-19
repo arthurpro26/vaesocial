@@ -26,7 +26,44 @@ export type PrediagnosticLead = {
   /** Expérience auprès de personnes accompagnées — ajoutée le 2026-09-14. */
   experienceSecteur: string;
   structure: string;
+  /**
+   * Attribution Google Ads — ajoutée le 19/10/2026, voir lib/attribution.ts.
+   * Toutes facultatives : absentes quand la visite ne vient pas d'une annonce.
+   */
+  gclid?: string;
+  gbraid?: string;
+  wbraid?: string;
+  kwAds?: string;
+  mtAds?: string;
+  crAds?: string;
+  cpAds?: string;
+  agAds?: string;
+  landing?: string;
+  clickAt?: string;
 };
+
+/** Libellé lisible du type de correspondance Google Ads ({matchtype}). */
+export function libelleCorrespondance(mt?: string): string {
+  switch ((mt || "").toLowerCase()) {
+    case "e":
+      return "exact";
+    case "p":
+      return "expression";
+    case "b":
+      return "large";
+    default:
+      return mt || "";
+  }
+}
+
+/** Résumé d'attribution pour les e-mails : "" si le lead ne vient pas d'une annonce. */
+export function resumeAttribution(lead: PrediagnosticLead): string {
+  const parts: string[] = [];
+  if (lead.kwAds) parts.push(`mot clé « ${lead.kwAds} » (${libelleCorrespondance(lead.mtAds) || "?"})`);
+  if (lead.landing) parts.push(`page d'arrivée ${lead.landing}`);
+  parts.push(lead.gclid || lead.gbraid || lead.wbraid ? "identifiant de clic enregistré" : "sans identifiant de clic");
+  return lead.kwAds || lead.gclid || lead.gbraid || lead.wbraid ? parts.join(", ") : "";
+}
 
 /**
  * La VAE exige au moins un an d'activité en rapport avec le diplôme visé.
@@ -113,8 +150,8 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
       ? []
       : [
           "⚠️ ANCIENNETÉ DÉCLARÉE INFÉRIEURE À UN AN",
-          "La VAE exige au moins un an d'activité en rapport avec le diplôme visé.",
-          "Dossier probablement non recevable en l'état — à recontacter plus tard.",
+          "À vérifier au cas par cas : depuis la réforme (décret du 27/12/2023), aucune durée minimale n'est exigée,",
+          "mais une expérience très courte reste un dossier fragile devant le jury.",
           "",
         ]),
     `Prénom : ${lead.prenom}`,
@@ -126,6 +163,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     `Ancienneté dans l'activité : ${lead.ancienneteActivite}`,
     `Expérience dans le secteur : ${lead.experienceSecteur}`,
     `Structure d'exercice : ${lead.structure}`,
+    ...(resumeAttribution(lead) ? ["", `Source Google Ads : ${resumeAttribution(lead)}`] : []),
     "",
     "Activité au quotidien :",
     lead.activiteQuotidienne,
@@ -230,6 +268,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     ${ligne("Ancienneté", lead.ancienneteActivite)}
     ${ligne("Expérience secteur", lead.experienceSecteur)}
     ${ligne("Structure", lead.structure)}
+    ${resumeAttribution(lead) ? ligne("Source Google Ads", resumeAttribution(lead)) : ""}
   </table>
   <p style="margin:20px 0 4px;color:#64748b">Activité au quotidien</p>
   <p style="margin:0;padding:12px;background:#f8fafc;border-radius:8px;white-space:pre-wrap">${esc(lead.activiteQuotidienne)}</p>

@@ -11,6 +11,7 @@ import { formatPhoneInput, isValidPhoneFr, normalizePhoneOnBlur } from "@/lib/ph
 import { useFormProgress } from "@/lib/form-progress-context";
 import { trackConversion } from "@/lib/tracking";
 import { trackFormConversion, type FormKey } from "@/lib/google-ads-conversions";
+import { readAttribution } from "@/lib/attribution";
 import { DIPLOMES, type DiplomeSigle } from "@/lib/site-data";
 
 // --- Données des étapes à choix unique (cartes larges, sélection = avance automatique) ---
@@ -726,7 +727,10 @@ export default function PrediagnosticForm({
       const res = await fetch("/api/prediagnostic", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        // Attribution Google Ads (gclid, mot clé, annonce…) mémorisée à
+        // l'arrivée sur le site — voir lib/attribution.ts (19/10/2026). Objet
+        // vide si la visite ne vient pas d'une annonce : rien ne change alors.
+        body: JSON.stringify({ ...values, ...readAttribution() }),
       });
 
       if (!res.ok) throw new Error("Envoi échoué");

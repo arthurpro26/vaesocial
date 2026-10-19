@@ -61,7 +61,12 @@ export default function ConfidentialitePage() {
             <p className="mt-2">
               Ce site peut utiliser des outils de mesure d&apos;audience et de suivi des
               conversions (Google Tag Manager, Google Analytics, Google Ads) pour comprendre la
-              fréquentation du site et l&apos;efficacité de nos campagnes.
+              fréquentation du site et l&apos;efficacité de nos campagnes. Lorsque vous
+              arrivez sur le site depuis une annonce Google Ads, l&apos;identifiant technique
+              du clic et le mot clé de l&apos;annonce sont conservés dans votre navigateur
+              (90 jours au plus) et joints à votre demande si vous remplissez le formulaire,
+              afin de mesurer quelles annonces aboutissent à un accompagnement. Ces données ne
+              servent à aucune autre finalité.
             </p>
           </div>
           <div>

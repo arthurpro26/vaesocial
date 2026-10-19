@@ -60,6 +60,43 @@ export const prediagnosticSchema = z.object({
   // que les robots de spam remplissent souvent aveuglément. Toujours vide en
   // usage normal — voir PrediagnosticForm.tsx et app/api/prediagnostic/route.ts.
   honeypot: z.string().optional(),
+  // Attribution Google Ads — ajoutée le 19/10/2026 (voir lib/attribution.ts).
+  // Tous facultatifs et JAMAIS bloquants : un lead sans attribution, ou avec
+  // une valeur bizarre, reste un lead. Aucune contrainte de longueur ici (une
+  // erreur 422 ferait perdre le lead) : le nettoyage et la troncature sont
+  // faits côté serveur dans app/api/prediagnostic/route.ts (nettoyerAttribution).
+  gclid: z.string().optional(),
+  gbraid: z.string().optional(),
+  wbraid: z.string().optional(),
+  kwAds: z.string().optional(),
+  mtAds: z.string().optional(),
+  crAds: z.string().optional(),
+  cpAds: z.string().optional(),
+  agAds: z.string().optional(),
+  landing: z.string().optional(),
+  clickAt: z.string().optional(),
 });
+
+/**
+ * Nettoyage des champs d'attribution (19/10/2026) : ils viennent de l'URL
+ * d'arrivée, donc de n'importe qui. Caractères de contrôle retirés, longueur
+ * bornée, valeurs vides supprimées. Ne lève jamais d'erreur.
+ */
+export function nettoyerAttribution<T extends Partial<Record<AttributionKey, string | undefined>>>(data: T): T {
+  const bornes: Record<AttributionKey, number> = {
+    gclid: 120, gbraid: 120, wbraid: 120, kwAds: 120, mtAds: 8, crAds: 40, cpAds: 40, agAds: 40, landing: 120, clickAt: 40,
+  };
+  const sortie = { ...data };
+  for (const cle of Object.keys(bornes) as AttributionKey[]) {
+    const brut = sortie[cle];
+    const propre = typeof brut === "string" ? brut.replace(/[\u0000-\u001f\u007f]/g, "").trim().slice(0, bornes[cle]) : "";
+    if (propre) (sortie as Record<string, unknown>)[cle] = propre;
+    else delete (sortie as Record<string, unknown>)[cle];
+  }
+  return sortie;
+}
+
+export type AttributionKey =
+  | "gclid" | "gbraid" | "wbraid" | "kwAds" | "mtAds" | "crAds" | "cpAds" | "agAds" | "landing" | "clickAt";
 
 export type PrediagnosticFormValues = z.infer<typeof prediagnosticSchema>;

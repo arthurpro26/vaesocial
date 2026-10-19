@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prediagnosticSchema } from "@/lib/prediagnostic-schema";
+import { nettoyerAttribution, prediagnosticSchema } from "@/lib/prediagnostic-schema";
 import { sendConfirmationToLead, sendPrediagnosticLead } from "@/lib/email";
 import { appendLeadToSheet } from "@/lib/google-sheets";
 import { isRateLimited } from "@/lib/rate-limit";
@@ -60,10 +60,11 @@ export async function POST(request: NextRequest) {
   // forme nationale canonique (« 06 26 40 01 33 ») quelle que soit la saisie
   // d'origine, pour que le numéro soit directement cliquable depuis l'email et
   // le Google Sheet sans retraitement manuel.
-  const lead = {
+  // Attribution Google Ads (19/10/2026) : nettoyée ici, jamais bloquante.
+  const lead = nettoyerAttribution({
     ...parsed.data,
     telephone: formatPhoneFr(normalizePhoneFr(parsed.data.telephone)!),
-  };
+  });
 
   // Troisième canal, ajouté le 01/09/2026 : l'accusé de réception envoyé au
   // lead lui-même. Il est lancé en parallèle des deux autres, mais son sort

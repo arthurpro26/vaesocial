@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import OrganizationJsonLd from "@/components/JsonLd";
 import { GoogleTagManagerScript, GoogleTagManagerNoScript } from "@/components/GoogleTagManager";
 import { GoogleAdsTag } from "@/components/GoogleAdsTag";
+import { AttributionCapture } from "@/components/AttributionCapture";
 import { FormProgressProvider } from "@/lib/form-progress-context";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
@@ -57,6 +58,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <GoogleTagManagerNoScript />
+        {/* Mémorise les paramètres du clic Google Ads (gclid, mot clé) pour les
+            joindre au lead — voir lib/attribution.ts (19/10/2026). */}
+        <AttributionCapture />
         {/* Lien d'évitement : invisible tant qu'il n'a pas le focus clavier,
             permet de sauter directement au contenu sans repasser par tout le
             header à chaque page (accessibilité clavier). */}

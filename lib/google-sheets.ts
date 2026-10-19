@@ -1,6 +1,6 @@
-import { GoogleSpreadsheet } from "google-spreadsheet";
+import { GoogleSpreadsheet, type GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
-import { isEligibleDuree, type PrediagnosticLead } from "@/lib/email";
+import { isEligibleDuree, libelleCorrespondance, type PrediagnosticLead } from "@/lib/email";
 
 /**
  * Point d'intégration Google Sheets pour les leads du formulaire de
@@ -54,6 +54,23 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
   // dépendre d'un titre d'onglet précis ("Leads", "Feuille 1", etc.).
   const sheet = doc.sheetsByIndex[0];
 
+  // Colonnes d'attribution Google Ads — ajoutées le 19/10/2026. Créées dans
+  // l'en-tête si elles manquent ; si cette étape échoue, le lead est quand
+  // même enregistré, sans ces colonnes (jamais de lead perdu pour du suivi).
+  const colonnes = await assurerColonnesSuivi(sheet);
+  const suivi: Record<string, string> = colonnes
+    ? {
+        [colonnes["GCLID"]]: identifiantClic(lead),
+        [colonnes["Mot clé Ads"]]: lead.kwAds ?? "",
+        [colonnes["Correspondance"]]: libelleCorrespondance(lead.mtAds),
+        [colonnes["Campagne ID"]]: lead.cpAds ?? "",
+        [colonnes["Groupe ID"]]: lead.agAds ?? "",
+        [colonnes["Annonce ID"]]: lead.crAds ?? "",
+        [colonnes["Page d'arrivée"]]: lead.landing ?? "",
+        [colonnes["Clic le"]]: lead.clickAt ?? "",
+      }
+    : {};
+
   // ⚠️ Refonte du formulaire du 2026-08-01, ajustée le même jour (retour
   // utilisateur) : "Nom" est réintroduit (identité complète nécessaire pour
   // le suivi de dossier VAE), "Expérience" et "Message" restent supprimées.
@@ -83,7 +100,94 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
     Nom: lead.nom,
     Téléphone: lead.telephone,
     Email: lead.email,
+    ...suivi,
   });
+}
+
+/* ------------------------------------------------------------------------ *
+ * ATTRIBUTION GOOGLE ADS DANS LE SHEET — ajouté le 19/10/2026.
+ *
+ * POURQUOI : sans mot clé ni identifiant de clic sur chaque ligne, impossible
+ * de savoir quelles recherches amènent les dossiers qui signent, et impossible
+ * de renvoyer à Google Ads « ce lead était qualifié » (import de conversions
+ * hors connexion, qui exige le gclid). Voir lib/attribution.ts.
+ *
+ * Les trois dernières colonnes ne sont PAS écrites par le site :
+ *   - « Qualifié » : Arthur y met « oui » après la visio quand le profil est bon ;
+ *   - « Signé »    : Arthur y met la date de signature ;
+ *   - « Envoyé Ads » : le script d'envoi hebdomadaire y écrit la date à
+ *     laquelle la conversion « Lead qualifié » a été transmise à Google Ads
+ *     (sa protection contre le double envoi, même principe que « Envoyé le »
+ *     dans l'onglet MAIL).
+ * ------------------------------------------------------------------------ */
+
+export const COLONNES_SUIVI_ADS = [
+  "GCLID",
+  "Mot clé Ads",
+  "Correspondance",
+  "Campagne ID",
+  "Groupe ID",
+  "Annonce ID",
+  "Page d'arrivée",
+  "Clic le",
+  "Qualifié",
+  "Signé",
+  "Envoyé Ads",
+] as const;
+
+type ColonneSuivi = (typeof COLONNES_SUIVI_ADS)[number];
+
+/**
+ * Identifiant de clic à écrire dans la colonne GCLID : le gclid tel quel ;
+ * à défaut (iOS / consentement limité) le gbraid ou le wbraid, préfixé pour
+ * que le script d'envoi sache dans quelle colonne de l'import le mettre.
+ */
+function identifiantClic(lead: PrediagnosticLead): string {
+  if (lead.gclid) return lead.gclid;
+  if (lead.gbraid) return `gbraid:${lead.gbraid}`;
+  if (lead.wbraid) return `wbraid:${lead.wbraid}`;
+  return "";
+}
+
+/**
+ * S'assure que les colonnes de suivi existent en ligne 1 (les ajoute à la
+ * suite des en-têtes existants si besoin) et renvoie, pour chacune, l'intitulé
+ * réel présent dans le Sheet (comparaison tolérante aux accents et à la casse,
+ * comme partout ailleurs dans ce fichier). null si quelque chose a échoué :
+ * l'appelant écrit alors la ligne sans ces colonnes.
+ */
+async function assurerColonnesSuivi(
+  sheet: GoogleSpreadsheetWorksheet
+): Promise<Record<ColonneSuivi, string> | null> {
+  try {
+    await sheet.loadHeaderRow();
+    let headers = sheet.headerValues;
+    const manquantes = COLONNES_SUIVI_ADS.filter((c) => !headers.some((h) => memeIntitule(h, c)));
+
+    if (manquantes.length > 0) {
+      const nouveaux = [...headers, ...manquantes];
+      // setHeaderRow refuse d'écrire au-delà de la largeur actuelle de la
+      // feuille : on l'élargit d'abord si nécessaire (une seule fois).
+      if (nouveaux.length > sheet.columnCount) {
+        await sheet.resize({ rowCount: sheet.rowCount, columnCount: nouveaux.length + 2 });
+      }
+      await sheet.setHeaderRow(nouveaux);
+      await sheet.loadHeaderRow();
+      headers = sheet.headerValues;
+      console.log(`[prediagnostic] Colonnes de suivi Ads ajoutées au Sheet : ${manquantes.join(", ")}`);
+    }
+
+    const resultat = {} as Record<ColonneSuivi, string>;
+    for (const c of COLONNES_SUIVI_ADS) {
+      const reel = headers.find((h) => memeIntitule(h, c));
+      if (!reel) return null;
+      resultat[c] = reel;
+    }
+    return resultat;
+  } catch (erreur) {
+    console.error("[prediagnostic] Colonnes de suivi Ads indisponibles (lead enregistré sans) —", erreur);
+    return null;
+  }
 }
 
 /* ------------------------------------------------------------------------ *
