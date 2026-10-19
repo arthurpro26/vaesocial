@@ -168,29 +168,18 @@ export default async function DiplomePage({
                   regarder votre parcours… »), ce que Google peut lire comme des pages en
                   double (20 pages sur 22 « explorées, non indexées » au 19/10).
                   Désormais chaque page diplôme a son propre H1, qui nomme le métier.
-                  EXCEPTION /dees : H1 d'origine gardé tant que dure le test Google Ads DEES
-                  (page d'atterrissage de la campagne : ne pas la modifier pendant la mesure ;
-                  à aligner après le verdict, ≈ 4/11).
+                  /dees aussi (décision d'Arthur le 19/10 au soir : même titre que les autres
+                  pages, le test Ads continue ; date notée dans le journal du projet).
                   Le visiteur qui relève d'un autre diplôme reste réorienté par le menu
                   « Diplôme visé » du formulaire et par la visio.
                   NE PAS remettre `text-balance` : il coupe le titre au milieu sur téléphone. */}
-              {d.slug === "dees" ? (
-                <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
-                  Commençons par regarder{" "}
-                  <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">
-                    votre parcours
-                  </span>{" "}
-                  et le diplôme qui lui correspond.
-                </h1>
-              ) : (
-                <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
-                  VAE {DIPLOMES.find((x) => x.slug === d.slug)?.nom ?? d.sigle} :{" "}
-                  <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">
-                    votre expérience
-                  </span>{" "}
-                  peut valoir le {d.sigle}.
-                </h1>
-              )}
+              <h1 className="mt-4 text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900 sm:mt-6">
+                VAE {DIPLOMES.find((x) => x.slug === d.slug)?.nom ?? d.sigle} :{" "}
+                <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">
+                  votre expérience
+                </span>{" "}
+                peut valoir le {d.sigle}.
+              </h1>
               <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-700 sm:mt-6 sm:text-lg">
                 {sansEmoji(d.heroIntro)}
               </p>
@@ -207,14 +196,9 @@ export default async function DiplomePage({
                 <BrandIcon name="lock" className="h-3.5 w-3.5 shrink-0 text-brand-600" />
                 Vos informations restent confidentielles, jamais revendues à des tiers.
               </p>
-              {/* Le visiteur arrivé par un mot clé voisin (ex. « deass » ou « caferuis »
-                  dans la campagne DEES) choisit son diplôme dans le menu déroulant
-                  « Diplôme visé » en haut du formulaire : cela ouvre la page de ce
-                  diplôme (voir DiplomeSelect dans PrediagnosticForm.tsx). La `key`
-                  ci-dessus remonte le formulaire à chaque changement de page. */}
-            </div>
-
-            <div>
+              {/* Carte « Ensuite : votre visio » déplacée ici (sous le formulaire) le 19/10/2026,
+                  demande d'Arthur : elle était sous le titre, dans la colonne de gauche. */}
+              <div className="mt-5 sm:mt-6">
               <div className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-34px_rgba(14,31,58,0.45)] ring-1 ring-brand-900/10">
                 <div className="flex items-center gap-1.5 border-b border-brand-900/10 bg-brand-50 px-4 py-2.5">
                   <span className="h-2.5 w-2.5 rounded-full bg-brand-200" />
@@ -236,9 +220,30 @@ export default async function DiplomePage({
                   <p className="mt-5 rounded-xl bg-brand-50 px-4 py-2.5 text-center text-sm text-brand-800">
                     <span className="font-semibold">Gratuite</span> · aucune inscription sans cet échange
                   </p>
+                  {/* Ajouté le 19/10/2026 (demande d'Arthur) : des candidats préfèrent écrire
+                      avant de remplir le formulaire. Objet pré-rempli avec le sigle pour
+                      retrouver la page d'origine dans la boîte mail. */}
+                  <p className="mt-4 text-center text-sm leading-relaxed text-slate-700">
+                    Une question avant de remplir le formulaire ?{" "}
+                    <a
+                      href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(`Question VAE ${d.sigle}`)}`}
+                      className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+                    >
+                      Écrivez-nous : {siteConfig.email}
+                    </a>
+                    <span className="block text-xs text-slate-500">Réponse personnelle, sous 24 h en semaine.</span>
+                  </p>
                 </div>
               </div>
+              </div>
+              {/* Le visiteur arrivé par un mot clé voisin (ex. « deass » ou « caferuis »
+                  dans la campagne DEES) choisit son diplôme dans le menu déroulant
+                  « Diplôme visé » en haut du formulaire : cela ouvre la page de ce
+                  diplôme (voir DiplomeSelect dans PrediagnosticForm.tsx). La `key`
+                  ci-dessus remonte le formulaire à chaque changement de page. */}
+            </div>
 
+            <div>
               {d.noteReferentiel && (
                 <p className="mt-4 flex gap-3 rounded-2xl bg-amber-50 p-4 text-sm leading-relaxed text-amber-900 ring-1 ring-amber-900/10">
                   <Ico name="info" className="mt-0.5 h-5 w-5 flex-none text-amber-600" />
