@@ -67,6 +67,16 @@ export default function MentionsLegalesPage() {
             </p>
           </div>
           <div>
+            <h2 className="text-lg font-semibold text-slate-900">Chiffres et résultats affichés</h2>
+            <p className="mt-2">
+              Les chiffres de résultats présentés sur ce site (taux de dossiers validés, nombre de
+              VAE accompagnées) sont ceux constatés depuis 2024 par l&apos;organisme de formation
+              partenaire qui assure l&apos;accompagnement des candidats orientés par{" "}
+              {siteConfig.name}. Ils sont communiqués par cet organisme et mis à jour
+              périodiquement ; ils ne constituent pas une garantie de résultat individuel.
+            </p>
+          </div>
+          <div>
             <h2 className="text-lg font-semibold text-slate-900">Données personnelles</h2>
             <p className="mt-2">
               Les données transmises via le formulaire de prédiagnostic sont traitées
