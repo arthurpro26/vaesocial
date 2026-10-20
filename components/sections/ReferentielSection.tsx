@@ -26,7 +26,7 @@ export default function ReferentielSection({
       <div aria-hidden className="pointer-events-none absolute -left-24 bottom-10 h-72 w-72 rounded-full border-[28px] border-brand-100/70" />
       <Container>
         <div className="relative mx-auto max-w-3xl text-center">
-          <Eyebrow>Référentiel {sigle}</Eyebrow>
+          <Eyebrow>Ce que le jury évalue · {sigle}</Eyebrow>
           <h2
             id="referentiel-title"
             className="mt-3 text-3xl font-bold tracking-tight text-brand-900 [text-wrap:balance] sm:text-4xl"
@@ -54,16 +54,33 @@ export default function ReferentielSection({
                 </span>
                 <h3 className="text-base font-bold leading-snug text-brand-900">{bloc.intitule}</h3>
               </div>
-              <p className="relative mt-4 flex gap-2.5 rounded-2xl bg-brand-50 px-4 py-3 text-sm leading-relaxed text-slate-700">
-                <Ico name="spark" className="mt-0.5 h-4 w-4 flex-none text-accent-500" />
-                <span>
-                  <span className="font-semibold text-brand-700">À repérer dans votre parcours : </span>
-                  {bloc.piste}
-                </span>
-              </p>
+              <div className="relative mt-4 rounded-2xl bg-brand-50 px-4 py-3 text-sm leading-relaxed text-slate-700">
+                <p className="flex gap-2.5">
+                  <Ico name="spark" className="mt-0.5 h-4 w-4 flex-none text-accent-500" />
+                  <span>
+                    <span className="font-semibold text-brand-700">À repérer dans votre parcours : </span>
+                    {bloc.piste}
+                  </span>
+                </p>
+                {bloc.exemples && (
+                  <p className="mt-2.5 border-t border-brand-900/10 pt-2.5 pl-[1.65rem] text-[0.84rem] leading-relaxed text-slate-600">
+                    <span className="font-semibold text-slate-700">Par exemple : </span>
+                    {bloc.exemples}
+                  </p>
+                )}
+              </div>
             </li>
           ))}
         </ol>
+
+        {referentiel.conclusion && (
+          <div className="relative mx-auto mt-8 flex max-w-3xl items-start gap-4 rounded-2xl bg-white px-5 py-4 shadow-sm ring-1 ring-brand-900/10 sm:px-6 sm:py-5">
+            <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-900/10">
+              <Ico name="check" className="h-5 w-5" />
+            </span>
+            <p className="text-[0.95rem] leading-relaxed text-brand-900">{referentiel.conclusion}</p>
+          </div>
+        )}
 
         <p className="relative mt-6 text-center text-sm text-slate-600">
           Source :{" "}

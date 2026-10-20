@@ -35,7 +35,9 @@ export type DiplomeData = {
   referentiel?: {
     titre: string;
     intro: string;
-    blocs: { intitule: string; piste: string }[];
+    blocs: { intitule: string; piste: string; exemples?: string }[];
+    // Phrase de conclusion sous les blocs (facultative) : relie le référentiel à la visio.
+    conclusion?: string;
     sourceLabel: string;
     sourceUrl: string;
     guide?: { slug: string; label: string };
@@ -110,32 +112,42 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     debouchesConclusion:
       "🌟 Un diplôme, des dizaines de terrains d'action possibles : le DEES ouvre autant de portes qu'il y a de publics à accompagner.",
     referentiel: {
-      titre: "Les quatre blocs de compétences du DEES",
+      titre: "Votre expérience couvre‑t‑elle les quatre blocs du DEES ?",
       intro:
-        "Le nouveau référentiel du DEES (arrêté du 6 octobre 2025, applicable à partir du 1er septembre 2026) s'organise en quatre blocs. Voici leurs intitulés officiels, et le type de situation professionnelle à repérer dans votre parcours pour chacun. Pendant la période de transition, nous vérifions avec vous quel cadre s'applique à votre dossier.",
+        "Le jury évalue le DEES sur quatre blocs de compétences (nouveau référentiel, arrêté du 6 octobre 2025, applicable depuis le 1er septembre 2026). Pour chacun, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+      conclusion:
+        "Vous vous reconnaissez dans deux ou trois blocs, pas dans les quatre ? C'est fréquent. Pendant la visio, votre accompagnatrice reprend votre expérience bloc par bloc, vous dit si elle suffit pour le DEES, et ce qu'il faudrait compléter le cas échéant.",
       blocs: [
         {
           intitule:
             "Concevoir et conduire un accompagnement éducatif spécialisé dans une visée préventive et inclusive",
           piste:
             "Une situation où vous avez conçu et conduit un accompagnement, pas seulement appliqué un projet existant.",
+          exemples:
+            "Un projet personnalisé que vous avez construit, mené et réajusté avec un jeune ou un adulte (MECS, IME, foyer) ; un atelier ou une activité que vous avez créé à partir d'un besoin repéré.",
         },
         {
           intitule:
             "Favoriser et soutenir l'autodétermination des individus et des collectifs dans un but d'émancipation",
           piste:
             "Une situation où la personne accompagnée a participé aux décisions qui la concernent.",
+          exemples:
+            "Un choix d'orientation, de logement ou d'activité préparé avec la personne puis défendu en réunion ; un conseil de la vie sociale ou un groupe de parole que vous avez animé.",
         },
         {
           intitule:
             "S'inscrire dans une dynamique partenariale et territoriale en lien avec la mise en œuvre des politiques de cohésion sociale",
           piste:
             "Une situation de travail avec des partenaires extérieurs à votre équipe : famille, école, santé, collectivité.",
+          exemples:
+            "Une synthèse avec l'école, l'ASE, le CMP ou la famille ; un partenariat avec une association, une mission locale ou une collectivité que vous avez mis en place ou fait vivre.",
         },
         {
           intitule: "S'inscrire dans un contexte professionnel du travail social",
           piste:
             "Une situation qui montre votre place dans l'institution et le recul que vous prenez sur votre pratique.",
+          exemples:
+            "Votre rôle dans le projet d'établissement ou de service ; l'accueil et le suivi d'un stagiaire ; un écrit professionnel (rapport, note de situation) ; une analyse de pratique dont vous avez tiré des changements concrets.",
         },
       ],
       sourceLabel: "Arrêté du 6 octobre 2025, annexe I (Légifrance)",
