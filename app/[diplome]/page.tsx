@@ -299,7 +299,21 @@ export default async function DiplomePage({
 
       <TrustBand />
 
-      {/* PUBLIC CONCERNÉ — détaillé, spécifique au diplôme */}
+      {/* ORDRE DES SECTIONS (décision d'Arthur, 20/10/2026) : quand le diplôme a un
+          référentiel détaillé (DEES, DEETS), le visiteur doit comprendre d'abord les blocs
+          de compétences, puis le déroulé jusqu'au jury, puis le financement. La section
+          « Pour qui ? » est alors retirée (elle redit l'intro du haut de page). Les autres
+          diplômes gardent l'ordre historique. */}
+      {d.referentiel && (
+        <>
+          <ReferentielSection referentiel={d.referentiel} sigle={d.sigle} />
+          <MethodeSection />
+          <FinancementSection sigle={d.sigle} />
+        </>
+      )}
+
+      {/* PUBLIC CONCERNÉ — détaillé, spécifique au diplôme (pages sans référentiel détaillé) */}
+      {!d.referentiel && (
       <section className="relative bg-white py-12 sm:py-20">
         <Container>
           <div className="mx-auto max-w-3xl text-center">
@@ -340,9 +354,11 @@ export default async function DiplomePage({
           </div>
         </Container>
       </section>
+      )}
 
-      {/* DÉBOUCHÉS — spécifique au diplôme, apporte une vraie valeur ajoutée SEO */}
-      <section className="relative overflow-hidden bg-brand-50/70 py-12 sm:py-20">
+      {/* DÉBOUCHÉS — spécifique au diplôme, apporte une vraie valeur ajoutée SEO.
+          Fond blanc quand la section Financement (teintée) la précède. */}
+      <section className={`relative overflow-hidden py-12 sm:py-20 ${d.referentiel ? "bg-white" : "bg-brand-50/70"}`}>
         <div aria-hidden className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full border-[28px] border-brand-100/70" />
         <div aria-hidden className="pointer-events-none absolute right-6 top-8 hidden h-40 w-56 opacity-70 sm:block" style={DOTS} />
         <Container>
@@ -394,11 +410,13 @@ export default async function DiplomePage({
         </Container>
       </section>
 
-      <MethodeSection />
-      <FinancementSection sigle={d.sigle} />
-      <TemoignagesSection highlight={d.slug} />
-
-      {d.referentiel && <ReferentielSection referentiel={d.referentiel} sigle={d.sigle} />}
+      {!d.referentiel && (
+        <>
+          <MethodeSection />
+          <FinancementSection sigle={d.sigle} />
+        </>
+      )}
+      <TemoignagesSection highlight={d.slug} fond={d.referentiel ? "teinte" : "blanc"} />
 
       {/* FAQ — spécifique au diplôme */}
       <section id="faq" className="scroll-mt-16 bg-white py-12 sm:py-20">
