@@ -32,7 +32,7 @@ export default function CGVPage() {
             <h2 className="text-lg font-semibold text-slate-900">Tarifs et paiement</h2>
             <p className="mt-2">
               L&apos;accompagnement est facturé entre 1 800 € et 3 500 € selon le nombre
-              d&apos;heures nécessaires (15 à 20 h), finançable via le CPF et les autres
+              d&apos;heures nécessaires (10 à 35 h), finançable via le CPF et les autres
               dispositifs présentés sur le site. Les modalités précises de paiement (échéancier,
               moyens de règlement acceptés) sont communiquées avant tout engagement, dans le cadre
               du devis personnalisé.

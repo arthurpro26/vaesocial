@@ -46,6 +46,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // Couleur des barres du navigateur sur téléphone (Safari iOS teinte sa barre
+  // d'adresse). Sans cette ligne, Safari prenait l'orange du bouton collé en bas
+  // (StickyCta) : barre orange sous le site, signalée par Arthur le 20/10/2026.
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

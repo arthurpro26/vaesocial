@@ -132,7 +132,7 @@ export default function HomePage() {
           <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-x-14 lg:gap-y-8">
             <div>
               <h1 className="text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900">
-                Commençons par regarder <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">votre parcours</span> et le diplôme qui lui correspond.
+                Commençons par regarder <span className="mot-cle text-brand-500">votre parcours</span> et le diplôme qui lui correspond.
               </h1>
               <p className="mt-5 max-w-xl text-base font-medium leading-relaxed text-slate-700 sm:mt-6 sm:text-lg">
                 Trois minutes de questions, puis un expert du secteur social vous rappelle : la VAE, les livrets, le financement, et ce qui est possible dans votre situation.

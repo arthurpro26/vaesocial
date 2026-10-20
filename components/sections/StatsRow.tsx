@@ -5,7 +5,8 @@ import { RESULTATS } from "@/lib/site-data";
 // anciennes pastilles « jetées » en haut de page — demande d'Arthur). Les valeurs viennent
 // de RESULTATS (lib/site-data.ts) : ne jamais les modifier ici.
 const STATS = [
-  { valeur: RESULTATS.taux, libelle: `${RESULTATS.tauxLabel} ${RESULTATS.periode}`, accent: true },
+  // « depuis 2024 » retiré de l'affichage le 20/10/2026 (Arthur) ; la période reste dans les mentions légales.
+  { valeur: RESULTATS.taux, libelle: RESULTATS.tauxLabel, accent: true },
   { valeur: RESULTATS.volume, libelle: RESULTATS.volumeLabel, accent: false },
 ];
 

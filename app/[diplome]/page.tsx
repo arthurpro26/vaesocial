@@ -162,7 +162,7 @@ export default async function DiplomePage({
                   NE PAS remettre `text-balance` : il coupe le titre au milieu sur téléphone. */}
               <h1 className="text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900">
                 VAE {DIPLOMES.find((x) => x.slug === d.slug)?.nom ?? d.sigle} :{" "}
-                <span className="text-brand-500 underline decoration-accent-500/70 decoration-[3px] underline-offset-[7px]">
+                <span className="mot-cle text-brand-500">
                   votre expérience
                 </span>{" "}
                 peut valoir le {d.sigle}.
@@ -192,7 +192,7 @@ export default async function DiplomePage({
                   ))}
                 </ol>
                 <p className="mt-4 text-sm text-slate-600">
-                  15 à 20 heures d&apos;accompagnement individuel, à distance, sur plusieurs mois.{" "}
+                  10 à 35 heures d&apos;accompagnement individuel, à distance, sur plusieurs mois.{" "}
                   <a href="#methode" className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900">
                     Voir le détail des étapes
                   </a>

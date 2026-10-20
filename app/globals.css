@@ -231,3 +231,25 @@ body {
     animation: none;
   }
 }
+
+/* Mot clé du grand titre (accueil + pages diplôme), 20/10/2026.
+   Remplace le soulignement orange (text-decoration) qui, sur téléphone, tombait
+   sur la ligne suivante (« valoir le DEES »). Ici : un surlignage façon marqueur,
+   dessiné DANS la ligne (bande de 0.32em en bas du texte), donc jamais de
+   chevauchement, quel que soit l'interlignage. `box-decoration-break: clone`
+   garde la bande propre si le mot clé se coupe sur deux lignes. */
+.mot-cle {
+  background-image: linear-gradient(
+    to top,
+    rgb(254 215 170 / 0.75) 0,
+    rgb(254 215 170 / 0.75) 0.32em,
+    transparent 0.32em
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0 0.06em;
+  margin: 0 -0.06em;
+  border-radius: 0.12em;
+}

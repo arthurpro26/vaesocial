@@ -243,7 +243,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "150 €, ramené à un accompagnement de 15 à 20 heures qui mène à un diplôme d'État, reste une somme modeste. Ce n'est pas ce montant qui doit décider si la VAE est adaptée à votre situation — c'est votre éligibilité, et le fait que votre CPF dispose d'un solde suffisant (ou que d'autres financements viennent compléter : OPCO, France Travail, Transitions Pro). C'est justement ce qu'on vérifie avec vous dès le premier échange, avant tout engagement de votre part.",
+        text: "150 €, ramené à un accompagnement de 10 à 35 heures qui mène à un diplôme d'État, reste une somme modeste. Ce n'est pas ce montant qui doit décider si la VAE est adaptée à votre situation — c'est votre éligibilité, et le fait que votre CPF dispose d'un solde suffisant (ou que d'autres financements viennent compléter : OPCO, France Travail, Transitions Pro). C'est justement ce qu'on vérifie avec vous dès le premier échange, avant tout engagement de votre part.",
       },
       {
         type: "cta",
@@ -523,7 +523,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "Avant de parler de mois, il faut distinguer deux choses qu'on confond souvent. Le temps calendaire, c'est la durée totale entre le moment où vous vous lancez et celui où vous passez devant le jury. Le temps de travail réel, c'est le nombre d'heures que vous y consacrez concrètement. Un accompagnement VAE représente en général 15 à 20 heures de travail effectif avec votre accompagnateur — réparties sur plusieurs mois, pas concentrées sur une semaine. C'est ce qui rend la VAE compatible avec une activité professionnelle à temps plein : vous n'arrêtez jamais de travailler pour la préparer.",
+        text: "Avant de parler de mois, il faut distinguer deux choses qu'on confond souvent. Le temps calendaire, c'est la durée totale entre le moment où vous vous lancez et celui où vous passez devant le jury. Le temps de travail réel, c'est le nombre d'heures que vous y consacrez concrètement. Un accompagnement VAE représente en général 10 à 35 heures de travail effectif avec votre accompagnateur — réparties sur plusieurs mois, pas concentrées sur une semaine. C'est ce qui rend la VAE compatible avec une activité professionnelle à temps plein : vous n'arrêtez jamais de travailler pour la préparer.",
       },
       {
         type: "h2",

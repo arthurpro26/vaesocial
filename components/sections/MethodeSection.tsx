@@ -22,7 +22,7 @@ export default function MethodeSection() {
             5 étapes, du diagnostic jusqu&apos;au jury
           </h2>
           <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
-            15 à 20 heures d&apos;accompagnement au total, réparties sur plusieurs mois, à distance et à votre rythme.
+            10 à 35 heures d&apos;accompagnement au total, réparties sur plusieurs mois, à distance et à votre rythme.
           </p>
         </div>
 

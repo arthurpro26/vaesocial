@@ -51,9 +51,11 @@ export default function StickyCta({
   return (
     <div
       className={clsx(
-        "pointer-events-none fixed inset-x-0 bottom-0 z-40 px-3 pb-3 pt-6 transition duration-300 sm:hidden",
+        "pointer-events-none fixed inset-x-0 bottom-0 z-40 px-3 pb-3 pt-6 transition-[opacity,transform,visibility] duration-300 sm:hidden",
         "bg-gradient-to-t from-white/95 via-white/70 to-transparent",
-        show ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
+        // `invisible` en plus de l'opacité : le bouton caché (poussé sous le bord
+        // de l'écran) ne doit plus pouvoir teinter la barre de Safari (20/10/2026).
+        show ? "visible translate-y-0 opacity-100" : "invisible translate-y-full opacity-0"
       )}
       aria-hidden={!show}
     >

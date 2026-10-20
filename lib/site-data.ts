@@ -97,12 +97,12 @@ export type DiplomeSlug = (typeof DIPLOMES)[number]["slug"];
 export type DiplomeSigle = (typeof DIPLOMES)[number]["sigle"];
 
 export const STATS = [
-  { chiffre: "97 %", label: "De dossiers validés" },
+  { chiffre: "97 %", label: "De dossiers validés par le jury" },
   { chiffre: "400+", label: "VAE accompagnées" },
   { chiffre: "< 24h", label: "Délai de réponse" },
   { chiffre: "100%", label: "À distance" },
   { chiffre: "100%", label: "Financement possible" },
-  { chiffre: "15-20h", label: "D'accompagnement" },
+  { chiffre: "10-35h", label: "D'accompagnement" },
   { chiffre: "Gratuit", label: "Diagnostic initial" },
 ];
 
@@ -229,7 +229,7 @@ export const ENGAGEMENTS = [
 // vérifiable et défendable si un candidat ou un contrôle le conteste.
 export const RESULTATS = {
   taux: "97 %",
-  tauxLabel: "de dossiers validés",
+  tauxLabel: "de dossiers validés par le jury",
   volume: "400+",
   volumeLabel: "VAE accompagnées",
   periode: "depuis 2024",
