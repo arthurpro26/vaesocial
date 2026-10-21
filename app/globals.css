@@ -56,16 +56,24 @@
    L'accent corail/orange des boutons d'action est INCHANGÉ : il convertit
    bien, et le contraste chaud/froid est plus marqué sur bleu que sur teal. */
 :root {
-  --brand-50: 244 247 252;
-  --brand-100: 224 233 246;
-  --brand-200: 188 206 234;
-  --brand-300: 138 170 214;
-  --brand-400: 82 126 186;
-  --brand-500: 46 92 156;
-  --brand-600: 33 71 128;
-  --brand-700: 26 56 103;
-  --brand-800: 21 45 82;
-  --brand-900: 14 31 58;
+  /* THÈME VERT — 21/10/2026, demande d'Arthur : même vert que la pub Meta et que le
+     logo (dégradé #55a08f → #21564d = niveaux 400 → 700). C'est exactement l'ancienne
+     palette teal du site (commit 569fa44) : retour au vert, sans rien inventer.
+     Pour revenir au bleu institutionnel du 17/09 : remettre les valeurs du bloc
+     commenté ci-dessous (sauvegarde : _sauvegardes_claude/2026-10-21-theme-vert/).
+     Bleu : 50 244 247 252 · 100 224 233 246 · 200 188 206 234 · 300 138 170 214 ·
+     400 82 126 186 · 500 46 92 156 · 600 33 71 128 · 700 26 56 103 · 800 21 45 82 ·
+     900 14 31 58. */
+  --brand-50: 239 247 245;
+  --brand-100: 217 236 231;
+  --brand-200: 179 217 208;
+  --brand-300: 130 190 176;
+  --brand-400: 85 160 143;
+  --brand-500: 54 132 117;
+  --brand-600: 41 107 95;
+  --brand-700: 33 86 77;
+  --brand-800: 27 68 61;
+  --brand-900: 20 47 42;
   /* Bleu du filet tricolore (components/Trico.tsx) : volontairement HORS de la
      palette brand-*, pour ne pas virer au rose sur la page .theme-rose. */
   --trico-blue: 33 71 128;

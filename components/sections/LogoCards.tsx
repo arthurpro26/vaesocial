@@ -16,7 +16,7 @@ export default function LogoCards({ className = "" }: { className?: string }) {
       {LOGOS.map((l) => (
         <li
           key={l.fichier}
-          className="group flex h-16 items-center justify-center rounded-2xl bg-white px-4 shadow-[0_8px_24px_-14px_rgba(14,31,58,0.35)] ring-1 ring-brand-900/10 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_34px_-16px_rgba(14,31,58,0.45)] hover:ring-brand-300 sm:h-[4.5rem] sm:px-5"
+          className="group flex h-16 items-center justify-center rounded-2xl bg-white px-4 shadow-[0_8px_24px_-14px_rgba(20,47,42,0.35)] ring-1 ring-brand-900/10 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_34px_-16px_rgba(20,47,42,0.45)] hover:ring-brand-300 sm:h-[4.5rem] sm:px-5"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

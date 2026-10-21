@@ -215,7 +215,7 @@ export default async function DiplomePage({
                   sont celles de FINANCEMENTS (lib/site-data.ts), détaillées plus bas dans la
                   page (#financement). Aucune promesse chiffrée de prise en charge ici. */}
               <div className="hidden lg:mt-auto lg:block lg:pt-8">
-                <div className="flex items-start gap-4 rounded-2xl bg-white p-5 shadow-[0_8px_24px_-14px_rgba(14,31,58,0.35)] ring-1 ring-brand-900/10">
+                <div className="flex items-start gap-4 rounded-2xl bg-white p-5 shadow-[0_8px_24px_-14px_rgba(20,47,42,0.35)] ring-1 ring-brand-900/10">
                   <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-900/10">
                     <BrandIcon name="wallet" className="h-5 w-5" />
                   </span>
@@ -242,7 +242,7 @@ export default async function DiplomePage({
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
               <div className="relative">
                 <div aria-hidden className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-brand-100 via-white to-accent-100/60 blur-xl" />
-                <div className="rounded-3xl bg-white p-1.5 shadow-[0_30px_70px_-30px_rgba(14,31,58,0.45)] ring-1 ring-brand-900/10 sm:p-2">
+                <div className="rounded-3xl bg-white p-1.5 shadow-[0_30px_70px_-30px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10 sm:p-2">
                   <PrediagnosticForm key={d.sigle} presetDiplome={d.sigle} />
                 </div>
               </div>
@@ -253,7 +253,7 @@ export default async function DiplomePage({
               {/* Carte « Ensuite : votre visio » déplacée ici (sous le formulaire) le 19/10/2026,
                   demande d'Arthur : elle était sous le titre, dans la colonne de gauche. */}
               <div className="mt-5 sm:mt-6">
-              <div className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-34px_rgba(14,31,58,0.45)] ring-1 ring-brand-900/10">
+              <div className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-34px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10">
                 <div className="flex items-center gap-1.5 border-b border-brand-900/10 bg-brand-50 px-4 py-2.5">
                   <span className="h-2.5 w-2.5 rounded-full bg-brand-200" />
                   <span className="h-2.5 w-2.5 rounded-full bg-brand-200" />

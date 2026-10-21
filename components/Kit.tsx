@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 // Trame de points décorative (fonds de héros).
 export const DOTS = {
-  backgroundImage: "radial-gradient(rgba(33,71,128,0.14) 1.2px, transparent 1.6px)",
+  backgroundImage: "radial-gradient(rgba(41,107,95,0.14) 1.2px, transparent 1.6px)",
   backgroundSize: "22px 22px",
 } as const;
 
