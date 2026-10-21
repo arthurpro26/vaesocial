@@ -160,6 +160,18 @@ export default async function DiplomePage({
                   Le visiteur qui relève d'un autre diplôme reste réorienté par le menu
                   « Diplôme visé » du formulaire et par la visio.
                   NE PAS remettre `text-balance` : il coupe le titre au milieu sur téléphone. */}
+              {/* Pastille ajoutée le 21/10/2026 (demande d'Arthur, même mention que sur la pub Meta) :
+                  seulement pour les diplômes qui changent de référentiel à la rentrée de septembre 2026
+                  (arrêtés du 6 octobre 2025 : DEES, DEEJE, DEASS, DEETS) — voir `nouveauReferentiel`. */}
+              {d.nouveauReferentiel && (
+                <a
+                  href="#referentiel"
+                  className="mb-4 inline-flex items-center gap-2 self-start rounded-full bg-brand-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white shadow-md shadow-brand-900/20 transition hover:bg-brand-800 sm:text-[0.8rem]"
+                >
+                  <Ico name="spark" className="h-4 w-4" />
+                  Nouveau référentiel · septembre 2026
+                </a>
+              )}
               <h1 className="text-[clamp(1.9rem,7.4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em] text-brand-900">
                 VAE {DIPLOMES.find((x) => x.slug === d.slug)?.nom ?? d.sigle} :{" "}
                 <span className="mot-cle text-brand-500">

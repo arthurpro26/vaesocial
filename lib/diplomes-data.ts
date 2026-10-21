@@ -42,6 +42,11 @@ export type DiplomeData = {
     sourceUrl: string;
     guide?: { slug: string; label: string };
   };
+  // Vrai quand le diplôme relève d'un nouveau référentiel entré en vigueur à la rentrée
+  // de septembre 2026 (arrêtés du 6 octobre 2025 : DEES, DEEJE, DEASS, DEETS). Affiche
+  // la pastille « Nouveau référentiel · septembre 2026 » en haut de page. NE PAS l'activer
+  // pour DEME, DEAES, DEAP, CAFERUIS (non concernés) ni pour le DECESF (septembre 2027).
+  nouveauReferentiel?: boolean;
   faq: FaqItem[];
   ctaTitre: string;
   // Thème couleur de la page. Absent = teal de marque (toutes les pages
@@ -111,6 +116,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     ],
     debouchesConclusion:
       "🌟 Un diplôme, des dizaines de terrains d'action possibles : le DEES ouvre autant de portes qu'il y a de publics à accompagner.",
+    nouveauReferentiel: true,
     referentiel: {
       titre: "Votre expérience couvre‑t‑elle les quatre blocs du DEES ?",
       intro:
@@ -331,7 +337,56 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     debouchesConclusion:
       "🌟 Chaque jour, contribuer à poser les toutes premières bases du développement d'un enfant : peu de métiers offrent un impact aussi concret.",
     noteReferentiel:
-      "Le référentiel du DEEJE évolue à partir de septembre 2026 (décret du 6 octobre 2025) : les personnes déjà engagées dans un parcours avant cette date continuent sous l'ancien référentiel jusqu'à la session 2028. Nous vérifions avec vous quel référentiel s'applique à votre situation.",
+      "Le référentiel du DEEJE évolue à partir de septembre 2026 (arrêté du 6 octobre 2025) : les personnes déjà engagées dans un parcours avant cette date continuent sous l'ancien référentiel jusqu'à la session 2028. Nous vérifions avec vous quel référentiel s'applique à votre situation.",
+    nouveauReferentiel: true,
+    // Intitulés des quatre blocs : fiche RNCP41745 (France Compétences, via mescertifs.fr) et communiqué
+    // du ministère du 15/10/2025 ; recoupés le 21/10/2026. Pistes et exemples = conseil de méthode (comme DEES).
+    referentiel: {
+      titre: "Votre expérience couvre‑t‑elle les quatre blocs du DEEJE ?",
+      intro:
+        "Le jury évalue le DEEJE sur quatre blocs de compétences (nouveau référentiel, arrêté du 6 octobre 2025, applicable depuis le 1er septembre 2026). Pour chacun, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+      conclusion:
+        "Vous vous reconnaissez dans deux ou trois blocs, pas dans les quatre ? C'est fréquent. Pendant la visio, votre accompagnatrice reprend votre expérience bloc par bloc, vous dit si elle suffit pour le DEEJE, et ce qu'il faudrait compléter le cas échéant.",
+      blocs: [
+        {
+          intitule:
+            "Concevoir et conduire un accompagnement socio-éducatif dans l'intérêt des jeunes enfants et de leur famille",
+          piste:
+            "Une situation où vous avez construit un accompagnement pour un enfant et sa famille, pas seulement appliqué le projet de la structure.",
+          exemples:
+            "Un projet d'accueil personnalisé que vous avez conçu et réajusté ; une période d'adaptation préparée avec les parents ; une famille en difficulté que vous avez repérée et accompagnée vers le bon relais.",
+        },
+        {
+          intitule:
+            "Favoriser et soutenir le développement harmonieux et l'épanouissement du jeune enfant",
+          piste:
+            "Une situation où vous avez agi sur l'environnement ou les activités à partir de ce que vous observiez chez l'enfant.",
+          exemples:
+            "Un aménagement d'espace pensé pour la motricité ou le jeu libre ; une activité d'éveil construite à partir de vos observations ; une observation partagée en équipe qui a changé votre pratique.",
+        },
+        {
+          intitule:
+            "S'inscrire dans une dynamique partenariale et territoriale en lien avec la mise en œuvre des politiques de cohésion sociale",
+          piste:
+            "Une situation de travail avec des partenaires extérieurs à votre structure : PMI, santé, école, collectivité, associations.",
+          exemples:
+            "Un relais avec la PMI ou un service de santé ; la préparation de l'entrée à l'école avec l'enseignant ; un projet mené avec la mairie, une médiathèque ou une association.",
+        },
+        {
+          intitule: "S'inscrire dans un contexte professionnel du travail social",
+          piste:
+            "Une situation qui montre votre place dans l'institution et le recul que vous prenez sur votre pratique.",
+          exemples:
+            "Votre rôle dans le projet d'établissement ou de service ; l'accueil et le suivi d'un stagiaire ; un écrit professionnel (note, compte rendu de situation) ; une analyse de pratique dont vous avez tiré des changements concrets.",
+        },
+      ],
+      sourceLabel: "Arrêté du 6 octobre 2025 relatif au DEEJE (Légifrance)",
+      sourceUrl: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052384514",
+      guide: {
+        slug: "reforme-deeje-2026",
+        label: "Réforme du DEEJE : ce qui change pour votre VAE",
+      },
+    },
     faq: [
       {
         question: "Quel est le niveau du DEEJE ?",
@@ -610,6 +665,51 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       "🌟 Un seul diplôme d'État pour exercer en collectivité, à l'hôpital, en structure médico-sociale ou en entreprise.",
     noteReferentiel:
       "Le diplôme d'assistant de service social dispose d'un nouveau référentiel de compétences depuis le 1er septembre 2026 (quatre blocs de compétences). Les modalités exactes du dépôt de votre dossier dépendent du certificateur : nous vérifions avec vous la procédure qui s'applique à votre situation avant tout engagement.",
+    nouveauReferentiel: true,
+    // Intitulés des quatre blocs : site d'une école (IDS Normandie) et fiche RNCP41748 relevés le 21/10/2026 ;
+    // n° RNCP relevé sur un répertoire tiers, page France Compétences non ouverte. Pistes/exemples = conseil de méthode.
+    referentiel: {
+      titre: "Votre expérience couvre‑t‑elle les quatre blocs du DEASS ?",
+      intro:
+        "Le jury évalue le DEASS sur quatre blocs de compétences (nouveau référentiel, arrêté du 6 octobre 2025, applicable depuis le 1er septembre 2026). Pour chacun, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+      conclusion:
+        "Vous vous reconnaissez dans deux ou trois blocs, pas dans les quatre ? C'est fréquent. Pendant la visio, votre accompagnatrice reprend votre expérience bloc par bloc, vous dit si elle suffit pour le DEASS, et ce qu'il faudrait compléter le cas échéant.",
+      blocs: [
+        {
+          intitule:
+            "Concevoir et conduire un accompagnement social global favorisant l'insertion sociale et l'amélioration des conditions de vie",
+          piste:
+            "Une situation où vous avez conduit un accompagnement de bout en bout : analyse de la demande, évaluation, plan d'action, suivi.",
+          exemples:
+            "Un accès aux droits ou un accompagnement budgétaire mené jusqu'au bout ; une évaluation de situation qui a débouché sur un plan d'action ; un parcours vers le logement ou l'emploi que vous avez coordonné.",
+        },
+        {
+          intitule:
+            "Favoriser et soutenir l'autodétermination des individus et des collectifs dans un but d'émancipation",
+          piste:
+            "Une situation où la personne accompagnée a participé aux décisions qui la concernent.",
+          exemples:
+            "Un projet construit avec la personne, en éclairant ses options plutôt qu'en décidant pour elle ; un groupe ou une action collective que vous avez animé ; une démarche que l'usager a menée lui-même avec votre appui.",
+        },
+        {
+          intitule:
+            "S'inscrire dans une dynamique partenariale et territoriale en lien avec la mise en œuvre des politiques de cohésion sociale",
+          piste:
+            "Une situation de travail avec des partenaires extérieurs à votre service : CAF, santé, bailleurs, justice, associations, collectivité.",
+          exemples:
+            "Une synthèse ou une instance partenariale à laquelle vous avez pris part ; une orientation concertée avec un bailleur, un hôpital ou une association ; un partenariat que vous avez mis en place ou fait vivre.",
+        },
+        {
+          intitule: "S'inscrire dans un contexte professionnel du travail social",
+          piste:
+            "Une situation qui montre votre place dans l'institution et le recul que vous prenez sur votre pratique.",
+          exemples:
+            "Votre rôle dans le projet de service ; l'accueil et le suivi d'un stagiaire ; un écrit professionnel (évaluation sociale, rapport) ; une analyse de pratique ou une supervision dont vous avez tiré des changements concrets.",
+        },
+      ],
+      sourceLabel: "Fiche RNCP41748 du DEASS, France Compétences",
+      sourceUrl: "https://www.francecompetences.fr/recherche/rncp/41748/",
+    },
     faq: [
       {
         question: "Peut-on obtenir le DEASS par la VAE ?",
@@ -806,6 +906,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       "🌟 Un diplôme de niveau 6 qui reconnaît à la fois votre savoir-faire technique et votre posture éducative.",
     noteReferentiel:
       "Le DEETS a un nouveau référentiel (fiche RNCP41746) dont les parcours certifiants débutent le 1er septembre 2026. Les modalités du parcours VAE (recevabilité, calendrier de dépôt) sont fixées par le certificateur et peuvent évoluer : nous vérifions avec vous les conditions exactes qui s'appliquent à votre dossier avant tout engagement.",
+    nouveauReferentiel: true,
     referentiel: {
       titre: "Les quatre blocs de compétences du DEETS",
       intro:
