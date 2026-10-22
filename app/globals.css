@@ -118,6 +118,29 @@ html {
   scroll-behavior: smooth;
 }
 
+/* 2026-10-22 — Lisibilité sur ordinateur (demande d'Arthur : « que
+   l'utilisateur se sente bien sur le site »). Tout le site est en rem
+   (textes, marges, largeurs max) : on agrandit la taille de base sur les
+   grands écrans et TOUT grandit dans les mêmes proportions, comme un zoom
+   propre. Le mobile ne change pas (16 px). Les points de rupture Tailwind
+   sont en px, donc la mise en page ne bascule pas plus tôt.
+   Pour revenir en arrière : supprimer ces trois blocs. */
+@media (min-width: 1024px) {
+  html {
+    font-size: 106.25%; /* 17 px */
+  }
+}
+@media (min-width: 1280px) {
+  html {
+    font-size: 112.5%; /* 18 px */
+  }
+}
+@media (min-width: 1680px) {
+  html {
+    font-size: 118.75%; /* 19 px */
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

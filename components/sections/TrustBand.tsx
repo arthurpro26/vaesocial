@@ -27,10 +27,10 @@ export default function TrustBand() {
                 <BrandIcon name={x.icon} className="h-5 w-5" />
               </span>
               <span className="text-left">
-                <span className="block text-[0.8rem] font-bold leading-tight sm:text-[0.95rem] lg:whitespace-nowrap">
+                <span className="block text-[0.8rem] font-bold leading-tight sm:text-[0.95rem] xl:whitespace-nowrap">
                   {x.titre}
                 </span>
-                <span className="mt-0.5 block text-xs leading-snug text-brand-200 sm:text-[0.8rem] lg:whitespace-nowrap">
+                <span className="mt-0.5 block text-xs leading-snug text-brand-200 sm:text-[0.8rem] xl:whitespace-nowrap">
                   {x.sousTitre}
                 </span>
               </span>

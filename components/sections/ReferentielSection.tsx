@@ -36,7 +36,7 @@ export default function ReferentielSection({
           <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-xl sm:leading-relaxed">{referentiel.intro}</p>
         </div>
 
-        <ol className="relative mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:-mx-6 xl:-mx-20 2xl:-mx-32">
+        <ol className="relative mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6">
           {referentiel.blocs.map((bloc, i) => (
             <li
               key={bloc.intitule}
