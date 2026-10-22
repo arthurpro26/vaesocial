@@ -25,7 +25,7 @@ export default function ReferentielSection({
     >
       <div aria-hidden className="pointer-events-none absolute -left-24 bottom-10 h-72 w-72 rounded-full border-[28px] border-brand-100/70" />
       <Container>
-        <div className="relative mx-auto max-w-3xl text-center">
+        <div className="relative mx-auto max-w-4xl text-center">
           <Eyebrow>Ce que le jury évalue · {sigle}</Eyebrow>
           <h2
             id="referentiel-title"
@@ -33,14 +33,14 @@ export default function ReferentielSection({
           >
             {referentiel.titre}
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">{referentiel.intro}</p>
+          <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-xl sm:leading-relaxed">{referentiel.intro}</p>
         </div>
 
-        <ol className="relative mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5">
+        <ol className="relative mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:-mx-6 xl:-mx-20 2xl:-mx-32">
           {referentiel.blocs.map((bloc, i) => (
             <li
               key={bloc.intitule}
-              className="relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brand-900/10 sm:p-8"
+              className="relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brand-900/10 sm:p-9"
             >
               <span aria-hidden className="absolute -right-2 -top-4 text-8xl font-bold text-brand-50">
                 {i + 1}
@@ -48,22 +48,22 @@ export default function ReferentielSection({
               <div className="relative flex items-start gap-4">
                 <span
                   aria-hidden
-                  className="flex h-10 w-10 flex-none items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold sm:h-11 sm:w-11 sm:text-base text-white shadow-md shadow-brand-900/20"
+                  className="flex h-10 w-10 flex-none items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold sm:h-12 sm:w-12 sm:text-lg text-white shadow-md shadow-brand-900/20"
                 >
                   {i + 1}
                 </span>
-                <h3 className="text-base font-bold leading-snug text-brand-900 sm:text-lg">{bloc.intitule}</h3>
+                <h3 className="text-base font-bold leading-snug text-brand-900 sm:text-[1.45rem] sm:leading-snug">{bloc.intitule}</h3>
               </div>
-              <div className="relative mt-4 rounded-2xl bg-brand-50 px-4 py-3 text-sm leading-relaxed text-slate-700 sm:mt-5 sm:px-5 sm:py-4 sm:text-base">
+              <div className="relative mt-4 rounded-2xl bg-brand-50 px-4 py-3 text-sm leading-relaxed text-slate-700 sm:mt-6 sm:px-6 sm:py-5 sm:text-[1.15rem] sm:leading-relaxed">
                 <p className="flex gap-2.5">
-                  <Ico name="spark" className="mt-0.5 h-4 w-4 flex-none text-accent-500 sm:mt-1 sm:h-5 sm:w-5" />
+                  <Ico name="spark" className="mt-0.5 h-4 w-4 flex-none text-accent-500 sm:mt-1.5 sm:h-6 sm:w-6" />
                   <span>
                     <span className="font-semibold text-brand-700">À repérer dans votre parcours : </span>
                     {bloc.piste}
                   </span>
                 </p>
                 {bloc.exemples && (
-                  <p className="mt-2.5 border-t border-brand-900/10 pt-2.5 pl-[1.65rem] text-[0.84rem] leading-relaxed text-slate-600 sm:mt-3 sm:pl-[1.9rem] sm:text-[0.95rem]">
+                  <p className="mt-2.5 border-t border-brand-900/10 pt-2.5 pl-[1.65rem] text-[0.84rem] leading-relaxed text-slate-600 sm:mt-4 sm:pt-4 sm:pl-[2.1rem] sm:text-[1.1rem] sm:leading-relaxed">
                     <span className="font-semibold text-slate-700">Par exemple : </span>
                     {bloc.exemples}
                   </p>
@@ -74,11 +74,11 @@ export default function ReferentielSection({
         </ol>
 
         {referentiel.conclusion && (
-          <div className="relative mx-auto mt-8 flex max-w-3xl items-start gap-4 rounded-2xl bg-white px-5 py-4 shadow-sm ring-1 ring-brand-900/10 sm:px-6 sm:py-5">
+          <div className="relative mx-auto mt-8 flex max-w-4xl items-start gap-4 rounded-2xl bg-white px-5 py-4 shadow-sm ring-1 ring-brand-900/10 sm:px-6 sm:py-5">
             <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-900/10">
               <Ico name="check" className="h-5 w-5" />
             </span>
-            <p className="text-[0.95rem] leading-relaxed text-brand-900">{referentiel.conclusion}</p>
+            <p className="text-[0.95rem] leading-relaxed text-brand-900 sm:text-lg">{referentiel.conclusion}</p>
           </div>
         )}
 
