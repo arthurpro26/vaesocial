@@ -141,6 +141,20 @@ html {
   }
 }
 
+/* 2026-10-23 — Formulaire plus gros sur ordinateur (demande d'Arthur). Le
+   formulaire (components/PrediagnosticForm.tsx) a ses propres petites tailles
+   de texte ; plutôt que de retoucher ses ~1 700 lignes, on l'agrandit d'un
+   bloc avec `zoom` (Chrome, Safari, Firefox ≥ 126). La carte garde la largeur
+   de sa colonne (les pourcentages se calculent dans le repère du parent) ;
+   seul le contenu grossit. Appliqué sur le conteneur du formulaire, pages
+   diplôme et accueil, à partir de 1024 px. Pour revenir en arrière : supprimer
+   ce bloc et la classe `form-lisible`. */
+@media (min-width: 1024px) {
+  .form-lisible {
+    zoom: 1.12;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -225,7 +225,7 @@ export default async function DiplomePage({
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
               <div className="relative">
                 <div aria-hidden className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-brand-100 via-white to-accent-100/60 blur-xl" />
-                <div className="rounded-3xl bg-white p-1.5 shadow-[0_30px_70px_-30px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10 sm:p-2">
+                <div className="form-lisible rounded-3xl bg-white p-1.5 shadow-[0_30px_70px_-30px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10 sm:p-2">
                   <PrediagnosticForm key={d.sigle} presetDiplome={d.sigle} />
                 </div>
               </div>
