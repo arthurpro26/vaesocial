@@ -14,11 +14,12 @@ import TrustBand from "@/components/sections/TrustBand";
 import MethodeSection from "@/components/sections/MethodeSection";
 import LogoCards from "@/components/sections/LogoCards";
 import StatsRow from "@/components/sections/StatsRow";
+import ParcoursCard from "@/components/sections/ParcoursCard";
 import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
 import { Chip, DOTS, Ico, TINTS, cap } from "@/components/Kit";
-import { DIPLOMES, ETAPES, FINANCEMENTS, type DiplomeSlug } from "@/lib/site-data";
+import { DIPLOMES, FINANCEMENTS, type DiplomeSlug } from "@/lib/site-data";
 import BrandIcon from "@/components/BrandIcon";
 import { DIPLOMES_DATA } from "@/lib/diplomes-data";
 import { siteConfig } from "@/lib/site-config";
@@ -183,33 +184,15 @@ export default async function DiplomePage({
                 {sansEmoji(d.heroIntro)}
               </p>
               <StatsRow className="mt-6 sm:mt-7" />
-              <LogoCards className="mt-6 sm:mt-7" />
+              <LogoCards variant="flat" className="mt-5 sm:mt-6" />
               {/* Ordinateur seulement : la colonne de gauche était vide sous l'intro depuis que
                   la carte « Ensuite : votre visio » est passée sous le formulaire (19/10/2026,
                   demande d'Arthur). On y met le déroulé de la VAE, qu'Arthur veut plus visible.
                   Sur téléphone, le formulaire suit directement l'intro : rien n'est ajouté. */}
-              <div className="mt-8 hidden lg:block">
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">Comment se passe votre VAE {d.sigle}</p>
-                <ol className="mt-4 space-y-3">
-                  {ETAPES.map((e, i) => (
-                    <li key={e.titre} className="flex items-start gap-3">
-                      <span className={`mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-full text-xs font-bold ${i === 2 ? "bg-brand-900 text-white" : "bg-brand-100 text-brand-700"}`}>
-                        {i + 1}
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block text-[0.95rem] font-semibold leading-snug text-brand-900">{e.titre}</span>
-                        <span className="mt-0.5 block text-sm leading-snug text-slate-600">{e.texte}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-                <p className="mt-4 text-sm text-slate-600">
-                  10 à 35 heures d&apos;accompagnement individuel, à distance, sur plusieurs mois.{" "}
-                  <a href="#methode" className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900">
-                    Voir le détail des étapes
-                  </a>
-                </p>
-              </div>
+              {/* Ordinateur seulement : carte « Votre VAE en 5 étapes » (23/10/2026, remplace
+                  la liste en petit texte gris qu'Arthur trouvait « HLM »). Sur téléphone, le
+                  formulaire suit directement l'intro : rien n'est ajouté. */}
+              <ParcoursCard sigle={d.sigle} className="mt-8 hidden lg:block" />
               {/* Carte Financement (ordinateur seulement), ajoutée le 20/10/2026 à la demande
                   d'Arthur pour occuper le bas de la colonne de gauche. Les quatre solutions
                   sont celles de FINANCEMENTS (lib/site-data.ts), détaillées plus bas dans la

@@ -330,39 +330,71 @@ export function buildConfirmationSujet(lead: ConfirmationLead): string {
   return `${lead.prenom}, votre demande de VAE${sigle} est bien reçue`;
 }
 
-/** Corps de l'email de confirmation, en texte brut. */
-export function buildConfirmationTexte(lead: ConfirmationLead): string {
+/**
+ * Contenu de l'email de confirmation (refonte du 23/10/2026, demande d'Arthur :
+ * « plus agréable, VAE Social commence à avoir un style »). Le même contenu
+ * sert au texte brut (ci-dessous) et à la version HTML (lib/email.ts) : une
+ * seule source, les deux versions ne peuvent pas se contredire.
+ *
+ * Retiré le 23/10 : la phrase « depuis la réforme 2024, aucune durée minimale
+ * d'expérience n'est exigée ». Sa formulation juridique n'est pas validée, et
+ * elle poussait des profils sans expérience suffisante à réserver (deux
+ * dossiers DEME annulés pour ce motif).
+ */
+export type ConfirmationContenu = {
+  salut: string;
+  intro: string;
+  etapes: { titre: string; texte: string }[];
+  agenda: string | null;
+  agendaIntro: string;
+  fin: string;
+  signature: string;
+};
+
+export function confirmationContenu(lead: ConfirmationLead): ConfirmationContenu {
   const libelle = DIPLOME_LIBELLE[lead.diplomeVise];
-  const objet = libelle
-    ? `votre demande concernant la VAE ${lead.diplomeVise} (${libelle}) 🎓`
-    : "votre demande de VAE 🎓";
+  const diplome = libelle
+    ? `la VAE ${lead.diplomeVise} (${libelle})`
+    : "votre VAE";
+  return {
+    salut: `Bonjour ${lead.prenom},`,
+    intro: `Votre demande pour ${diplome} est bien arrivée. Voici comment ça se passe maintenant.`,
+    etapes: [
+      {
+        titre: "On vous appelle",
+        texte:
+          "Un expert VAE vous rappelle sous 24 à 48 heures (jours ouvrés) pour faire le point sur votre parcours. Comptez un quart d'heure.",
+      },
+      {
+        titre: "Une visio gratuite, avant toute inscription",
+        texte:
+          "Si votre profil correspond, vous échangez 1 h en visio avec une accompagnatrice. Elle regarde votre expérience bloc par bloc et vous dit honnêtement si elle suffit pour le diplôme.",
+      },
+      {
+        titre: "On monte votre dossier ensemble",
+        texte:
+          "Livret 1, livret 2, puis le jury : vous êtes accompagné(e) à chaque étape, 100 % à distance. Le financement peut se faire avec votre CPF (entre 1\u00a0800 et 3\u00a0500\u00a0€).",
+      },
+    ],
+    agenda: agendaUrl(),
+    agendaIntro: "Vous préférez choisir vous-même le moment de l'appel ?",
+    fin: "À très vite,",
+    signature: signature(),
+  };
+}
 
-  const lignes: string[] = [
-    `Bonjour ${lead.prenom},`,
-    "",
-    `Nous vous confirmons la bonne réception de ${objet}`,
-    "",
-    "Je vous rappelle personnellement sous 24 à 48 heures pour faire le point sur votre parcours et vérifier ensemble votre éligibilité. Comptez un quart d'heure.",
-  ];
-
-  const agenda = agendaUrl();
-  if (agenda) {
-    lignes.push(
-      "",
-      "Si vous préférez choisir vous-même le jour et l'heure qui vous conviennent, vous pouvez réserver directement dans mon agenda :",
-      `👉 ${agenda}`
-    );
+/** Corps de l'email de confirmation, en texte brut (même contenu que le HTML). */
+export function buildConfirmationTexte(lead: ConfirmationLead): string {
+  const c = confirmationContenu(lead);
+  const chiffres = ["1️⃣", "2️⃣", "3️⃣"];
+  const lignes: string[] = [c.salut, "", `${c.intro} 🎓`, ""];
+  c.etapes.forEach((e, i) => {
+    lignes.push(`${chiffres[i] ?? "•"} ${e.titre}`, e.texte, "");
+  });
+  if (c.agenda) {
+    lignes.push(c.agendaIntro, `👉 ${c.agenda}`, "");
   }
-
-  lignes.push(
-    "",
-    "Une précision qui rassure souvent : depuis la réforme 2024, aucune durée minimale d'expérience n'est exigée pour entamer une VAE.",
-    "",
-    "À très vite,",
-    "",
-    signature()
-  );
-
+  lignes.push(c.fin, "", c.signature);
   return lignes.join("\n");
 }
 

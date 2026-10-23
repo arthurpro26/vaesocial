@@ -75,6 +75,7 @@ export const prediagnosticSchema = z.object({
   agAds: z.string().optional(),
   landing: z.string().optional(),
   clickAt: z.string().optional(),
+  source: z.string().optional(),
 });
 
 /**
@@ -84,7 +85,7 @@ export const prediagnosticSchema = z.object({
  */
 export function nettoyerAttribution<T extends Partial<Record<AttributionKey, string | undefined>>>(data: T): T {
   const bornes: Record<AttributionKey, number> = {
-    gclid: 120, gbraid: 120, wbraid: 120, kwAds: 120, mtAds: 8, crAds: 40, cpAds: 40, agAds: 40, landing: 120, clickAt: 40,
+    gclid: 120, gbraid: 120, wbraid: 120, kwAds: 120, mtAds: 8, crAds: 40, cpAds: 40, agAds: 40, landing: 120, clickAt: 40, source: 60,
   };
   const sortie = { ...data };
   for (const cle of Object.keys(bornes) as AttributionKey[]) {
@@ -97,6 +98,6 @@ export function nettoyerAttribution<T extends Partial<Record<AttributionKey, str
 }
 
 export type AttributionKey =
-  | "gclid" | "gbraid" | "wbraid" | "kwAds" | "mtAds" | "crAds" | "cpAds" | "agAds" | "landing" | "clickAt";
+  | "gclid" | "gbraid" | "wbraid" | "kwAds" | "mtAds" | "crAds" | "cpAds" | "agAds" | "landing" | "clickAt" | "source";
 
 export type PrediagnosticFormValues = z.infer<typeof prediagnosticSchema>;

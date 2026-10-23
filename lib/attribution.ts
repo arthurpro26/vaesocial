@@ -46,7 +46,63 @@ export type Attribution = {
   landing?: string;
   /** Horodatage ISO du clic (arrivée sur le site). */
   clickAt?: string;
+  /**
+   * Origine de la visite hors Google Ads — ajoutée le 23/10/2026 à la demande
+   * d'Arthur (« d'où vient ce lead ? »). Valeurs : « Facebook », « Instagram »,
+   * « Google naturel », « Bing », « Direct », un utm_source, ou le domaine du
+   * site d'origine. Première visite gagnante : une navigation interne ne
+   * remplace jamais la source d'arrivée. Un clic Google Ads reste prioritaire
+   * (voir sourceDuLead dans lib/email.ts).
+   */
+  source?: string;
 };
+
+const SOURCE_STORAGE_KEY = "vaesocial_source_v1";
+
+/** Devine l'origine d'une arrivée sur le site à partir de l'URL et du referrer. */
+function devinerSource(sp: URLSearchParams, referrer: string): string | undefined {
+  const utm = propre(sp.get("utm_source"), 40);
+  if (utm) {
+    const medium = propre(sp.get("utm_medium"), 20);
+    const camp = propre(sp.get("utm_campaign"), 40);
+    return [utm, medium, camp].filter(Boolean).join(" / ");
+  }
+  if (sp.get("fbclid")) return "Facebook";
+  if (!referrer) return "Direct";
+  let host = "";
+  try {
+    host = new URL(referrer).hostname.toLowerCase();
+  } catch {
+    return undefined;
+  }
+  if (!host || host === window.location.hostname.toLowerCase()) return undefined;
+  if (/(^|\.)(facebook|fb)\.com$|^fb\.me$|^l\.facebook\.com$|^lm\.facebook\.com$/.test(host)) return "Facebook";
+  if (/(^|\.)instagram\.com$|^l\.instagram\.com$/.test(host)) return "Instagram";
+  if (/(^|\.)google\.[a-z.]+$/.test(host)) return "Google naturel";
+  if (/(^|\.)bing\.com$/.test(host)) return "Bing";
+  if (/(^|\.)(linkedin|lnkd)\.(com|in)$/.test(host)) return "LinkedIn";
+  if (/(^|\.)(youtube|youtu)\.(com|be)$/.test(host)) return "YouTube";
+  return host.replace(/^www\./, "");
+}
+
+/** Mémorise l'origine de la première arrivée (jamais écrasée par une navigation interne). */
+function captureSource(sp: URLSearchParams): void {
+  try {
+    if (window.localStorage.getItem(SOURCE_STORAGE_KEY)) return;
+    const src = devinerSource(sp, document.referrer || "");
+    if (src) window.localStorage.setItem(SOURCE_STORAGE_KEY, src);
+  } catch {
+    // Stockage indisponible : le lead partira sans source, jamais sans le lead.
+  }
+}
+
+function lireSource(): string | undefined {
+  try {
+    return propre(window.localStorage.getItem(SOURCE_STORAGE_KEY), 60);
+  } catch {
+    return undefined;
+  }
+}
 
 type Stocke = Attribution & { at: number };
 
@@ -109,6 +165,7 @@ export function captureAttribution(): void {
   if (typeof window === "undefined") return;
   try {
     const sp = new URLSearchParams(window.location.search);
+    captureSource(sp);
     const trouve: Attribution = {};
     for (const [param, cle] of PARAMS) {
       const v = propre(sp.get(param));
@@ -151,6 +208,8 @@ export function readAttribution(): Attribution {
       const c = gclidDuCookie();
       if (c) resultat.gclid = c;
     }
+    const src = lireSource();
+    if (src) resultat.source = src;
     return resultat;
   } catch {
     return {};

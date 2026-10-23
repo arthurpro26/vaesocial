@@ -10,7 +10,24 @@ const LOGOS = [
   { fichier: "cpf.png", alt: "Formation finançable par le CPF" },
 ];
 
-export default function LogoCards({ className = "" }: { className?: string }) {
+/**
+ * `variant="flat"` (23/10/2026) : les trois logos sur une ligne, sans cartes
+ * blanches — pour le haut des pages diplôme, où les cartes s'empilaient avec
+ * le reste et alourdissaient la colonne (demande d'Arthur).
+ */
+export default function LogoCards({ className = "", variant = "cards" }: { className?: string; variant?: "cards" | "flat" }) {
+  if (variant === "flat") {
+    return (
+      <ul aria-label="Références officielles" className={`flex flex-wrap items-center gap-x-7 gap-y-3 ${className}`}>
+        {LOGOS.map((l) => (
+          <li key={l.fichier} className="flex items-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`/logos/${l.fichier}`} alt={l.alt} className="h-8 w-auto object-contain sm:h-9" />
+          </li>
+        ))}
+      </ul>
+    );
+  }
   return (
     <ul aria-label="Références officielles" className={`flex flex-wrap items-stretch gap-3 ${className}`}>
       {LOGOS.map((l) => (

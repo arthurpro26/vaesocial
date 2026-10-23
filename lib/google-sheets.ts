@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet, type GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
-import { isEligibleDuree, libelleCorrespondance, type PrediagnosticLead } from "@/lib/email";
+import { isEligibleDuree, libelleCorrespondance, sourceDuLead, type PrediagnosticLead } from "@/lib/email";
 
 /**
  * Point d'intégration Google Sheets pour les leads du formulaire de
@@ -68,6 +68,7 @@ export async function appendLeadToSheet(lead: PrediagnosticLead) {
         [colonnes["Annonce ID"]]: lead.crAds ?? "",
         [colonnes["Page d'arrivée"]]: lead.landing ?? "",
         [colonnes["Clic le"]]: lead.clickAt ?? "",
+        [colonnes["Source"]]: sourceDuLead(lead),
       }
     : {};
 
@@ -133,6 +134,9 @@ export const COLONNES_SUIVI_ADS = [
   "Qualifié",
   "Signé",
   "Envoyé Ads",
+  // Ajoutée le 23/10/2026 : origine de la visite (Google Ads, Facebook,
+  // Instagram, Google naturel, Direct…). Voir lib/attribution.ts.
+  "Source",
 ] as const;
 
 type ColonneSuivi = (typeof COLONNES_SUIVI_ADS)[number];

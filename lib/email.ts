@@ -1,8 +1,10 @@
 import nodemailer from "nodemailer";
+import { siteConfig } from "@/lib/site-config";
 import {
   agendaUrl,
   buildConfirmationSujet,
   buildConfirmationTexte,
+  confirmationContenu,
   buildMauvaisNumeroMailto,
   buildMauvaisNumeroTexte,
   buildRelancePageHref,
@@ -40,7 +42,15 @@ export type PrediagnosticLead = {
   agAds?: string;
   landing?: string;
   clickAt?: string;
+  /** Origine de la visite hors Google Ads (Facebook, Google naturel, Direct…) — 23/10/2026. */
+  source?: string;
 };
+
+/** Origine à afficher : « Google Ads » si clic d'annonce, sinon la source mémorisée. */
+export function sourceDuLead(lead: PrediagnosticLead): string {
+  if (lead.kwAds || lead.gclid || lead.gbraid || lead.wbraid) return "Google Ads";
+  return lead.source ?? "";
+}
 
 /** Libellé lisible du type de correspondance Google Ads ({matchtype}). */
 export function libelleCorrespondance(mt?: string): string {
@@ -163,7 +173,8 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     `Ancienneté dans l'activité : ${lead.ancienneteActivite}`,
     `Expérience dans le secteur : ${lead.experienceSecteur}`,
     `Structure d'exercice : ${lead.structure}`,
-    ...(resumeAttribution(lead) ? ["", `Source Google Ads : ${resumeAttribution(lead)}`] : []),
+    ...(sourceDuLead(lead) ? ["", `Source : ${sourceDuLead(lead)}`] : []),
+    ...(resumeAttribution(lead) ? [`Source Google Ads : ${resumeAttribution(lead)}`] : []),
     "",
     "Activité au quotidien :",
     lead.activiteQuotidienne,
@@ -268,6 +279,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     ${ligne("Ancienneté", lead.ancienneteActivite)}
     ${ligne("Expérience secteur", lead.experienceSecteur)}
     ${ligne("Structure", lead.structure)}
+    ${sourceDuLead(lead) ? ligne("Source", sourceDuLead(lead)) : ""}
     ${resumeAttribution(lead) ? ligne("Source Google Ads", resumeAttribution(lead)) : ""}
   </table>
   <p style="margin:20px 0 4px;color:#64748b">Activité au quotidien</p>
@@ -330,33 +342,67 @@ export async function sendConfirmationToLead(lead: PrediagnosticLead) {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
 
-  // La ligne « 👉 <url> » du texte brut devient un vrai bouton dans la version
-  // HTML. C'est l'appel à l'action principal du message : c'est lui qui permet
-  // à quelqu'un qui reçoit ce mail un samedi soir de réserver son rendez-vous
-  // sans attendre lundi. Une URL en texte n'est pas cliquable partout ; un
-  // bouton l'est toujours.
-  //
-  // On ne transforme QUE l'URL d'agenda connue, jamais une adresse qui
-  // viendrait d'un champ du formulaire — c'est ce qui rend l'opération sûre.
-  const agenda = agendaUrl();
-  const corpsHtml = (() => {
-    const echappe = esc(text);
-    if (!agenda) return echappe;
-    const ligne = esc(`👉 ${agenda}`);
-    const bouton = `</p>
-  <p style="margin:22px 0"><a href="${esc(agenda)}" style="display:inline-block;padding:14px 24px;background:#0f766e;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:600;font-size:16px">Choisir mon créneau</a></p>
-  <p style="margin:0;white-space:pre-wrap">`;
-    return echappe.includes(ligne) ? echappe.replace(ligne, bouton) : echappe;
-  })();
+  // Refonte du 23/10/2026 : HTML construit directement à partir du même
+  // contenu que le texte brut (confirmationContenu). Toute valeur venue du
+  // formulaire (prénom) passe par esc() ; le lien d'agenda vient uniquement de
+  // la variable d'environnement LEADS_AGENDA_URL, jamais du formulaire.
+  // Mise en page en tableaux et styles en ligne : s'affiche dans Gmail,
+  // Outlook et sur téléphone, sans image distante à charger.
+  const c = confirmationContenu(lead);
+  const VERT = "#21564d";
+  const etapesHtml = c.etapes
+    .map(
+      (e, i) => `<tr>
+          <td style="width:40px;vertical-align:top;padding:0 0 18px">
+            <div style="width:30px;height:30px;line-height:30px;border-radius:15px;background:${VERT};color:#ffffff;font-weight:700;font-size:15px;text-align:center">${i + 1}</div>
+          </td>
+          <td style="vertical-align:top;padding:2px 0 18px 6px">
+            <p style="margin:0;font-weight:700;color:#0f172a;font-size:16px">${esc(e.titre)}</p>
+            <p style="margin:4px 0 0;color:#475569;font-size:15px;line-height:1.6">${esc(e.texte)}</p>
+          </td>
+        </tr>`
+    )
+    .join("");
+  const agendaHtml = c.agenda
+    ? `<div style="margin:6px 0 26px;padding:20px;border-radius:12px;background:#f1f7f5;text-align:center">
+        <p style="margin:0 0 14px;color:#0f172a;font-size:15px">${esc(c.agendaIntro)}</p>
+        <a href="${esc(c.agenda)}" style="display:inline-block;padding:14px 28px;background:${VERT};color:#ffffff;text-decoration:none;border-radius:10px;font-weight:700;font-size:16px">Choisir mon créneau</a>
+      </div>`
+    : "";
+  // Logos (v2 du 23/10/2026, demande d'Arthur) : servis depuis le site, les
+  // clients mail chargent les images distantes via leur proxy ; les data URI
+  // sont bloquées par Gmail. Chaque logo garde un texte de remplacement.
+  const base = siteConfig.url.replace(/\/$/, "");
+  const logosHtml = `<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:4px 0 26px;border-top:1px solid #e8edf1;border-bottom:1px solid #e8edf1">
+        <tr><td colspan="3" style="padding:16px 0 6px;text-align:center;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8">Financement et cadre officiel</td></tr>
+        <tr>
+          <td style="padding:6px 8px 16px;text-align:center;width:33%"><img src="${base}/logos/cpf.png" alt="Formation financée CPF - Mon Compte Formation" height="44" style="height:44px;width:auto;display:inline-block;border:0"></td>
+          <td style="padding:6px 8px 16px;text-align:center;width:33%"><img src="${base}/logos/france-vae.png" alt="France VAE - vae.gouv.fr" height="40" style="height:40px;width:auto;display:inline-block;border:0"></td>
+          <td style="padding:6px 8px 16px;text-align:center;width:33%"><img src="${base}/logos/france-competences.png" alt="France compétences" height="40" style="height:40px;width:auto;display:inline-block;border:0"></td>
+        </tr>
+      </table>`;
 
-  // Même en-tête que l'email de lead : dessiné en HTML/CSS, sans image
-  // distante ni SVG, pour s'afficher partout sans rien à charger.
-  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;color:#0f172a;font-size:16px;line-height:1.6">
-  <div style="background-color:#21564d;background-image:linear-gradient(135deg,#55a08f 0%,#21564d 100%);border-radius:14px;padding:22px 24px;margin:0 0 24px">
-    <p style="margin:0;color:#ffffff;font-size:21px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
-    <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Votre accompagnement VAE</p>
+  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#eef2f5;padding:24px 12px">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden">
+    <div style="background-color:${VERT};background-image:linear-gradient(135deg,#55a08f 0%,${VERT} 100%);padding:24px 28px">
+      <p style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
+      <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Votre expérience vaut un diplôme</p>
+    </div>
+    <div style="padding:28px;color:#0f172a;font-size:16px;line-height:1.6">
+      <p style="margin:0 0 6px">${esc(c.salut)}</p>
+      <p style="margin:0 0 24px">${esc(c.intro)} 🎓</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin:0 0 8px">
+        ${etapesHtml}
+      </table>
+      ${agendaHtml}
+      ${logosHtml}
+      <p style="margin:0">${esc(c.fin)}</p>
+      <p style="margin:8px 0 0;font-weight:600">${esc(c.signature)}</p>
+    </div>
   </div>
-  <p style="margin:0;white-space:pre-wrap">${corpsHtml}</p>
+  <p style="max-width:600px;margin:16px auto 0;text-align:center;font-size:12px;color:#94a3b8;line-height:1.5">
+    Vous recevez ce message parce que vous avez fait une demande de VAE sur <a href="https://vae-social.fr" style="color:#64748b">vae-social.fr</a>.<br>Une question ? Répondez simplement à cet e-mail.
+  </p>
 </div>`;
 
   await transporter.sendMail({ from, to: destinataire, replyTo, subject, text, html });

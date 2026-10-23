@@ -130,34 +130,41 @@ export const REASSURANCES = [
 // oral, décision du jury) — ce sont des termes officiels, communs à tout
 // parcours VAE, pas une spécificité d'un site en particulier. Les libellés et
 // descriptions ont été écrits from scratch pour VAESocial.
+// `court` (23/10/2026) : une phrase par étape pour la carte « Votre VAE en 5 étapes »
+// des pages diplôme (components/sections/ParcoursCard.tsx). `texte` reste pour #methode.
 export const ETAPES = [
   {
     icon: "🧭",
     titre: "Diagnostic & orientation",
+    court: "La VAE est-elle la bonne voie, et vers quel diplôme ?",
     texte:
       "On fait le point sur votre parcours pour confirmer que la VAE est la voie la plus pertinente pour vous, et vers quel diplôme.",
   },
   {
     icon: "📋",
     titre: "Livret de recevabilité",
+    court: "Le dossier qui ouvre officiellement le droit à candidater.",
     texte:
       "Constitution du dossier administratif qui ouvre officiellement le droit à candidater à la VAE auprès du certificateur.",
   },
   {
     icon: "✍️",
     titre: "Livret de compétences",
+    court: "Votre expérience, écrite face au référentiel, avec votre accompagnatrice.",
     texte:
       "L'étape centrale : formuler par écrit, avec votre accompagnateur, comment votre expérience couvre le référentiel du diplôme visé.",
   },
   {
     icon: "🎤",
     titre: "Entraînement à l'oral",
+    court: "Une mise en situation avant le vrai passage devant le jury.",
     texte:
       "Mise en situation face à un jury pour travailler votre posture et vos réponses avant le passage réel.",
   },
   {
     icon: "🏅",
     titre: "Après la décision du jury",
+    court: "Validation complète, partielle, ou plan d'action pour la suite.",
     texte:
       "Accompagnement adapté selon l'issue : validation complète, partielle, ou plan d'action pour la suite.",
   },
