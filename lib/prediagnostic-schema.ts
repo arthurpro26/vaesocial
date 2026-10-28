@@ -19,7 +19,15 @@ export const prediagnosticSchema = z.object({
   // de longueur minimale au-delà de "non vide" : une réponse courte mais
   // pertinente ne doit jamais être bloquée — retour utilisateur du 2026-08-01,
   // l'objectif est le taux de complétion, pas le filtrage.
-  activiteQuotidienne: z.string().min(1, "Décrivez brièvement votre activité."),
+  //
+  // FACULTATIF DEPUIS LE 28/10/2026 (étude concurrentielle, go d'Arthur). Les
+  // concurrents qui passent devant nous sur Google (vae-cpf, certivae) annoncent
+  // un test en 25-30 secondes sans rien à écrire ; ce champ était le seul écran
+  // du parcours où il fallait rédiger. Le tri des leads ne repose PAS sur lui :
+  // « Avez-vous déjà travaillé auprès de personnes accompagnées ? », l'ancienneté
+  // et le statut public restent obligatoires et continuent de bloquer avant
+  // l'envoi. Champ vide = « Non renseignée » dans l'e-mail ; vide dans le Sheet.
+  activiteQuotidienne: z.string().optional().default(""),
   // Ajouté le 2026-09-14. La question précédente ("votre activité") ne dit pas
   // dans QUEL secteur elle s'exerce. Un candidat en reconversion décrivait
   // honnêtement son métier actuel (grande distribution, logistique...), cochait
@@ -45,7 +53,7 @@ export const prediagnosticSchema = z.object({
   // Champ texte libre (autocomplétion suggérée selon le diplôme visé, mais
   // saisie manuelle toujours possible) — remplace l'ancienne question à choix
   // radio "secteur", jugée trop rigide / peu engageante.
-  structure: z.string().min(1, "Indiquez votre structure d'exercice."),
+  structure: z.string({ required_error: "Indiquez votre structure d'exercice." }).min(1, "Indiquez votre structure d'exercice."),
   prenom: z.string().min(2, "Prénom trop court."),
   nom: z.string().min(2, "Nom trop court."),
   email: z.string().email("Adresse email invalide."),

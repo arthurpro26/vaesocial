@@ -42,6 +42,20 @@ import { siteConfig } from "@/lib/site-config";
 
 const VALID_SLUGS = DIPLOMES.map((d) => d.slug);
 
+// Repères du haut de page (28/10/2026). Chiffres déjà publiés ailleurs sur le site :
+// prix dans les CGV, durée dans ParcoursCard, visio gratuite dans la carte « Ensuite ».
+// « 6 à 8 mois d'accompagnement » : durée de l'accompagnement (ParcoursCard) ; la FAQ dit
+// « 6 à 12 mois » pour la démarche complète, attente du jury comprise.
+// Le prix ne s'affiche que sur la page DEES (décision d'Arthur du 20/10 : DEES d'abord ;
+// les CGV ne citent que DEES, DEAES, DEEJE et DEME). Espaces insécables dans les montants.
+function reperesHero(sigle: string): string[] {
+  return [
+    "Visio gratuite avant toute inscription",
+    ...(sigle === "DEES" ? ["1\u00a0800 à 3\u00a0500\u00a0€, finançable CPF"] : []),
+    "6 à 8 mois d'accompagnement, à distance",
+  ];
+}
+
 export function generateStaticParams() {
   return VALID_SLUGS.map((slug) => ({ diplome: slug }));
 }
@@ -184,6 +198,20 @@ export default async function DiplomePage({
                 {sansEmoji(d.heroIntro)}
               </p>
               <StatsRow className="mt-6 sm:mt-7" />
+              {/* Trois repères concrets (28/10/2026, étude concurrentielle, go d'Arthur) : les
+                  concurrents affichent leur audit offert et leur prix (certivae : 1 750–4 500 €).
+                  Prix = CGV (1 800–3 500 €) ; durée = ParcoursCard ; visio = AU_PROGRAMME.
+                  Ordinateur seulement ici ; sur téléphone ils sont SOUS le formulaire, pour ne
+                  pas repousser le formulaire (règle de ce fichier : rien entre l'intro et le
+                  formulaire sur téléphone). */}
+              <ul className="mt-6 hidden flex-wrap gap-2 lg:flex">
+                {reperesHero(d.sigle).map((t) => (
+                  <li key={t} className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-brand-900 shadow-sm ring-1 ring-brand-900/10 sm:text-sm">
+                    <Ico name="check" className="h-3.5 w-3.5 flex-none text-brand-600" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
               <LogoCards variant="flat" className="mt-5 sm:mt-6" />
               {/* Ordinateur seulement : la colonne de gauche était vide sous l'intro depuis que
                   la carte « Ensuite : votre visio » est passée sous le formulaire (19/10/2026,
@@ -233,6 +261,15 @@ export default async function DiplomePage({
                 <BrandIcon name="lock" className="h-3.5 w-3.5 shrink-0 text-brand-600" />
                 Vos informations restent confidentielles, jamais revendues à des tiers.
               </p>
+              {/* Téléphone seulement : les repères du haut de page (voir colonne de gauche). */}
+              <ul className="mt-4 flex flex-wrap justify-center gap-2 lg:hidden">
+                {reperesHero(d.sigle).map((t) => (
+                  <li key={t} className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-brand-900 shadow-sm ring-1 ring-brand-900/10">
+                    <Ico name="check" className="h-3.5 w-3.5 flex-none text-brand-600" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
               {/* Carte « Ensuite : votre visio » déplacée ici (sous le formulaire) le 19/10/2026,
                   demande d'Arthur : elle était sous le titre, dans la colonne de gauche. */}
               <div className="mt-5 sm:mt-6">

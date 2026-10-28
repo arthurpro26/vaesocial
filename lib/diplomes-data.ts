@@ -64,10 +64,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 6 (Bac+3)",
     metaTitle: "VAE DEES : Éducateur Spécialisé par expérience | VAESocial",
     metaDescription:
-      "Obtenez le DEES par la VAE grâce à votre expérience professionnelle. Aucune durée minimale exigée depuis 2024. Diagnostic gratuit en 3 minutes.",
+      "Obtenez le DEES par la VAE grâce à votre expérience professionnelle. Aucune durée minimale exigée depuis 2024. Diagnostic gratuit en 5 questions.",
     heroSuffixe: "au DEES",
     heroIntro:
-      "Moniteur-éducateur, AES ou faisant fonction en MECS, IME, ITEP, foyer ou protection de l'enfance : en 3 minutes, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Moniteur-éducateur, AES ou faisant fonction en MECS, IME, ITEP, foyer ou protection de l'enfance : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEES est un diplôme d'État de niveau 6 (Bac+3) qui atteste de la capacité à concevoir et conduire un accompagnement éducatif auprès de publics en difficulté sociale, familiale ou en situation de handicap. Par la VAE, votre pratique de terrain — en MECS, IME, ITEP, ESAT, foyer ou protection de l'enfance — peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -200,10 +200,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 3 (CAP/BEP)",
     metaTitle: "VAE DEAES : Accompagnant Éducatif et Social | VAESocial",
     metaDescription:
-      "Obtenez le DEAES par la VAE grâce à votre expérience d'accompagnement à domicile ou en structure. Diagnostic d'éligibilité gratuit en 3 minutes.",
+      "Obtenez le DEAES par la VAE grâce à votre expérience d'accompagnement à domicile ou en structure. Diagnostic d'éligibilité gratuit en 5 questions.",
     heroSuffixe: "au DEAES",
     heroIntro:
-      "Aide à domicile, en EHPAD, en foyer de vie ou auprès de personnes en situation de handicap : en 3 minutes, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Aide à domicile, en EHPAD, en foyer de vie ou auprès de personnes en situation de handicap : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEAES est un diplôme d'État de niveau 3 qui atteste de la capacité à accompagner au quotidien des personnes en perte d'autonomie, en situation de handicap ou âgées, à domicile ou en structure. Par la VAE, votre expérience d'aide à domicile, en EHPAD ou auprès d'enfants en situation de handicap peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -284,10 +284,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 6 (Bac+3)",
     metaTitle: "VAE DEEJE : devenir Éducateur de Jeunes Enfants | VAESocial",
     metaDescription:
-      "Obtenez le DEEJE par la VAE grâce à votre expérience auprès de jeunes enfants. Diagnostic d'éligibilité gratuit en 3 minutes, sans engagement.",
+      "Obtenez le DEEJE par la VAE grâce à votre expérience auprès de jeunes enfants. Diagnostic d'éligibilité gratuit en 5 questions, sans engagement.",
     heroSuffixe: "au DEEJE",
     heroIntro:
-      "Auxiliaire de puériculture, animatrice ou faisant fonction en crèche, multi-accueil ou PMI : en 3 minutes, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Auxiliaire de puériculture, animatrice ou faisant fonction en crèche, multi-accueil ou PMI : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEEJE est un diplôme d'État de niveau 6 (Bac+3) qui atteste de la capacité à accompagner le développement d'enfants de la naissance à 7 ans, en crèche, en PMI ou en établissement spécialisé. Par la VAE, votre expérience en structure petite enfance peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -419,10 +419,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 4 (Bac)",
     metaTitle: "VAE DEME : Moniteur-Éducateur par expérience | VAESocial",
     metaDescription:
-      "Obtenez le DEME par la VAE grâce à votre expérience professionnelle. Aucune durée minimale exigée depuis 2024. Diagnostic gratuit en 3 minutes.",
+      "Obtenez le DEME par la VAE grâce à votre expérience professionnelle. Aucune durée minimale exigée depuis 2024. Diagnostic gratuit en 5 questions.",
     heroSuffixe: "au DEME",
     heroIntro:
-      "AES, surveillant de nuit ou faisant fonction de moniteur-éducateur en foyer, IME, ESAT ou MECS : en 3 minutes, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "AES, surveillant de nuit ou faisant fonction de moniteur-éducateur en foyer, IME, ESAT ou MECS : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEME est un diplôme d'État de niveau 4 (équivalent Bac) qui atteste de la capacité à accompagner au quotidien des personnes en difficulté sociale ou en situation de handicap, en appui de l'éducateur spécialisé. Par la VAE, votre expérience de terrain en IME, ESAT, MAS ou MECS peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -516,10 +516,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     theme: "rose",
     metaTitle: "VAE Auxiliaire de Puériculture (DEAP) | VAESocial",
     metaDescription:
-      "Obtenez le diplôme d'État d'auxiliaire de puériculture par la VAE grâce à votre expérience auprès des jeunes enfants. Diagnostic gratuit en 3 minutes.",
+      "Obtenez le diplôme d'État d'auxiliaire de puériculture par la VAE grâce à votre expérience auprès des jeunes enfants. Diagnostic gratuit en 5 questions.",
     heroSuffixe: "au DEAP",
     heroIntro:
-      "Agent de crèche, assistante maternelle, ASH ou aide-soignante en pédiatrie ou en maternité : en 3 minutes, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Agent de crèche, assistante maternelle, ASH ou aide-soignante en pédiatrie ou en maternité : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEAP est un diplôme d'État de niveau 4 (équivalent Bac) qui atteste de la capacité à prendre soin de l'enfant de la naissance à l'adolescence et à accompagner sa famille, en maternité, en service de pédiatrie, en PMI ou en structure d'accueil du jeune enfant. La validation des acquis de l'expérience est une voie d'accès officielle à ce diplôme : votre pratique quotidienne des soins et de l'éveil du jeune enfant peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -611,10 +611,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 6 (Bac+3)",
     metaTitle: "VAE Assistant de Service Social (DEASS) | VAESocial",
     metaDescription:
-      "Obtenez le diplôme d'État d'assistant de service social (DEASS) par la VAE grâce à votre expérience d'accompagnement social. Diagnostic gratuit en 3 minutes.",
+      "Obtenez le diplôme d'État d'assistant de service social (DEASS) par la VAE grâce à votre expérience d'accompagnement social. Diagnostic gratuit en 5 questions.",
     heroSuffixe: "au DEASS",
     heroIntro:
-      "Intervenant social en CCAS, hôpital, association ou mission locale, avec ou sans diplôme du travail social : en 3 minutes, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Intervenant social en CCAS, hôpital, association ou mission locale, avec ou sans diplôme du travail social : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEASS est un diplôme d'État de niveau 6 (Bac+3) qui atteste de la capacité à concevoir et conduire un accompagnement social favorisant l'insertion et l'amélioration des conditions de vie des personnes, à soutenir leur autodétermination et à travailler avec les partenaires du territoire. La validation des acquis de l'expérience est une voie d'accès officielle à ce diplôme : votre pratique de terrain peut être valorisée dans un dossier, sans reprendre une formation complète.",
     publicIntro:
@@ -754,10 +754,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 6",
     metaTitle: "VAE CAFERUIS : cadre en intervention sociale | VAESocial",
     metaDescription:
-      "Obtenez le CAFERUIS par la VAE grâce à votre expérience d'encadrement dans le social ou le médico-social. Diagnostic gratuit en 3 minutes.",
+      "Obtenez le CAFERUIS par la VAE grâce à votre expérience d'encadrement dans le social ou le médico-social. Diagnostic gratuit en 5 questions.",
     heroSuffixe: "au CAFERUIS",
     heroIntro:
-      "Chef de service, coordinateur ou responsable d'unité faisant fonction en établissement social ou médico-social : en 3 minutes, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Chef de service, coordinateur ou responsable d'unité faisant fonction en établissement social ou médico-social : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le CAFERUIS est un certificat de niveau 6 qui atteste de la capacité à piloter l'activité d'une unité d'intervention sociale, à manager une équipe, à gérer les volets administratif, logistique et budgétaire, et à contribuer au projet de l'établissement ou du service. Par la VAE, votre expérience de coordination ou d'encadrement — chef de service, responsable d'unité ou « faisant fonction » — peut être valorisée dans un dossier, sans reprendre une formation complète.",
     publicIntro:
@@ -852,10 +852,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 6 (grade licence)",
     metaTitle: "VAE éducateur technique spécialisé (DEETS) | VAESocial",
     metaDescription:
-      "Obtenez le DEETS (éducateur technique spécialisé) par la VAE grâce à votre expérience en atelier, ESAT, IME ou chantier d'insertion. Diagnostic gratuit en 3 minutes.",
+      "Obtenez le DEETS (éducateur technique spécialisé) par la VAE grâce à votre expérience en atelier, ESAT, IME ou chantier d'insertion. Diagnostic gratuit en 5 questions.",
     heroSuffixe: "au DEETS",
     heroIntro:
-      "Moniteur d'atelier ou encadrant technique en ESAT, entreprise adaptée, IME ou chantier d'insertion : en 3 minutes, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Moniteur d'atelier ou encadrant technique en ESAT, entreprise adaptée, IME ou chantier d'insertion : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEETS est un diplôme d'État de niveau 6 (grade licence). L'éducateur technique spécialisé élabore des parcours d'insertion, met en œuvre des actions de formation professionnelle et assure l'encadrement technique d'activités professionnelles, au sein d'une équipe pluriprofessionnelle. Par la VAE, votre pratique de terrain — en ESAT, IME, entreprise adaptée ou chantier d'insertion — peut être valorisée dans un dossier, sans reprendre une formation complète.",
     publicIntro:

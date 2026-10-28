@@ -15,6 +15,8 @@ import { FINANCEMENTS } from "@/lib/site-data";
 //
 // Le prix de l'accompagnement n'est volontairement plus affiché ici (l'ancienne fourchette ne
 // correspondait pas aux offres) : il est donné lors de l'échange, avant tout engagement.
+// MISE À JOUR 28/10/2026 : la fourchette des CGV (1 800 à 3 500 €) est de nouveau affichée en
+// haut de la page DEES seulement (repères du héros, app/[diplome]/page.tsx), décision d'Arthur du 20/10.
 const ICONES: ("wallet" | "building" | "gov" | "loop")[] = ["wallet", "building", "gov", "loop"];
 
 function IconeFinancement({ name, className }: { name: (typeof ICONES)[number]; className?: string }) {

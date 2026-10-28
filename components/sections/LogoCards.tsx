@@ -5,9 +5,11 @@
 // fonds détourés). Qualiopi et France Travail seront ajoutés quand leurs fichiers HD
 // seront fournis (les versions basse définition ont été écartées).
 const LOGOS = [
-  { fichier: "france-competences.png", alt: "France compétences — certification enregistrée au RNCP" },
-  { fichier: "france-vae.png", alt: "France VAE" },
-  { fichier: "cpf.png", alt: "Formation finançable par le CPF" },
+  // largeur/hauteur = dimensions réelles des fichiers (28/10/2026) : le navigateur
+  // réserve la place avant le chargement de l'image.
+  { fichier: "france-competences.png", alt: "France compétences — certification enregistrée au RNCP", w: 509, h: 212 },
+  { fichier: "france-vae.png", alt: "France VAE", w: 352, h: 162 },
+  { fichier: "cpf.png", alt: "Formation finançable par le CPF", w: 800, h: 435 },
 ];
 
 /**
@@ -22,7 +24,7 @@ export default function LogoCards({ className = "", variant = "cards" }: { class
         {LOGOS.map((l) => (
           <li key={l.fichier} className="flex items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`/logos/${l.fichier}`} alt={l.alt} className="h-8 w-auto object-contain sm:h-9" />
+            <img src={`/logos/${l.fichier}`} alt={l.alt} width={l.w} height={l.h} decoding="async" className="h-8 w-auto object-contain sm:h-9" />
           </li>
         ))}
       </ul>
@@ -39,6 +41,9 @@ export default function LogoCards({ className = "", variant = "cards" }: { class
           <img
             src={`/logos/${l.fichier}`}
             alt={l.alt}
+            width={l.w}
+            height={l.h}
+            decoding="async"
             className="h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.04] sm:h-10"
           />
         </li>

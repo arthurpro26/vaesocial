@@ -291,8 +291,8 @@ const ALL_STEPS = [
   { key: "diplomeVise", label: "Votre objectif" },
   { key: "situationActuelle", label: "Votre situation" },
   { key: "activiteQuotidienne", label: "Votre quotidien" },
-  // Placée juste après la description libre de l'activité : la personne vient
-  // d'écrire ce qu'elle fait, on lui demande dans la foulée si c'est auprès de
+  // Placée juste après la description libre de l'activité (facultative depuis
+  // le 28/10/2026) : la personne vient souvent d'écrire ce qu'elle fait, on lui demande dans la foulée si c'est auprès de
   // personnes accompagnées. Placée avant, la question serait abstraite ; placée
   // après l'ancienneté, elle laisserait passer le cas qu'elle doit arrêter.
   { key: "experienceSecteur", label: "Votre expérience" },
@@ -1268,7 +1268,8 @@ function ActiviteStep({
   return (
     <div>
       <h3 className="text-sm font-semibold text-slate-900 sm:text-base">
-        Décrivez votre activité au quotidien
+        Décrivez votre activité au quotidien{" "}
+        <span className="font-normal text-slate-400">(facultatif)</span>
       </h3>
       <p className="mt-1 text-xs text-slate-500">
         Décrivez les personnes que vous accompagnez, vos missions quotidiennes, vos responsabilités
@@ -1290,14 +1291,14 @@ function ActiviteStep({
                 field.onChange(e);
                 autoResize(e.target);
               }}
-              rows={5}
+              rows={3}
               placeholder={placeholder}
-              className="form-input min-h-[140px] resize-none leading-relaxed"
+              className="form-input min-h-[96px] resize-none leading-relaxed"
             />
             {/* Texte d'aide statique — pas de compteur ni de seuil : une
                 réponse courte mais sincère est tout aussi recevable. */}
             <p className="mt-1.5 text-xs text-slate-400">
-              Pas besoin d&apos;un roman : quelques mots sincères suffisent.
+              Quelques mots suffisent, ou passez : on en parlera ensemble.
             </p>
           </div>
         )}
@@ -1319,6 +1320,15 @@ function ActiviteStep({
       >
         Continuer
         <ArrowIcon className="h-4 w-4" />
+      </button>
+      {/* 28/10/2026 : la question est facultative (voir prediagnostic-schema.ts).
+          « Passer » avance sans rien écrire ; le champ reste vide. */}
+      <button
+        type="button"
+        onClick={onAdvance}
+        className="mt-2 w-full rounded-full px-6 py-2 text-sm font-semibold text-slate-500 underline decoration-slate-300 underline-offset-4 transition hover:text-slate-700"
+      >
+        Passer cette question
       </button>
     </div>
   );
@@ -1453,7 +1463,12 @@ function StructureStep({
                   // léger délai pour laisser le temps au clic sur une suggestion
                   // de s'exécuter avant que la liste ne se ferme
                   setTimeout(() => setOpen(false), 150);
-                  field.onBlur();
+                  // 28/10/2026 : pas de validation au blur tant que le champ est vide.
+                  // Avant, cliquer sur une ancienneté (le champ avait le focus) affichait
+                  // « Required » en anglais, le bouton descendait de ~30 px et le premier
+                  // clic sur « Continuer » tombait à côté. Le champ vide reste bloqué par
+                  // la validation de « Continuer » (advancePosteStep).
+                  if (field.value?.trim()) field.onBlur();
                 }}
                 onKeyDown={(e) => {
                   // Un <input> seul dans un <form> sans bouton "submit" visible

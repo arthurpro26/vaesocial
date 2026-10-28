@@ -177,7 +177,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     ...(resumeAttribution(lead) ? [`Source Google Ads : ${resumeAttribution(lead)}`] : []),
     "",
     "Activité au quotidien :",
-    lead.activiteQuotidienne,
+    lead.activiteQuotidienne?.trim() || "Non renseignée (question facultative)",
     "",
     "— SMS de relance prêt à copier (si la personne ne décroche pas) —",
     buildRelanceSms(lead),
@@ -283,7 +283,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
     ${resumeAttribution(lead) ? ligne("Source Google Ads", resumeAttribution(lead)) : ""}
   </table>
   <p style="margin:20px 0 4px;color:#64748b">Activité au quotidien</p>
-  <p style="margin:0;padding:12px;background:#f8fafc;border-radius:8px;white-space:pre-wrap">${esc(lead.activiteQuotidienne)}</p>
+  <p style="margin:0;padding:12px;background:#f8fafc;border-radius:8px;white-space:pre-wrap">${esc(lead.activiteQuotidienne?.trim() || "Non renseignée (question facultative)")}</p>
   ${blocCopie}
 </div>`;
 
