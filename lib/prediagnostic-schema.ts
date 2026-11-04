@@ -24,9 +24,9 @@ export const prediagnosticSchema = z.object({
   // concurrents qui passent devant nous sur Google (vae-cpf, certivae) annoncent
   // un test en 25-30 secondes sans rien à écrire ; ce champ était le seul écran
   // du parcours où il fallait rédiger. Le tri des leads ne repose PAS sur lui :
-  // « Avez-vous déjà travaillé auprès de personnes accompagnées ? », l'ancienneté
-  // et le statut public restent obligatoires et continuent de bloquer avant
-  // l'envoi. Champ vide = « Non renseignée » dans l'e-mail ; vide dans le Sheet.
+  // « Avez-vous déjà travaillé auprès de personnes accompagnées ? » et
+  // l'ancienneté restent obligatoires (la première bloque avant l'envoi ; le
+  // statut public ne bloque plus depuis le 04/11/2026). Champ vide = « Non renseignée » dans l'e-mail ; vide dans le Sheet.
   activiteQuotidienne: z.string().optional().default(""),
   // Ajouté le 2026-09-14. La question précédente ("votre activité") ne dit pas
   // dans QUEL secteur elle s'exerce. Un candidat en reconversion décrivait
