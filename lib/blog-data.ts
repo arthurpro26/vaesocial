@@ -768,6 +768,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       "L'arrêté du 6 octobre 2025 remplace le référentiel du DEES à partir du 1er septembre 2026. Les quatre nouveaux blocs, le calendrier de transition et ce que cela change pour une VAE.",
     category: "Réglementation",
     datePublished: "2026-10-12",
+    dateModified: "2026-11-17",
     readingTime: "5 min",
     diplomes: ["dees"],
     content: [
@@ -781,7 +782,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "Le nouveau référentiel est organisé en quatre blocs, chacun validé séparément, sans compensation de l'un par l'autre. Leurs intitulés figurent à l'annexe I de l'arrêté :",
+        text: "Le nouveau référentiel est organisé en quatre blocs. Leurs intitulés figurent à l'annexe I de l'arrêté :",
       },
       {
         type: "ul",
@@ -804,15 +805,14 @@ export const BLOG_ARTICLES: BlogArticle[] = [
         type: "ul",
         items: [
           "1er septembre 2026 : entrée en vigueur du nouvel arrêté.",
-          "Les candidats déjà engagés avant cette date restent soumis aux anciennes modalités, en formation comme en VAE, jusqu'au 31 juillet 2028 au plus tard.",
-          "L'arrêté du 22 août 2018 est abrogé à l'issue de la session d'examen 2028.",
+          "Août 2027 : date limite de réunion des jurys de VAE sur les anciens référentiels (instruction interministérielle du 16 mars 2026, annexe 1).",
           "Selon l'instruction interministérielle du 16 mars 2026, les premiers jurys de VAE fondés sur les référentiels révisés se tiendront à partir de septembre 2027 ; d'ici là, les jurys s'appuient sur les référentiels en vigueur avant le 1er septembre 2026.",
         ],
       },
       {
         type: "callout",
         icon: "ℹ️",
-        text: "Ces dates viennent de textes différents, et la notion de candidat « engagé » doit être confirmée pour votre situation. Le plus sûr est de poser la question au service VAE de votre rectorat ou à votre DREETS avant de fixer un calendrier.",
+        text: "Pour une VAE, c'est la date de votre jury qui détermine le référentiel appliqué. Pour le DEES, le certificateur est le rectorat : c'est lui qui vous confirme le cadre de votre dossier.",
       },
       {
         type: "h2",
@@ -827,14 +827,6 @@ export const BLOG_ARTICLES: BlogArticle[] = [
         text: "Pour vous préparer, une méthode vaut quel que soit le référentiel retenu : repérez dans votre parcours des situations où vous avez conçu une action (et pas seulement exécuté un projet), où la personne accompagnée a participé aux décisions qui la concernent, et où vous avez travaillé avec des partenaires extérieurs à votre équipe. Ce sont ces situations que vous aurez à décrire dans votre dossier.",
       },
       {
-        type: "h2",
-        text: "Pour comparaison : la formation initiale",
-      },
-      {
-        type: "p",
-        text: "Le parcours complet en formation représente 3 442 heures sur trois ans, dont 1 517 heures d'enseignement théorique et 1 925 heures de formation pratique. La VAE ne remplace pas ce volume par un raccourci : elle fait valider ce que votre expérience a déjà couvert.",
-      },
-      {
         type: "cta",
         titre: "Votre VAE DEES, selon le bon référentiel",
         texte:
@@ -842,7 +834,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
         cta: "Vérifier mon éligibilité DEES →",
       },
     ],
-    verifiedOn: "2026-10-12",
+    verifiedOn: "2026-11-16",
     sources: [
       {
         label: "Arrêté du 6 octobre 2025 relatif au diplôme d'État d'éducateur spécialisé (Légifrance)",
@@ -872,6 +864,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       "Même terrain, autre niveau de responsabilité : comment faire valoir votre expérience de moniteur-éducateur pour obtenir le DEES, sans reprendre trois ans de formation.",
     category: "Parcours",
     datePublished: "2026-10-12",
+    dateModified: "2026-11-17",
     readingTime: "5 min",
     diplomes: ["dees", "deme"],
     content: [
@@ -893,7 +886,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       },
       {
         type: "p",
-        text: "Le jury évalue votre expérience au regard du référentiel du diplôme. Pour le DEES, il comporte quatre blocs : concevoir et conduire un accompagnement éducatif ; soutenir l'autodétermination des personnes ; s'inscrire dans une dynamique partenariale et territoriale ; s'inscrire dans un contexte professionnel du travail social. Votre quotidien de moniteur-éducateur nourrit sans doute déjà le premier. Pour les autres, il faut souvent chercher des situations précises.",
+        text: "Le jury évalue votre expérience au regard du référentiel du diplôme. Le nouveau référentiel du DEES, que les jurys de VAE appliquent à partir de septembre 2027, comporte quatre blocs : concevoir et conduire un accompagnement éducatif ; soutenir l'autodétermination des personnes ; s'inscrire dans une dynamique partenariale et territoriale ; s'inscrire dans un contexte professionnel du travail social. Avant septembre 2027, les jurys évaluent encore sur l'ancien référentiel. Votre quotidien de moniteur-éducateur nourrit sans doute déjà le premier. Pour les autres, il faut souvent chercher des situations précises.",
       },
       {
         type: "p",

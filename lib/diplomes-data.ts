@@ -47,6 +47,14 @@ export type DiplomeData = {
   // la pastille « Nouveau référentiel · septembre 2026 » en haut de page. NE PAS l'activer
   // pour DEME, DEAES, DEAP, CAFERUIS (non concernés) ni pour le DECESF (septembre 2027).
   nouveauReferentiel?: boolean;
+  // Section « La VAE … en pratique » (17/11/2026, lot 1 SEO) : les étapes propres au
+  // diplôme, avec des faits sourcés (pas de promesse). Absente = section non affichée.
+  enPratique?: {
+    titre: string;
+    etapes: { titre: string; texte: string; lien?: { href: string; label: string } }[];
+    agentsPublics?: string;
+    sources: { label: string; url: string }[];
+  };
   faq: FaqItem[];
   ctaTitre: string;
   // Thème couleur de la page. Absent = teal de marque (toutes les pages
@@ -62,9 +70,9 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     sigle: "DEES",
     nomComplet: "Diplôme d'État d'Éducateur Spécialisé",
     niveau: "Niveau 6 (Bac+3)",
-    metaTitle: "VAE DEES : Éducateur Spécialisé par expérience | VAESocial",
+    metaTitle: "VAE éducateur spécialisé (DEES) : accompagnement | VAESocial",
     metaDescription:
-      "Obtenez le DEES par la VAE grâce à votre expérience professionnelle. Aucune durée minimale exigée depuis 2024. Diagnostic gratuit en 5 questions.",
+      "VAE éducateur spécialisé : obtenez le DEES grâce à votre expérience en MECS, IME ou ITEP. Conditions, livrets, jury, prix. Visio gratuite avant inscription.",
     heroSuffixe: "au DEES",
     heroIntro:
       "Moniteur-éducateur, AES ou faisant fonction en MECS, IME, ITEP, foyer ou protection de l'enfance : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
@@ -120,7 +128,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     referentiel: {
       titre: "Votre expérience couvre‑t‑elle les quatre blocs du DEES ?",
       intro:
-        "Le jury évalue le DEES sur quatre blocs de compétences (nouveau référentiel, arrêté du 6 octobre 2025, applicable depuis le 1er septembre 2026). Pour chacun, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+        "Le nouveau référentiel du DEES (arrêté du 6 octobre 2025) compte quatre blocs de compétences. Les jurys de VAE l'appliquent à partir de septembre 2027 ; avant, ils évaluent encore sur l'ancien référentiel. Pour chaque bloc, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
       conclusion:
         "Vous vous reconnaissez dans deux ou trois blocs, pas dans les quatre ? C'est fréquent. Pendant la visio, votre accompagnatrice reprend votre expérience bloc par bloc, vous dit si elle suffit pour le DEES, et ce qu'il faudrait compléter le cas échéant.",
       blocs: [
@@ -163,6 +171,45 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
         label: "Réforme du DEES : ce qui change pour votre VAE",
       },
     },
+    enPratique: {
+      titre: "La VAE DEES en pratique",
+      etapes: [
+        {
+          titre: "Qui peut se lancer",
+          texte:
+            "Il n'y a plus de durée minimale d'expérience. Ce qui compte, c'est le lien direct entre ce que vous faites et le métier : accompagner au quotidien des enfants, des jeunes ou des adultes. L'expérience peut être salariée, bénévole ou d'aidant.",
+        },
+        {
+          titre: "Livret 1 : la recevabilité",
+          texte:
+            "Vous décrivez vos expériences, et le certificateur vérifie qu'elles correspondent au métier. Il ne juge pas encore vos compétences. Pour le DEES, le certificateur est le rectorat.",
+          lien: { href: "/blog/recevabilite-vae-guide-complet", label: "Ce que vérifie la recevabilité" },
+        },
+        {
+          titre: "Livret 2 : votre dossier",
+          texte:
+            "Vous racontez, à la première personne, des situations réelles de votre travail, choisies pour couvrir les blocs du diplôme. France VAE compte en moyenne 4 à 6 mois de rédaction, à raison de 2 à 4 heures par semaine.",
+          lien: { href: "/blog/livret-2-vae-guide-complet", label: "Remplir le livret 2" },
+        },
+        {
+          titre: "Le jury",
+          texte:
+            "Un formateur et un professionnel du secteur lisent votre dossier, puis vous reçoivent en entretien. Ils peuvent valider tout le diplôme, une partie des blocs, ou refuser. Les jurys réunis avant septembre 2027 évaluent sur l'ancien référentiel.",
+          lien: { href: "/blog/jury-vae-entretien-deroule-frais", label: "Comment se passe le jury" },
+        },
+      ],
+      agentsPublics:
+        "Vous êtes agent public (hôpital, collectivité, État) ? C'est le même diplôme, mais la démarche passe par le service RH de votre employeur : France VAE n'est pas encore ouvert aux agents publics. Le financement dépend aussi de votre employeur. On regarde votre cas pendant la visio.",
+      sources: [
+        { label: "Service-Public.fr, fiche VAE", url: "https://www.service-public.gouv.fr/particuliers/vosdroits/F2401" },
+        { label: "France VAE, rédiger son dossier", url: "https://vae.gouv.fr/savoir-plus/articles/rediger-dossier-validation/" },
+        { label: "Ministère des Solidarités, la VAE", url: "https://solidarites.gouv.fr/VAE" },
+        {
+          label: "Instruction du 16 mars 2026",
+          url: "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2026-04/TRSA2600137J.pdf",
+        },
+      ],
+    },
     faq: [
       {
         question: "Quel est le niveau du DEES obtenu par VAE ?",
@@ -172,7 +219,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       {
         question: "Quelle expérience faut-il pour viser le DEES en VAE ?",
         reponse:
-          "Depuis la réforme de janvier 2024, aucune durée minimale n'est exigée. Ce qui compte, c'est que votre expérience — professionnelle, bénévole ou en tant qu'aidant — corresponde aux missions d'accompagnement éducatif évaluées dans le référentiel du DEES.",
+          "Aucune durée minimale n'est exigée : il n'est plus nécessaire de justifier d'un an d'expérience. Votre expérience, salariée, bénévole ou d'aidant, doit avoir un rapport direct avec le métier d'éducateur spécialisé. Si vous n'avez jamais accompagné de personnes au quotidien, la VAE n'est pas la bonne voie.",
       },
       {
         question: "Quels métiers peut-on exercer après un DEES ?",
@@ -187,7 +234,12 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       {
         question: "Le référentiel du DEES change-t-il en 2026 ?",
         reponse:
-          "Oui. Un nouvel arrêté (6 octobre 2025) entre en vigueur le 1er septembre 2026, avec quatre blocs de compétences. Les candidats déjà engagés avant cette date restent soumis aux anciennes modalités jusqu'au 31 juillet 2028 au plus tard, et les premiers jurys de VAE sur le nouveau référentiel sont prévus à partir de septembre 2027. Nous faisons le point sur votre situation lors du diagnostic.",
+          "Oui. Le nouveau référentiel (arrêté du 6 octobre 2025) s'applique depuis le 1er septembre 2026. Mais pour la VAE, les jurys réunis jusqu'en août 2027 évaluent encore sur l'ancien référentiel ; les premiers jurys sur le nouveau ont lieu à partir de septembre 2027 (instruction du 16 mars 2026). C'est donc la date de votre jury qui compte. On la regarde avec vous pendant la visio.",
+      },
+      {
+        question: "Combien coûte une VAE DEES ?",
+        reponse:
+          "Notre accompagnement coûte entre 1 800 et 3 500 €, selon le nombre d'heures nécessaires (10 à 35 h). Il est finançable par le CPF et par les autres dispositifs présentés plus haut. Le montant exact vous est donné dans un devis, avant tout engagement.",
       },
     ],
     ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEES ?",
@@ -337,14 +389,14 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     debouchesConclusion:
       "🌟 Chaque jour, contribuer à poser les toutes premières bases du développement d'un enfant : peu de métiers offrent un impact aussi concret.",
     noteReferentiel:
-      "Le référentiel du DEEJE évolue à partir de septembre 2026 (arrêté du 6 octobre 2025) : les personnes déjà engagées dans un parcours avant cette date continuent sous l'ancien référentiel jusqu'à la session 2028. Nous vérifions avec vous quel référentiel s'applique à votre situation.",
+      "Le référentiel du DEEJE change en septembre 2026 (arrêté du 6 octobre 2025). Pour la VAE, les jurys réunis jusqu'en août 2027 évaluent encore sur l'ancien référentiel. Nous vérifions avec vous lequel s'applique à votre dossier.",
     nouveauReferentiel: true,
     // Intitulés des quatre blocs : fiche RNCP41745 (France Compétences, via mescertifs.fr) et communiqué
     // du ministère du 15/10/2025 ; recoupés le 21/10/2026. Pistes et exemples = conseil de méthode (comme DEES).
     referentiel: {
       titre: "Votre expérience couvre‑t‑elle les quatre blocs du DEEJE ?",
       intro:
-        "Le jury évalue le DEEJE sur quatre blocs de compétences (nouveau référentiel, arrêté du 6 octobre 2025, applicable depuis le 1er septembre 2026). Pour chacun, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+        "Le nouveau référentiel du DEEJE (arrêté du 6 octobre 2025) compte quatre blocs de compétences. Les jurys de VAE l'appliquent à partir de septembre 2027 ; avant, ils évaluent encore sur l'ancien référentiel. Pour chaque bloc, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
       conclusion:
         "Vous vous reconnaissez dans deux ou trois blocs, pas dans les quatre ? C'est fréquent. Pendant la visio, votre accompagnatrice reprend votre expérience bloc par bloc, vous dit si elle suffit pour le DEEJE, et ce qu'il faudrait compléter le cas échéant.",
       blocs: [
@@ -396,7 +448,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       {
         question: "Le référentiel du DEEJE change-t-il en 2026 ?",
         reponse:
-          "Oui, un nouveau référentiel entre en vigueur en septembre 2026. Les candidats déjà engagés dans un parcours avant cette date restent toutefois sous l'ancien référentiel jusqu'à la session 2028. Nous faisons le point avec vous sur la version applicable à votre dossier.",
+          "Oui, un nouveau référentiel entre en vigueur en septembre 2026. Pour la VAE, les jurys réunis jusqu'en août 2027 évaluent encore sur l'ancien référentiel ; les premiers jurys sur le nouveau ont lieu à partir de septembre 2027 (instruction du 16 mars 2026). Nous faisons le point avec vous sur la version applicable à votre dossier.",
       },
       {
         question: "Quelle expérience faut-il pour viser le DEEJE en VAE ?",
@@ -671,7 +723,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     referentiel: {
       titre: "Votre expérience couvre‑t‑elle les quatre blocs du DEASS ?",
       intro:
-        "Le jury évalue le DEASS sur quatre blocs de compétences (nouveau référentiel, arrêté du 6 octobre 2025, applicable depuis le 1er septembre 2026). Pour chacun, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+        "Le nouveau référentiel du DEASS (arrêté du 6 octobre 2025) compte quatre blocs de compétences. Les jurys de VAE l'appliquent à partir de septembre 2027 ; avant, ils évaluent encore sur l'ancien référentiel. Pour chaque bloc, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
       conclusion:
         "Vous vous reconnaissez dans deux ou trois blocs, pas dans les quatre ? C'est fréquent. Pendant la visio, votre accompagnatrice reprend votre expérience bloc par bloc, vous dit si elle suffit pour le DEASS, et ce qu'il faudrait compléter le cas échéant.",
       blocs: [

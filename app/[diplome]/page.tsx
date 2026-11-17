@@ -8,6 +8,7 @@ import CourseJsonLd from "@/components/CourseJsonLd";
 import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import GuidesSection from "@/components/sections/GuidesSection";
 import ReferentielSection from "@/components/sections/ReferentielSection";
+import EnPratiqueSection from "@/components/sections/EnPratiqueSection";
 import Eyebrow from "@/components/Eyebrow";
 import StickyCta from "@/components/StickyCta";
 import TrustBand from "@/components/sections/TrustBand";
@@ -339,6 +340,8 @@ export default async function DiplomePage({
       {d.referentiel && (
         <>
           <ReferentielSection referentiel={d.referentiel} sigle={d.sigle} />
+          {/* 17/11/2026 (lot 1 SEO) : conditions, livrets, jury, agents publics — texte propre au diplôme. */}
+          {d.enPratique && <EnPratiqueSection enPratique={d.enPratique} sigle={d.sigle} />}
           <MethodeSection />
           <FinancementSection sigle={d.sigle} />
         </>
