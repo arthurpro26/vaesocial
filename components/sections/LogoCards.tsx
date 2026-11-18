@@ -9,11 +9,12 @@
 // Fichiers HD fournis par Arthur (public/logos/). Qualiopi et France Travail seront
 // ajoutés quand leurs fichiers HD seront fournis.
 const LOGOS = [
-  // largeur/hauteur = dimensions réelles des fichiers (28/10/2026) : le navigateur
-  // réserve la place avant le chargement de l'image.
-  { fichier: "france-competences.png", alt: "France compétences — certification enregistrée au RNCP", w: 509, h: 212 },
-  { fichier: "france-vae.png", alt: "France VAE", w: 352, h: 162 },
-  { fichier: "cpf.png", alt: "Formation finançable par le CPF", w: 800, h: 435 },
+  // largeur/hauteur = dimensions réelles des fichiers : le navigateur réserve la place
+  // avant le chargement de l'image. 18/11/2026 : fichiers réduits à 300 px de large
+  // (affichés à moins de 100 px) — 383 Ko au total avant, pour la vitesse sur téléphone.
+  { fichier: "france-competences.png", alt: "France compétences — certification enregistrée au RNCP", w: 300, h: 125 },
+  { fichier: "france-vae.png", alt: "France VAE", w: 300, h: 138 },
+  { fichier: "cpf.png", alt: "Formation finançable par le CPF", w: 300, h: 163 },
 ];
 
 /**

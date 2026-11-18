@@ -112,6 +112,11 @@ const AU_PROGRAMME = [
 
 const ICONES_PUBLIC = ["diploma", "users", "building"] as const;
 
+// Coque commune des trois cartes du haut de page sur ordinateur (18/11/2026) : mêmes
+// classes que components/sections/ParcoursCard.tsx, pour trois cartes vraiment identiques.
+const CARTE_HERO =
+  "flex h-full flex-col rounded-3xl bg-white p-6 shadow-[0_18px_40px_-24px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10 xl:p-7";
+
 // Les textes de lib/diplomes-data.ts commencent parfois par un émoji (reste de l'ancien design) : on l'écarte à l'affichage.
 const sansEmoji = (s: string) => s.replace(/^[\p{Extended_Pictographic}️\s]+/u, "");
 
@@ -160,12 +165,12 @@ export default async function DiplomePage({
         <div aria-hidden className="pointer-events-none absolute -right-32 -top-24 h-[28rem] w-[28rem] rounded-full bg-brand-100/60 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute left-0 top-24 hidden h-56 w-72 opacity-70 lg:block" style={DOTS} />
         <Container className="relative px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:grid-rows-[1fr_auto] lg:items-start lg:gap-x-14 lg:gap-y-8">
+          <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:gap-x-14 lg:gap-y-12">
             {/* Ordinateur : la colonne de gauche prend toute la hauteur du formulaire
                 (grid-rows 1fr + self-stretch) et la carte Financement se cale en bas
                 (mt-auto), quelle que soit la hauteur de l'étape affichée dans le
                 formulaire. Avant (20/10/2026), un blanc restait sous le déroulé. */}
-            <div className="lg:flex lg:flex-col lg:self-stretch">
+            <div>
               {/* TITRE (H1) — modifié le 19/10/2026 (plan SEO, go d'Arthur).
                   Avant : le même H1 sur l'accueil et les 8 pages diplôme (« Commençons par
                   regarder votre parcours… »), ce que Google peut lire comme des pages en
@@ -214,44 +219,16 @@ export default async function DiplomePage({
                 ))}
               </ul>
               <LogoCards variant="flat" className="mt-5 sm:mt-6" />
-              {/* Ordinateur seulement : la colonne de gauche était vide sous l'intro depuis que
-                  la carte « Ensuite : votre visio » est passée sous le formulaire (19/10/2026,
-                  demande d'Arthur). On y met le déroulé de la VAE, qu'Arthur veut plus visible.
-                  Sur téléphone, le formulaire suit directement l'intro : rien n'est ajouté. */}
-              {/* Ordinateur seulement : carte « Votre VAE en 5 étapes » (23/10/2026, remplace
-                  la liste en petit texte gris qu'Arthur trouvait « HLM »). Sur téléphone, le
-                  formulaire suit directement l'intro : rien n'est ajouté. */}
-              <ParcoursCard sigle={d.sigle} className="mt-8 hidden lg:block" />
-              {/* Carte Financement (ordinateur seulement), ajoutée le 20/10/2026 à la demande
-                  d'Arthur pour occuper le bas de la colonne de gauche. Les quatre solutions
-                  sont celles de FINANCEMENTS (lib/site-data.ts), détaillées plus bas dans la
-                  page (#financement). Aucune promesse chiffrée de prise en charge ici. */}
-              <div className="hidden lg:mt-auto lg:block lg:pt-8">
-                <div className="flex items-start gap-4 rounded-2xl bg-white p-5 shadow-[0_8px_24px_-14px_rgba(20,47,42,0.35)] ring-1 ring-brand-900/10">
-                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-900/10">
-                    <BrandIcon name="wallet" className="h-5 w-5" />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-700">Financement</p>
-                    <p className="mt-1 text-[0.95rem] font-semibold leading-snug text-brand-900">
-                      Selon votre situation, plusieurs prises en charge existent. On identifie la vôtre pendant la visio.
-                    </p>
-                    <ul className="mt-3 flex flex-wrap gap-2">
-                      {FINANCEMENTS.map((f) => (
-                        <li key={f.titre} className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-800 ring-1 ring-brand-900/10">
-                          {f.titre}
-                        </li>
-                      ))}
-                    </ul>
-                    <a href="#financement" className="mt-3 inline-block text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900">
-                      Voir les financements
-                    </a>
-                  </div>
-                </div>
-              </div>
+              {/* 18/11/2026 (Arthur : version ordinateur « mal agencée, des infos qui surgissent
+                  de partout ») : la colonne de gauche ne porte plus que l'accroche. Les cartes
+                  « 5 étapes » et « Financement » qui s'empilaient ici (23/10 et 20/10), et la
+                  carte « visio » qui était sous le formulaire (19/10), sont réunies juste
+                  dessous : un bandeau des 5 étapes sur toute la largeur, puis deux cartes de même
+                  hauteur (financement, visio), toutes avec la même coque.
+                  Rien n'est supprimé. Téléphone : inchangé. */}
             </div>
 
-            <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
+            <div id="prediagnostic-form" className="scroll-mt-24">
               <div className="relative">
                 <div aria-hidden className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-brand-100 via-white to-accent-100/60 blur-xl" />
                 <div className="form-lisible rounded-3xl bg-white p-1.5 shadow-[0_30px_70px_-30px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10 sm:p-2">
@@ -273,7 +250,7 @@ export default async function DiplomePage({
               </ul>
               {/* Carte « Ensuite : votre visio » déplacée ici (sous le formulaire) le 19/10/2026,
                   demande d'Arthur : elle était sous le titre, dans la colonne de gauche. */}
-              <div className="mt-5 sm:mt-6">
+              <div className="mt-5 sm:mt-6 lg:hidden">
               <div className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-34px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10">
                 <div className="flex items-center gap-1.5 border-b border-brand-900/10 bg-brand-50 px-4 py-2.5">
                   <span className="h-2.5 w-2.5 rounded-full bg-brand-200" />
@@ -318,7 +295,76 @@ export default async function DiplomePage({
                   ci-dessus remonte le formulaire à chaque changement de page. */}
             </div>
 
-            <div>
+            {/* ORDINATEUR SEULEMENT — sous l'accroche et le formulaire : le parcours en bandeau
+                (5 étapes côte à côte), puis le financement et la visio. Même coque
+                (CARTE_HERO), même en-tête (titre + précision grise). Textes déjà publiés ailleurs sur le
+                site (ETAPES, FINANCEMENTS, AU_PROGRAMME) : rien de nouveau. */}
+            <div className="hidden lg:col-span-2 lg:grid lg:grid-cols-[1.25fr_1fr] lg:items-stretch lg:gap-6">
+              <ParcoursCard sigle={d.sigle} horizontal className="lg:col-span-2" />
+
+              <section aria-labelledby="hero-financement-titre" className={CARTE_HERO}>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <h2 id="hero-financement-titre" className="text-lg font-bold tracking-[-0.01em] text-brand-900">
+                    Votre financement
+                  </h2>
+                  <p className="text-sm font-medium text-slate-500">Identifié pendant la visio</p>
+                </div>
+                <ul className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4">
+                  {FINANCEMENTS.map((f) => (
+                    <li key={f.titre} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-brand-100 text-brand-600">
+                        <Ico name="check" className="h-3.5 w-3.5" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-[1.02rem] font-semibold leading-snug text-brand-900">{f.titre}</span>
+                        <span className="mt-0.5 block text-[0.95rem] leading-snug text-slate-600">{f.texte}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="#financement"
+                  className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+                >
+                  Voir les financements
+                  <span aria-hidden>→</span>
+                </a>
+              </section>
+
+              <section aria-labelledby="hero-visio-titre" className={CARTE_HERO}>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <h2 id="hero-visio-titre" className="text-lg font-bold tracking-[-0.01em] text-brand-900">
+                    Ensuite : votre visio
+                  </h2>
+                  <p className="text-sm font-medium text-slate-500">40 minutes · gratuite</p>
+                </div>
+                <ul className="mt-5 space-y-3.5">
+                  {AU_PROGRAMME.map((t) => (
+                    <li key={t} className="flex items-start gap-3 text-[1.02rem] font-semibold leading-snug text-brand-900">
+                      <span className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-brand-100 text-brand-600">
+                        <Ico name="check" className="h-3.5 w-3.5" />
+                      </span>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-5 rounded-xl bg-brand-50 px-4 py-2.5 text-center text-sm text-brand-800">
+                  <span className="font-semibold">Gratuite</span> · aucune inscription sans cet échange
+                </p>
+                <p className="mt-auto pt-5 text-sm leading-relaxed text-slate-700">
+                  Une question avant de remplir le formulaire ?{" "}
+                  <a
+                    href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(`Question VAE ${d.sigle}`)}`}
+                    className="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+                  >
+                    Écrivez-nous : {siteConfig.email}
+                  </a>
+                  <span className="block text-xs text-slate-500">Réponse personnelle, sous 24 h en semaine.</span>
+                </p>
+              </section>
+            </div>
+
+            <div className="lg:col-span-2">
               {d.noteReferentiel && (
                 <p className="mt-4 flex gap-3 rounded-2xl bg-amber-50 p-4 text-sm leading-relaxed text-amber-900 ring-1 ring-amber-900/10">
                   <Ico name="info" className="mt-0.5 h-5 w-5 flex-none text-amber-600" />

@@ -26,12 +26,16 @@ export default function MethodeSection() {
           </p>
         </div>
 
-        <div className="relative mt-12">
+        <div className="relative mt-8 sm:mt-12">
           <div
             aria-hidden
             className="absolute left-[10%] right-[10%] top-[2.1rem] hidden h-0.5 bg-gradient-to-r from-brand-200 via-brand-400 to-brand-200 lg:block"
           />
-          <ol className="relative grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-5">
+          {/* 18/11/2026, téléphone d'abord (Arthur : page trop longue, penser au mobile) :
+              sur téléphone chaque étape est une ligne compacte (icône à gauche, titre et
+              texte à droite, sans le grand numéro) au lieu d'une grande carte : les 5 étapes
+              tiennent en moins de deux écrans. À partir de `sm`, rendu inchangé. */}
+          <ol className="relative grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-5">
             {ETAPES.map((e, i) => {
               const fort = i === 2;
               return (
@@ -39,11 +43,11 @@ export default function MethodeSection() {
                   key={e.titre}
                   className={
                     fort
-                      ? "relative rounded-3xl bg-brand-600 p-6 text-white shadow-xl shadow-brand-900/20 lg:-mt-2"
-                      : "relative rounded-3xl bg-brand-50 p-6 ring-1 ring-brand-900/5"
+                      ? "relative flex gap-3.5 rounded-2xl bg-brand-600 p-4 text-white shadow-xl shadow-brand-900/20 sm:block sm:rounded-3xl sm:p-6 lg:-mt-2"
+                      : "relative flex gap-3.5 rounded-2xl bg-brand-50 p-4 ring-1 ring-brand-900/5 sm:block sm:rounded-3xl sm:p-6"
                   }
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-none items-start justify-between sm:items-center">
                     <span
                       className={
                         fort
@@ -53,7 +57,7 @@ export default function MethodeSection() {
                     >
                       <BrandIcon name={ETAPE_ICONS[i % ETAPE_ICONS.length]} className="h-5 w-5" />
                     </span>
-                    <span className={fort ? "text-3xl font-bold text-white/30" : "text-3xl font-bold text-brand-200"}>
+                    <span className={fort ? "hidden text-3xl font-bold text-white/30 sm:block" : "hidden text-3xl font-bold text-brand-200 sm:block"}>
                       0{i + 1}
                     </span>
                   </div>
@@ -62,12 +66,15 @@ export default function MethodeSection() {
                       Étape centrale
                     </span>
                   )}
-                  <h3 className={fort ? "mt-5 text-base font-bold leading-snug" : "mt-5 text-base font-bold leading-snug text-brand-900"}>
-                    {e.titre}
-                  </h3>
-                  <p className={fort ? "mt-2 text-sm leading-relaxed text-brand-50" : "mt-2 text-sm leading-relaxed text-slate-700"}>
-                    {e.texte}
-                  </p>
+                  <div className="min-w-0">
+                    <h3 className={fort ? "text-base font-bold leading-snug sm:mt-5" : "text-base font-bold leading-snug text-brand-900 sm:mt-5"}>
+                      <span className={fort ? "text-white/60 sm:hidden" : "text-brand-600 sm:hidden"}>{i + 1}. </span>
+                      {e.titre}
+                    </h3>
+                    <p className={fort ? "mt-1 text-sm leading-relaxed text-brand-50 sm:mt-2" : "mt-1 text-sm leading-relaxed text-slate-700 sm:mt-2"}>
+                      {e.texte}
+                    </p>
+                  </div>
                 </li>
               );
             })}
