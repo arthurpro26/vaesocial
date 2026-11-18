@@ -28,22 +28,46 @@ export default function EnPratiqueSection({
           </h2>
         </div>
 
-        <ol className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+        {/* 18/11/2026 : même présentation que les blocs (liste dépliable, <details> natif),
+            pour raccourcir la page sur téléphone (4 cartes = plus de 2 écrans). Le texte
+            reste entier dans la page. */}
+        <ol className="mx-auto mt-8 max-w-3xl space-y-3 sm:mt-10">
           {enPratique.etapes.map((e, i) => (
-            <li key={e.titre} className="flex flex-col rounded-3xl bg-brand-50 p-6 ring-1 ring-brand-900/5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-bold text-brand-700 shadow-sm">
-                {i + 1}
-              </span>
-              <h3 className="mt-4 text-base font-bold leading-snug text-brand-900">{e.titre}</h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-700">{e.texte}</p>
-              {e.lien && (
-                <Link
-                  href={e.lien.href}
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
-                >
-                  {e.lien.label} <Ico name="arrow" className="h-4 w-4" />
-                </Link>
-              )}
+            <li key={e.titre}>
+              <details
+                open={i === 0}
+                className="group rounded-2xl bg-brand-50 ring-1 ring-brand-900/5 transition-shadow open:shadow-sm open:ring-brand-300"
+              >
+                <summary className="flex cursor-pointer list-none items-center gap-3 rounded-2xl p-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 sm:gap-4 sm:p-5 [&::-webkit-details-marker]:hidden">
+                  <span className="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-white text-sm font-bold text-brand-700 shadow-sm">
+                    {i + 1}
+                  </span>
+                  <h3 className="flex-1 text-base font-bold leading-snug text-brand-900 sm:text-lg">{e.titre}</h3>
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5 flex-none text-brand-600 transition-transform duration-200 group-open:rotate-180"
+                  >
+                    <path d="M5 7.5l5 5 5-5" />
+                  </svg>
+                </summary>
+                <div className="px-4 pb-4 pl-[4rem] sm:px-5 sm:pb-5 sm:pl-[4.75rem]">
+                  <p className="text-sm leading-relaxed text-slate-700 sm:text-base sm:leading-relaxed">{e.texte}</p>
+                  {e.lien && (
+                    <Link
+                      href={e.lien.href}
+                      className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+                    >
+                      {e.lien.label} <Ico name="arrow" className="h-4 w-4" />
+                    </Link>
+                  )}
+                </div>
+              </details>
             </li>
           ))}
         </ol>

@@ -19,12 +19,28 @@ const LOGOS = [
  */
 export default function LogoCards({ className = "", variant = "cards" }: { className?: string; variant?: "cards" | "flat" }) {
   if (variant === "flat") {
+    // 18/11/2026 (retour d'Arthur : « des images collées, c'est moche ») : les fichiers
+    // ont un fond blanc qui faisait un rectangle sur le fond teinté de la page. Chaque
+    // logo est maintenant dans une pastille blanche arrondie, toutes de la même taille,
+    // avec un fin contour, qui se soulève au survol. Plus légères que les cartes de
+    // l'accueil (retirées ici le 23/10 parce qu'elles alourdissaient la colonne).
     return (
-      <ul aria-label="Références officielles" className={`flex flex-wrap items-center gap-x-7 gap-y-3 ${className}`}>
+      <ul aria-label="Références officielles" className={`flex flex-wrap items-center gap-2.5 sm:gap-3 ${className}`}>
         {LOGOS.map((l) => (
-          <li key={l.fichier} className="flex items-center">
+          <li
+            key={l.fichier}
+            title={l.alt}
+            className="group flex h-12 w-[6.4rem] items-center justify-center rounded-full bg-white px-3.5 shadow-[0_6px_16px_-10px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_22px_-12px_rgba(20,47,42,0.5)] hover:ring-brand-300 sm:h-[3.25rem] sm:w-[7.25rem] sm:px-4"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`/logos/${l.fichier}`} alt={l.alt} width={l.w} height={l.h} decoding="async" className="h-8 w-auto object-contain sm:h-9" />
+            <img
+              src={`/logos/${l.fichier}`}
+              alt={l.alt}
+              width={l.w}
+              height={l.h}
+              decoding="async"
+              className="max-h-7 w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.05] sm:max-h-8"
+            />
           </li>
         ))}
       </ul>

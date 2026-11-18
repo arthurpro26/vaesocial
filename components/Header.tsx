@@ -26,7 +26,7 @@ export default function Header() {
       <Trico band className="h-1.5 w-full" />
       <div className="hidden bg-brand-900 text-[0.8rem] text-brand-100 md:block">
         <Container className="flex h-9 items-center justify-between">
-          <span className="font-medium tracking-wide">Accompagnement à la VAE · Secteur social et médico-social</span>
+          <span className="font-medium tracking-wide">Accompagnement à la VAE · Social, médico-social et santé</span>
           <span className="flex items-center gap-5">
             <span>Visio gratuite avant toute inscription</span>
             <span aria-hidden className="h-3.5 w-px bg-white/20" />

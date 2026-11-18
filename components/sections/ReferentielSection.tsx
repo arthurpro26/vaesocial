@@ -36,39 +36,60 @@ export default function ReferentielSection({
           <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-xl sm:leading-relaxed">{referentiel.intro}</p>
         </div>
 
-        <ol className="relative mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6">
+        {/* 18/11/2026 (demande d'Arthur : page trop longue, « des infos qui surgissent de
+            partout ») : les blocs ne sont plus des cartes ouvertes (près de 4 écrans de
+            téléphone pour 5 blocs) mais une liste dépliable. On lit d'abord les intitulés
+            officiels, on ouvre celui qu'on veut ; le premier est ouvert pour montrer ce qu'il
+            y a dedans. <details> natif : aucun script, et tout le texte reste dans la page
+            (lisible par Google). */}
+        <ol className="relative mx-auto mt-8 max-w-3xl space-y-3 sm:mt-10">
           {referentiel.blocs.map((bloc, i) => (
-            <li
-              key={bloc.intitule}
-              className="relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brand-900/10 sm:p-9 sm:[&:nth-child(odd):last-child]:col-span-2"
-            >
-              <span aria-hidden className="absolute -right-2 -top-4 text-8xl font-bold text-brand-50">
-                {i + 1}
-              </span>
-              <div className="relative flex items-start gap-4">
-                <span
-                  aria-hidden
-                  className="flex h-10 w-10 flex-none items-center justify-center rounded-2xl bg-brand-600 text-sm font-bold sm:h-12 sm:w-12 sm:text-lg text-white shadow-md shadow-brand-900/20"
-                >
-                  {i + 1}
-                </span>
-                <h3 className="text-base font-bold leading-snug text-brand-900 sm:text-[1.45rem] sm:leading-snug">{bloc.intitule}</h3>
-              </div>
-              <div className="relative mt-4 rounded-2xl bg-brand-50 px-4 py-3 text-sm leading-relaxed text-slate-700 sm:mt-6 sm:px-6 sm:py-5 sm:text-[1.15rem] sm:leading-relaxed">
-                <p className="flex gap-2.5">
-                  <Ico name="spark" className="mt-0.5 h-4 w-4 flex-none text-accent-500 sm:mt-1.5 sm:h-6 sm:w-6" />
-                  <span>
-                    <span className="font-semibold text-brand-700">À repérer dans votre parcours : </span>
-                    {bloc.piste}
+            <li key={bloc.intitule}>
+              <details
+                open={i === 0}
+                className="group rounded-2xl bg-white shadow-sm ring-1 ring-brand-900/10 transition-shadow open:shadow-md open:ring-brand-300"
+              >
+                <summary className="flex cursor-pointer list-none items-center gap-3 rounded-2xl p-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 sm:gap-4 sm:p-5 [&::-webkit-details-marker]:hidden">
+                  <span
+                    aria-hidden
+                    className="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white sm:h-10 sm:w-10 sm:text-base"
+                  >
+                    {i + 1}
                   </span>
-                </p>
-                {bloc.exemples && (
-                  <p className="mt-2.5 border-t border-brand-900/10 pt-2.5 pl-[1.65rem] text-[0.84rem] leading-relaxed text-slate-600 sm:mt-4 sm:pt-4 sm:pl-[2.1rem] sm:text-[1.1rem] sm:leading-relaxed">
-                    <span className="font-semibold text-slate-700">Par exemple : </span>
-                    {bloc.exemples}
-                  </p>
-                )}
-              </div>
+                  <h3 className="flex-1 text-[0.95rem] font-bold leading-snug text-brand-900 sm:text-lg sm:leading-snug">
+                    {bloc.intitule}
+                  </h3>
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5 flex-none text-brand-600 transition-transform duration-200 group-open:rotate-180"
+                  >
+                    <path d="M5 7.5l5 5 5-5" />
+                  </svg>
+                </summary>
+                <div className="px-4 pb-4 sm:px-5 sm:pb-5">
+                  <div className="rounded-xl bg-brand-50 px-4 py-3 text-sm leading-relaxed text-slate-700 sm:px-5 sm:py-4 sm:text-base sm:leading-relaxed">
+                    <p className="flex gap-2.5">
+                      <Ico name="spark" className="mt-0.5 h-4 w-4 flex-none text-accent-500 sm:mt-1 sm:h-5 sm:w-5" />
+                      <span>
+                        <span className="font-semibold text-brand-700">À repérer dans votre parcours : </span>
+                        {bloc.piste}
+                      </span>
+                    </p>
+                    {bloc.exemples && (
+                      <p className="mt-2.5 border-t border-brand-900/10 pt-2.5 pl-[1.65rem] text-[0.84rem] leading-relaxed text-slate-600 sm:mt-3 sm:pt-3 sm:pl-[1.9rem] sm:text-[0.95rem] sm:leading-relaxed">
+                        <span className="font-semibold text-slate-700">Par exemple : </span>
+                        {bloc.exemples}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </details>
             </li>
           ))}
         </ol>
