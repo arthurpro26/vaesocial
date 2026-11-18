@@ -656,7 +656,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     theme: "rose",
     metaTitle: "VAE Auxiliaire de Puériculture (DEAP) | VAESocial",
     metaDescription:
-      "Obtenez le diplôme d'État d'auxiliaire de puériculture par la VAE grâce à votre expérience auprès des jeunes enfants. Diagnostic gratuit en 5 questions.",
+      "VAE auxiliaire de puériculture : obtenez le DEAP grâce à votre expérience en crèche, maternité ou pédiatrie. Les 5 blocs, les étapes, le jury. Visio gratuite.",
     heroSuffixe: "au DEAP",
     heroIntro:
       "Agent de crèche, assistante maternelle, ASH ou aide-soignante en pédiatrie ou en maternité : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
@@ -710,6 +710,98 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       "🌟 Un diplôme d'État reconnu à l'hôpital comme en crèche : peu de métiers de la petite enfance offrent autant de terrains possibles avec un seul diplôme.",
     noteReferentiel:
       "Le DEAP est délivré par le ministère chargé de la Santé. Les modalités du parcours VAE (recevabilité, épreuves complémentaires éventuelles) sont fixées par le certificateur et peuvent évoluer : nous vérifions avec vous les conditions exactes qui s'appliquent à votre dossier avant tout engagement.",
+    // Référentiel du DEAP : arrêté du 10 juin 2021 (JO du 12 juin 2021, NOR SSAH2110961A),
+    // cinq blocs de compétences, fiche RNCP40743 (active jusqu'au 01/09/2029, niveau 4,
+    // certificateur : ministère chargé de la santé, voie « par expérience » ouverte).
+    // Intitulés recopiés de la fiche France compétences et de l'annexe de l'arrêté, relus le
+    // 18/11/2026 (seule retouche : majuscule accentuée et « œ »). Pistes et exemples = conseil
+    // de méthode, pas des citations. Pas la réforme de septembre 2026 : pas de pastille.
+    // Pas de prix affiché : le prix de l'accompagnement DEAP n'a pas été confirmé par Arthur.
+    referentiel: {
+      titre: "Votre expérience couvre‑t‑elle les cinq blocs du DEAP ?",
+      intro:
+        "Le référentiel du DEAP (arrêté du 10 juin 2021) compte cinq blocs de compétences. Pour chaque bloc, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+      conclusion:
+        "Vous vous reconnaissez dans trois ou quatre blocs, pas dans les cinq ? C'est fréquent. Pendant la visio, votre accompagnatrice reprend votre expérience bloc par bloc, vous dit si elle suffit pour le DEAP, et ce qu'il faudrait compléter le cas échéant.",
+      blocs: [
+        {
+          intitule:
+            "Accompagnement et soins de l'enfant dans les activités de sa vie quotidienne et de sa vie sociale",
+          piste:
+            "Une situation où vous vous êtes occupé d'un enfant au quotidien, en vous adaptant à lui, et une activité d'éveil que vous avez préparée.",
+          exemples:
+            "Les repas, le change, la toilette, l'endormissement que vous assurez chaque jour ; un atelier de motricité, de lecture ou de jeu que vous avez monté pour un enfant ou un petit groupe ; un risque que vous avez repéré et évité.",
+        },
+        {
+          intitule: "Évaluation de l'état clinique et mise en œuvre de soins adaptés en collaboration",
+          piste:
+            "Une situation où vous avez observé l'état d'un enfant, donné l'alerte et fait un soin, en lien avec l'infirmière ou la puéricultrice.",
+          exemples:
+            "Une fièvre, une gêne pour respirer, un enfant qui ne mange plus : ce que vous avez vu, mesuré et transmis ; un soin que vous faites selon le protocole du service ou de la crèche ; la façon dont vous portez et installez un bébé.",
+        },
+        {
+          intitule:
+            "Information et accompagnement des personnes et de leur entourage, des professionnels et des apprenants",
+          piste:
+            "Une situation d'échange avec des parents, et une autre où vous avez montré le travail à une collègue ou à une stagiaire.",
+          exemples:
+            "L'accueil du matin et les transmissions du soir aux parents ; un conseil donné sur le sommeil, l'allaitement ou l'alimentation ; l'accueil d'une stagiaire ou d'une nouvelle collègue à qui vous avez expliqué les gestes.",
+        },
+        {
+          intitule:
+            "Entretien de l'environnement immédiat de la personne et des matériels liés aux activités en tenant compte du lieu et des situations d'intervention",
+          piste:
+            "Une situation où vous avez nettoyé et désinfecté les lieux et le matériel en suivant les règles d'hygiène, et un problème que vous avez signalé.",
+          exemples:
+            "Le nettoyage des lits, des plans de change, des jouets ou de la biberonnerie ; le respect des protocoles d'hygiène ; un matériel abîmé ou une anomalie que vous avez repérés et fait remonter.",
+        },
+        {
+          intitule:
+            "Travail en équipe pluri-professionnelle et traitement des informations liées aux activités de soins, à la qualité/gestion des risques",
+          piste:
+            "Une situation de travail avec l'équipe : ce que vous notez, ce que vous transmettez, et comment vous vous organisez.",
+          exemples:
+            "Les transmissions écrites et orales, le cahier de liaison ou le dossier de soins ; une réunion d'équipe où vous avez apporté vos observations ; un incident que vous avez signalé pour qu'il ne se reproduise pas.",
+        },
+      ],
+      sourceLabel: "Arrêté du 10 juin 2021, référentiel de certification (fiche RNCP40743, France compétences)",
+      sourceUrl: "https://www.francecompetences.fr/recherche/rncp/40743/",
+    },
+    enPratique: {
+      titre: "La VAE DEAP en pratique",
+      etapes: [
+        {
+          titre: "Qui peut se lancer",
+          texte:
+            "Il n'y a plus de durée minimale d'expérience. Ce qui compte, c'est le lien direct entre ce que vous faites et le métier : prendre soin d'enfants au quotidien (soins, repas, change, éveil, surveillance), en crèche, à domicile, en maternité ou en pédiatrie. L'expérience peut être salariée, bénévole ou d'aidant.",
+        },
+        {
+          titre: "Livret 1 : la recevabilité",
+          texte:
+            "Vous décrivez vos expériences, et le certificateur vérifie qu'elles correspondent au métier. Il ne juge pas encore vos compétences. Pour le DEAP, le certificateur est le ministère chargé de la Santé.",
+          lien: { href: "/blog/recevabilite-vae-guide-complet", label: "Ce que vérifie la recevabilité" },
+        },
+        {
+          titre: "Livret 2 : votre dossier",
+          texte:
+            "Vous racontez, à la première personne, des situations réelles de votre travail, choisies pour couvrir les cinq blocs du diplôme. France VAE compte en moyenne 4 à 6 mois de rédaction, à raison de 2 à 4 heures par semaine.",
+          lien: { href: "/blog/livret-2-vae-guide-complet", label: "Remplir le livret 2" },
+        },
+        {
+          titre: "Le jury",
+          texte:
+            "Le jury lit votre dossier, puis vous reçoit en entretien. Il peut valider tout le diplôme, une partie des blocs, ou refuser. Un bloc validé reste acquis : il ne vous reste alors que les autres à compléter. Pour exercer comme auxiliaire de puériculture, il faut le diplôme complet, donc les cinq blocs.",
+          lien: { href: "/blog/jury-vae-entretien-deroule-frais", label: "Comment se passe le jury" },
+        },
+      ],
+      agentsPublics:
+        "Vous êtes agent public (hôpital, collectivité, État) ? C'est le même diplôme, mais la démarche passe par le service RH de votre employeur : France VAE n'est pas encore ouvert aux agents publics. Le financement dépend aussi de votre employeur. On regarde votre cas pendant la visio.",
+      sources: [
+        { label: "Service-Public.fr, fiche VAE", url: "https://www.service-public.gouv.fr/particuliers/vosdroits/F2401" },
+        { label: "France VAE, rédiger son dossier", url: "https://vae.gouv.fr/savoir-plus/articles/rediger-dossier-validation/" },
+        { label: "France compétences, fiche RNCP40743 (DEAP)", url: "https://www.francecompetences.fr/recherche/rncp/40743/" },
+      ],
+    },
     faq: [
       {
         question: "Peut-on vraiment obtenir le DEAP par la VAE ?",
@@ -729,7 +821,17 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       {
         question: "Quelle expérience faut-il pour viser le DEAP en VAE ?",
         reponse:
-          "Depuis la réforme de janvier 2024, aucune durée minimale n'est exigée. Ce qui compte, c'est que votre expérience — en crèche, à domicile, en maternité, en pédiatrie ou en PMI — corresponde aux activités de soin et d'accompagnement du jeune enfant évaluées dans le référentiel du diplôme. C'est précisément ce que le diagnostic gratuit vérifie.",
+          "Aucune durée minimale n'est exigée : il n'est plus nécessaire de justifier d'un an d'expérience. Votre expérience, salariée, bénévole ou d'aidant, doit avoir un rapport direct avec le métier d'auxiliaire de puériculture : prendre soin d'enfants au quotidien, en crèche, à domicile, en maternité, en pédiatrie ou en PMI par exemple. Si vous ne vous êtes jamais occupé d'enfants au quotidien, la VAE n'est pas la bonne voie.",
+      },
+      {
+        question: "Sur quel référentiel le jury évalue-t-il le DEAP ?",
+        reponse:
+          "Sur le référentiel fixé par l'arrêté du 10 juin 2021 : cinq blocs de compétences (accompagnement et soins de l'enfant, état clinique et soins adaptés, information des familles et des collègues, entretien des lieux et du matériel, travail en équipe et transmissions). Pendant la visio, on regarde avec vous ce que votre expérience couvre déjà.",
+      },
+      {
+        question: "Peut-on valider seulement une partie du DEAP ?",
+        reponse:
+          "Oui. Le jury peut valider le diplôme entier ou seulement certains blocs. Un bloc validé reste acquis, et vous complétez ensuite les blocs manquants. En revanche, pour exercer comme auxiliaire de puériculture, il faut le diplôme complet. Notre accompagnement continue quelle que soit la décision du jury.",
       },
       {
         question: "Faut-il arrêter de travailler pendant la VAE ?",
