@@ -31,32 +31,27 @@ export default function EnPratiqueSection({
         {/* 18/11/2026 : même présentation que les blocs (liste dépliable, <details> natif),
             pour raccourcir la page sur téléphone (4 cartes = plus de 2 écrans). Le texte
             reste entier dans la page. */}
-        <ol className="mx-auto mt-8 max-w-3xl space-y-3 sm:mt-10">
+        <ol className="mx-auto mt-8 max-w-3xl divide-y divide-slate-100 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm sm:mt-10">
           {enPratique.etapes.map((e, i) => (
             <li key={e.titre}>
               <details
+                name="etapes-diplome"
                 open={i === 0}
-                className="group rounded-2xl bg-brand-50 ring-1 ring-brand-900/5 transition-shadow open:shadow-sm open:ring-brand-300"
+                className="group"
               >
-                <summary className="flex cursor-pointer list-none items-center gap-3 rounded-2xl p-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 sm:gap-4 sm:p-5 [&::-webkit-details-marker]:hidden">
-                  <span className="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-white text-sm font-bold text-brand-700 shadow-sm">
+                <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-4 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:gap-4 sm:px-8 sm:py-5 [&::-webkit-details-marker]:hidden">
+                  <span className="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white sm:h-10 sm:w-10 sm:text-base">
                     {i + 1}
                   </span>
-                  <h3 className="flex-1 text-base font-bold leading-snug text-brand-900 sm:text-lg">{e.titre}</h3>
-                  <svg
+                  <h3 className="flex-1 text-[0.95rem] font-bold leading-snug text-brand-900 sm:text-lg sm:leading-snug">{e.titre}</h3>
+                  <span
                     aria-hidden
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5 flex-none text-brand-600 transition-transform duration-200 group-open:rotate-180"
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700 transition-transform duration-200 group-open:rotate-45 sm:h-8 sm:w-8"
                   >
-                    <path d="M5 7.5l5 5 5-5" />
-                  </svg>
+                    +
+                  </span>
                 </summary>
-                <div className="px-4 pb-4 pl-[4rem] sm:px-5 sm:pb-5 sm:pl-[4.75rem]">
+                <div className="px-4 pb-4 pl-[4rem] sm:px-8 sm:pb-6 sm:pl-[5.5rem]">
                   <p className="text-sm leading-relaxed text-slate-700 sm:text-base sm:leading-relaxed">{e.texte}</p>
                   {e.lien && (
                     <Link

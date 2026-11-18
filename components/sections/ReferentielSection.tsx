@@ -40,16 +40,18 @@ export default function ReferentielSection({
             partout ») : les blocs ne sont plus des cartes ouvertes (près de 4 écrans de
             téléphone pour 5 blocs) mais une liste dépliable. On lit d'abord les intitulés
             officiels, on ouvre celui qu'on veut ; le premier est ouvert pour montrer ce qu'il
-            y a dedans. <details> natif : aucun script, et tout le texte reste dans la page
+            y a dedans. Même présentation que la FAQ du site (components/FaqAccordion.tsx :
+            une seule carte, lignes séparées, « + » rond qui tourne) pour rester homogène. <details> natif : aucun script, et tout le texte reste dans la page
             (lisible par Google). */}
-        <ol className="relative mx-auto mt-8 max-w-3xl space-y-3 sm:mt-10">
+        <ol className="relative mx-auto mt-8 max-w-3xl divide-y divide-slate-100 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm sm:mt-10">
           {referentiel.blocs.map((bloc, i) => (
             <li key={bloc.intitule}>
               <details
+                name="blocs-diplome"
                 open={i === 0}
-                className="group rounded-2xl bg-white shadow-sm ring-1 ring-brand-900/10 transition-shadow open:shadow-md open:ring-brand-300"
+                className="group"
               >
-                <summary className="flex cursor-pointer list-none items-center gap-3 rounded-2xl p-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 sm:gap-4 sm:p-5 [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-4 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:gap-4 sm:px-8 sm:py-5 [&::-webkit-details-marker]:hidden">
                   <span
                     aria-hidden
                     className="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white sm:h-10 sm:w-10 sm:text-base"
@@ -59,20 +61,14 @@ export default function ReferentielSection({
                   <h3 className="flex-1 text-[0.95rem] font-bold leading-snug text-brand-900 sm:text-lg sm:leading-snug">
                     {bloc.intitule}
                   </h3>
-                  <svg
+                  <span
                     aria-hidden
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5 flex-none text-brand-600 transition-transform duration-200 group-open:rotate-180"
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700 transition-transform duration-200 group-open:rotate-45 sm:h-8 sm:w-8"
                   >
-                    <path d="M5 7.5l5 5 5-5" />
-                  </svg>
+                    +
+                  </span>
                 </summary>
-                <div className="px-4 pb-4 sm:px-5 sm:pb-5">
+                <div className="px-4 pb-4 sm:px-8 sm:pb-6">
                   <div className="rounded-xl bg-brand-50 px-4 py-3 text-sm leading-relaxed text-slate-700 sm:px-5 sm:py-4 sm:text-base sm:leading-relaxed">
                     <p className="flex gap-2.5">
                       <Ico name="spark" className="mt-0.5 h-4 w-4 flex-none text-accent-500 sm:mt-1 sm:h-5 sm:w-5" />
