@@ -469,9 +469,9 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     sigle: "DEME",
     nomComplet: "Diplôme d'État de Moniteur-Éducateur",
     niveau: "Niveau 4 (Bac)",
-    metaTitle: "VAE DEME : Moniteur-Éducateur par expérience | VAESocial",
+    metaTitle: "VAE moniteur-éducateur (DEME) : accompagnement | VAESocial",
     metaDescription:
-      "Obtenez le DEME par la VAE grâce à votre expérience professionnelle. Aucune durée minimale exigée depuis 2024. Diagnostic gratuit en 5 questions.",
+      "VAE moniteur-éducateur : obtenez le DEME grâce à votre expérience en IME, ESAT, MAS ou MECS. Conditions, livrets, jury, prix. Visio gratuite avant inscription.",
     heroSuffixe: "au DEME",
     heroIntro:
       "AES, surveillant de nuit ou faisant fonction de moniteur-éducateur en foyer, IME, ESAT ou MECS : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
@@ -498,7 +498,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     ],
     publicChips: [["AES", "AMP"], ["ESAT", "MAS", "IME"], ["MECS", "Prévention spécialisée", "Insertion sociale"]],
     debouchesIntro:
-      "Le DEME ouvre principalement des postes dans le secteur privé associatif (80 % des recrutements), avec un taux d'insertion professionnelle élevé — et des terrains d'action très concrets :",
+      "Le DEME ouvre principalement des postes dans le secteur privé associatif, sur des terrains d'action très concrets :",
     debouches: [
       {
         icon: "🧩",
@@ -522,7 +522,85 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       },
     ],
     debouchesConclusion:
-      "🌟 Avec un taux d'insertion professionnelle d'environ 94 %, le DEME est l'un des diplômes du secteur qui débouche le plus vite sur un vrai métier.",
+      "🌟 Handicap, protection de l'enfance, insertion : le DEME ouvre des postes de terrain, au plus près des personnes accompagnées.",
+    // Référentiel du DEME : arrêté du 5 juillet 2024 (JO du 6 juillet 2024), en vigueur
+    // depuis le 1er septembre 2024, trois blocs de compétences, fiche RNCP39643. Intitulés
+    // recopiés de l'annexe I (relus le 18/11/2026 sur vae.education.gouv.fr et sur France
+    // compétences). Ce n'est PAS la réforme de septembre 2026 (arrêtés du 6 octobre 2025) :
+    // `nouveauReferentiel` reste absent, pas de pastille. Pistes et exemples = conseil de
+    // méthode, pas des citations.
+    referentiel: {
+      titre: "Votre expérience couvre‑t‑elle les trois blocs du DEME ?",
+      intro:
+        "Le référentiel du DEME (arrêté du 5 juillet 2024) compte trois blocs de compétences. Pour chaque bloc, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. La communication professionnelle n'est pas un bloc à part : le jury la regarde dans chacun des trois. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+      conclusion:
+        "Vous vous reconnaissez dans un ou deux blocs, pas dans les trois ? C'est fréquent. Pendant la visio, votre accompagnatrice reprend votre expérience bloc par bloc, vous dit si elle suffit pour le DEME, et ce qu'il faudrait compléter le cas échéant.",
+      blocs: [
+        {
+          intitule: "Contribuer à l'accompagnement socio-éducatif dans une logique de parcours",
+          piste:
+            "Une situation où vous avez accompagné une personne au quotidien, dans la durée, en tenant compte de son projet.",
+          exemples:
+            "Les levers, les repas, les sorties ou les soirées que vous organisez en foyer, en IME ou en MECS ; un jeune ou un adulte que vous suivez depuis plusieurs mois et dont vous avez soutenu les progrès.",
+        },
+        {
+          intitule: "Contribuer au projet éducatif spécialisé dans une visée inclusive",
+          piste:
+            "Une situation où vous avez pris part à un projet éducatif : une activité, un atelier, un objectif fixé avec la personne.",
+          exemples:
+            "Un atelier cuisine, sport ou autonomie dans les transports que vous avez monté ou animé ; votre part dans l'écriture ou le suivi d'un projet personnalisé ; une sortie pensée pour ouvrir la personne sur l'extérieur.",
+        },
+        {
+          intitule:
+            "S'inscrire dans un travail d'équipe et partenarial pour assurer la continuité des accompagnements dans une logique de parcours",
+          piste:
+            "Une situation de travail avec vos collègues et avec des partenaires extérieurs : famille, école, soignants, autres services.",
+          exemples:
+            "Les transmissions et les réunions d'équipe auxquelles vous participez ; un écrit que vous rédigez (cahier de liaison, note d'observation) ; un échange avec une famille, un enseignant ou un service de soins pour que le suivi ne s'interrompe pas.",
+        },
+      ],
+      sourceLabel: "Arrêté du 5 juillet 2024, annexe I (fiche RNCP39643, France compétences)",
+      sourceUrl: "https://www.francecompetences.fr/recherche/rncp/39643/",
+    },
+    enPratique: {
+      titre: "La VAE DEME en pratique",
+      etapes: [
+        {
+          titre: "Qui peut se lancer",
+          texte:
+            "Il n'y a plus de durée minimale d'expérience. Ce qui compte, c'est le lien direct entre ce que vous faites et le métier : accompagner au quotidien des enfants, des jeunes ou des adultes en difficulté ou en situation de handicap. L'expérience peut être salariée, bénévole ou d'aidant.",
+        },
+        {
+          titre: "Livret 1 : la recevabilité",
+          texte:
+            "Vous décrivez vos expériences, et le certificateur vérifie qu'elles correspondent au métier. Il ne juge pas encore vos compétences. Pour le DEME, le certificateur est le rectorat.",
+          lien: { href: "/blog/recevabilite-vae-guide-complet", label: "Ce que vérifie la recevabilité" },
+        },
+        {
+          titre: "Livret 2 : votre dossier",
+          texte:
+            "Vous racontez, à la première personne, des situations réelles de votre travail, choisies pour couvrir les trois blocs du diplôme. France VAE compte en moyenne 4 à 6 mois de rédaction, à raison de 2 à 4 heures par semaine.",
+          lien: { href: "/blog/livret-2-vae-guide-complet", label: "Remplir le livret 2" },
+        },
+        {
+          titre: "Le jury",
+          texte:
+            "Le jury lit votre dossier, puis vous reçoit en entretien. Il peut valider tout le diplôme, une partie des blocs, ou refuser. Un bloc validé reste acquis : il ne vous reste alors que les autres à compléter.",
+          lien: { href: "/blog/jury-vae-entretien-deroule-frais", label: "Comment se passe le jury" },
+        },
+      ],
+      agentsPublics:
+        "Vous êtes agent public (hôpital, collectivité, État) ? C'est le même diplôme, mais la démarche passe par le service RH de votre employeur : France VAE n'est pas encore ouvert aux agents publics. Le financement dépend aussi de votre employeur. On regarde votre cas pendant la visio.",
+      sources: [
+        { label: "Service-Public.fr, fiche VAE", url: "https://www.service-public.gouv.fr/particuliers/vosdroits/F2401" },
+        { label: "France VAE, rédiger son dossier", url: "https://vae.gouv.fr/savoir-plus/articles/rediger-dossier-validation/" },
+        { label: "Ministère des Solidarités, la VAE", url: "https://solidarites.gouv.fr/VAE" },
+        {
+          label: "Arrêté du 5 juillet 2024 (DEME)",
+          url: "https://vae.education.gouv.fr/uploads/img/poitiers/Referentiel-DEME-2024_JO-N%C2%B0-159-du-6-juillet-2024.pdf",
+        },
+      ],
+    },
     faq: [
       {
         question: "Quel est le niveau du DEME ?",
@@ -532,17 +610,27 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       {
         question: "Quelle expérience faut-il pour viser le DEME en VAE ?",
         reponse:
-          "Depuis la réforme de janvier 2024, aucune durée minimale n'est exigée. Une expérience en ESAT, IME, MAS, MECS ou en prévention spécialisée peut suffire à être recevable, quelle que soit sa durée.",
+          "Aucune durée minimale n'est exigée : il n'est plus nécessaire de justifier d'un an d'expérience. Votre expérience, salariée, bénévole ou d'aidant, doit avoir un rapport direct avec le métier de moniteur-éducateur : accompagner au quotidien, en foyer, IME, ESAT, MAS ou MECS par exemple. Si vous n'avez jamais accompagné de personnes au quotidien, la VAE n'est pas la bonne voie.",
       },
       {
-        question: "Quel est le taux d'insertion professionnelle après un DEME ?",
+        question: "Sur quel référentiel le jury évalue-t-il le DEME ?",
         reponse:
-          "Le secteur affiche un taux d'insertion professionnelle élevé, autour de 94 %, le secteur privé associatif concentrant environ 80 % des recrutements.",
+          "Sur le référentiel fixé par l'arrêté du 5 juillet 2024 : trois blocs de compétences (accompagnement socio-éducatif, projet éducatif spécialisé, travail d'équipe et partenarial). La communication professionnelle est évaluée dans chacun des blocs. Pendant la visio, on regarde avec vous ce que votre expérience couvre déjà.",
+      },
+      {
+        question: "Peut-on valider seulement une partie du DEME ?",
+        reponse:
+          "Oui. Le jury peut valider le diplôme entier ou seulement certains blocs. Un bloc validé reste acquis, et vous complétez ensuite les blocs manquants. Notre accompagnement continue quelle que soit la décision du jury.",
       },
       {
         question: "Le DEME permet-il ensuite d'évoluer vers le DEES ?",
         reponse:
           "Oui, de nombreux moniteurs-éducateurs poursuivent leur parcours vers le DEES, diplôme de niveau supérieur, soit par la formation, soit par une nouvelle VAE une fois leur expérience enrichie.",
+      },
+      {
+        question: "Combien coûte une VAE DEME ?",
+        reponse:
+          "Notre accompagnement coûte entre 1 800 et 3 500 €, selon le nombre d'heures nécessaires (10 à 35 h). Il est finançable par le CPF et par les autres dispositifs présentés plus haut. Le montant exact vous est donné dans un devis, avant tout engagement.",
       },
     ],
     ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEME ?",

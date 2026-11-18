@@ -40,7 +40,7 @@ export default function ReferentielSection({
           {referentiel.blocs.map((bloc, i) => (
             <li
               key={bloc.intitule}
-              className="relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brand-900/10 sm:p-9"
+              className="relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brand-900/10 sm:p-9 sm:[&:nth-child(odd):last-child]:col-span-2"
             >
               <span aria-hidden className="absolute -right-2 -top-4 text-8xl font-bold text-brand-50">
                 {i + 1}

@@ -52,7 +52,7 @@ const VALID_SLUGS = DIPLOMES.map((d) => d.slug);
 function reperesHero(sigle: string): string[] {
   return [
     "Visio gratuite avant toute inscription",
-    ...(sigle === "DEES" ? ["1\u00a0800 à 3\u00a0500\u00a0€, finançable CPF"] : []),
+    ...(sigle === "DEES" || sigle === "DEME" ? ["1\u00a0800 à 3\u00a0500\u00a0€, finançable CPF"] : []),
     "6 à 8 mois d'accompagnement, à distance",
   ];
 }
