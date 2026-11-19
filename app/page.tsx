@@ -47,6 +47,12 @@ import { COMPETENCES, DIPLOMES, REASSURANCES } from "@/lib/site-data";
 // cartes de diplômes, sans retoucher cette page. Ne plus écrire la liste en dur.
 //   LISTE_SIGLES        → « DEES, DEAES, …, CAFERUIS »
 const SIGLES = DIPLOMES.map((d) => d.sigle);
+
+// Grille « Nos diplômes » (3 colonnes sur ordinateur) : la carte « Vous hésitez entre deux
+// diplômes ? » vient après les cartes diplôme. Quand leur nombre est un multiple de 3
+// (9 depuis l'ajout du DEAS, 19/11/2026), elle se retrouverait seule sur sa ligne avec deux
+// cases vides : elle prend alors toute la largeur, en bandeau. Téléphone et tablette inchangés.
+const CARTE_HESITATION_SEULE = DIPLOMES.length % 3 === 0;
 const LISTE_SIGLES = SIGLES.join(", ");
 
 export const metadata: Metadata = {
@@ -264,13 +270,13 @@ export default function HomePage() {
                 </Link>
               );
             })}
-            <Link href="#prediagnostic-form" className="relative flex flex-col justify-between overflow-hidden rounded-3xl bg-brand-600 p-5 text-white shadow-xl shadow-brand-900/20 sm:p-6">
+            <Link href="#prediagnostic-form" className={`relative flex flex-col justify-between overflow-hidden rounded-3xl bg-brand-600 p-5 text-white shadow-xl shadow-brand-900/20 sm:p-6 ${CARTE_HESITATION_SEULE ? "lg:col-span-3 lg:flex-row lg:items-center lg:gap-10 lg:px-8" : ""}`}>
               <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full border-[18px] border-white/10" />
               <div className="relative">
                 <p className="text-lg font-bold leading-snug [text-wrap:balance]">Vous hésitez entre deux diplômes ?</p>
                 <p className="mt-2 text-sm leading-relaxed text-brand-50">Le premier échange sert aussi à ça : repérer celui qui correspond à votre expérience.</p>
               </div>
-              <span className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-bold">Être rappelé·e gratuitement <Ico name="arrow" className="h-4 w-4" /></span>
+              <span className={`relative mt-5 inline-flex items-center gap-1.5 text-sm font-bold ${CARTE_HESITATION_SEULE ? "lg:mt-0 lg:flex-none" : ""}`}>Être rappelé·e gratuitement <Ico name="arrow" className="h-4 w-4" /></span>
             </Link>
           </div>
         </Container>

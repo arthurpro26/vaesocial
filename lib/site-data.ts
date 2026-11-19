@@ -46,6 +46,19 @@ export const DIPLOMES = [
     description:
       "Soins et accompagnement du jeune enfant, en maternité, en service de pédiatrie, en PMI ou en structure d'accueil de la petite enfance.",
   },
+  // Ajouté le 19/11/2026. Slug = NOM DU MÉTIER (même règle que l'auxiliaire de
+  // puériculture) : relevé Keyword Planner du 19/11/2026 (France, moyenne
+  // mensuelle nov. 2025 – oct. 2026) — « vae aide soignant » = 5 400 recherches
+  // par mois, « vae as » = 170, « vae deas » = 140. Thème rose, comme la page
+  // DEAP (santé). Faits de la page : fiche RNCP40692
+  // (voir lib/diplomes-data.ts).
+  {
+    slug: "aide-soignant",
+    sigle: "DEAS",
+    nom: "Aide-soignant",
+    description:
+      "Soins d'hygiène et de confort, aide aux gestes du quotidien et surveillance de l'état de santé, à l'hôpital, en clinique, en EHPAD ou à domicile.",
+  },
   // Ajoutés le 05/10/2026. Pas de thème couleur propre : les deux pages
   // héritent de la palette de marque.
   //

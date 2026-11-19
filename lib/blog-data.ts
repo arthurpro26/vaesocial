@@ -957,7 +957,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     datePublished: "2026-11-19",
     readingTime: "6 min",
     verifiedOn: "2026-11-19",
-    diplomes: ["auxiliaire-puericulture", "deaes", "dees"],
+    diplomes: ["auxiliaire-puericulture", "aide-soignant", "deaes", "dees"],
     sources: [
       { label: "Service-Public.gouv.fr : validation des acquis de l'expérience (VAE)", url: "https://www.service-public.gouv.fr/particuliers/vosdroits/F2401?lang=fr" },
       { label: "Fédération hospitalière de France : note sur le livre IV du code général de la fonction publique (juin 2026)", url: "https://www.fhf.fr/sites/default/files/2026-06/note%20CGFP%20LIVRE%204.pdf" },

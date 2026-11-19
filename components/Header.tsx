@@ -42,7 +42,9 @@ export default function Header() {
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex lg:gap-8">
           {/* Menu "Diplômes" : survol/focus révèle un lien direct vers chacune des
-              4 pages dédiées, en plus du lien vers la section d'ensemble de la home. */}
+              pages dédiées, en plus du lien vers la section d'ensemble de la home.
+              Hauteur plafonnée (19/11/2026, 9 diplômes) : sur un petit écran d'ordinateur,
+              la liste défile au lieu de sortir de la fenêtre. */}
           <div className="group relative">
             <Link href="/#diplomes" className="flex items-center gap-1 hover:text-brand-700">
               Diplômes
@@ -55,7 +57,7 @@ export default function Header() {
               </svg>
             </Link>
             <div className="invisible absolute left-1/2 top-full z-10 w-56 -translate-x-1/2 pt-3 opacity-0 transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-              <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white py-2 shadow-xl shadow-slate-900/10">
+              <div className="max-h-[calc(100vh-9rem)] overflow-y-auto rounded-2xl border border-slate-100 bg-white py-2 shadow-xl shadow-slate-900/10">
                 {DIPLOMES.map((d) => (
                   <Link
                     key={d.slug}

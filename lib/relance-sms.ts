@@ -60,6 +60,9 @@ const DIPLOME_LIBELLE: Record<string, string> = {
   // candidate DEAP recevrait un message visiblement moins soigné que les
   // autres — au moment précis où on teste ce marché.
   DEAP: "Diplôme d'État d'Auxiliaire de Puériculture",
+  // Ajouté le 19/11/2026 avec la page aide-soignant (même raison que pour DEAP
+  // ci-dessus : sans cette ligne, le message perdrait le sigle).
+  DEAS: "Diplôme d'État d'Aide-Soignant",
   // Ajoutés le 05/10/2026 avec les pages DEASS et CAFERUIS (même raison que
   // pour DEAP ci-dessus : sans ces lignes, le SMS perdrait le sigle et
   // retomberait sur le libellé générique « un diplôme d'État »).

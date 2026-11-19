@@ -75,7 +75,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       "VAE éducateur spécialisé : obtenez le DEES grâce à votre expérience en MECS, IME ou ITEP. Conditions, livrets, jury, prix. Visio gratuite avant inscription.",
     heroSuffixe: "au DEES",
     heroIntro:
-      "Moniteur-éducateur, AES ou faisant fonction en MECS, IME, ITEP, foyer ou protection de l'enfance : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Moniteur-éducateur, AES ou faisant fonction en MECS, IME, ITEP, foyer ou protection de l'enfance : en 4 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEES est un diplôme d'État de niveau 6 (Bac+3) qui atteste de la capacité à concevoir et conduire un accompagnement éducatif auprès de publics en difficulté sociale, familiale ou en situation de handicap. Par la VAE, votre pratique de terrain — en MECS, IME, ITEP, ESAT, foyer ou protection de l'enfance — peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -252,10 +252,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 3 (CAP/BEP)",
     metaTitle: "VAE DEAES : Accompagnant Éducatif et Social | VAESocial",
     metaDescription:
-      "Obtenez le DEAES par la VAE grâce à votre expérience d'accompagnement à domicile ou en structure. Diagnostic d'éligibilité gratuit en 5 questions.",
+      "Obtenez le DEAES par la VAE grâce à votre expérience d'accompagnement à domicile ou en structure. Diagnostic d'éligibilité gratuit en 4 questions.",
     heroSuffixe: "au DEAES",
     heroIntro:
-      "Aide à domicile, en EHPAD, en foyer de vie ou auprès de personnes en situation de handicap : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Aide à domicile, en EHPAD, en foyer de vie ou auprès de personnes en situation de handicap : en 4 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEAES est un diplôme d'État de niveau 3 qui atteste de la capacité à accompagner au quotidien des personnes en perte d'autonomie, en situation de handicap ou âgées, à domicile ou en structure. Par la VAE, votre expérience d'aide à domicile, en EHPAD ou auprès d'enfants en situation de handicap peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -336,10 +336,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 6 (Bac+3)",
     metaTitle: "VAE DEEJE : devenir Éducateur de Jeunes Enfants | VAESocial",
     metaDescription:
-      "Obtenez le DEEJE par la VAE grâce à votre expérience auprès de jeunes enfants. Diagnostic d'éligibilité gratuit en 5 questions, sans engagement.",
+      "Obtenez le DEEJE par la VAE grâce à votre expérience auprès de jeunes enfants. Diagnostic d'éligibilité gratuit en 4 questions, sans engagement.",
     heroSuffixe: "au DEEJE",
     heroIntro:
-      "Auxiliaire de puériculture, animatrice ou faisant fonction en crèche, multi-accueil ou PMI : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Auxiliaire de puériculture, animatrice ou faisant fonction en crèche, multi-accueil ou PMI : en 4 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEEJE est un diplôme d'État de niveau 6 (Bac+3) qui atteste de la capacité à accompagner le développement d'enfants de la naissance à 7 ans, en crèche, en PMI ou en établissement spécialisé. Par la VAE, votre expérience en structure petite enfance peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -474,7 +474,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       "VAE moniteur-éducateur : obtenez le DEME grâce à votre expérience en IME, ESAT, MAS ou MECS. Conditions, livrets, jury, prix. Visio gratuite avant inscription.",
     heroSuffixe: "au DEME",
     heroIntro:
-      "AES, surveillant de nuit ou faisant fonction de moniteur-éducateur en foyer, IME, ESAT ou MECS : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "AES, surveillant de nuit ou faisant fonction de moniteur-éducateur en foyer, IME, ESAT ou MECS : en 4 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEME est un diplôme d'État de niveau 4 (équivalent Bac) qui atteste de la capacité à accompagner au quotidien des personnes en difficulté sociale ou en situation de handicap, en appui de l'éducateur spécialisé. Par la VAE, votre expérience de terrain en IME, ESAT, MAS ou MECS peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -659,7 +659,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
       "VAE auxiliaire de puériculture : obtenez le DEAP grâce à votre expérience en crèche, maternité ou pédiatrie. Les 5 blocs, les étapes, le jury. Visio gratuite.",
     heroSuffixe: "au DEAP",
     heroIntro:
-      "Agent de crèche, assistante maternelle, ASH ou aide-soignante en pédiatrie ou en maternité : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Agent de crèche, assistante maternelle, ASH ou aide-soignante en pédiatrie ou en maternité : en 4 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEAP est un diplôme d'État de niveau 4 (équivalent Bac) qui atteste de la capacité à prendre soin de l'enfant de la naissance à l'adolescence et à accompagner sa famille, en maternité, en service de pédiatrie, en PMI ou en structure d'accueil du jeune enfant. La validation des acquis de l'expérience est une voie d'accès officielle à ce diplôme : votre pratique quotidienne des soins et de l'éveil du jeune enfant peut suffire à le valider, sans reprendre une formation complète.",
     publicIntro:
@@ -842,6 +842,230 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEAP ?",
   },
 
+  // ---------------------------------------------------------------------
+  // DEAS — ajouté le 19/11/2026, avant le lancement de la campagne Google Ads DEAS.
+  //
+  // Faits vérifiés le 19/11/2026 sur France compétences (fiche RNCP40692,
+  // « DE - Aide-Soignant ») : fiche ACTIVE, publiée le 02/06/2025, enregistrée
+  // jusqu'au 01/09/2029, NIVEAU 4, certificateur ministère chargé de la santé,
+  // voie « Par expérience » ouverte, cinq blocs de compétences, « la certification
+  // professionnelle doit être acquise en totalité pour permettre l'exercice du
+  // métier », AFGSU de niveau 2 « obligatoire pour obtenir la certification ».
+  // Elle remplace la fiche RNCP35830. Référentiel : arrêté du 10 juin 2021 modifié.
+  //
+  // NON VÉRIFIÉ : l'arrêté du 28 mars 2022 sur la VAE du DEAS (NOR SSAH2209995A)
+  // n'a pas pu être lu sur Légifrance le 19/11 ; « un bloc validé reste acquis »
+  // et « plus de durée minimale » reprennent la règle générale déjà publiée sur
+  // /dees, /deme et /auxiliaire-puericulture.
+  //
+  // Rien d'autre n'est affirmé ici : aucun salaire, aucun taux d'insertion,
+  // aucun chiffre de recrutement. Pas de prix affiché : le prix de
+  // l'accompagnement DEAS n'a pas été confirmé par Arthur. Thème rose (voir plus
+  // bas). Pas la réforme de septembre 2026 : pas de pastille.
+  // ---------------------------------------------------------------------
+  "aide-soignant": {
+    slug: "aide-soignant",
+    sigle: "DEAS",
+    nomComplet: "Diplôme d'État d'Aide-Soignant",
+    niveau: "Niveau 4 (Bac)",
+    // Thème rose, comme la page DEAP (demande d'Arthur du 19/11/2026, 20 h 34) : les deux
+    // diplômes de santé partagent la même couleur, le social reste en vert.
+    theme: "rose",
+    metaTitle: "VAE Aide-Soignant (DEAS) | VAESocial",
+    metaDescription:
+      "VAE aide-soignant : obtenez le DEAS grâce à votre expérience à l'hôpital, en EHPAD ou à domicile. Les 5 blocs, les étapes, le jury. Visio gratuite.",
+    heroSuffixe: "au DEAS",
+    heroIntro:
+      "ASH, agent de soins, auxiliaire de vie ou faisant fonction d'aide-soignante à l'hôpital, en EHPAD ou à domicile : en 4 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+    heroParagraphe:
+      "Le DEAS est un diplôme d'État de niveau 4 (équivalent Bac), délivré par le ministère chargé de la Santé. Il atteste de la capacité à accompagner une personne dans les gestes de sa vie quotidienne et à réaliser des soins adaptés à son état, en collaboration avec l'infirmier. La validation des acquis de l'expérience est une voie d'accès officielle à ce diplôme : votre pratique quotidienne auprès des patients ou des résidents peut suffire à le valider, sans reprendre une formation complète.",
+    publicIntro:
+      "Vous faites déjà, au quotidien, le travail d'une aide-soignante, sans avoir le diplôme d'État ? Votre expérience peut être recevable pour une VAE DEAS.",
+    publicConcerne: [
+      {
+        titre: "Vous travaillez à l'hôpital ou en clinique",
+        texte:
+          "ASH, agent de soins ou faisant fonction d'aide-soignante à l'hôpital ou en clinique : si vous aidez aux toilettes, aux repas, à l'installation et à la surveillance des patients aux côtés de l'équipe soignante, cette pratique est au cœur du référentiel du DEAS.",
+      },
+      {
+        titre: "Vous exercez en EHPAD ou en établissement médico-social",
+        texte:
+          "Auxiliaire de vie, agent d'accompagnement, AES ou AMP en EHPAD, en MAS ou en foyer d'accueil médicalisé : l'aide à la toilette, aux repas et aux déplacements, et l'attention que vous portez à l'état des résidents, peuvent être valorisées dans le dossier.",
+      },
+      {
+        titre: "Vous intervenez à domicile",
+        texte:
+          "Auxiliaire de vie, aide à domicile ou salariée d'un SSIAD : c'est la nature des gestes que vous réalisez auprès des personnes qui compte, pas le lieu d'exercice.",
+      },
+    ],
+    publicChips: [["ASH", "Agent de soins", "Hôpital", "Clinique"], ["EHPAD", "MAS", "Foyer d'accueil médicalisé"], ["Auxiliaire de vie", "Aide à domicile", "SSIAD"]],
+    debouchesIntro:
+      "Le DEAS est le diplôme d'État exigé pour exercer comme aide-soignant — et il s'exerce dans des lieux très différents, dans le public comme dans le privé :",
+    debouches: [
+      {
+        icon: "🏥",
+        texte:
+          "Hôpitaux et cliniques — au plus près des patients, au sein de l'équipe soignante, de jour comme de nuit.",
+      },
+      {
+        icon: "🏡",
+        texte:
+          "EHPAD et unités de soins de longue durée — accompagner des personnes âgées dans la durée, et devenir pour elles un repère du quotidien.",
+      },
+      {
+        icon: "🤲",
+        texte:
+          "Établissements pour personnes en situation de handicap (MAS, foyers d'accueil médicalisé) — des soins et un accompagnement adaptés à chaque personne.",
+      },
+      {
+        icon: "🚗",
+        texte:
+          "Soins à domicile (SSIAD, hospitalisation à domicile) — permettre à une personne de rester chez elle, avec une vraie autonomie dans votre travail.",
+      },
+    ],
+    debouchesConclusion:
+      "🌟 Avec le diplôme, vous exercez sous votre vrai titre : à l'hôpital, en EHPAD ou à domicile, le DEAS est le même partout.",
+    noteReferentiel:
+      "Le DEAS est délivré par le ministère chargé de la Santé. Les modalités du parcours VAE (recevabilité, attestation de formation aux gestes et soins d'urgence, compléments éventuels) sont fixées par le certificateur et peuvent évoluer : nous vérifions avec vous les conditions exactes qui s'appliquent à votre dossier avant tout engagement.",
+    // Intitulés des cinq blocs recopiés de la fiche RNCP40692 (France compétences), relus le
+    // 19/11/2026 (seule retouche : majuscule accentuée de « Évaluation »). Les blocs 2 à 5
+    // portent le même intitulé que ceux du DEAP ; le bloc 1 parle de « la personne » et non de
+    // « l'enfant ». Pistes et exemples = conseil de méthode, pas des citations.
+    referentiel: {
+      titre: "Votre expérience couvre‑t‑elle les cinq blocs du DEAS ?",
+      intro:
+        "Le référentiel du DEAS (arrêté du 10 juin 2021) compte cinq blocs de compétences. Pour chaque bloc, voici l'intitulé officiel, le type de situation de votre parcours qui le prouve, et des exemples concrets. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+      conclusion:
+        "Vous vous reconnaissez dans trois ou quatre blocs, pas dans les cinq ? C'est fréquent. Pendant la visio, votre accompagnatrice reprend votre expérience bloc par bloc, vous dit si elle suffit pour le DEAS, et ce qu'il faudrait compléter le cas échéant.",
+      blocs: [
+        {
+          intitule:
+            "Accompagnement et soins de la personne dans les activités de sa vie quotidienne et de sa vie sociale",
+          piste:
+            "Une situation où vous avez aidé une personne dans les gestes de sa journée, en vous adaptant à elle, et un risque que vous avez repéré à temps.",
+          exemples:
+            "La toilette, l'habillage, l'aide au repas ou au lever que vous assurez chaque jour ; ce que vous changez dans votre façon de faire selon la personne ; une chute, une fausse route ou une rougeur que vous avez su prévenir.",
+        },
+        {
+          intitule: "Évaluation de l'état clinique et mise en œuvre de soins adaptés en collaboration",
+          piste:
+            "Une situation où vous avez observé l'état d'une personne, donné l'alerte et réalisé un soin, en lien avec l'infirmière.",
+          exemples:
+            "Une douleur, une fièvre, une personne qui ne s'alimente plus ou qui n'est pas comme d'habitude : ce que vous avez vu, mesuré et transmis ; un soin que vous faites selon le protocole du service ; la façon dont vous installez et déplacez une personne sans vous blesser ni la blesser.",
+        },
+        {
+          intitule:
+            "Information et accompagnement des personnes et de leur entourage, des professionnels et des apprenants",
+          piste:
+            "Une situation d'échange avec une personne ou avec sa famille, et une autre où vous avez montré le travail à une collègue ou à une stagiaire.",
+          exemples:
+            "Les explications que vous donnez avant un soin ; un moment difficile où vous avez rassuré une famille ; l'accueil d'une stagiaire ou d'une nouvelle collègue à qui vous avez expliqué les gestes.",
+        },
+        {
+          intitule:
+            "Entretien de l'environnement immédiat de la personne et des matériels liés aux activités en tenant compte du lieu et des situations d'intervention",
+          piste:
+            "Une situation où vous avez nettoyé et désinfecté une chambre et du matériel en suivant les règles d'hygiène, et un problème que vous avez signalé.",
+          exemples:
+            "La réfection d'un lit, l'entretien d'une chambre après un départ, le nettoyage d'un fauteuil ou d'un lève-personne ; le respect des protocoles d'hygiène et du tri du linge et des déchets ; un matériel abîmé que vous avez repéré et fait remonter.",
+        },
+        {
+          intitule:
+            "Travail en équipe pluri-professionnelle et traitement des informations liées aux activités de soins, à la qualité/gestion des risques",
+          piste:
+            "Une situation de travail avec l'équipe : ce que vous notez, ce que vous transmettez, et comment vous vous organisez.",
+          exemples:
+            "Les transmissions écrites et orales, le dossier de soins ; une relève où vous avez apporté vos observations ; un incident que vous avez signalé pour qu'il ne se reproduise pas.",
+        },
+      ],
+      sourceLabel: "Arrêté du 10 juin 2021, référentiel de certification (fiche RNCP40692, France compétences)",
+      sourceUrl: "https://www.francecompetences.fr/recherche/rncp/40692/",
+    },
+    enPratique: {
+      titre: "La VAE DEAS en pratique",
+      etapes: [
+        {
+          titre: "Qui peut se lancer",
+          texte:
+            "Il n'y a plus de durée minimale d'expérience. Ce qui compte, c'est le lien direct entre ce que vous faites et le métier : aider des personnes pour la toilette, les repas et les déplacements, surveiller leur état et le transmettre à l'équipe, à l'hôpital, en EHPAD ou à domicile. L'expérience peut être salariée, bénévole ou d'aidant.",
+        },
+        {
+          titre: "Livret 1 : la recevabilité",
+          texte:
+            "Vous décrivez vos expériences, et le certificateur vérifie qu'elles correspondent au métier. Il ne juge pas encore vos compétences. Pour le DEAS, le certificateur est le ministère chargé de la Santé.",
+          lien: { href: "/blog/recevabilite-vae-guide-complet", label: "Ce que vérifie la recevabilité" },
+        },
+        {
+          titre: "Livret 2 : votre dossier",
+          texte:
+            "Vous racontez, à la première personne, des situations réelles de votre travail, choisies pour couvrir les cinq blocs du diplôme. France VAE compte en moyenne 4 à 6 mois de rédaction, à raison de 2 à 4 heures par semaine.",
+          lien: { href: "/blog/livret-2-vae-guide-complet", label: "Remplir le livret 2" },
+        },
+        {
+          titre: "Le jury",
+          texte:
+            "Le jury lit votre dossier, puis vous reçoit en entretien. Il peut valider tout le diplôme, une partie des blocs, ou refuser. Un bloc validé reste acquis : il ne vous reste alors que les autres à compléter. Pour exercer comme aide-soignant, il faut le diplôme complet, donc les cinq blocs, et l'attestation de formation aux gestes et soins d'urgence de niveau 2 (AFGSU 2).",
+          lien: { href: "/blog/jury-vae-entretien-deroule-frais", label: "Comment se passe le jury" },
+        },
+      ],
+      agentsPublics:
+        "Vous êtes agent public (hôpital, collectivité, État) ? C'est le même diplôme, mais la démarche passe par le service RH de votre employeur : France VAE n'est pas encore ouvert aux agents publics. Le financement dépend aussi de votre employeur. On regarde votre cas pendant la visio.",
+      sources: [
+        { label: "Service-Public.fr, fiche VAE", url: "https://www.service-public.gouv.fr/particuliers/vosdroits/F2401" },
+        { label: "France VAE, rédiger son dossier", url: "https://vae.gouv.fr/savoir-plus/articles/rediger-dossier-validation/" },
+        { label: "France compétences, fiche RNCP40692 (DEAS)", url: "https://www.francecompetences.fr/recherche/rncp/40692/" },
+      ],
+    },
+    faq: [
+      {
+        question: "Peut-on vraiment obtenir le DEAS par la VAE ?",
+        reponse:
+          "Oui. La voie « par expérience » est officiellement ouverte sur la fiche du diplôme d'État d'aide-soignant au Répertoire national des certifications professionnelles. C'est une voie d'accès à part entière, au même titre que la formation en institut ou l'apprentissage.",
+      },
+      {
+        question: "Quel est le niveau du DEAS ?",
+        reponse:
+          "Le DEAS est un diplôme d'État de niveau 4, équivalent au baccalauréat. Il est délivré par le ministère chargé de la Santé.",
+      },
+      {
+        question: "Le diplôme obtenu par VAE est-il le même qu'en formation ?",
+        reponse:
+          "Oui. C'est le même diplôme d'État, avec les mêmes droits et les mêmes possibilités d'exercice. La voie d'obtention n'est pas mentionnée sur le diplôme.",
+      },
+      {
+        question: "Quelle expérience faut-il pour viser le DEAS en VAE ?",
+        reponse:
+          "Aucune durée minimale n'est exigée : il n'est plus nécessaire de justifier d'un an d'expérience. Votre expérience, salariée, bénévole ou d'aidant, doit avoir un rapport direct avec le métier d'aide-soignant : aider des personnes pour la toilette, les repas et les déplacements, surveiller leur état et le transmettre, à l'hôpital, en EHPAD ou à domicile par exemple. Si vous n'avez jamais réalisé ces gestes auprès de personnes, la VAE n'est pas la bonne voie.",
+      },
+      {
+        question: "Je suis ASH ou auxiliaire de vie : puis-je viser le DEAS ?",
+        reponse:
+          "Oui, si votre travail vous amène réellement à aider des personnes dans les gestes du quotidien et à participer aux soins avec l'équipe. Ce sont les activités que vous avez exercées qui comptent, pas l'intitulé de votre poste. Si votre poste se limite à l'entretien des locaux, la VAE DEAS n'est pas la bonne voie. On fait le point avec vous pendant la visio.",
+      },
+      {
+        question: "Sur quel référentiel le jury évalue-t-il le DEAS ?",
+        reponse:
+          "Sur le référentiel fixé par l'arrêté du 10 juin 2021 : cinq blocs de compétences (accompagnement et soins de la personne, état clinique et soins adaptés, information des personnes et des collègues, entretien des lieux et du matériel, travail en équipe et transmissions). Pendant la visio, on regarde avec vous ce que votre expérience couvre déjà.",
+      },
+      {
+        question: "Faut-il l'AFGSU pour obtenir le DEAS ?",
+        reponse:
+          "Oui. L'attestation de formation aux gestes et soins d'urgence de niveau 2 (AFGSU 2) est obligatoire pour obtenir le diplôme. Si vous ne l'avez pas encore, vous devrez la passer avant que le diplôme vous soit remis. On regarde ce point avec vous dès la visio.",
+      },
+      {
+        question: "Peut-on valider seulement une partie du DEAS ?",
+        reponse:
+          "Oui. Le jury peut valider le diplôme entier ou seulement certains blocs. Un bloc validé reste acquis, et vous complétez ensuite les blocs manquants. En revanche, pour exercer comme aide-soignant, il faut le diplôme complet. Notre accompagnement continue quelle que soit la décision du jury.",
+      },
+      {
+        question: "Faut-il arrêter de travailler pendant la VAE ?",
+        reponse:
+          "Non. L'accompagnement se fait à distance, en visio, avec des séances organisées autour de votre emploi du temps. C'est d'ailleurs votre activité en cours qui alimente votre dossier.",
+      },
+    ],
+    ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEAS ?",
+  },
+
   // Ajouté le 05/10/2026. Contenu vérifié sur la fiche France Compétences
   // RNCP41748 (niveau 6, enregistrée du 01/09/2026 au 31/08/2031, 4 blocs de
   // compétences, voie « par expérience » ouverte). Les intitulés des blocs sont
@@ -853,10 +1077,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 6 (Bac+3)",
     metaTitle: "VAE Assistant de Service Social (DEASS) | VAESocial",
     metaDescription:
-      "Obtenez le diplôme d'État d'assistant de service social (DEASS) par la VAE grâce à votre expérience d'accompagnement social. Diagnostic gratuit en 5 questions.",
+      "Obtenez le diplôme d'État d'assistant de service social (DEASS) par la VAE grâce à votre expérience d'accompagnement social. Diagnostic gratuit en 4 questions.",
     heroSuffixe: "au DEASS",
     heroIntro:
-      "Intervenant social en CCAS, hôpital, association ou mission locale, avec ou sans diplôme du travail social : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Intervenant social en CCAS, hôpital, association ou mission locale, avec ou sans diplôme du travail social : en 4 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEASS est un diplôme d'État de niveau 6 (Bac+3) qui atteste de la capacité à concevoir et conduire un accompagnement social favorisant l'insertion et l'amélioration des conditions de vie des personnes, à soutenir leur autodétermination et à travailler avec les partenaires du territoire. La validation des acquis de l'expérience est une voie d'accès officielle à ce diplôme : votre pratique de terrain peut être valorisée dans un dossier, sans reprendre une formation complète.",
     publicIntro:
@@ -996,10 +1220,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 6",
     metaTitle: "VAE CAFERUIS : cadre en intervention sociale | VAESocial",
     metaDescription:
-      "Obtenez le CAFERUIS par la VAE grâce à votre expérience d'encadrement dans le social ou le médico-social. Diagnostic gratuit en 5 questions.",
+      "Obtenez le CAFERUIS par la VAE grâce à votre expérience d'encadrement dans le social ou le médico-social. Diagnostic gratuit en 4 questions.",
     heroSuffixe: "au CAFERUIS",
     heroIntro:
-      "Chef de service, coordinateur ou responsable d'unité faisant fonction en établissement social ou médico-social : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Chef de service, coordinateur ou responsable d'unité faisant fonction en établissement social ou médico-social : en 4 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le CAFERUIS est un certificat de niveau 6 qui atteste de la capacité à piloter l'activité d'une unité d'intervention sociale, à manager une équipe, à gérer les volets administratif, logistique et budgétaire, et à contribuer au projet de l'établissement ou du service. Par la VAE, votre expérience de coordination ou d'encadrement — chef de service, responsable d'unité ou « faisant fonction » — peut être valorisée dans un dossier, sans reprendre une formation complète.",
     publicIntro:
@@ -1094,10 +1318,10 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 6 (grade licence)",
     metaTitle: "VAE éducateur technique spécialisé (DEETS) | VAESocial",
     metaDescription:
-      "Obtenez le DEETS (éducateur technique spécialisé) par la VAE grâce à votre expérience en atelier, ESAT, IME ou chantier d'insertion. Diagnostic gratuit en 5 questions.",
+      "Obtenez le DEETS (éducateur technique spécialisé) par la VAE grâce à votre expérience en atelier, ESAT, IME ou chantier d'insertion. Diagnostic gratuit en 4 questions.",
     heroSuffixe: "au DEETS",
     heroIntro:
-      "Moniteur d'atelier ou encadrant technique en ESAT, entreprise adaptée, IME ou chantier d'insertion : en 5 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
+      "Moniteur d'atelier ou encadrant technique en ESAT, entreprise adaptée, IME ou chantier d'insertion : en 4 questions, vous savez si votre parcours est recevable, et ce qu'il faut pour aller jusqu'au jury.",
     heroParagraphe:
       "Le DEETS est un diplôme d'État de niveau 6 (grade licence). L'éducateur technique spécialisé élabore des parcours d'insertion, met en œuvre des actions de formation professionnelle et assure l'encadrement technique d'activités professionnelles, au sein d'une équipe pluriprofessionnelle. Par la VAE, votre pratique de terrain — en ESAT, IME, entreprise adaptée ou chantier d'insertion — peut être valorisée dans un dossier, sans reprendre une formation complète.",
     publicIntro:

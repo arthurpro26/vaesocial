@@ -60,6 +60,12 @@ export const GOOGLE_ADS_CONVERSION_LABELS: Record<FormKey, string> = {
   // à Google Ads pour les leads DEAP — la campagne neuve aurait appris sur un
   // signal vide, exactement le scénario du 4 août 2026 décrit plus haut.
   deap: LEAD_FORM_CONVERSION,
+  // Ajouté le 19/11/2026 avec la page aide-soignant, avant le lancement de la
+  // campagne DEAS. Même étiquette unique que les autres : SANS cette ligne,
+  // `formKey` vaudrait "deas", la recherche renverrait `undefined` et AUCUNE
+  // conversion ne remonterait à Google Ads pour les leads DEAS (scénario du
+  // 4 août 2026).
+  deas: LEAD_FORM_CONVERSION,
   // Ajoutés le 05/10/2026 avec les pages DEASS et CAFERUIS. Même étiquette
   // unique que les autres : les mots clés « deass » et « caferuis » seront dans
   // la campagne DEES, et la conversion doit remonter dans la même action.
@@ -83,7 +89,7 @@ declare global {
 
 /**
  * Déclenche la conversion Google Ads propre au formulaire envoyé (DEES,
- * DEAES, DEEJE, DEME, DEAP, DEASS, CAFERUIS, DEETS ou générique), une fois l'étiquette correspondante
+ * DEAES, DEEJE, DEME, DEAP, DEAS, DEASS, CAFERUIS, DEETS ou générique), une fois l'étiquette correspondante
  * renseignée dans GOOGLE_ADS_CONVERSION_LABELS ci-dessus.
  *
  * Appelé dès maintenant depuis PrediagnosticForm.tsx : sans effet tant que

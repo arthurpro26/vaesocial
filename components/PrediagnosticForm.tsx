@@ -25,6 +25,9 @@ const DIPLOME_OPTIONS = [
   // c'est elle qui part dans l'email et dans la colonne "Diplôme" du Sheet.
   // Ne jamais la modifier ensuite (voir l'avertissement sur SITUATION_OPTIONS).
   { value: "DEAP", label: "DEAP", helper: "Auxiliaire de puériculture · Bac" },
+  // Ajouté le 19/11/2026 (mêmes règles : la `value` est le sigle, elle part dans
+  // l'email et dans la colonne "Diplôme" du Sheet, ne jamais la modifier).
+  { value: "DEAS", label: "DEAS", helper: "Aide-soignant · Bac" },
   // Ajoutés le 05/10/2026 (mêmes règles : la `value` est le sigle, elle part
   // dans l'email et dans la colonne "Diplôme" du Sheet, ne jamais la modifier).
   { value: "DEASS", label: "DEASS", helper: "Assistant de service social · Bac+3" },
@@ -101,6 +104,15 @@ const SITUATION_HELPERS: Record<string, { prive: string; public: string }> = {
     prive: "Crèche associative ou privée, micro-crèche, clinique privée…",
     public: "Crèche municipale, PMI, hôpital public uniquement",
   },
+  // Soin — DEAS (19/11/2026). Même logique : la première ligne rattrape le privé
+  // et l'associatif (clinique, EHPAD associatif, aide à domicile), la seconde
+  // nomme les seuls employeurs publics. C'est sur cette question que se fait le
+  // tri public / privé de la campagne DEAS : les exemples doivent parler à une
+  // ASH ou à une auxiliaire de vie, pas à une éducatrice.
+  soin: {
+    prive: "Clinique, EHPAD privé ou associatif, aide à domicile…",
+    public: "Hôpital public, EHPAD public, CCAS uniquement",
+  },
 };
 
 // Quel jeu d'exemples pour quel diplôme. Tout ce qui n'est pas listé ici
@@ -111,6 +123,7 @@ const SITUATION_HELPERS_PAR_DIPLOME: Record<string, keyof typeof SITUATION_HELPE
   DEAES: "social",
   DEEJE: "petiteEnfance",
   DEAP: "petiteEnfance",
+  DEAS: "soin",
   DEASS: "social",
   CAFERUIS: "social",
   DEETS: "social",
@@ -182,6 +195,10 @@ const STRUCTURE_SUGGESTIONS: Record<string, string[]> = {
     "PMI",
     "Domicile",
   ],
+  // DEAS (19/11/2026) : les lieux d'exercice de la fiche RNCP40692 (sanitaire,
+  // social et médico-social, en établissement, en hospitalisation à domicile ou
+  // en service d'aide à la personne).
+  DEAS: ["Hôpital", "Clinique", "EHPAD", "SSIAD", "USLD", "HAD", "MAS", "FAM", "Aide à domicile"],
   // DEASS et CAFERUIS (05/10/2026). Pour le DEASS, les employeurs cités sont
   // ceux de la fiche du diplôme au Répertoire national des certifications
   // professionnelles. Pour le CAFERUIS, les structures où s'exercent les
@@ -223,6 +240,8 @@ const ACTIVITE_PLACEHOLDER: Record<string, string> = {
     "Ex : J'anime les temps d'éveil auprès d'enfants de 1 à 3 ans en multi-accueil, je participe au projet pédagogique et j'accompagne les familles au quotidien...",
   DEAP:
     "Ex : Je m'occupe d'un groupe de 10 enfants en crèche, j'assure les soins, les repas, les changes et les temps de sieste, je surveille leur développement et je fais les transmissions aux parents...",
+  DEAS:
+    "Ex : Je m'occupe de 12 résidents en EHPAD, j'assure les toilettes, l'aide aux repas et aux déplacements, je surveille leur état de santé et je fais les transmissions à l'infirmière...",
   DEASS:
     "Ex : J'accueille et j'oriente les familles de mon secteur, j'instruis leurs demandes d'aide, je les accompagne dans leurs démarches de logement et de budget et je travaille avec les partenaires du territoire...",
   CAFERUIS:
@@ -283,6 +302,16 @@ const EXPERIENCE_SECTEUR_BLOQUANTE = "Non, jamais";
 // Les `helper` restrictifs (« … uniquement ») restent : ils gardent la colonne
 // « Statut » lisible (associatif = privé). Anciens écrans : voir
 // _sauvegardes_claude/2026-11-04-fonction-publique/.
+
+// ÉCRAN « VOTRE QUOTIDIEN » RETIRÉ DU PARCOURS LE 19/11/2026 (proposition d'Arthur,
+// 22 h 31 : « on peut abandonner la question où ils décrivent leur expérience »).
+// La description libre était facultative depuis le 28/10/2026 et ne servait pas au
+// tri (voir prediagnostic-schema.ts) : c'était le seul écran où il fallait écrire.
+// Le parcours passe de 5 à 4 écrans sur une page diplôme, de 6 à 5 sur l'accueil.
+// Rien d'autre ne change : le champ reste dans le schéma, l'e-mail (« Non renseignée »)
+// et le Sheet (vide). Pour le remettre : passer cette constante à `true` et remettre
+// « en 5 questions » dans lib/diplomes-data.ts.
+const ETAPE_QUOTIDIEN_AFFICHEE: boolean = false;
 
 const ALL_STEPS = [
   { key: "diplomeVise", label: "Votre objectif" },
@@ -550,9 +579,10 @@ export default function PrediagnosticForm({
 
   // Étapes effectives : on retire "diplomeVise" si le diplôme est déjà connu, puis on
   // renumérote l'eyebrow "Étape X/Y" dynamiquement.
-  const steps = (presetDiplome
-    ? ALL_STEPS.filter((s) => s.key !== "diplomeVise")
-    : ALL_STEPS
+  const steps = ALL_STEPS.filter(
+    (s) =>
+      !(presetDiplome && s.key === "diplomeVise") &&
+      !(s.key === "activiteQuotidienne" && !ETAPE_QUOTIDIEN_AFFICHEE),
   ).map((s, i, arr) => ({ ...s, eyebrow: `Étape ${i + 1}/${arr.length} — ${s.label}` }));
   const totalSteps = steps.length;
 
