@@ -18,6 +18,9 @@ export type ArticleBlock =
   | { type: "h2"; text: string }
   | { type: "ul"; items: string[] }
   | { type: "callout"; icon: string; text: string }
+  // Fiches numérotées (19/11/2026) : une courte liste de rubriques, chacune avec un
+  // titre et une phrase, l'une sous l'autre.
+  | { type: "fiches"; items: { titre: string; texte: string }[] }
   | { type: "cta"; titre: string; texte: string; cta: string };
 
 export type BlogArticle = {
@@ -931,6 +934,168 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       {
         label: "Fiche RNCP37676 « DE - Éducateur spécialisé » : accès par la voie de l'expérience (France Compétences)",
         url: "https://www.francecompetences.fr/recherche/rncp/37676/",
+      },
+    ],
+  },
+  // Ajouté le 19/11/2026 (demande d'Arthur : « rajoute un article au blog, comment ça
+  // marche dans le public »). Cible les recherches « vae fonction publique » (320 / mois),
+  // « vae fonction publique territoriale » (140), « hospitalière » (40), « fonctionnaire »
+  // (50) : Planificateur Google Ads, moyenne nov. 2025 – oct. 2026, relevé du 18/11/2026.
+  // RÈGLE : aucune promesse de financement. Partout « peut financer », jamais « finance ».
+  // La décision appartient à l'employeur (ou à l'ANFH). Faits relus sur les sources
+  // listées dans `sources` le 19/11/2026 ; détail dans le doc projet
+  // claude/financement-vae-trois-versants-18-novembre.md.
+  {
+    slug: "vae-fonction-publique-financement",
+    title: "VAE dans la fonction publique : qui finance, à l'hôpital, en mairie et à l'État",
+    metaTitle: "VAE fonction publique : qui finance ? Hôpital, mairie, État",
+    metaDescription:
+      "Agent hospitalier, territorial ou de l'État : qui peut payer votre VAE, à qui faire la demande, dans quels délais. Le point par employeur, sources à l'appui.",
+    excerpt:
+      "Le diplôme est le même que dans le privé, mais l'argent ne vient pas du même endroit : ANFH à l'hôpital, plan de formation en mairie et à l'État. Voici qui décide, par où commencer, et ce dont on a besoin pour monter votre dossier.",
+    category: "Financement",
+    datePublished: "2026-11-19",
+    readingTime: "6 min",
+    verifiedOn: "2026-11-19",
+    diplomes: ["auxiliaire-puericulture", "deaes", "dees"],
+    sources: [
+      { label: "Service-Public.gouv.fr : validation des acquis de l'expérience (VAE)", url: "https://www.service-public.gouv.fr/particuliers/vosdroits/F2401?lang=fr" },
+      { label: "Fédération hospitalière de France : note sur le livre IV du code général de la fonction publique (juin 2026)", url: "https://www.fhf.fr/sites/default/files/2026-06/note%20CGFP%20LIVRE%204.pdf" },
+      { label: "Centre Inffo : formation des agents hospitaliers (rôle de l'ANFH)", url: "https://www.centre-inffo.fr/chapitre/formation-des-agents-hospitaliers" },
+      { label: "Centre Inffo : fonction publique hospitalière, une « VAE renforcée » dans l'attente de France VAE", url: "https://www.centre-inffo.fr/?p=497424" },
+      { label: "CNFPT : les ressources mobilisables dans un projet VAE", url: "https://www.cnfpt.fr/sites/default/files/5_les_ressources_mobilisables.pdf" },
+      { label: "Centre Inffo : congé VAE, agent public de l'État", url: "https://www.centre-inffo.fr/site-droit-formation/vos-droits/conge-vae-agent-public-de-l-etat" },
+      { label: "Emploipublic.fr : la VAE, une voie vers le diplôme encore peu connue", url: "https://infos.emploipublic.fr/article/la-vae-une-voie-vers-le-diplome-encore-peu-connue-eea-5507" },
+    ],
+    content: [
+      {
+        type: "p",
+        text: "Vous travaillez à l'hôpital, dans une crèche municipale, dans un département ou pour l'Éducation nationale, et vous voulez obtenir un diplôme d'État grâce à votre expérience. Bonne nouvelle : la VAE vous est ouverte, et le diplôme est exactement le même que dans le privé. Ce qui change, c'est la route à suivre et la personne qui tient le budget.",
+      },
+      {
+        type: "p",
+        text: "Dans le privé, on parle de CPF et d'OPCO. Dans le public, tout dépend de votre employeur : l'hôpital, la collectivité ou l'administration. Voici le point pour chacun, vérifié sur les sources officielles le 19 novembre 2026.",
+      },
+      {
+        type: "h2",
+        text: "Ce qui est pareil pour tous les agents publics",
+      },
+      {
+        type: "ul",
+        items: [
+          "Vous ne passez pas par France VAE. Le site vae.gouv.fr n'est pas encore ouvert aux agents publics : votre démarche se fait avec l'organisme qui délivre le diplôme et avec votre service RH.",
+          "Vous avez droit à un congé pour VAE : 24 heures de temps de service, que l'on peut prendre en plusieurs fois, avec maintien de votre traitement.",
+          "Depuis le 1er août 2026, les règles sont réunies dans le code général de la fonction publique pour les trois fonctions publiques. Votre demande doit arriver chez votre employeur au plus tard 60 jours avant le début, et il a 30 jours pour vous répondre.",
+          "Quand l'employeur finance, une convention est signée entre lui, vous et l'organisme qui vous accompagne.",
+          "Votre CPF peut compléter si l'employeur ne prend pas tout en charge.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "À l'hôpital et en établissement public : l'ANFH",
+      },
+      {
+        type: "p",
+        text: "Dans la fonction publique hospitalière, les établissements versent chaque année une cotisation à l'ANFH, l'organisme agréé par le ministère de la Santé pour collecter et gérer l'argent de la formation des agents. Elle gère notamment les congés pour formation professionnelle, bilan de compétences et VAE.",
+      },
+      {
+        type: "p",
+        text: "L'ANFH peut financer une VAE, sur demande. Le bon interlocuteur est le service formation de votre établissement : c'est lui qui connaît la marche à suivre. En attendant que France VAE s'ouvre aux agents hospitaliers, l'ANFH a aussi mis en place un dispositif appelé « VAE renforcée ».",
+      },
+      {
+        type: "callout",
+        icon: "ℹ️",
+        text: "« Peut financer » ne veut pas dire « finance toujours ». Les critères et les montants dépendent de l'ANFH et de votre établissement : c'est votre service formation qui vous dira ce qui est possible pour votre dossier.",
+      },
+      {
+        type: "h2",
+        text: "En mairie, au département, à la région : votre collectivité décide",
+      },
+      {
+        type: "p",
+        text: "Dans la fonction publique territoriale, il n'existe pas d'organisme comme l'ANFH. Le CNFPT l'écrit clairement : chaque collectivité choisit de financer ou non, en inscrivant la VAE dans son plan de formation. Il peut y avoir une liste d'attente.",
+      },
+      {
+        type: "ul",
+        items: [
+          "La première question à poser à votre service RH : « la VAE est-elle prévue au plan de formation cette année ? »",
+          "Si la réponse est oui, la collectivité peut prendre en charge l'accompagnement.",
+          "Si la réponse est non, il reste votre CPF, ou un financement personnel.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "À l'État (ministères, rectorats, AESH) : le plan de formation",
+      },
+      {
+        type: "p",
+        text: "Pour les agents de l'État, l'administration qui vous emploie peut payer la VAE dans le cadre de son plan de formation. Là encore, ce n'est pas automatique : c'est elle qui décide, selon ses priorités et son budget. Votre CPF peut venir en complément.",
+      },
+      {
+        type: "p",
+        text: "C'est le cas, par exemple, des AESH employés par l'Éducation nationale : la demande se fait auprès du service qui gère votre contrat.",
+      },
+      {
+        type: "h2",
+        text: "Par où commencer, concrètement",
+      },
+      {
+        type: "ul",
+        items: [
+          "Vérifiez d'abord que votre expérience correspond au diplôme visé. C'est l'objet de notre visio gratuite, et cela évite de monter un dossier pour rien.",
+          "Transmettez-nous ensuite les informations listées juste en dessous.",
+          "On prépare votre dossier de prise en charge et on le présente à votre service RH, au plus tard 60 jours avant la date de début souhaitée.",
+          "L'accompagnement démarre une fois la convention signée.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "On s'occupe de tout le dossier : voici ce qu'il nous faut",
+      },
+      {
+        type: "p",
+        text: "Vous n'avez pas à monter le dossier de prise en charge vous-même : on s'en occupe, du premier document jusqu'au dépôt auprès des services compétents. Pour cela, on a besoin de quelques informations, que vous nous transmettez en une fois par e-mail.",
+      },
+      {
+        type: "fiches",
+        items: [
+          {
+            titre: "Vous",
+            texte:
+              "Civilité, nom (et nom de naissance s'il est différent), prénom, date de naissance, ville et code postal, téléphone, adresse e-mail.",
+          },
+          {
+            titre: "Votre poste",
+            texte:
+              "Votre fonction publique (État, territoriale ou hospitalière), le nom et l'adresse de votre établissement, votre métier, votre grade, votre catégorie (A, B ou C), votre statut (titulaire ou contractuel, CDI ou CDD avec sa date de fin), votre ancienneté et votre situation actuelle (en poste, disponibilité, congé).",
+          },
+          {
+            titre: "Votre projet",
+            texte:
+              "Le diplôme visé, si vous avez déjà obtenu une recevabilité, et la date à laquelle vous aimeriez commencer.",
+          },
+          {
+            titre: "Financement et RH",
+            texte:
+              "Le solde de votre CPF (en euros et en heures), où en est l'accord de votre DRH (oui, non, en cours), et le nom, l'e-mail et le téléphone de votre contact au service RH.",
+          },
+        ],
+      },
+      {
+        type: "p",
+        text: "Ces informations servent uniquement à étudier votre situation administrative, à vérifier les modalités de financement et à préparer votre dossier.",
+      },
+      {
+        type: "callout",
+        icon: "⚠️",
+        text: "On s'occupe de tout le dossier, mais pas de la décision : financer ou non reste le choix de votre employeur ou de l'ANFH. C'est pourquoi nous ne promettons jamais un financement à un agent public.",
+      },
+      {
+        type: "cta",
+        titre: "Agent public : on regarde votre situation",
+        texte:
+          "Hôpital, collectivité ou État : en quelques questions, on vous dit si votre expérience peut valoir un diplôme d'État, puis on en parle en visio. Gratuit, sans engagement.",
+        cta: "Tester mon éligibilité →",
       },
     ],
   },

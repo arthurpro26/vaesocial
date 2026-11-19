@@ -49,6 +49,34 @@ export default function ArticleBody({ blocks }: { blocks: ArticleBlock[] }) {
                 {block.text}
               </div>
             );
+          case "fiches":
+            // Fiches numérotées : même pastille ronde que les listes numérotées des pages
+            // diplôme (blocs, étapes), pour rester homogène avec le reste du site. Une seule
+            // colonne, même sur ordinateur : en deux colonnes, les fiches courtes laissaient un
+            // grand vide à côté des longues.
+            return (
+              <ol key={i} className="grid gap-3 sm:gap-4">
+                {block.items.map((item, n) => (
+                  <li
+                    key={item.titre}
+                    className="flex gap-3.5 rounded-2xl bg-brand-50 p-4 ring-1 ring-brand-900/5 sm:p-5"
+                  >
+                    <span
+                      aria-hidden
+                      className="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white"
+                    >
+                      {n + 1}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-base font-bold leading-snug text-brand-900">{item.titre}</span>
+                      <span className="mt-1 block text-sm leading-relaxed text-slate-700 sm:text-[0.95rem]">
+                        {item.texte}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            );
           case "cta":
             return (
               <div
