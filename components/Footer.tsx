@@ -129,7 +129,7 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} {siteConfig.name}. Tous droits réservés.
           </p>
-          <p>Financement possible via CPF, OPCO Santé, France Travail ou Transitions Pro.</p>
+          <p>Financement possible via CPF, OPCO Santé, France Travail ou Transitions Pro. Agents publics : via l&apos;employeur ou l&apos;ANFH.</p>
         </Container>
       </div>
     </footer>

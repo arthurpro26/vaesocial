@@ -28,6 +28,10 @@ export type DiplomeData = {
   debouchesIntro: string;
   debouches: { icon: string; texte: string }[];
   debouchesConclusion: string;
+  // Photo d'illustration du métier, affichée dans « Où exercer » (jamais en haut de page, jamais
+  // près des témoignages ni de l'équipe). `base` = chemin sans la taille : il faut les fichiers
+  // `${base}-640.webp` et `${base}-1000.webp` dans public/. Absente = section inchangée.
+  photoMetier?: { base: string; alt: string };
   noteReferentiel?: string;
   // Section « blocs de compétences » (page diplôme). Intitulés recopiés du texte
   // officiel ; `piste` = situation professionnelle à repérer pour illustrer le bloc
@@ -925,6 +929,7 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     ],
     debouchesConclusion:
       "🌟 Avec le diplôme, vous exercez sous votre vrai titre : à l'hôpital, en EHPAD ou à domicile, le DEAS est le même partout.",
+    photoMetier: { base: "/photos/aide-soignante-ehpad", alt: "Une aide-soignante auprès d'une résidente, en EHPAD" },
     noteReferentiel:
       "Le DEAS est délivré par le ministère chargé de la Santé. Les modalités du parcours VAE (recevabilité, attestation de formation aux gestes et soins d'urgence, compléments éventuels) sont fixées par le certificateur et peuvent évoluer : nous vérifions avec vous les conditions exactes qui s'appliquent à votre dossier avant tout engagement.",
     // Intitulés des cinq blocs recopiés de la fiche RNCP40692 (France compétences), relus le

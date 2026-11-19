@@ -123,7 +123,7 @@ const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Qui finance la VAE ?",
     reponse:
-      "Plusieurs solutions existent selon votre situation : votre CPF, un abondement de votre employeur ou de votre OPCO (OPCO Santé pour le secteur social et médico-social), une aide de France Travail si vous êtes demandeur d'emploi, ou Transitions Pro dans le cadre d'une reconversion. Nous identifions avec vous la solution la plus adaptée avant tout engagement.",
+      "Plusieurs solutions existent selon votre situation : votre CPF, un abondement de votre employeur ou de votre OPCO (OPCO Santé pour le secteur social et médico-social), une aide de France Travail si vous êtes demandeur d'emploi, ou Transitions Pro dans le cadre d'une reconversion. Si vous êtes agent public, la demande passe par votre employeur : l'ANFH à l'hôpital, le plan de formation en collectivité et à l'État. Nous identifions avec vous la solution la plus adaptée avant tout engagement.",
   },
 ];
 

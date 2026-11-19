@@ -322,13 +322,22 @@ export default async function DiplomePage({
                     </li>
                   ))}
                 </ul>
-                <a
-                  href="#financement"
-                  className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
-                >
-                  Voir les financements
-                  <span aria-hidden>→</span>
-                </a>
+                <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-2 pt-5">
+                  <a
+                    href="#financement"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+                  >
+                    Voir les financements
+                    <span aria-hidden>→</span>
+                  </a>
+                  <a
+                    href="#financement-public"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+                  >
+                    Agent public ? Voir qui finance
+                    <span aria-hidden>→</span>
+                  </a>
+                </div>
               </section>
 
               <section aria-labelledby="hero-visio-titre" className={CARTE_HERO}>
@@ -450,7 +459,37 @@ export default async function DiplomePage({
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">{introCourte(d.debouchesIntro)}</p>
           </div>
-          <div className="relative mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-5 lg:grid-cols-4">
+          {/* 19/11/2026 : photo d'illustration du métier (champ `photoMetier`, facultatif). Avec photo :
+              la photo encadrée à gauche et les cartes en 2 × 2 à droite (ordinateur), la photo au-dessus
+              des cartes (téléphone). Sans photo : la grille d'origine, inchangée. */}
+          <div
+            className={
+              d.photoMetier
+                ? "relative mt-8 grid items-center gap-8 sm:mt-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14"
+                : "relative mt-8 sm:mt-12"
+            }
+          >
+            {d.photoMetier && (
+              <figure className="mx-auto w-full max-w-md lg:max-w-none">
+                <div className="relative">
+                  <div aria-hidden className="absolute -bottom-3 -left-3 h-full w-full rounded-[2rem] bg-brand-100" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`${d.photoMetier.base}-1000.webp`}
+                    srcSet={`${d.photoMetier.base}-640.webp 640w, ${d.photoMetier.base}-1000.webp 1000w`}
+                    sizes="(min-width: 1024px) 480px, (min-width: 480px) 448px, 90vw"
+                    width={1000}
+                    height={1000}
+                    alt={d.photoMetier.alt}
+                    loading="lazy"
+                    decoding="async"
+                    className="relative aspect-[4/3] w-full rounded-[2rem] object-cover object-[50%_20%] shadow-xl shadow-brand-900/10 ring-1 ring-brand-900/10 lg:aspect-square"
+                  />
+                </div>
+                <figcaption className="mt-5 text-center text-xs text-slate-500 lg:text-left">Image d&apos;illustration</figcaption>
+              </figure>
+            )}
+          <div className={`grid grid-cols-2 gap-3 sm:gap-5 ${d.photoMetier ? "lg:auto-rows-fr" : "lg:grid-cols-4"}`}>
             {d.debouches.map((deb, i) => {
               const [titreBrut] = deb.texte.split(" — ");
               const [head, tail] = titreBrut.split(" : ");
@@ -484,6 +523,7 @@ export default async function DiplomePage({
                 </div>
               );
             })}
+          </div>
           </div>
           <p className="relative mx-auto mt-8 max-w-xl text-center text-sm font-semibold text-brand-800 sm:mt-10">
             {sansEmoji(d.debouchesConclusion)}

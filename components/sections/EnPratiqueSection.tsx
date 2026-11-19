@@ -72,7 +72,15 @@ export default function EnPratiqueSection({
             <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-900/10">
               <Ico name="info" className="h-5 w-5" />
             </span>
-            <p className="text-[0.95rem] leading-relaxed text-brand-900">{enPratique.agentsPublics}</p>
+            <p className="text-[0.95rem] leading-relaxed text-brand-900">
+              {enPratique.agentsPublics}{" "}
+              <a
+                href="#financement-public"
+                className="whitespace-nowrap font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+              >
+                Voir qui finance dans le public
+              </a>
+            </p>
           </div>
         )}
 
