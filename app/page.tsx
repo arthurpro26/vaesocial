@@ -14,7 +14,7 @@ import MethodeSection from "@/components/sections/MethodeSection";
 import FinancementSection from "@/components/sections/FinancementSection";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
-import { Chip, DOTS, Ico, TINTS } from "@/components/Kit";
+import { Chip, Ico, TINTS } from "@/components/Kit";
 import { COMPETENCES, DIPLOMES, REASSURANCES } from "@/lib/site-data";
 
 // Page d'accueil — landing page principale de VAESocial.
@@ -131,9 +131,8 @@ export default function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-x-clip bg-gradient-to-b from-brand-50 via-white to-white pb-10 pt-6 sm:pb-20 sm:pt-16">
-        <div aria-hidden className="pointer-events-none absolute -right-32 -top-24 h-[28rem] w-[28rem] rounded-full bg-brand-100/60 blur-3xl" />
-        <div aria-hidden className="pointer-events-none absolute left-0 top-24 hidden h-56 w-72 opacity-70 lg:block" style={DOTS} />
+      {/* 23/11/2026 : haut de page sobre (fond blanc, sans halo ni trame), comme les pages diplôme. */}
+      <section className="relative overflow-x-clip border-b border-brand-900/10 bg-white pb-10 pt-6 sm:pb-16 sm:pt-12">
         <Container className="relative px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-x-14 lg:gap-y-8">
             <div>
@@ -153,13 +152,12 @@ export default function HomePage() {
               </ul>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600">On vous guide à chaque étape, sans reprendre une formation complète, et sans aucun engagement de votre part avant d&apos;avoir la réponse.</p>
               <StatsRow className="mt-6 sm:mt-7" />
-              <LogoCards className="mt-6 sm:mt-7" />
+              <LogoCards className="mt-6 justify-center sm:mt-7 sm:justify-start" />
             </div>
 
             <div id="prediagnostic-form" className="scroll-mt-24 lg:row-span-2">
               <div className="relative">
-                <div aria-hidden className="absolute -inset-3 -z-10 rounded-[2rem] bg-gradient-to-br from-brand-100 via-white to-accent-100/60 blur-xl" />
-                <div className="form-lisible rounded-3xl bg-white p-1.5 shadow-[0_30px_70px_-30px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10 sm:p-2">
+                <div className="form-lisible rounded-xl bg-white p-1.5 shadow-sm ring-1 ring-brand-900/15 sm:p-2">
                   <PrediagnosticForm />
                 </div>
               </div>
@@ -170,7 +168,7 @@ export default function HomePage() {
             </div>
 
             <div>
-              <div className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-34px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10">
+              <div className="overflow-hidden rounded-xl bg-white ring-1 ring-brand-900/10">
                 <div className="flex items-center gap-1.5 border-b border-brand-900/10 bg-brand-50 px-4 py-2.5">
                   <span className="h-2.5 w-2.5 rounded-full bg-brand-200" />
                   <span className="h-2.5 w-2.5 rounded-full bg-brand-200" />
@@ -209,7 +207,6 @@ export default function HomePage() {
               const t = TINTS[i];
               return (
                 <div key={p.titre} className="group relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brand-900/10 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-900/10 sm:p-7">
-                  <div aria-hidden className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${t.bar}`} />
                   <div className="flex items-center justify-between">
                     <span className={`flex h-12 w-12 items-center justify-center rounded-2xl ${t.tile}`}><BrandIcon name={p.icon} className="h-6 w-6" /></span>
                     <span className="text-4xl font-bold text-brand-100">0{i + 1}</span>
@@ -244,8 +241,6 @@ export default function HomePage() {
 
       {/* NOS DIPLÔMES */}
       <section id="diplomes" className="relative scroll-mt-16 overflow-hidden bg-brand-50/70 py-12 sm:py-20">
-        <div aria-hidden className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full border-[28px] border-brand-100/70" />
-        <div aria-hidden className="pointer-events-none absolute right-6 top-8 hidden h-40 w-56 opacity-70 sm:block" style={DOTS} />
         <Container>
           <div className="relative mx-auto max-w-2xl text-center">
             <Eyebrow>Nos diplômes</Eyebrow>
@@ -257,7 +252,6 @@ export default function HomePage() {
               const t = TINTS[i % 4];
               return (
                 <Link key={d.sigle} href={`/${d.slug}`} className="group relative flex flex-col overflow-hidden rounded-3xl bg-white p-5 shadow-sm ring-1 ring-brand-900/10 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-900/10 sm:p-6">
-                  <div aria-hidden className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${t.bar}`} />
                   <div className="flex items-center gap-3">
                     <span className={`flex h-11 w-11 flex-none items-center justify-center rounded-2xl ${t.tile}`}><BrandIcon name="diploma" className="h-5 w-5" /></span>
                     <div className="min-w-0">
@@ -271,7 +265,6 @@ export default function HomePage() {
               );
             })}
             <Link href="#prediagnostic-form" className={`relative flex flex-col justify-between overflow-hidden rounded-3xl bg-brand-600 p-5 text-white shadow-xl shadow-brand-900/20 sm:p-6 ${CARTE_HESITATION_SEULE ? "lg:col-span-3 lg:flex-row lg:items-center lg:gap-10 lg:px-8" : ""}`}>
-              <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full border-[18px] border-white/10" />
               <div className="relative">
                 <p className="text-lg font-bold leading-snug [text-wrap:balance]">Vous hésitez entre deux diplômes ?</p>
                 <p className="mt-2 text-sm leading-relaxed text-brand-50">Le premier échange sert aussi à ça : repérer celui qui correspond à votre expérience.</p>

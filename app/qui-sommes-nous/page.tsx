@@ -10,7 +10,7 @@ import StickyCta from "@/components/StickyCta";
 import TrustBand from "@/components/sections/TrustBand";
 import TemoignagesSection from "@/components/sections/TemoignagesSection";
 import CtaFinalSection from "@/components/sections/CtaFinalSection";
-import { DOTS, Ico, TINTS } from "@/components/Kit";
+import { Ico, TINTS } from "@/components/Kit";
 import { siteConfig } from "@/lib/site-config";
 import { RESULTATS } from "@/lib/site-data";
 
@@ -165,9 +165,8 @@ export default function QuiSommesNousPage() {
       />
 
       {/* HERO */}
-      <section className="relative overflow-x-clip bg-gradient-to-b from-brand-50 via-white to-white pb-12 pt-8 sm:pb-20 sm:pt-16">
-        <div aria-hidden className="pointer-events-none absolute -right-32 -top-24 h-[28rem] w-[28rem] rounded-full bg-brand-100/60 blur-3xl" />
-        <div aria-hidden className="pointer-events-none absolute left-0 top-24 hidden h-56 w-72 opacity-70 lg:block" style={DOTS} />
+      {/* 23/11/2026 : haut de page sobre (fond blanc, sans halo ni trame), comme le reste du site. */}
+      <section className="relative overflow-x-clip border-b border-brand-900/10 bg-white pb-12 pt-8 sm:pb-16 sm:pt-12">
         <Container className="relative">
           <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
             <div>
@@ -188,7 +187,6 @@ export default function QuiSommesNousPage() {
                 const t = TINTS[i];
                 return (
                   <div key={c.texte} className={`relative overflow-hidden rounded-3xl bg-white p-4 shadow-sm ring-1 ring-brand-900/10 sm:p-6 ${i % 2 === 1 ? "lg:translate-y-6" : ""}`}>
-                    <div aria-hidden className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${t.bar}`} />
                     <span className={`flex h-10 w-10 items-center justify-center rounded-xl sm:h-11 sm:w-11 ${t.tile}`}><BrandIcon name={c.icon} className="h-5 w-5" /></span>
                     <dt className="mt-3 text-3xl font-bold tracking-tight text-brand-900 sm:mt-4 sm:text-4xl">{c.valeur}</dt>
                     <dd className="mt-1.5 text-[0.8125rem] leading-snug text-slate-700 sm:text-sm">{c.texte}</dd>
@@ -205,7 +203,7 @@ export default function QuiSommesNousPage() {
       {/* LE MOT D'ARTHUR — sans photo : un monogramme */}
       <section className="bg-white py-12 sm:py-20">
         <Container className="max-w-5xl">
-          <div className="relative overflow-hidden rounded-[2rem] bg-brand-50 p-6 ring-1 ring-brand-900/10 sm:p-14">
+          <div className="relative overflow-hidden rounded-xl bg-brand-50 p-6 ring-1 ring-brand-900/10 sm:p-14">
             <svg aria-hidden viewBox="0 0 64 64" fill="currentColor" className="pointer-events-none absolute right-5 top-5 h-16 w-16 text-brand-100 sm:right-12 sm:top-10 sm:h-28 sm:w-28"><path d="M12 40c0-10 5-18 15-22l2.5 4.5C24 25 21.5 28.5 21 33h9v19H12V40zm26 0c0-10 5-18 15-22l2.5 4.5C50 25 47.5 28.5 47 33h9v19H38V40z" /></svg>
             <div className="relative">
               <Eyebrow left>Pourquoi on fait ça</Eyebrow>
@@ -247,7 +245,7 @@ export default function QuiSommesNousPage() {
                       </span>
                       <span className={fort ? "text-3xl font-bold text-white/30" : "text-3xl font-bold text-brand-200"}>0{i + 1}</span>
                     </div>
-                    {fort && <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent-500 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-white shadow-md shadow-accent-600/30">Avant toute inscription</span>}
+                    {fort && <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-brand-800 shadow-md shadow-brand-900/30 ring-1 ring-brand-900/10">Avant toute inscription</span>}
                     <h3 className={fort ? "mt-5 text-base font-bold leading-snug" : "mt-5 text-base font-bold leading-snug text-brand-900"}>{e.titre}</h3>
                     <p className={fort ? "mt-2 text-sm leading-relaxed text-brand-50" : "mt-2 text-sm leading-relaxed text-slate-700"}>{e.texte}</p>
                   </li>
@@ -260,7 +258,6 @@ export default function QuiSommesNousPage() {
 
       {/* L'ÉQUIPE */}
       <section className="relative overflow-hidden bg-brand-50/70 py-12 sm:py-20">
-        <div aria-hidden className="pointer-events-none absolute -left-24 bottom-10 h-72 w-72 rounded-full border-[28px] border-brand-100/70" />
         <Container>
           <div className="relative mx-auto max-w-2xl text-center">
             <Eyebrow>L&apos;équipe</Eyebrow>
@@ -271,7 +268,6 @@ export default function QuiSommesNousPage() {
               const t = TINTS[i];
               return (
                 <div key={e.titre} className="relative overflow-hidden rounded-3xl bg-white p-6 shadow-sm ring-1 ring-brand-900/10 sm:p-7">
-                  <div aria-hidden className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${t.bar}`} />
                   <span className={`flex h-12 w-12 items-center justify-center rounded-2xl ${t.tile}`}><BrandIcon name={e.icon} className="h-6 w-6" /></span>
                   <h3 className="mt-5 text-lg font-bold leading-snug text-brand-900">{e.titre}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-slate-700">{e.texte}</p>

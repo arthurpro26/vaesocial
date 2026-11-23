@@ -12,12 +12,13 @@
     fill="white"
   />
   <text x="46" y="33" font-size="24" font-weight="700">
-    <tspan fill="#21564d">VAE</tspan><tspan fill="#0f172a">Social</tspan>
+    <tspan fill="#182F6E">VAE</tspan><tspan fill="#0f172a">Social</tspan>
   </text>
   <defs>
     <linearGradient id="vaesocial-logo-gradient" x1="0" y1="9" x2="34" y2="43" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#55a08f" />
-      <stop offset="1" stop-color="#21564d" />
+      <stop stop-color="#14254A" />
+      <stop offset="0.5" stop-color="#8E9CC8" />
+      <stop offset="1" stop-color="#D6403A" />
     </linearGradient>
   </defs>
 </svg>

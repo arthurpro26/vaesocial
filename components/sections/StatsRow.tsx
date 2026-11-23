@@ -10,12 +10,26 @@ const STATS = [
   { valeur: RESULTATS.volume, libelle: RESULTATS.volumeLabel, accent: false },
 ];
 
-export default function StatsRow({ className = "" }: { className?: string }) {
+// `compact` (23/11/2026) : version réduite pour la ligne « pastilles + chiffres » du haut des
+// pages diplôme (maquette 6). Mêmes valeurs, mêmes libellés.
+export default function StatsRow({ className = "", compact = false }: { className?: string; compact?: boolean }) {
+  if (compact) {
+    return (
+      <dl className={`flex items-center gap-x-5 ${className}`}>
+        {STATS.map((s, i) => (
+          <div key={s.libelle} className={`flex flex-col ${i > 0 ? "border-l border-brand-900/15 pl-5" : ""}`}>
+            <dd className={`order-1 text-xl font-bold leading-none tracking-[-0.02em] sm:text-2xl ${s.accent ? "text-brand-600" : "text-brand-900"}`}>{s.valeur}</dd>
+            <dt className="order-2 mt-1 max-w-[9rem] text-[0.66rem] font-medium leading-snug text-slate-500 sm:text-xs">{s.libelle}</dt>
+          </div>
+        ))}
+      </dl>
+    );
+  }
   return (
     <dl className={`grid max-w-md grid-cols-2 gap-x-5 sm:flex sm:max-w-none sm:gap-x-8 ${className}`}>
       {STATS.map((s, i) => (
         <div key={s.libelle} className={`flex min-w-0 flex-col justify-center ${i > 0 ? "border-l border-brand-900/15 pl-5 sm:pl-8" : ""}`}>
-          <dd className={`order-1 text-[1.65rem] font-bold leading-none tracking-[-0.02em] sm:text-3xl ${s.accent ? "text-emerald-700" : "text-brand-900"}`}>
+          <dd className={`order-1 text-[1.65rem] font-bold leading-none tracking-[-0.02em] sm:text-3xl ${s.accent ? "text-brand-600" : "text-brand-900"}`}>
             {s.valeur}
           </dd>
           <dt className="order-2 mt-1.5 text-[0.66rem] font-semibold uppercase leading-snug tracking-[0.1em] text-slate-500 sm:text-xs sm:tracking-[0.14em]">{s.libelle}</dt>

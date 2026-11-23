@@ -56,8 +56,10 @@ function IconeFinancement({ name, className }: { name: (typeof ICONES)[number]; 
   return name === "loop" ? <Ico name="loop" className={className} /> : <BrandIcon name={name} className={className} />;
 }
 
-export default function FinancementSection({ sigle }: { sigle?: string }) {
-  const [volet, setVolet] = useState<"prive" | "public">("prive");
+// `voletInitial` (23/11/2026) : la page /vae-aesh ouvre directement le volet public (les AESH
+// sont tous agents publics). Partout ailleurs : « Secteur privé », comme avant.
+export default function FinancementSection({ sigle, voletInitial = "prive" }: { sigle?: string; voletInitial?: "prive" | "public" }) {
+  const [volet, setVolet] = useState<"prive" | "public">(voletInitial);
   const estPublic = volet === "public";
 
   useEffect(() => {
@@ -76,7 +78,7 @@ export default function FinancementSection({ sigle }: { sigle?: string }) {
     <section id="financement" className="scroll-mt-16 bg-brand-50/70 py-12 sm:py-20">
       <span id={ANCRE_PUBLIC} aria-hidden className="block h-0 scroll-mt-28" />
       <Container>
-        <div className="relative overflow-hidden rounded-[2rem] bg-brand-700 px-5 py-10 text-white shadow-2xl shadow-brand-900/25 sm:px-12 sm:py-14">
+        <div className="relative overflow-hidden rounded-xl bg-brand-700 px-5 py-10 text-white shadow-2xl shadow-brand-900/25 sm:px-12 sm:py-14">
           <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full border-[30px] border-white/5" />
           <div aria-hidden className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full border-[30px] border-white/5" />
           <div
@@ -171,12 +173,12 @@ export default function FinancementSection({ sigle }: { sigle?: string }) {
                     </span>
                     <span className="text-3xl font-bold tracking-tight text-brand-800">150&nbsp;€</span>
                   </li>
-                  <li className="flex items-center justify-between gap-3 rounded-2xl bg-emerald-50 p-4 ring-1 ring-emerald-900/10">
+                  <li className="flex items-center justify-between gap-3 rounded-2xl bg-brand-50 p-4 ring-1 ring-brand-900/10">
                     <span className="text-left">
-                      <span className="block text-sm font-bold leading-tight text-emerald-900">Demandeurs d&apos;emploi</span>
-                      <span className="mt-0.5 block text-sm text-emerald-800">Exonérés de cette participation</span>
+                      <span className="block text-sm font-bold leading-tight text-brand-900">Demandeurs d&apos;emploi</span>
+                      <span className="mt-0.5 block text-sm text-brand-800">Exonérés de cette participation</span>
                     </span>
-                    <span className="text-3xl font-bold tracking-tight text-emerald-800">0&nbsp;€</span>
+                    <span className="text-3xl font-bold tracking-tight text-brand-800">0&nbsp;€</span>
                   </li>
                 </ul>
                 <p className="text-left text-xs leading-relaxed text-slate-500">Montant fixé par le décret n° 2026-234 du 30 mars 2026.</p>

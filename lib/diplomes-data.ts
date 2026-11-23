@@ -66,6 +66,14 @@ export type DiplomeData = {
   // app/globals.css, qui repeint la page entière en redéfinissant les
   // variables CSS de la palette — aucun composant n'est dupliqué.
   theme?: "rose";
+  // Pages métier (23/11/2026) : une page qui vise un diplôme existant par le nom d'un
+  // métier (ex. /vae-aesh → DEAES). `path` = adresse de la page (canonique, fil d'Ariane,
+  // balisage) ; `h1.metier` remplace le nom du diplôme dans le titre (« VAE AESH : … »).
+  // Absents = page diplôme classique, rien ne change.
+  path?: string;
+  h1?: { metier: string };
+  // Vrai = la section Financement s'ouvre sur le volet « Fonction publique » (page /vae-aesh).
+  financementPublic?: boolean;
 };
 
 export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
@@ -129,6 +137,8 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     debouchesConclusion:
       "🌟 Un diplôme, des dizaines de terrains d'action possibles : le DEES ouvre autant de portes qu'il y a de publics à accompagner.",
     nouveauReferentiel: true,
+    // 23/11/2026 : photo d'illustration générée par IA (Canva), demande d'Arthur.
+    photoMetier: { base: "/photos/educateur-specialise-mecs", alt: "Un éducateur spécialisé avec deux adolescents, en MECS" },
     referentiel: {
       titre: "Votre expérience couvre‑t‑elle les quatre blocs du DEES ?",
       intro:
@@ -308,16 +318,21 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     ],
     debouchesConclusion:
       "🌟 À domicile, en EHPAD, en crèche ou à l'école : le DEAES vous ouvre des terrains d'action très différents, à choisir selon ce qui vous fait vibrer.",
+    // 23/11/2026 : photo d'illustration (IA) partagée avec la page DEAS — même terrain (EHPAD).
+    photoMetier: { base: "/photos/aide-soignante-ehpad", alt: "Une accompagnante auprès d'une résidente, en EHPAD" },
     faq: [
       {
         question: "Quel est le niveau du DEAES ?",
         reponse:
           "Le DEAES est un diplôme d'État de niveau 3 (équivalent CAP/BEP). Il remplace depuis 2016 les anciens diplômes d'auxiliaire de vie sociale (DEAVS) et d'aide médico-psychologique (DEAMP), regroupés dans un référentiel commun.",
       },
+      // Corrigé le 23/11/2026 : l'ancienne réponse parlait de « deux spécialités ». Le DEAES de
+      // 2016 en avait trois, fusionnées par l'arrêté du 30 août 2021 (fiche RNCP42423 :
+      // cinq blocs, aucune spécialité ; « AESH » parmi les emplois accessibles).
       {
-        question: "Quelle est la différence entre les deux spécialités du DEAES ?",
+        question: "Le DEAES a-t-il encore des spécialités ?",
         reponse:
-          "Le DEAES se décline en deux spécialités : 'accompagnement de la vie à domicile' et 'accompagnement de la vie en structure'. Votre parcours détermine généralement la spécialité la plus pertinente pour votre dossier de VAE.",
+          "Non. Depuis l'arrêté du 30 août 2021, les trois spécialités de 2016 (vie à domicile, vie en structure collective, éducation inclusive et vie ordinaire) sont fusionnées : c'est un seul diplôme, en cinq blocs de compétences, valable à domicile, en établissement comme à l'école.",
       },
       {
         question: "Quelle expérience faut-il pour viser le DEAES en VAE ?",
@@ -443,6 +458,8 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
         label: "Réforme du DEEJE : ce qui change pour votre VAE",
       },
     },
+    // 23/11/2026 : photo d'illustration (IA) partagée avec la page DEAP — même terrain (crèche).
+    photoMetier: { base: "/photos/auxiliaire-puericulture-creche", alt: "Une professionnelle de la petite enfance avec un jeune enfant, en crèche" },
     faq: [
       {
         question: "Quel est le niveau du DEEJE ?",
@@ -533,6 +550,9 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     // compétences). Ce n'est PAS la réforme de septembre 2026 (arrêtés du 6 octobre 2025) :
     // `nouveauReferentiel` reste absent, pas de pastille. Pistes et exemples = conseil de
     // méthode, pas des citations.
+    // 23/11/2026 : photo d'illustration (IA) partagée avec la page DEES — même terrain (MECS, IME) ;
+    // à remplacer par une photo propre au DEME quand le quota Canva le permettra.
+    photoMetier: { base: "/photos/educateur-specialise-mecs", alt: "Un moniteur-éducateur avec deux adolescents, en MECS" },
     referentiel: {
       titre: "Votre expérience couvre‑t‑elle les trois blocs du DEME ?",
       intro:
@@ -657,7 +677,6 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     sigle: "DEAP",
     nomComplet: "Diplôme d'État d'Auxiliaire de Puériculture",
     niveau: "Niveau 4 (Bac)",
-    theme: "rose",
     metaTitle: "VAE Auxiliaire de Puériculture (DEAP) | VAESocial",
     metaDescription:
       "VAE auxiliaire de puériculture : obtenez le DEAP grâce à votre expérience en crèche, maternité ou pédiatrie. Les 5 blocs, les étapes, le jury. Visio gratuite.",
@@ -712,6 +731,9 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     ],
     debouchesConclusion:
       "🌟 Un diplôme d'État reconnu à l'hôpital comme en crèche : peu de métiers de la petite enfance offrent autant de terrains possibles avec un seul diplôme.",
+    // 23/11/2026 : photo d'illustration générée par IA (Canva), demande d'Arthur ; légende
+    // « Photo d'illustration » affichée par le gabarit.
+    photoMetier: { base: "/photos/auxiliaire-puericulture-creche", alt: "Une auxiliaire de puériculture avec un jeune enfant, en crèche" },
     noteReferentiel:
       "Le DEAP est délivré par le ministère chargé de la Santé. Les modalités du parcours VAE (recevabilité, épreuves complémentaires éventuelles) sont fixées par le certificateur et peuvent évoluer : nous vérifions avec vous les conditions exactes qui s'appliquent à votre dossier avant tout engagement.",
     // Référentiel du DEAP : arrêté du 10 juin 2021 (JO du 12 juin 2021, NOR SSAH2110961A),
@@ -874,7 +896,6 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     niveau: "Niveau 4 (Bac)",
     // Thème rose, comme la page DEAP (demande d'Arthur du 19/11/2026, 20 h 34) : les deux
     // diplômes de santé partagent la même couleur, le social reste en vert.
-    theme: "rose",
     metaTitle: "VAE Aide-Soignant (DEAS) | VAESocial",
     metaDescription:
       "VAE aide-soignant : obtenez le DEAS grâce à votre expérience à l'hôpital, en EHPAD ou à domicile. Les 5 blocs, les étapes, le jury. Visio gratuite.",
@@ -1444,4 +1465,187 @@ export const DIPLOMES_DATA: Record<DiplomeSlug, DiplomeData> = {
     ],
     ctaTitre: "Prêt·e à savoir si vous êtes éligible au DEETS ?",
   },
+};
+
+// Page métier /vae-aesh (23/11/2026, demande d'Arthur : « du full public »). Les AESH sont
+// des agents contractuels de l'Éducation nationale (près de 140 000) ; le diplôme visé par
+// la VAE est le DEAES. Faits vérifiés le 23/11/2026 :
+// - fiche France compétences RNCP42423 (DEAES, active jusqu'au 31/08/2027) : 5 blocs
+//   (intitulés recopiés ci-dessous), voie « par expérience » ouverte, emplois accessibles
+//   « Accompagnant éducatif et social, aide médico-psychologique, auxiliaire de vie sociale,
+//   AESH », certificateur : ministère chargé de la solidarité ;
+// - arrêté du 30 août 2021 : fusion des trois spécialités de 2016 (dont « éducation
+//   inclusive et vie ordinaire »).
+// Pas de prix affiché (même règle que /deaes). Même formulaire, diplôme préréglé DEAES.
+export const PAGE_AESH: DiplomeData = {
+  ...DIPLOMES_DATA.deaes,
+  path: "/vae-aesh",
+  h1: { metier: "AESH" },
+  financementPublic: true,
+  metaTitle: "VAE AESH : obtenir le DEAES par l'expérience | VAESocial",
+  metaDescription:
+    "Vous êtes AESH ? Votre accompagnement d'élèves en situation de handicap peut valoir le DEAES par la VAE. Les 5 blocs, les étapes, le jury. Visio gratuite.",
+  heroIntro:
+    "AESH en école, en collège, en lycée ou en ULIS : en 4 questions, vous savez si votre expérience auprès des élèves peut valoir le DEAES, et ce qu'il faut pour aller jusqu'au jury.",
+  heroParagraphe:
+    "Le DEAES est le diplôme d'État qui correspond à votre métier : la fiche officielle du diplôme cite les AESH parmi les emplois auxquels il donne accès. Niveau 3, cinq blocs de compétences, une seule version depuis 2021. Par la VAE, votre expérience d'accompagnement des élèves peut suffire à le valider, sans reprendre une formation.",
+  publicIntro:
+    "Vous accompagnez des élèves en situation de handicap, avec ou sans diplôme ? Votre expérience peut être recevable pour une VAE DEAES.",
+  publicConcerne: [
+    {
+      titre: "Vous êtes AESH individuel ou mutualisé",
+      texte:
+        "Vous aidez un ou plusieurs élèves dans leurs déplacements, leurs repas, leur installation et l'accès aux apprentissages : c'est l'accompagnement au quotidien évalué par le DEAES.",
+    },
+    {
+      titre: "Vous êtes AESH collectif, en ULIS",
+      texte:
+        "Vous travaillez avec l'enseignant de l'ULIS auprès d'un groupe d'élèves : le travail en équipe et les transmissions font partie des cinq blocs du diplôme.",
+    },
+    {
+      titre: "Vous avez été recruté sans diplôme",
+      texte:
+        "Beaucoup d'AESH sont recrutés sur leur expérience ou leur baccalauréat. La VAE permet d'obtenir le diplôme d'État du métier que vous exercez déjà.",
+    },
+  ],
+  publicChips: [["AESH", "Repas", "Apprentissages"], ["ULIS", "Enseignant", "Équipe"], ["Sans diplôme", "Baccalauréat", "Diplôme d'État"]],
+  debouchesIntro:
+    "Le DEAES est reconnu à l'école comme en établissement — vous pouvez rester AESH, ou changer de cadre :",
+  debouches: [
+    {
+      icon: "🎒",
+      texte:
+        "École, collège, lycée — continuer comme AESH, avec le diplôme d'État du métier.",
+    },
+    {
+      icon: "🧩",
+      texte:
+        "Établissements pour enfants ou adultes en situation de handicap : IME, foyers — le même accompagnement, dans une autre équipe.",
+    },
+    {
+      icon: "🌇",
+      texte:
+        "EHPAD et établissements pour personnes âgées — l'accompagnement des gestes du quotidien.",
+    },
+    {
+      icon: "🏠",
+      texte:
+        "Aide à domicile — accompagner une personne chez elle, comme auxiliaire de vie.",
+    },
+  ],
+  debouchesConclusion:
+    "La fiche officielle du DEAES cite quatre emplois : accompagnant éducatif et social, aide médico-psychologique, auxiliaire de vie sociale et AESH.",
+  noteReferentiel: undefined,
+  photoMetier: { base: "/photos/aesh-classe", alt: "Une AESH aux côtés d'une élève, en classe" },
+  referentiel: {
+    titre: "Votre expérience d'AESH couvre‑t‑elle les cinq blocs du DEAES ?",
+    intro:
+      "Le DEAES (arrêté du 30 août 2021) compte cinq blocs de compétences. Pour chaque bloc, voici l'intitulé officiel et ce qui, dans votre travail d'AESH, peut le montrer. Vous n'avez pas besoin de tout cocher aujourd'hui : c'est ce qu'on regarde ensemble pendant la visio.",
+    conclusion:
+      "Le DEAES ne porte pas que sur l'école : les deux premiers blocs parlent aussi des gestes du quotidien (repas, hygiène, déplacements). Si votre travail d'AESH n'en comporte pas, une autre expérience (garde d'enfant, aide à un proche, domicile) peut compléter. On regarde votre cas bloc par bloc pendant la visio.",
+    blocs: [
+      {
+        intitule: "Accompagnement de la personne dans les actes essentiels de la vie quotidienne",
+        piste: "Une situation où vous avez aidé un élève dans un geste du quotidien, en le laissant faire ce qu'il peut faire seul.",
+        exemples:
+          "L'aide au repas à la cantine, aux toilettes, à l'habillage ; l'installation en classe ; un déplacement dans l'établissement ou pendant une sortie.",
+      },
+      {
+        intitule:
+          "Accompagnement de la personne dans les actes de la vie quotidienne dans le respect de cette personne et des règles d'hygiène et de sécurité",
+        piste: "Une situation où vous avez protégé l'intimité, la sécurité ou la santé d'un élève.",
+        exemples:
+          "Un change fait avec discrétion ; une crise ou une chute que vous avez gérée ; un protocole (PAI, traitement, allergie) que vous appliquez.",
+      },
+      {
+        intitule: "Accompagnement à la vie sociale et relationnelle de la personne",
+        piste: "Une situation où vous avez aidé un élève à trouver sa place parmi les autres.",
+        exemples:
+          "La récréation, un travail de groupe, une sortie scolaire ; un conflit que vous avez apaisé ; un élève que vous avez aidé à communiquer.",
+      },
+      {
+        intitule: "Positionnement en tant que travailleur social dans son contexte d'intervention",
+        piste: "Une situation où vous avez su ce qui relevait de votre rôle, et ce qui ne l'était pas.",
+        exemples:
+          "Ce que vous faites ou ne faites pas à la place de l'élève ; vos échanges avec la famille dans le cadre fixé par l'école ; le projet personnalisé de scolarisation (PPS) qui guide votre travail.",
+      },
+      {
+        intitule:
+          "Travail en équipe pluri-professionnelle, gestion des risques et traitement des informations liées à l'accompagnement de la personne",
+        piste: "Une situation de travail avec l'équipe : ce que vous observez, notez et transmettez.",
+        exemples:
+          "Vos échanges avec l'enseignant ; une équipe de suivi de la scolarisation (ESS) où vous avez apporté vos observations ; le lien avec les soignants ou les éducateurs qui suivent l'élève.",
+      },
+    ],
+    sourceLabel: "Arrêté du 30 août 2021, fiche RNCP42423 (France compétences)",
+    sourceUrl: "https://www.francecompetences.fr/recherche/rncp/42423/",
+  },
+  enPratique: {
+    titre: "La VAE DEAES pour les AESH, en pratique",
+    etapes: [
+      {
+        titre: "Qui peut se lancer",
+        texte:
+          "Il n'y a plus de durée minimale d'expérience. Ce qui compte, c'est le lien direct entre ce que vous faites et le métier d'accompagnant éducatif et social : aider une personne en situation de handicap dans son quotidien, ses relations et ses activités. C'est le cœur du travail d'AESH.",
+      },
+      {
+        titre: "Livret 1 : la recevabilité",
+        texte:
+          "Vous décrivez vos expériences, et le certificateur vérifie qu'elles correspondent au métier. Il ne juge pas encore vos compétences.",
+        lien: { href: "/blog/recevabilite-vae-guide-complet", label: "Ce que vérifie la recevabilité" },
+      },
+      {
+        titre: "Livret 2 : votre dossier",
+        texte:
+          "Vous racontez, à la première personne, des situations réelles de votre travail avec les élèves, choisies pour couvrir les cinq blocs du diplôme. France VAE compte en moyenne 4 à 6 mois de rédaction, à raison de 2 à 4 heures par semaine.",
+        lien: { href: "/blog/livret-2-vae-guide-complet", label: "Remplir le livret 2" },
+      },
+      {
+        titre: "Le jury",
+        texte:
+          "Le jury lit votre dossier, puis vous reçoit en entretien. Il peut valider tout le diplôme, une partie des blocs, ou refuser. Un bloc validé reste acquis : il ne vous reste alors que les autres à compléter.",
+        lien: { href: "/blog/jury-vae-entretien-deroule-frais", label: "Comment se passe le jury" },
+      },
+    ],
+    agentsPublics:
+      "Comme AESH, vous êtes agent public, contractuel de l'Éducation nationale. C'est le même diplôme, mais la démarche et le financement passent par votre employeur. On regarde votre cas pendant la visio.",
+    sources: [
+      { label: "France compétences, fiche RNCP42423 (DEAES)", url: "https://www.francecompetences.fr/recherche/rncp/42423/" },
+      { label: "Service-Public.fr, fiche VAE", url: "https://www.service-public.gouv.fr/particuliers/vosdroits/F2401" },
+      { label: "France VAE, rédiger son dossier", url: "https://vae.gouv.fr/savoir-plus/articles/rediger-dossier-validation/" },
+    ],
+  },
+  faq: [
+    {
+      question: "Un AESH peut-il obtenir le DEAES par la VAE ?",
+      reponse:
+        "Oui. La voie « par expérience » est ouverte sur la fiche officielle du DEAES, et cette fiche cite les AESH parmi les emplois auxquels le diplôme donne accès. Votre expérience auprès des élèves est donc directement en lien avec le diplôme.",
+    },
+    {
+      question: "Existe-t-il encore un DEAES « éducation inclusive » ?",
+      reponse:
+        "Non. La spécialité « éducation inclusive et vie ordinaire » de 2016 a été fusionnée avec les deux autres par l'arrêté du 30 août 2021. Il n'y a plus qu'un DEAES, en cinq blocs de compétences, valable à l'école comme en établissement.",
+    },
+    {
+      question: "Quelle expérience faut-il ?",
+      reponse:
+        "Aucune durée minimale n'est exigée. Votre expérience doit avoir un rapport direct avec le métier : accompagner une personne en situation de handicap dans les gestes du quotidien, ses relations et ses activités. Si vous n'avez jamais accompagné quelqu'un au quotidien, la VAE n'est pas la bonne voie.",
+    },
+    {
+      question: "Je suis contractuel, pas fonctionnaire : est-ce que ça change quelque chose ?",
+      reponse:
+        "Non pour le diplôme : c'est le même DEAES. La démarche et son financement passent par votre employeur, l'Éducation nationale. On regarde votre situation pendant la visio.",
+    },
+    {
+      question: "Peut-on valider seulement une partie du DEAES ?",
+      reponse:
+        "Oui. Le jury peut valider le diplôme entier ou seulement certains blocs. Un bloc validé reste acquis, et vous complétez ensuite les blocs manquants. Notre accompagnement continue quelle que soit la décision du jury.",
+    },
+    {
+      question: "Faut-il arrêter de travailler pendant la VAE ?",
+      reponse:
+        "Non. L'accompagnement se fait à distance, en visio, avec des séances organisées autour de votre emploi du temps. C'est votre travail auprès des élèves qui alimente votre dossier.",
+    },
+  ],
+  ctaTitre: "AESH : prêt·e à savoir si votre expérience peut valoir le DEAES ?",
 };

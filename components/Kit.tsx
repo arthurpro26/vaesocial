@@ -4,16 +4,17 @@ import type { ReactNode } from "react";
 
 // Trame de points décorative (fonds de héros).
 export const DOTS = {
-  backgroundImage: "radial-gradient(rgba(41,107,95,0.14) 1.2px, transparent 1.6px)",
+  backgroundImage: "radial-gradient(rgba(20,37,74,0.13) 1.2px, transparent 1.6px)",
   backgroundSize: "22px 22px",
 } as const;
 
 // Une teinte douce par carte : même famille que le site, juste un peu de vie.
 export const TINTS = [
   { tile: "bg-brand-50 text-brand-600", chip: "bg-brand-50 text-brand-700", bar: "from-brand-500 to-brand-300" },
-  { tile: "bg-emerald-50 text-emerald-700", chip: "bg-emerald-50 text-emerald-800", bar: "from-emerald-500 to-emerald-300" },
-  { tile: "bg-amber-50 text-amber-700", chip: "bg-amber-50 text-amber-800", bar: "from-amber-500 to-amber-300" },
-  { tile: "bg-sky-50 text-sky-700", chip: "bg-sky-50 text-sky-800", bar: "from-sky-500 to-sky-300" },
+  // 23/11/2026 : même famille bleue partout (thème institutionnel), plus de vert ni d'ambre.
+  { tile: "bg-sky-50 text-sky-800", chip: "bg-sky-50 text-sky-900", bar: "from-sky-600 to-sky-300" },
+  { tile: "bg-slate-100 text-slate-700", chip: "bg-slate-100 text-slate-800", bar: "from-slate-500 to-slate-300" },
+  { tile: "bg-indigo-50 text-indigo-800", chip: "bg-indigo-50 text-indigo-900", bar: "from-indigo-500 to-indigo-300" },
 ] as const;
 
 type IcoName = "clock" | "loop" | "check" | "spark" | "calendar" | "arrow" | "info";

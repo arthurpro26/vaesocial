@@ -23,7 +23,6 @@ export default function ReferentielSection({
       aria-labelledby="referentiel-title"
       className="relative overflow-hidden bg-brand-50/70 py-12 sm:py-20"
     >
-      <div aria-hidden className="pointer-events-none absolute -left-24 bottom-10 h-72 w-72 rounded-full border-[28px] border-brand-100/70" />
       <Container>
         <div className="relative mx-auto max-w-4xl text-center">
           <Eyebrow>Ce que le jury évalue · {sigle}</Eyebrow>

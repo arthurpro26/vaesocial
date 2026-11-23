@@ -8,13 +8,13 @@ import type { DiplomeData } from "@/lib/diplomes-data";
 // pas de note, pas de durée) pour rester strictement exact vis-à-vis de
 // Google. Le "Course" est ici l'accompagnement VAE proposé par VAESocial
 // vers le diplôme visé, pas une formation initiale classique.
-export default function CourseJsonLd({ diplome }: { diplome: DiplomeData }) {
+export default function CourseJsonLd({ diplome, chemin }: { diplome: DiplomeData; chemin?: string }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "Course",
     name: `Accompagnement VAE ${diplome.sigle} — ${diplome.nomComplet}`,
     description: diplome.metaDescription,
-    url: `${siteConfig.url}/${diplome.slug}`,
+    url: `${siteConfig.url}${chemin ?? `/${diplome.slug}`}`,
     inLanguage: "fr-FR",
     provider: {
       "@type": "Organization",

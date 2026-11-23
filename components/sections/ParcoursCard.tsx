@@ -24,7 +24,7 @@ export default function ParcoursCard({
     return (
       <section
         aria-labelledby="parcours-titre"
-        className={`rounded-3xl bg-white p-6 shadow-[0_18px_40px_-24px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10 xl:p-7 ${className}`}
+        className={`rounded-xl bg-white p-6 ring-1 ring-brand-900/10 xl:p-7 ${className}`}
       >
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
           <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
@@ -69,7 +69,7 @@ export default function ParcoursCard({
   return (
     <section
       aria-labelledby="parcours-titre"
-      className={`flex flex-col rounded-3xl bg-white p-6 shadow-[0_18px_40px_-24px_rgba(20,47,42,0.45)] ring-1 ring-brand-900/10 xl:p-7 ${className}`}
+      className={`flex flex-col rounded-xl bg-white p-6 ring-1 ring-brand-900/10 xl:p-7 ${className}`}
     >
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h2 id="parcours-titre" className="text-lg font-bold tracking-[-0.01em] text-brand-900">

@@ -11,7 +11,7 @@ const ICONS = ["users", "handshake", "screen", "shield"] as const;
 
 export default function AccompagnementPanel() {
   return (
-    <div className="relative mt-14 overflow-hidden rounded-[2rem] bg-brand-50 p-5 ring-1 ring-brand-900/10 sm:mt-20 sm:p-10">
+    <div className="relative mt-14 overflow-hidden rounded-xl bg-brand-50 p-5 ring-1 ring-brand-900/10 sm:mt-20 sm:p-10">
       <div className="relative grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-12">
         <div className="text-left">
           <Eyebrow left>Votre accompagnement</Eyebrow>

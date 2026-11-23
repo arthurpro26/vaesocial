@@ -13,8 +13,9 @@
   />
   <defs>
     <linearGradient id="favicon-gradient" x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#55a08f" />
-      <stop offset="1" stop-color="#21564d" />
+      <stop stop-color="#14254A" />
+      <stop offset="0.5" stop-color="#8E9CC8" />
+      <stop offset="1" stop-color="#D6403A" />
     </linearGradient>
   </defs>
 </svg>

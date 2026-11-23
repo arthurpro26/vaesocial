@@ -20,15 +20,13 @@ export default function CtaFinalSection({
   return (
     <section id="cta-final" className="bg-white pb-16 sm:pb-24">
       <Container>
-        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-800 via-brand-700 to-brand-600 px-6 py-12 text-center text-white shadow-2xl shadow-brand-900/25 sm:px-12 sm:py-16">
-          <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full border-[28px] border-white/5" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full border-[28px] border-white/5" />
+        <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-brand-800 via-brand-700 to-brand-600 px-6 py-12 text-center text-white shadow-2xl shadow-brand-900/25 sm:px-12 sm:py-16">
           <Trico band onDark className="absolute inset-x-0 bottom-0 h-1.5" />
           <h2 className="relative text-3xl font-bold tracking-tight [text-wrap:balance] sm:text-4xl">{titre}</h2>
           <p className="relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-brand-50 sm:text-lg">{texte}</p>
           <Link
             href={href}
-            className="relative mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-accent-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-accent-900/30 transition hover:-translate-y-0.5 hover:bg-accent-500"
+            className="relative mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-4 text-base font-bold text-brand-800 shadow-lg shadow-brand-900/30 transition hover:-translate-y-0.5 hover:bg-brand-50"
           >
             {cta} <Ico name="arrow" className="h-5 w-5" />
           </Link>

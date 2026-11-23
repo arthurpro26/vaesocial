@@ -41,7 +41,7 @@ export default function ArticleBody({ blocks }: { blocks: ArticleBlock[] }) {
             return (
               <div
                 key={i}
-                className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900 sm:p-5 sm:text-base"
+                className="rounded-2xl border border-brand-200 bg-brand-50 p-4 text-sm leading-relaxed text-brand-900 sm:p-5 sm:text-base"
               >
                 <span className="mr-1.5" aria-hidden>
                   {block.icon}

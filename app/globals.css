@@ -14,104 +14,30 @@
    C'est ce que la syntaxe `rgb(var(--x) / <alpha-value>)` attend pour que les
    opacités (bg-brand-50/60, shadow-brand-900/5...) restent fonctionnelles.
    -------------------------------------------------------------------------- */
-/* BLEU INSTITUTIONNEL, CHALEUR SUR LES FONDS — révision du 17/09/2026.
-
-   Remplace la palette teal/émeraude d'origine, qui posait un vrai problème de
-   cohérence : le teal est le vocabulaire du bien-être et du coaching, alors
-   que le visiteur vient chercher un DIPLÔME D'ÉTAT délivré par un jury. Le
-   décor contredisait le message.
-
-   Deux registres, volontairement :
-
-   - Les niveaux 400 à 900 sont un bleu profond franchement désaturé. C'est le
-     registre de l'institution, du dossier qui aboutit, du diplôme. Il porte
-     l'en-tête, les titres, la barre de progression : tout ce qui doit dire
-     « organisme sérieux » en trois secondes.
-
-   - Les niveaux 50 à 300 sont volontairement RÉCHAUFFÉS (composante rouge
-     relevée de 4 à 6 points par rapport à une gamme bleue pure). Ce sont les
-     fonds des cartes du formulaire et des encadrés. Un bleu pâle strict y
-     serait clinique, presque administratif — or le candidat type a souvent
-     quitté l'école tôt, redoute d'être jugé, et doit se lancer dans un dossier
-     de plusieurs dizaines de pages. Ces fonds-là doivent accueillir, pas
-     intimider. L'écart est subtil à l'œil mais il change la sensation.
-
-   NE PAS emprunter les codes visuels d'un service public : le candidat
-   croirait être sur un portail officiel alors qu'il s'agit d'un accompagnement
-   privé, et découvrirait le malentendu au téléphone. Confiance perdue dès la
-   première minute. Pas de Marianne, pas de « RF », pas de bloc-marque de
-   l'État, pas du bleu #000091, pas de « République française ».
-
-   UNE SEULE EXCEPTION, voulue par Yoni le 13/10/2026 (« pour qu'ils
-   comprennent qu'on n'est pas des amateurs ») : un filet tricolore très
-   discret (components/Trico.tsx) qui sert de signature de marque : bandeau fin
-   en haut et en bas du site, mini-filet au-dessus des titres de section.
-   Jamais plus gros que ça. Les deux variables `--trico-*` ci-dessous gardent
-   son bleu fixe, même quand la page change de thème (voir `.theme-rose`).
-
-   Contrastes vérifiés : niveaux 600 à 900 au-dessus de 7:1 sur blanc (AAA),
-   niveau 500 au-dessus de 5:1 — c'est lui qui porte la bordure de sélection et
-   la barre de progression du formulaire, il doit rester nettement lisible.
-
-   L'accent corail/orange des boutons d'action est INCHANGÉ : il convertit
-   bien, et le contraste chaud/froid est plus marqué sur bleu que sur teal. */
+/* THÈME INSTITUTIONNEL MARINE — 23/11/2026, décision d'Arthur (maquette 6
+   « Fiche officielle », voir claude/maquettes-institutionnelles-23-novembre.md).
+   Remplace le thème vert du 21/10/2026. Bleu marine profond pour les niveaux
+   600 à 900 (en-tête, titres, boutons), gris-bleu très clair pour les fonds.
+   Le thème rose de la page auxiliaire de puériculture est retiré : tout le site
+   est dans la même palette (demande d'homogénéité du 18/11).
+   Pour revenir au vert du 21/10 : 50 239 247 245 · 100 217 236 231 · 200 179 217 208 ·
+   300 130 190 176 · 400 85 160 143 · 500 54 132 117 · 600 41 107 95 · 700 33 86 77 ·
+   800 27 68 61 · 900 20 47 42.
+   Contrastes sur blanc : 500 (#2E4FA0) ≈ 7,7:1, 600 à 900 au-dessus de 9:1. */
 :root {
-  /* THÈME VERT — 21/10/2026, demande d'Arthur : même vert que la pub Meta et que le
-     logo (dégradé #55a08f → #21564d = niveaux 400 → 700). C'est exactement l'ancienne
-     palette teal du site (commit 569fa44) : retour au vert, sans rien inventer.
-     Pour revenir au bleu institutionnel du 17/09 : remettre les valeurs du bloc
-     commenté ci-dessous (sauvegarde : _sauvegardes_claude/2026-10-21-theme-vert/).
-     Bleu : 50 244 247 252 · 100 224 233 246 · 200 188 206 234 · 300 138 170 214 ·
-     400 82 126 186 · 500 46 92 156 · 600 33 71 128 · 700 26 56 103 · 800 21 45 82 ·
-     900 14 31 58. */
-  --brand-50: 239 247 245;
-  --brand-100: 217 236 231;
-  --brand-200: 179 217 208;
-  --brand-300: 130 190 176;
-  --brand-400: 85 160 143;
-  --brand-500: 54 132 117;
-  --brand-600: 41 107 95;
-  --brand-700: 33 86 77;
-  --brand-800: 27 68 61;
-  --brand-900: 20 47 42;
-  /* Bleu du filet tricolore (components/Trico.tsx) : volontairement HORS de la
-     palette brand-*, pour ne pas virer au rose sur la page .theme-rose. */
-  --trico-blue: 33 71 128;
-  --trico-blue-light: 138 170 214;
-}
-
-/* Thème rose — utilisé uniquement sur la page /auxiliaire-puericulture.
-   Rose franc et saturé, mais assombri sur les niveaux hauts : la page doit
-   rester celle d'un organisme qui prépare un diplôme d'État, pas un
-   faire-part. Tous les niveaux 600 à 800 dépassent 6,8:1 sur blanc.
-
-   RÉVISION DU 03/09/2026 — la première version (500 = #b85575) était trop
-   pâle : dans le formulaire, la carte sélectionnée ne se distinguait
-   pratiquement pas des autres. Le niveau 500, qui porte la bordure de
-   sélection et la barre de progression, est passé de 4,57:1 à 5,12:1 sur
-   blanc, et toute la gamme a été resaturée.
-
-   DEUX SÉLECTEURS, volontairement :
-   - `.theme-rose` : le conteneur de la page (voir app/[diplome]/page.tsx).
-   - `body:has(.theme-rose)` : remonte les mêmes variables jusqu'au <body>,
-     pour que l'en-tête et le pied de page — rendus par le layout racine,
-     donc EN DEHORS du conteneur de la page — passent au rose eux aussi. Sans
-     cette ligne, le logo VAESocial et le menu restaient verts au milieu
-     d'une page rose. Un navigateur trop ancien pour `:has()` ignore
-     simplement la règle : la page reste rose, l'en-tête reste vert — dégradé
-     acceptable, jamais cassé. */
-.theme-rose,
-body:has(.theme-rose) {
-  --brand-50: 253 239 244;
-  --brand-100: 250 219 229;
-  --brand-200: 244 182 201;
-  --brand-300: 234 137 167;
-  --brand-400: 219 90 130;
-  --brand-500: 197 55 100;
-  --brand-600: 167 39 82;
-  --brand-700: 136 30 66;
-  --brand-800: 108 24 52;
-  --brand-900: 74 15 34;
+  --brand-50: 243 245 249;
+  --brand-100: 232 238 251;
+  --brand-200: 201 211 230;
+  --brand-300: 142 156 200;
+  --brand-400: 82 110 180;
+  --brand-500: 46 79 160;
+  --brand-600: 30 63 160;
+  --brand-700: 24 47 110;
+  --brand-800: 20 37 74;
+  --brand-900: 14 26 54;
+  /* Bleu du filet tricolore (components/Trico.tsx). */
+  --trico-blue: 31 60 136;
+  --trico-blue-light: 142 156 200;
 }
 
 html {
@@ -200,6 +126,15 @@ body {
   }
 }
 
+/* 23/11/2026 — Style institutionnel : les boutons (liens et <button>) sont
+   rectangulaires aux angles légèrement arrondis, comme sur la maquette 6. La
+   classe `rounded-full` reste utilisée pour les pastilles de logos, les
+   puces et les ronds d'icônes (<li>, <span>) : ceux-là ne changent pas. */
+a.rounded-full,
+button.rounded-full {
+  border-radius: 0.375rem;
+}
+
 @keyframes step-in {
   from {
     opacity: 0;
@@ -286,8 +221,8 @@ body {
 .mot-cle {
   background-image: linear-gradient(
     to top,
-    rgb(254 215 170 / 0.75) 0,
-    rgb(254 215 170 / 0.75) 0.32em,
+    rgb(232 238 251) 0,
+    rgb(232 238 251) 0.32em,
     transparent 0.32em
   );
   background-repeat: no-repeat;

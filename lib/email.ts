@@ -203,7 +203,7 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
   // bloquées par défaut tant que le destinataire ne les autorise pas. Un
   // dégradé CSS avec `background-color` en repli s'affiche partout, sans rien
   // à charger. Les couleurs reprennent celles du logo (tailwind.config.ts :
-  // brand.400 #55a08f → brand.700 #21564d, accent.600 #ea580c).
+  // brand.600 #1e3fa0 → brand.800 #14254a — thème marine du 23/11/2026).
   // Objectif : passer de « je lis le lead, je recopie le numéro, je rédige un
   // SMS » à deux gestes. Le bouton Appeler ouvre le téléphone, le bouton SMS
   // ouvre Messages avec le destinataire ET le texte déjà remplis.
@@ -263,9 +263,9 @@ export async function sendPrediagnosticLead(lead: PrediagnosticLead) {
   <p style="margin:0;padding:12px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;white-space:pre-wrap;font-size:15px">${esc(buildRelanceSms(lead))}</p>`;
 
   const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;color:#0f172a">
-  <div style="background-color:#21564d;background-image:linear-gradient(135deg,#55a08f 0%,#21564d 100%);border-radius:14px;padding:22px 24px;margin:0 0 20px">
+  <div style="background-color:#14254a;background-image:linear-gradient(135deg,#1e3fa0 0%,#14254a 100%);border-radius:14px;padding:22px 24px;margin:0 0 20px">
     <p style="margin:0;color:#ffffff;font-size:21px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
-    <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Nouveau lead — ${esc(lead.diplomeVise)}</p>
+    <p style="margin:6px 0 0;color:#c9d3e6;font-size:15px">Nouveau lead — ${esc(lead.diplomeVise)}</p>
   </div>
   <h2 style="margin:0 0 4px;font-size:22px">${esc(lead.prenom)} ${esc(lead.nom)}</h2>
   <p style="margin:0 0 18px;color:#ea580c;font-weight:600;font-size:15px">Rappelez maintenant — les premières minutes font la différence.</p>
@@ -349,7 +349,7 @@ export async function sendConfirmationToLead(lead: PrediagnosticLead) {
   // Mise en page en tableaux et styles en ligne : s'affiche dans Gmail,
   // Outlook et sur téléphone, sans image distante à charger.
   const c = confirmationContenu(lead);
-  const VERT = "#21564d";
+  const VERT = "#14254a";
   const etapesHtml = c.etapes
     .map(
       (e, i) => `<tr>
@@ -384,9 +384,9 @@ export async function sendConfirmationToLead(lead: PrediagnosticLead) {
 
   const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#eef2f5;padding:24px 12px">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden">
-    <div style="background-color:${VERT};background-image:linear-gradient(135deg,#55a08f 0%,${VERT} 100%);padding:24px 28px">
+    <div style="background-color:${VERT};background-image:linear-gradient(135deg,#1e3fa0 0%,${VERT} 100%);padding:24px 28px">
       <p style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
-      <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Votre expérience vaut un diplôme</p>
+      <p style="margin:6px 0 0;color:#c9d3e6;font-size:15px">Votre expérience vaut un diplôme</p>
     </div>
     <div style="padding:28px;color:#0f172a;font-size:16px;line-height:1.6">
       <p style="margin:0 0 6px">${esc(c.salut)}</p>
@@ -495,9 +495,9 @@ export async function sendRelanceToLead(lead: {
 
   const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#eef2f5;padding:24px 12px">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden">
-    <div style="background-color:#21564d;background-image:linear-gradient(135deg,#55a08f 0%,#21564d 100%);padding:24px 28px">
+    <div style="background-color:#14254a;background-image:linear-gradient(135deg,#1e3fa0 0%,#14254a 100%);padding:24px 28px">
       <p style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.3px">VAESocial</p>
-      <p style="margin:6px 0 0;color:#d9ece7;font-size:15px">Votre expérience vaut un diplôme</p>
+      <p style="margin:6px 0 0;color:#c9d3e6;font-size:15px">Votre expérience vaut un diplôme</p>
     </div>
     <div style="padding:28px;color:#0f172a;font-size:16px;line-height:1.65">
       <p style="${P}">${corpsHtml}</p>

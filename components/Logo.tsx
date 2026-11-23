@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 
-// Logo original VAESocial : un badge en dégradé teal (identité de marque)
+// Logo original VAESocial : un badge en dégradé bleu marine → rouge (tricolore, 23/11/2026)
 // représentant deux silhouettes qui se soutiennent — le symbole de l'entraide
 // et de l'accompagnement humain, au cœur du secteur social. `id` doit être
 // unique si le logo apparaît plusieurs fois sur la même page (header +
@@ -19,7 +19,7 @@ export default function Logo({
   return (
     <span className={clsx("inline-flex items-center gap-2.5", className)}>
       <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
-        <rect width="34" height="34" rx="9" fill={`url(#${gradientId})`} />
+        <rect width="34" height="34" rx="9" fill={`url(#${gradientId})`} stroke={variant === "light" ? "rgba(255,255,255,0.35)" : "rgba(20,37,74,0.18)"} strokeWidth="1" />
         {/* Silhouette arrière — soutenue */}
         <circle cx="13" cy="13.5" r="3" fill="white" fillOpacity="0.55" />
         <path
@@ -34,20 +34,14 @@ export default function Logo({
           fill="white"
         />
         <defs>
-          {/* 03/09/2026 — les deux teintes étaient écrites en dur (#55a08f et
-              #21564d, soit brand-400 et brand-700). Résultat : sur la page
-              rose, le badge du logo restait vert au milieu d'une page rose.
-              Elles lisent maintenant les variables de la palette, donc le
-              logo suit le thème de la page — teal partout, rose sur la page
-              auxiliaire de puériculture. Les couleurs par défaut sont
-              rigoureusement les mêmes qu'avant.
-
-              `style` et non l'attribut `stopColor` : une variable CSS n'est
-              pas résolue dans un attribut de présentation SVG, seulement dans
-              une déclaration de style. */}
+          {/* 23/11/2026 (demande d'Arthur) : le badge garde exactement sa forme et ses
+              silhouettes, seul le dégradé change — bleu marine → nuance bleu-gris → rouge,
+              en écho au filet tricolore. Couleurs fixes : le logo ne suit plus le thème
+              de la page (il n'y a plus qu'un thème). */}
           <linearGradient id={gradientId} x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
-            <stop style={{ stopColor: "rgb(var(--brand-400))" }} />
-            <stop offset="1" style={{ stopColor: "rgb(var(--brand-700))" }} />
+            <stop stopColor="#14254A" />
+            <stop offset="0.5" stopColor="#8E9CC8" />
+            <stop offset="1" stopColor="#D6403A" />
           </linearGradient>
         </defs>
       </svg>

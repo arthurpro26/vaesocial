@@ -68,7 +68,7 @@ export default function EnPratiqueSection({
         </ol>
 
         {enPratique.agentsPublics && (
-          <div className="mx-auto mt-6 flex max-w-4xl items-start gap-4 rounded-2xl bg-white px-5 py-4 shadow-sm ring-1 ring-brand-900/10 sm:mt-8 sm:px-6 sm:py-5">
+          <div className="mx-auto mt-6 flex max-w-4xl items-start gap-4 rounded-r-2xl border-l-4 border-[#d8323c] bg-white px-5 py-4 shadow-sm ring-1 ring-brand-900/10 sm:mt-8 sm:px-6 sm:py-5">
             <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-900/10">
               <Ico name="info" className="h-5 w-5" />
             </span>

@@ -43,7 +43,7 @@ export default function MethodeSection() {
                   key={e.titre}
                   className={
                     fort
-                      ? "relative flex gap-3.5 rounded-2xl bg-brand-600 p-4 text-white shadow-xl shadow-brand-900/20 sm:block sm:rounded-3xl sm:p-6 lg:-mt-2"
+                      ? "relative flex gap-3.5 rounded-2xl bg-brand-600 p-4 text-white shadow-sm shadow-brand-900/20 sm:block sm:rounded-3xl sm:p-6 lg:-mt-2"
                       : "relative flex gap-3.5 rounded-2xl bg-brand-50 p-4 ring-1 ring-brand-900/5 sm:block sm:rounded-3xl sm:p-6"
                   }
                 >
@@ -62,7 +62,7 @@ export default function MethodeSection() {
                     </span>
                   </div>
                   {fort && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent-500 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-white shadow-md shadow-accent-600/30">
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-brand-800 shadow-md shadow-brand-900/30 ring-1 ring-brand-900/10">
                       Étape centrale
                     </span>
                   )}

@@ -37,24 +37,29 @@ const config: Config = {
           800: "rgb(var(--brand-800) / <alpha-value>)",
           900: "rgb(var(--brand-900) / <alpha-value>)",
         },
-        // Accent chaud (corail/orange) pour les CTA — fort contraste avec le teal,
-        // pensé pour la conversion.
+        // Accent des boutons d'action. 23/11/2026 : bleu institutionnel (maquette 6),
+        // à la place du corail/orange. Les boutons posés sur un fond marine
+        // (appel final, étape centrale) sont passés en blanc dans leurs composants.
         accent: {
-          50: "#fff7ed",
-          100: "#ffedd5",
-          400: "#fb923c",
-          500: "#f97316",
-          600: "#ea580c",
-          700: "#c2410c",
+          50: "#f3f5f9",
+          100: "#e8eefb",
+          400: "#526eb4",
+          500: "#2e4fa0",
+          600: "#1e3fa0",
+          700: "#182f6e",
+          900: "#0e1a36",
         },
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         logo: ["var(--font-logo)", "system-ui", "sans-serif"],
       },
+      // 23/11/2026 — angles sobres (maquette 6 « Fiche officielle ») : les cartes
+      // passent de 1 à 1,5 rem d'arrondi à 6 et 8 px, partout, sans toucher aux classes.
       borderRadius: {
-        xl: "1rem",
-        "2xl": "1.5rem",
+        xl: "0.375rem",
+        "2xl": "0.5rem",
+        "3xl": "0.5rem",
       },
     },
   },

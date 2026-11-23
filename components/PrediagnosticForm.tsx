@@ -113,6 +113,14 @@ const SITUATION_HELPERS: Record<string, { prive: string; public: string }> = {
     prive: "Clinique, EHPAD privé ou associatif, aide à domicile…",
     public: "Hôpital public, EHPAD public, CCAS uniquement",
   },
+  // Accompagnement — DEAES (23/11/2026, page /vae-aesh). Les AESH sont agents
+  // publics de l'Éducation nationale : sans ce mot dans la ligne « public »
+  // (« Mairie, département, hôpital public uniquement »), un AESH ne s'y
+  // reconnaît pas et risque de cocher « privé » ou « Autre ».
+  accompagnement: {
+    prive: "Association, IME, foyer, EHPAD privé, aide à domicile…",
+    public: "Éducation nationale (AESH), mairie, hôpital, EHPAD public",
+  },
 };
 
 // Quel jeu d'exemples pour quel diplôme. Tout ce qui n'est pas listé ici
@@ -120,7 +128,7 @@ const SITUATION_HELPERS: Record<string, { prive: string; public: string }> = {
 const SITUATION_HELPERS_PAR_DIPLOME: Record<string, keyof typeof SITUATION_HELPERS> = {
   DEES: "social",
   DEME: "social",
-  DEAES: "social",
+  DEAES: "accompagnement",
   DEEJE: "petiteEnfance",
   DEAP: "petiteEnfance",
   DEAS: "soin",
